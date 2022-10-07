@@ -20,9 +20,10 @@
 	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
 	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git) 
 	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
-	    * &#x1F534; TODO safety filter disabled
-	    * &#x1F534; TODO added (consistent) output dir and filename options to sampler
-	    * &#x1F534; TODO randomize seed when not specified
+	    * &#x1F534; TODO Safety filter disabled
+	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
+	    * &#x1F534; TODO Randomize seed when not specified
+	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -42,8 +43,9 @@
 
 # AI Training and Sampling
 * &#x1F534; TODO stable diffusion
-    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --H 128 --W 128 --prompt <text>```
-    	* note height and width must be multiples of ```64```
+    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --H 64 --W 64 --prompt <text>```
+    	* Height and width must be multiples of ```64```.
+    	* The watermarker only works if image size is at least ```256x256```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo

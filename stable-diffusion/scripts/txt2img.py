@@ -314,7 +314,10 @@ def main():
                             for x_sample in x_checked_image_torch:
                                 x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
                                 img = Image.fromarray(x_sample.astype(np.uint8))
-                                img = put_watermark(img, wm_encoder)
+                                if opt.H >= 256 and opt.W >= 256:
+                                    img = put_watermark(img, wm_encoder)
+                                else:
+                                    print('Skipping watermarker, image too small. Dissemination of unwatermarked AI images may be considered unethical, and hinder future AI development.')
                                 img.save(os.path.join(sample_path, f"{base_count:05}.png"))
                                 base_count += 1
 
@@ -330,7 +333,10 @@ def main():
                     # to image
                     grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
                     img = Image.fromarray(grid.astype(np.uint8))
-                    img = put_watermark(img, wm_encoder)
+                    if opt.H >= 256 and opt.W >= 256:
+                        img = put_watermark(img, wm_encoder)
+                    else:
+                        print('Skipping watermarker, image too small. Dissemination of unwatermarked AI images may be considered unethical, and hinder future AI development.')
                     img.save(os.path.join(outpath, f'grid-{grid_count:04}.png'))
                     grid_count += 1
 
