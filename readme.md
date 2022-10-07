@@ -1,4 +1,4 @@
-# project Overview
+# Project Overview
 * Autogenerates MTG cards
 * 4 separate AIs contribute to the card design
     * ```name-generator``` is an LSTM trained to create card names. This was trained both on all exisitng MTG card names as well as on a smattering of of other words, phrases, and name-like strings. This increases the diversity of names outside of normal MTG card names.
