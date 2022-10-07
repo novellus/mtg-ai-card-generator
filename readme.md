@@ -20,7 +20,7 @@
 	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
 	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git) 
 	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
-	    * &#x1F534; TODO Safety filter disabled
+	    * Safety filter disabled
 	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
 	    * &#x1F534; TODO Randomize seed when not specified
 	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
