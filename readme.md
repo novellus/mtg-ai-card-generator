@@ -21,6 +21,8 @@
 	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git) 
 	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
 	    * &#x1F534; TODO safety filter disabled
+	    * &#x1F534; TODO added (consistent) output dir and filename options to sampler
+	    * &#x1F534; TODO randomize seed when not specified
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -33,13 +35,14 @@
     * ```conda env create -f environment.yaml```
     * ```conda activate ldm``` - &#x1F534; TODO Repeat each new shell session?
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
+    * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
 * &#x1F534; TODO stable diffusion
-    * 
+    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --H 100 --W 100 --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
