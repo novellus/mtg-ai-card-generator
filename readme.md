@@ -37,6 +37,7 @@
     * ```conda activate ldm``` - &#x1F534; TODO Repeat each new shell session?
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
     * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
+    * If you want to later delete your environment for reinstallation, run ```conda env remove -n ldo```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
@@ -46,6 +47,8 @@
     * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --H 64 --W 64 --prompt <text>```
     	* Height and width must be multiples of ```64```.
     	* The watermarker only works if image size is at least ```256x256```
+    	* If your output is a jumbled rainbow mess your image resolution is set TOO LOW
+    	* Having too high of a CFG level will also introduce rainbow distortion, your CFG shouldn't be set above 20
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
