@@ -1,4 +1,5 @@
 stable-diffusion/models/ldm/stable-diffusion-v1/*
 stable-diffusion/src/*
+stable-diffusion/outputs/*
 *__pycache__*
 *.egg-info*
