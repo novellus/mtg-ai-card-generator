@@ -18,7 +18,7 @@
 	        * batch card order is randomized
 	        * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card if the field's identity is specified by label rather than by order
 	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
-	* [stable-diffusion](https://huggingface.co/CompVis/stable-diffusion-v1-4)
+	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git) with incorporated models from [huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original)
 	    * &#x1F534; TODO safety filter disabled
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
