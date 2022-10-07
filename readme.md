@@ -42,7 +42,8 @@
 
 # AI Training and Sampling
 * &#x1F534; TODO stable diffusion
-    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --H 100 --W 100 --prompt <text>```
+    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --H 128 --W 128 --prompt <text>```
+    	* note height and width must be multiples of ```64```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
