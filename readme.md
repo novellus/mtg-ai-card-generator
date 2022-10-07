@@ -19,10 +19,27 @@
 	        * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card if the field's identity is specified by label rather than by order
 	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
 	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git) 
-	    * &#x1F534; TODO incorporate [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so maybe migrate platforms?
+	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
 	    * &#x1F534; TODO safety filter disabled
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
 * pull subtree: ```git fetch <remote> <branch>``` and then ```git subtree pull --prefix <dir> <remote> <branch> --squash```
 
+
+# Environment Setup
+* stable diffusion (taken from readme in this subtree)
+    * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
+    * ```conda env create -f environment.yaml```
+    * ```conda activate ldm``` - &#x1F534; TODO Repeat each new shell session?
+    * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
+* &#x1F534; TODO torch-rnn
+* &#x1F534; TODO mtgencode
+* &#x1F534; TODO main repo
+
+# AI Training and Sampling
+* &#x1F534; TODO stable diffusion
+    * 
+* &#x1F534; TODO torch-rnn
+* &#x1F534; TODO mtgencode
+* &#x1F534; TODO main repo
