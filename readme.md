@@ -24,11 +24,9 @@
 	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
 	    * &#x1F534; TODO Randomize seed when not specified
 	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
-		* [stable-diffusion/scripts_vram_optimized](https://github.com/basujindal/stable-diffusion.git)
-		    * Safety filter disabled
-		    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
-		    * &#x1F534; TODO Randomize seed when not specified
-		    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
+		* [stable-diffusion/optimizedSD](https://github.com/basujindal/stable-diffusion.git)
+		    * &#x1F534; TODO Added fully specifiable output dir and filename options to sampler
+		    * Added watermarker
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -64,7 +62,7 @@
     	        * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
     	    * use the vram-optimized scripts instead
 * stable diffusion - vram-optimized
-    * text to image sampling: &#x1F534; TODO ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outsubdir "testing" --n_samples 1 --n_iter 1 --H 64 --W 64 --prompt <text>```
+    * text to image sampling: &#x1F534; TODO ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --out_subdir "testing" --n_samples 1 --n_iter 1 --H 64 --W 64 --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
