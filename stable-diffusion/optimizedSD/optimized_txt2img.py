@@ -323,10 +323,10 @@ def main():
         for n in trange(opt.n_iter, desc="Sampling"):
             for prompts in tqdm(data, desc="data"):
 
-                if opt.subdir is None:
+                if opt.out_subdir is None:
                     sample_path = os.path.join(outpath, "_".join(re.split(":| ", prompts[0])))[:150]
                 else:
-                    sample_path = os.path.join(outpath, opt.subdir)
+                    sample_path = os.path.join(outpath, opt.out_subdir)
                 os.makedirs(sample_path, exist_ok=True)
                 base_count = len(os.listdir(sample_path))
 
@@ -387,7 +387,7 @@ def main():
                             img = put_watermark(img, wm_encoder)
                         else:
                             print('Skipping watermarker, image too small. Dissemination of unwatermarked AI images may be considered unethical, and hinder future AI development.')
-                        img.save(os.path.join(sample_path, f'{base_count:05}.{opt.format}' + "_seed_" + str(opt.seed)))
+                        img.save(os.path.join(sample_path, f'{base_count:05}_{opt.seed}.{opt.format}'))
 
                         seeds += str(opt.seed) + ","
                         opt.seed += 1
