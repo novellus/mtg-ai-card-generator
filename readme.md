@@ -62,7 +62,7 @@
     	        * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
     	    * use the vram-optimized scripts instead
 * stable diffusion - vram-optimized
-    * text to image sampling: &#x1F534; TODO ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --out_subdir "testing" --n_samples 1 --n_iter 1 --H 64 --W 64 --prompt <text>```
+    * text to image sampling: &#x1F534; TODO ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --out_subdir "testing" --n_samples 1 --n_iter 1 --H 1216 --W 1216 --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
