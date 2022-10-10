@@ -24,8 +24,11 @@
 	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
 	    * &#x1F534; TODO Randomize seed when not specified
 	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
-	* [stable-diffusion2](https://github.com/basujindal/stable-diffusion.git)
-		* 
+		* [stable-diffusion/scripts_vram_optimized](https://github.com/basujindal/stable-diffusion.git)
+		    * Safety filter disabled
+		    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
+		    * &#x1F534; TODO Randomize seed when not specified
+		    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -46,6 +49,7 @@
 
 # AI Training and Sampling
 * stable diffusion
+	* execute ```conda activate ldm``` at the berginning of each bash session
     * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --n_samples 1 --n_iter 1 --skip_grid --H 64 --W 64 --prompt <text>```
     	* Height and width must be multiples of ```64```.
     	* The watermarker only works if image size is at least ```256x256```
@@ -53,11 +57,14 @@
     	* Having too high of a CFG level will also introduce rainbow distortion, your CFG shouldn't be set above 20
     	* It's recommended to have your prompts be at least 512 pixels in one dimension, or a 384x384 square at the smallest. Anything smaller will have heavy artifacting.
     	* reducing ram utilization:
-    	    * smaller images: ```--H 64``` and ```--W 64```
+    	    * generate smaller images: ```--H 64``` and ```--W 64```
     	    * generate fewer images at once (smaller batches): ```--n_samples 1```, ```--n_iter 1```. If generating only one image, can also do ```--skip_grid```
     	        * ```--n_iter``` generates images in series, with relatively low impact to vram utilization
     	        * ```--n_samples``` generates images in parallel, with relatively high impact to vram utilization
     	        * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
+    	    * use the vram-optimized scripts instead
+* stable diffusion - vram-optimized
+    * text to image sampling: &#x1F534; TODO ```python scripts/txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outsubdir "testing" --n_samples 1 --n_iter 1 --H 64 --W 64 --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
