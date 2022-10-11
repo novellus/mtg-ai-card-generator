@@ -53,9 +53,6 @@ def load_img(path, h0, w0):
     return 2.0 * image - 1.0
 
 
-config = "optimizedSD/v1-inference.yaml"
-ckpt = "models/ldm/stable-diffusion-v1/model.ckpt"
-
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -139,6 +136,18 @@ parser.add_argument(
     help="if specified, load prompts from this file",
 )
 parser.add_argument(
+    "--config",
+    type=str,
+    default="optimizedSD/v1-inference.yaml",
+    help="path to config which constructs model",
+)
+parser.add_argument(
+    "--ckpt",
+    type=str,
+    default='models/ldm/stable-diffusion-v1/model.ckpt',
+    help="path to checkpoint of model",
+)
+parser.add_argument(
     "--seed",
     type=int,
     default=None,
@@ -192,7 +201,7 @@ seed_everything(opt.seed)
 # Logging
 logger(vars(opt), log_csv = "logs/img2img_logs.csv")
 
-sd = load_model_from_config(f"{ckpt}")
+sd = load_model_from_config(f"{opt.ckpt}")
 li, lo = [], []
 for key, value in sd.items():
     sp = key.split(".")
@@ -210,7 +219,7 @@ for key in li:
 for key in lo:
     sd["model2." + key[6:]] = sd.pop(key)
 
-config = OmegaConf.load(f"{config}")
+config = OmegaConf.load(f"{opt.config}")
 
 assert os.path.isfile(opt.init_img)
 init_image = load_img(opt.init_img, opt.H, opt.W).to(opt.device)
