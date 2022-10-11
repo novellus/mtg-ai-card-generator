@@ -20,13 +20,14 @@
 	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
 	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
 	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
+		* [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
+		    * Added watermarker
+		    * cleaned up interfaces
+		    * &#x1F534; TODO Added fully specifiable output dir and filename options to samplers
 	    * Safety filter disabled
 	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
 	    * &#x1F534; TODO Randomize seed when not specified
-	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```). This enables use at lower vram capacities.
-		* [stable-diffusion/optimizedSD](https://github.com/basujindal/stable-diffusion.git)
-		    * &#x1F534; TODO Added fully specifiable output dir and filename options to sampler
-		    * Added watermarker
+	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
