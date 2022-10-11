@@ -59,20 +59,31 @@ ckpt = "models/ldm/stable-diffusion-v1/model.ckpt"
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-    "--prompt", type=str, nargs="?", default="a painting of a virus monster playing guitar", help="the prompt to render"
-)
-parser.add_argument("--outdir", type=str, nargs="?", help="dir to write results to", default="outputs/img2img-samples")
-parser.add_argument("--init-img", type=str, nargs="?", help="path to the input image")
-
-parser.add_argument(
-    "--skip_grid",
-    action="store_true",
-    help="do not save a grid, only individual samples. Helpful when evaluating lots of samples",
+    "--prompt",
+    type=str,
+    nargs="?",
+    default="a painting of a virus monster playing guitar",
+    help="the prompt to render"
 )
 parser.add_argument(
-    "--skip_save",
-    action="store_true",
-    help="do not save individual samples. For speed measurements.",
+    "--init-img",
+    type=str,
+    nargs="?",
+    help="path to the input image"
+)
+parser.add_argument(
+    "--outdir",
+    type=str,
+    nargs="?",
+    help="dir to write results to",
+    default="outputs/img2img-samples"
+)
+parser.add_argument(
+    "--out_subdir",
+    type=str,
+    nargs="?",
+    help="subdir to write results to. defaults to sanitized prompt",
+    default=None
 )
 parser.add_argument(
     "--ddim_steps",
@@ -80,7 +91,6 @@ parser.add_argument(
     default=50,
     help="number of ddim sampling steps",
 )
-
 parser.add_argument(
     "--ddim_eta",
     type=float,
@@ -116,12 +126,6 @@ parser.add_argument(
     type=int,
     default=5,
     help="how many samples to produce for each given prompt. A.k.a. batch size",
-)
-parser.add_argument(
-    "--n_rows",
-    type=int,
-    default=0,
-    help="rows in the grid (default: n_samples)",
 )
 parser.add_argument(
     "--scale",
@@ -234,7 +238,6 @@ if opt.device != "cpu" and opt.precision == "autocast":
     init_image = init_image.half()
 
 batch_size = opt.n_samples
-n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
 if not opt.from_file:
     assert opt.prompt is not None
     prompt = opt.prompt
