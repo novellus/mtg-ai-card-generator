@@ -16,7 +16,7 @@
             * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
             * batch card order is randomized
             * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card when the fields are specified by label rather than by order
-    * [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
+    * [mtgencode](https://github.com/Parrotapocalypse/mtgencode) (used as-is)
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -26,7 +26,7 @@
         * Safety filter disabled
         * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
-* create remote: ```git remote add -f <dir> <url>```
+* create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
 * pull subtree: ```git fetch <remote> <branch>``` and then ```git subtree pull --prefix <dir> <remote> <branch> --squash```
 
@@ -61,7 +61,7 @@
             * use the vram-optimized scripts instead
 * stable diffusion - vram-optimized
     * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
-    * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 5 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
+    * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
