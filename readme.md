@@ -10,13 +10,12 @@
 
 # git-subtree management
 * subtree list
-    * [torch-rnn](https://github.com/jcjohnson/torch-rnn)
-        * &#x1F534; TODO modified with analogous changes from [billzorn's cousen-branch](https://github.com/billzorn/mtg-rnn)
-        * &#x1F534; TODO Sampling updated to specify specific substrings midsample (eg card names)
-        * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [billzorn/mtgencode](https://github.com/billzorn/mtgencode) (mtg card text):
+    * [torch-rnn](https://github.com/jcjohnson/torch-rnn) modified with analogous changes from [mtg-rnn](https://github.com/billzorn/mtg-rnn)
+        * &#x1F534; TODO Implemented whispering during sampling
+        * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [mtgencode](https://github.com/billzorn/mtgencode) (serialized mtg card text):
             * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
             * batch card order is randomized
-            * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card if the field's identity is specified by label rather than by order
+            * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card when the fields are specified by label rather than by order
     * [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
