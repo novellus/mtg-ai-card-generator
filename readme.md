@@ -10,24 +10,22 @@
 
 # git-subtree management
 * subtree list
-	* [torch-rnn](https://github.com/jcjohnson/torch-rnn)
-	    * &#x1F534; TODO modified with analogous changes from [billzorn's cousen-branch](https://github.com/billzorn/mtg-rnn)
-	    * &#x1F534; TODO Sampling updated to specify specific substrings midsample (eg card names)
-	    * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [billzorn/mtgencode](https://github.com/billzorn/mtgencode) (mtg card text):
-	        * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
-	        * batch card order is randomized
-	        * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card if the field's identity is specified by label rather than by order
-	* [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
-	* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
-	    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
-		* [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
-		    * Added watermarker
-		    * cleaned up interfaces
-		    * &#x1F534; TODO Added fully specifiable output dir and filename options to samplers
-	    * Safety filter disabled
-	    * &#x1F534; TODO Added (consistent) output dir and filename options to sampler
-	    * &#x1F534; TODO Randomize seed when not specified
-	    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
+    * [torch-rnn](https://github.com/jcjohnson/torch-rnn)
+        * &#x1F534; TODO modified with analogous changes from [billzorn's cousen-branch](https://github.com/billzorn/mtg-rnn)
+        * &#x1F534; TODO Sampling updated to specify specific substrings midsample (eg card names)
+        * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [billzorn/mtgencode](https://github.com/billzorn/mtgencode) (mtg card text):
+            * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
+            * batch card order is randomized
+            * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card if the field's identity is specified by label rather than by order
+    * [mtgencode](https://github.com/billzorn/mtgencode.git) (used as-is)
+    * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
+        * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
+        * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
+            * Added watermarker
+            * cleaned up interfaces
+            * Added fully specifiable output dir and filename options to samplers
+        * Safety filter disabled
+        * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <dir> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -48,26 +46,30 @@
 
 # AI Training and Sampling
 * stable diffusion
-	* execute ```conda activate ldm``` at the berginning of each bash session
+    * execute ```conda activate ldm``` at the berginning of each bash session
     * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --n_samples 1 --n_iter 1 --skip_grid --H 64 --W 64 --prompt <text>```
-    	* Height and width must be multiples of ```64```.
-    	* The watermarker only works if image size is at least ```256x256```
-    	* If your output is a jumbled rainbow mess your image resolution is set TOO LOW
-    	* Having too high of a CFG level will also introduce rainbow distortion, your CFG shouldn't be set above 20
-    	* It's recommended to have your prompts be at least 512 pixels in one dimension, or a 384x384 square at the smallest. Anything smaller will have heavy artifacting.
-    	* reducing ram utilization:
-    	    * generate smaller images: ```--H 64``` and ```--W 64```
-    	    * generate fewer images at once (smaller batches): ```--n_samples 1```, ```--n_iter 1```. If generating only one image, can also do ```--skip_grid```
-    	        * ```--n_iter``` generates images in series, with relatively low impact to vram utilization
-    	        * ```--n_samples``` generates images in parallel, with relatively high impact to vram utilization
-    	        * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
-    	    * use the vram-optimized scripts instead
+        * Height and width must be multiples of ```64```.
+        * The watermarker only works if image size is at least ```256x256```
+        * If your output is a jumbled rainbow mess your image resolution is set TOO LOW
+        * Having too high of a CFG level will also introduce rainbow distortion, your CFG shouldn't be set above 20
+        * It's recommended to have your prompts be at least 512 pixels in one dimension, or a 384x384 square at the smallest. Anything smaller will have heavy artifacting.
+        * reducing ram utilization:
+            * generate smaller images: ```--H 64``` and ```--W 64```
+            * generate fewer images at once (smaller batches): ```--n_samples 1```, ```--n_iter 1```. If generating only one image, can also do ```--skip_grid```
+                * ```--n_iter``` generates images in series, with relatively low impact to vram utilization
+                * ```--n_samples``` generates images in parallel, with relatively high impact to vram utilization
+                * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
+            * use the vram-optimized scripts instead
 * stable diffusion - vram-optimized
-    * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --out_subdir "testing" --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
-    * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --out_subdir "testing"  --n_samples 1 --n_iter 5 --turbo --H 1152 --W 1152 --init-img <path> --prompt <text>```
+    * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
+    * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 5 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
 * &#x1F534; TODO main repo
+
+
+# Util
+* ```watch -n1 nvidia-smi``` to see GPU resource utilization
 
 
 # Prompt Development Tooling

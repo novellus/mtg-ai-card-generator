@@ -103,10 +103,10 @@ def main():
         default="outputs/txt2img-samples"
     )
     parser.add_argument(
-        "--out_subdir",
+        "--out_filename",
         type=str,
         nargs="?",
-        help="subdir to write results to. defaults to sanitized prompt",
+        help=r"defaults to '<folder sequence int>_<seed>'. Invalid to specify if number of output files is > 1",
         default=None
     )
     parser.add_argument(
@@ -234,7 +234,8 @@ def main():
     tic = time.time()
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir
-    grid_count = len(os.listdir(outpath)) - 1
+
+    assert opt.out_filename is None or (opt.n_samples == 1 and opt.n_iter == 1)
 
     print("Creating invisible watermark encoder (see https://github.com/ShieldMnt/invisible-watermark)...")
     wm = "StableDiffusionV1"
@@ -323,12 +324,8 @@ def main():
         for n in trange(opt.n_iter, desc="Sampling"):
             for prompts in tqdm(data, desc="data"):
 
-                if opt.out_subdir is None:
-                    sample_path = os.path.join(outpath, "_".join(re.split(":| ", prompts[0])))[:150]
-                else:
-                    sample_path = os.path.join(outpath, opt.out_subdir)
-                os.makedirs(sample_path, exist_ok=True)
-                base_count = len(os.listdir(sample_path))
+                os.makedirs(outpath, exist_ok=True)
+                base_count = len(os.listdir(outpath))
 
                 with precision_scope("cuda"):
                     modelCS.to(opt.device)
@@ -387,7 +384,8 @@ def main():
                             img = put_watermark(img, wm_encoder)
                         else:
                             print('Skipping watermarker, image too small. Dissemination of unwatermarked AI images may be considered unethical, and hinder future AI development.')
-                        img.save(os.path.join(sample_path, f'{base_count:05}_{opt.seed}.{opt.format}'))
+                        out_filename = opt.out_filename or f'{base_count:05}_{opt.seed}.{opt.format}'
+                        img.save(os.path.join(outpath, out_filename))
 
                         seeds += str(opt.seed) + ","
                         opt.seed += 1
@@ -408,7 +406,7 @@ def main():
     print(
         (
             "Samples finished in {0:.2f} minutes and exported to "
-            + sample_path
+            + outpath
             + "\n Seeds used = "
             + seeds[:-1]
         ).format(time_taken)

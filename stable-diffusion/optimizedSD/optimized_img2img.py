@@ -76,10 +76,10 @@ parser.add_argument(
     default="outputs/img2img-samples"
 )
 parser.add_argument(
-    "--out_subdir",
+    "--out_filename",
     type=str,
     nargs="?",
-    help="subdir to write results to. defaults to sanitized prompt",
+    help=r"defaults to '<folder sequence int>_<seed>'. Invalid to specify if number of output files is > 1",
     default=None
 )
 parser.add_argument(
@@ -192,7 +192,8 @@ opt = parser.parse_args()
 tic = time.time()
 os.makedirs(opt.outdir, exist_ok=True)
 outpath = opt.outdir
-grid_count = len(os.listdir(outpath)) - 1
+
+assert opt.out_filename is None or (opt.n_samples == 1 and opt.n_iter == 1)
 
 if opt.seed == None:
     opt.seed = randint(0, 1000000)
@@ -289,12 +290,8 @@ with torch.no_grad():
         for prompts in tqdm(data, desc="data"):
 
 
-            if opt.out_subdir is None:
-                sample_path = os.path.join(outpath, "_".join(re.split(":| ", prompts[0])))[:150]
-            else:
-                sample_path = os.path.join(outpath, opt.out_subdir)
-            os.makedirs(sample_path, exist_ok=True)
-            base_count = len(os.listdir(sample_path))
+            os.makedirs(outpath, exist_ok=True)
+            base_count = len(os.listdir(outpath))
 
             with precision_scope("cuda"):
                 modelCS.to(opt.device)
@@ -348,8 +345,9 @@ with torch.no_grad():
                     x_samples_ddim = modelFS.decode_first_stage(samples_ddim[i].unsqueeze(0))
                     x_sample = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
                     x_sample = 255.0 * rearrange(x_sample[0].cpu().numpy(), "c h w -> h w c")
+                    out_filename = opt.out_filename or f'{base_count:05}_{opt.seed}.{opt.format}'
                     Image.fromarray(x_sample.astype(np.uint8)).save(
-                        os.path.join(sample_path, f"{base_count:05}_{opt.seed}.{opt.format}")
+                        os.path.join(outpath, out_filename)
                     )
                     seeds += str(opt.seed) + ","
                     opt.seed += 1
@@ -371,7 +369,7 @@ time_taken = (toc - tic) / 60.0
 print(
     (
         "Samples finished in {0:.2f} minutes and exported to "
-        + sample_path
+        + outpath
         + "\n Seeds used = "
         + seeds[:-1]
     ).format(time_taken)
