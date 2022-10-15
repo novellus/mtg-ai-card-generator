@@ -177,11 +177,11 @@ def mtg_open_file(fname, verbose = False,
             bad_count += 1
         else:
             good_count += 1
-        if good_count + bad_count > 15:
-            break
+        # if good_count + bad_count > 15:
+        #     break
     # random heuristic
     if bad_count > 10:
-        print ('WARNING: Saw a bunch of unparsed cards:')
+        print (f'WARNING: Saw a bunch of unparsed cards ({bad_count} bad, {good_count} good):')
         print ('         Is this a legacy format? You may need to specify the field order.')
 
     return cards
