@@ -7,3 +7,4 @@ dependencies:
   - pip:
     - titlecase==2.4
     - nltk==3.7
+    - numpy==1.23.3
