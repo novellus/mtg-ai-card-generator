@@ -9,7 +9,7 @@
 
 
 # git-subtree management
-* subtree list
+* subtree list, with changes made to each repo
     * [torch-rnn](https://github.com/jcjohnson/torch-rnn) modified with analogous changes from [mtg-rnn](https://github.com/billzorn/mtg-rnn)
         * &#x1F534; TODO Implemented whispering during sampling
         * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [mtgencode](https://github.com/billzorn/mtgencode) (serialized mtg card text):
@@ -17,6 +17,7 @@
             * batch card order is randomized
             * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card when the fields are specified by label rather than by order
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode) (used as-is)
+        * &#x1F534; TODO Created environment.yaml for conda management
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -34,13 +35,15 @@
 # Environment Setup
 * stable diffusion (taken from readme in this subtree)
     * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
-    * ```conda env create -f environment.yaml```
-    * ```conda activate ldm``` - &#x1F534; TODO Repeat each new shell session?
+    * ```conda env create -f environment.yaml``` and then ```conda activate ldm```
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
     * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
     * If you want to later delete your environment for reinstallation, run ```conda env remove -n ldo```
-* &#x1F534; TODO torch-rnn
 * &#x1F534; TODO mtgencode
+    * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
+    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
+    * Encode this data with ```python encode.py  -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
+* &#x1F534; TODO torch-rnn
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling

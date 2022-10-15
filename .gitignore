@@ -2,5 +2,6 @@ stable-diffusion/models/ldm/stable-diffusion-v1/*
 stable-diffusion/src/*
 stable-diffusion/outputs/*
 stable-diffusion/logs/*
+mtgencode/data/AllPrintings.json
 *__pycache__*
 *.egg-info*
