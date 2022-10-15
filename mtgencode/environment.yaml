@@ -2,8 +2,8 @@ name: mtgencode
 channels:
   - defaults
 dependencies:
-  - python=3.10.7
-  - pip=21.1.1
+  - python=3.10.6
+  - pip=22.2.2
   - pip:
     - titlecase==2.4
     - nltk==3.7
