@@ -44,7 +44,7 @@
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * Finish setting up ntlk ```python -m nltk.downloader all```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
-    * Encode this data with ```python encode.py  -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
+    * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
 * &#x1F534; TODO torch-rnn
 * &#x1F534; TODO main repo
 
