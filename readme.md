@@ -24,6 +24,7 @@
             * Added watermarker
             * cleaned up interfaces
             * Added fully specifiable output dir and filename options to samplers
+            * &#x1F534; TODO Added ```main``` functions and interfaces for inter-code calls
         * Safety filter disabled
         * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
