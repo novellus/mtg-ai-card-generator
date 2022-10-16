@@ -14,6 +14,7 @@ def mtg_open_json(fname, verbose = False):
     allcards = {}
     asides = {}
     bsides = {}
+    i_card_cnt = 0
 
     for k_set in jobj:
         o_set = jobj[k_set]
@@ -30,6 +31,8 @@ def mtg_open_json(fname, verbose = False):
             codename = ''
         
         for card in o_set['cards']:
+            i_card_cnt += 1
+
             card[utils.json_field_set_name] = setname
             card[utils.json_field_info_code] = codename
 
@@ -72,6 +75,7 @@ def mtg_open_json(fname, verbose = False):
             #print bsides[uid]
 
     if verbose:
+        print('Parsed ' + str(i_card_cnt) + ' cards (including duplication).')
         print('Opened ' + str(len(allcards)) + ' uniquely named cards.')
     return allcards
 
