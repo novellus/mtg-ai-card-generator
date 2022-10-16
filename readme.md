@@ -16,8 +16,11 @@
             * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
             * batch card order is randomized
             * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card when the fields are specified by label rather than by order
-    * [mtgencode](https://github.com/Parrotapocalypse/mtgencode) (used as-is)
-        * &#x1F534; TODO Created environment.yaml for conda management
+    * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
+        * Created environment.yaml for conda management
+        * Fixed reserved word ```set``` inappropriately used
+        * Added printline stats during parsing wehen verbose is specified
+        * &#x1F534; TODO fix card parse count stats/warning
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
