@@ -16,20 +16,20 @@ def mtg_open_json(fname, verbose = False):
     bsides = {}
 
     for k_set in jobj:
-        set = jobj[k_set]
-        setname = set['name']
+        o_set = jobj[k_set]
+        setname = o_set['name']
         # flag sets that should be excluded by default, like funny and art card sets
-        if (set['type'] in ['funny', 'memorabilia', 'alchemy']):
-            for card in set['cards']:
+        if (o_set['type'] in ['funny', 'memorabilia', 'alchemy']):
+            for card in o_set['cards']:
                 bad_sets.add(card['setCode'])
                 # I'm sorry for using a for loop in this way, but I don't know how to retrieve the first item in the collection
                 break
-        if 'magicCardsInfoCode' in set:
-            codename = set['magicCardsInfoCode']
+        if 'magicCardsInfoCode' in o_set:
+            codename = o_set['magicCardsInfoCode']
         else:
             codename = ''
         
-        for card in set['cards']:
+        for card in o_set['cards']:
             card[utils.json_field_set_name] = setname
             card[utils.json_field_info_code] = codename
 
@@ -39,7 +39,7 @@ def mtg_open_json(fname, verbose = False):
             # the lower avoids duplication of at least one card (Will-o/O'-the-Wisp)
             cardname = card['name'].lower()
 
-            uid = set['code']
+            uid = o_set['code']
             if cardnumber == None:
                 uid = uid + '_' + cardname + '_'
             else:
@@ -182,6 +182,10 @@ def mtg_open_file(fname, verbose = False,
     # random heuristic
     if bad_count > 10:
         print (f'WARNING: Saw a bunch of unparsed cards ({bad_count} bad, {good_count} good):')
-        print ('         Is this a legacy format? You may need to specify the field order.')
+        print ('        Is this a legacy format? You may need to specify the field order.')
+        print (f'        {valid} valid')
+        print (f'        {skipped} skipped')
+        print (f'        {invalid} invalid')
+        print (f'        {unparsed} unparsed')
 
     return cards
