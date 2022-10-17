@@ -325,7 +325,8 @@ def fields_from_json(src_json, linetrans = True, verbose = False):
             text_val = transforms.text_pass_11_linetrans(text_val)
         text_val = utils.to_ascii(text_val)
         text_val = text_val.strip()
-        mtext = Manatext(text_val, fmt = 'json')
+        mtext = Manatext(text_val, fmt = 'json', verbose = verbose)
+
         valid = valid and mtext.valid
         fields[field_text] = [(-1, mtext)]
     

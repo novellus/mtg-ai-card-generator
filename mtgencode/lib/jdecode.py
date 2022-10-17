@@ -84,7 +84,7 @@ def default_exclude_sets(cardset):
     return cardset == 'Unglued' or cardset == 'Unhinged' or cardset == 'Celebration'
 
 def default_exclude_types(cardtype):
-    return cardtype in ['conspiracy', 'contraption']
+    return cardtype in ['conspiracy', 'contraption', 'sticker']
 
 def default_exclude_layouts(layout):
     return layout in ['token', 'plane', 'scheme', 'phenomenon', 'vanguard']

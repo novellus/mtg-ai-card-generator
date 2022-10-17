@@ -142,7 +142,7 @@ class Manacost:
 class Manatext:
     '''text representation with embedded mana costs'''
     
-    def __init__(self, src, fmt = ''):
+    def __init__(self, src, fmt = '', verbose = False):
         # source fields
         self.raw = None
         self.json = None
@@ -163,6 +163,7 @@ class Manatext:
             cost = Manacost(manastr, fmt)
             if not cost.valid:
                 self.valid = False
+
             self.costs += [cost]
             self.text = self.text.replace(manastr, utils.reserved_mana_marker, 1)
 
