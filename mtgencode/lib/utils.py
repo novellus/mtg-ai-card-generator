@@ -54,11 +54,17 @@ rarity_basic_land_marker = config.rarity_basic_land_marker
 
 json_rarity_map = {
     'Common' : rarity_common_marker,
+    'common' : rarity_common_marker,
     'Uncommon' : rarity_uncommon_marker,
+    'uncommon' : rarity_uncommon_marker,
     'Rare' : rarity_rare_marker,
+    'rare' : rarity_rare_marker,
     'Mythic Rare' : rarity_mythic_marker,
+    'mythic rare' : rarity_mythic_marker,
     'Special' : rarity_special_marker,
+    'special' : rarity_special_marker,
     'Basic Land' : rarity_basic_land_marker,
+    'basic land' : rarity_basic_land_marker,
 }
 json_rarity_unmap = {json_rarity_map[k] : k for k in json_rarity_map}
 

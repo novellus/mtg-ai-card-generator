@@ -240,7 +240,7 @@ def fields_check_valid(fields):
 # releaseDate - string
 # starter - boolean
 
-def fields_from_json(src_json, linetrans = True):
+def fields_from_json(src_json, linetrans = True, verbose = False):
     parsed = True
     valid = True
     fields = {}
@@ -305,7 +305,7 @@ def fields_from_json(src_json, linetrans = True):
     if p_t:
         fields[field_pt] = [(-1, p_t)]
     parsed = parsed and parsed_pt
-        
+
     # similarly, return the actual Manatext object
     if 'text' in src_json:
         text_val = src_json['text'].lower()
@@ -411,7 +411,8 @@ class Card:
 
     def __init__(self, src, fmt_ordered = fmt_ordered_default, 
                             fmt_labeled = fmt_labeled_default, 
-                            fieldsep = utils.fieldsep, linetrans = True):
+                            fieldsep = utils.fieldsep, linetrans = True,
+                            verbose = False):
 
         # source fields, exactly one will be set
         self.json = None
@@ -454,10 +455,11 @@ class Card:
                                   fmt_labeled = fmt_labeled,
                                   fieldsep = fieldsep,
                                   linetrans = linetrans)
-            p_success, v_success, parsed_fields = fields_from_json(src, linetrans = linetrans)
+            p_success, v_success, parsed_fields = fields_from_json(src, linetrans = linetrans, verbose = verbose)
             self.parsed = p_success
             self.valid = v_success
             self.fields = parsed_fields
+
         # otherwise assume text encoding
         else:
             self.raw = src

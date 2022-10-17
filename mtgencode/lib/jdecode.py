@@ -113,17 +113,17 @@ def mtg_open_file(fname, verbose = False,
 
                 # look for a normal rarity version, in a set we can use
                 idx = 0
-                card = cardlib.Card(jcards[idx], linetrans=linetrans)
+                card = cardlib.Card(jcards[idx], linetrans=linetrans, verbose=verbose)
                 while (idx < len(jcards)
                        and (card.rarity == utils.rarity_special_marker
                             or exclude_sets(jcards[idx][utils.json_field_set_name]))):
                     idx += 1
                     if idx < len(jcards):
-                        card = cardlib.Card(jcards[idx], linetrans=linetrans)
+                        card = cardlib.Card(jcards[idx], linetrans=linetrans, verbose=verbose)
                 # if there isn't one, settle with index 0
                 if idx >= len(jcards):
                     idx = 0
-                    card = cardlib.Card(jcards[idx], linetrans=linetrans)
+                    card = cardlib.Card(jcards[idx], linetrans=linetrans, verbose=verbose)
                 # we could go back and look for a card satisfying one of the criteria,
                 # but eh
 
@@ -156,7 +156,7 @@ def mtg_open_file(fname, verbose = False,
             text = f.read()
         for card_src in text.split(utils.cardsep):
             if card_src:
-                card = cardlib.Card(card_src, fmt_ordered=fmt_ordered)
+                card = cardlib.Card(card_src, fmt_ordered=fmt_ordered, verbose=verbose)
                 # unlike opening from json, we still want to return invalid cards
                 cards += [card]
                 if card.valid:
