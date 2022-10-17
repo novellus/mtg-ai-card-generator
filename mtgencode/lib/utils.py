@@ -174,6 +174,7 @@ mana_P = 'P' # colorless phyrexian
 mana_S = 'S' # snow
 mana_X = 'X' # colorless X
 mana_C = 'C' # colorless only 'eldrazi'
+mana_E = 'E' # Energy
 mana_WP = 'WP' # single color phyrexian
 mana_UP = 'UP'
 mana_BP = 'BP'
@@ -229,6 +230,7 @@ mana_syms = [
     mana_S,
     mana_X,
     mana_C,
+    mana_E,
     mana_WP,
     mana_UP,
     mana_BP,

@@ -22,6 +22,7 @@
         * Added printline stats during parsing wehen verbose is specified
         * Fixed rarity parsing error
         * Added sticker type cards to exclude by default list
+        * Added support for energy costs
         * &#x1F534; TODO fix card parse count stats/warning
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
