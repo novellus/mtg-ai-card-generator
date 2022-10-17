@@ -6,6 +6,7 @@
     * &#x1F534; TODO ```flavor-text-generator``` is an LSTM (&#x1F534; TODO is it?) trained to create flavor text for the cards. &#x1F534; TODO On what data is this trained? What inputs does it use? Etc.
     * &#x1F534; TODO ```image-generator``` is a stable diffusion model trained by the CompVis open source project to create images from text-based descriptions. This model is adapted from the CompVis open source project, and would be much to resource intensive to train from scratch on a hobbyist rig. This model uses the card name, along with some static descriptors to generate the images for the cards.
 * The AI's are trained independently, and sampling is wrapped by ```master-generator```, which pulls all the ingredients together to create new cards.
+* &#x1F534; TODO statistics from mtgjson for artist
 
 
 # git-subtree management
@@ -21,7 +22,7 @@
         * Fixed reserved word ```set``` inappropriately used
         * Added printline stats during parsing wehen verbose is specified
         * Fixed rarity parsing error
-        * Added sticker type cards to exclude by default list
+        * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
         * &#x1F534; TODO fix card parse count stats/warning
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
