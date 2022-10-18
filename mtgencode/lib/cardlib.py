@@ -248,6 +248,7 @@ def fields_from_json(src_json, linetrans = True, verbose = False):
     # we hardcode in what the things are called in the mtgjson format
     if 'name' in src_json:
         name_val = src_json['name'].lower()
+        name_val = transforms.name_pass_0_strip_reverse_side_names(name_val)
         name_orig = name_val
         name_val = transforms.name_pass_1_sanitize(name_val)
         name_val = utils.to_ascii(name_val)

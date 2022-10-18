@@ -29,6 +29,11 @@ unary_counter = utils.unary_counter
 # Name Passes.
 
 
+def name_pass_0_strip_reverse_side_names(s):
+    s = re.sub(r' // .*$', '', s)
+    return s
+
+
 def name_pass_1_sanitize(s):
     s = s.replace('!', '')
     s = s.replace('?', '')
