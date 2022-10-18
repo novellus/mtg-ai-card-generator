@@ -6,17 +6,26 @@
     * &#x1F534; TODO ```flavor-text-generator``` is an LSTM (&#x1F534; TODO is it?) trained to create flavor text for the cards. &#x1F534; TODO On what data is this trained? What inputs does it use? Etc.
     * &#x1F534; TODO ```image-generator``` is a stable diffusion model trained by the CompVis open source project to create images from text-based descriptions. This model is adapted from the CompVis open source project, and would be much to resource intensive to train from scratch on a hobbyist rig. This model uses the card name, along with some static descriptors to generate the images for the cards.
 * The AI's are trained independently, and sampling is wrapped by ```master-generator```, which pulls all the ingredients together to create new cards.
-* &#x1F534; TODO statistics from mtgjson for artist
+* &#x1F534; TODO statistics from mtgjson for artist, pull out card names, and flavor text
 
 
 # git-subtree management
 * subtree list, with changes made to each repo
-    * [torch-rnn](https://github.com/jcjohnson/torch-rnn) modified with analogous changes from [mtg-rnn](https://github.com/billzorn/mtg-rnn)
+    * [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
+        * &#x1F534; TODO Created environment.yaml for conda management
         * Implemented whispering during sampling
-        * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [mtgencode](https://github.com/billzorn/mtgencode) (serialized mtg card text):
-            * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
-            * batch card order is randomized
-            * batcher randomizes the symbols in mana costs of cards, and the order of the fields in a card when the fields are specified by label rather than by order
+        * &#x1F534; TODO Preprocessing script branched to
+            * partition input data on arbitrary delimeter (eg between encoded cards)
+            * randomize the chunk order
+            * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
+            * store the data as processed chunks, which can be order randomized during batching
+        * &#x1F534; TODO DataLoader updated to
+            * accept data chunks instead of raw data from the new proprocessing script
+            * dynamically randomize the order of the chunks each epoch, assigning chunks to a random batch
+            * and assign a fraction of those chunks to each batch; instead of assigning a fraction of raw data
+        * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
+            * symbols in mana costs
+            * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
