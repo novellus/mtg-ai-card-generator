@@ -12,7 +12,7 @@
 # git-subtree management
 * subtree list, with changes made to each repo
     * [torch-rnn](https://github.com/jcjohnson/torch-rnn) modified with analogous changes from [mtg-rnn](https://github.com/billzorn/mtg-rnn)
-        * &#x1F534; TODO Implemented whispering during sampling
+        * Implemented whispering during sampling
         * &#x1F534; TODO batching script branched, updated to take advantage of known information content. Both branches are used for different parts of the project. The new batcher is designed to consume data from [mtgencode](https://github.com/billzorn/mtgencode) (serialized mtg card text):
             * batcher interprets the data as whole cards, and partitions cards between the splits instead of raw data chunks
             * batch card order is randomized
@@ -47,7 +47,7 @@
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
     * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
     * If you want to later delete your environment for reinstallation, run ```conda env remove -n ldo```
-* &#x1F534; TODO mtgencode
+* mtgencode
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * Finish setting up ntlk ```python -m nltk.downloader all```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
