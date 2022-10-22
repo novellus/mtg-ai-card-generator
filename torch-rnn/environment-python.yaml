@@ -2,11 +2,7 @@ name: torch-rnn-python
 channels:
   - defaults
 dependencies:
-  - python
+  - python=2.7.18
   - pip
   - pip:
-    - Cython
-    - numpy
-    - argparse
-    - h5py
-    - six
+    - -r requirements.txt
