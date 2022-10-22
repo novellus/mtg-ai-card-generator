@@ -74,6 +74,9 @@
     	* ```bash install-deps```
     	* ```./install.sh```
     	* ```source ~/.bashrc```
+    	* fix luarockspeck uses outdated (unsupported) URLs, by forcing git to correct them on the fly
+    	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
+			* ```git config --global url."https://".insteadOf git://```
  		* ```luarocks install torch```
  		* ```luarocks install nn```
  		* ```luarocks install optim```
