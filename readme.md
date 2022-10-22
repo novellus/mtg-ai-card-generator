@@ -42,6 +42,7 @@
             * Added fully specifiable output dir and filename options to samplers
         * Safety filter disabled
         * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
+    * [torch-rnn/torch-hdf5](https://github.com/deepmind/torch-hdf5) (used as-is)
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
