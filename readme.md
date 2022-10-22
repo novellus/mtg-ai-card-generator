@@ -64,10 +64,7 @@
 * &#x1F534; TODO torch-rnn
 	* ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment.yaml``` and then ```conda activate torch-rnn```
-    * ```git clone https://github.com/deepmind/torch-hdf5```
-    * ```cd torch-hdf5```
-        * ```git checkout b7bc57d5ca396dbd14af108d0c555209aeafb48f```
-        * ```luarocks make hdf5-0-0.rockspec```
+    * ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
