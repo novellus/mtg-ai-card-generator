@@ -49,7 +49,7 @@
 
 
 # Environment Setup
-* stable diffusion (taken from readme in this subtree)
+* stable diffusion
     * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
     * ```conda env create -f environment.yaml``` and then ```conda activate ldm```
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
@@ -61,6 +61,12 @@
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
     * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
 * &#x1F534; TODO torch-rnn
+	* ```sudo apt-get install libhdf5-dev```
+    * ```conda env create -f environment.yaml``` and then ```conda activate torch-rnn```
+    * ```git clone https://github.com/deepmind/torch-hdf5```
+    * ```cd torch-hdf5```
+        * ```git checkout b7bc57d5ca396dbd14af108d0c555209aeafb48f```
+        * ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
