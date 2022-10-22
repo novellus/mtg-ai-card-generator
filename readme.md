@@ -63,8 +63,15 @@
     * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
 * &#x1F534; TODO torch-rnn
 	* ```sudo apt-get install libhdf5-dev```
-    * ```conda env create -f environment.yaml``` and then ```conda activate torch-rnn```
-    * ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
+    * ```conda env create -f environment-python.yaml```
+    * ```conda env create -f environment-lua.yaml``` and then ```conda activate torch-rnn-lua```
+ 		* ```luarocks install torch```
+ 		* ```luarocks install nn```
+ 		* ```luarocks install optim```
+ 		* ```luarocks install lua-cjson```
+ 		* ```luarocks install cutorch```
+ 		* ```luarocks install cunn```
+        * ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling

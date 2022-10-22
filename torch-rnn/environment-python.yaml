@@ -1,0 +1,12 @@
+name: torch-rnn-python
+channels:
+  - defaults
+dependencies:
+  - python
+  - pip
+  - pip:
+    - Cython
+    - numpy
+    - argparse
+    - h5py
+    - six
