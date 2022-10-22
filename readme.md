@@ -64,7 +64,16 @@
 * &#x1F534; TODO torch-rnn
 	* ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
-    * ```conda env create -f environment-lua.yaml``` and then ```conda activate torch-rnn-lua```
+    * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally
+    	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
+    	* ```cd ~/torch```
+    	* edit ```install-deps```
+    	    * line 178 ```python-software-properties``` -> ```python3-software-properties```
+    	    * line 202 ```ipython``` -> ```ipython3```
+    	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+    	* ```bash install-deps```
+    	* ```./install.sh```
+    	* ```source ~/.bashrc```
  		* ```luarocks install torch```
  		* ```luarocks install nn```
  		* ```luarocks install optim```
