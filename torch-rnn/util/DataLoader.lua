@@ -10,6 +10,7 @@ function DataLoader:__init(kwargs)
   local h5_file = utils.get_kwarg(kwargs, 'input_h5')
   self.batch_size = utils.get_kwarg(kwargs, 'batch_size')
   self.seq_length = utils.get_kwarg(kwargs, 'seq_length')
+  self.rand_mtg_fields = utils.get_kwarg(kwargs, 'rand_mtg_fields')
   local N, T = self.batch_size, self.seq_length
 
   -- Just slurp all the data into memory
