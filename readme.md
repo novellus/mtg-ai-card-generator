@@ -64,6 +64,7 @@
 * &#x1F534; TODO torch-rnn
 	* ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
+	* install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
     * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally
     	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
     	* ```cd ~/torch```
@@ -71,19 +72,20 @@
     	    * line 178 ```python-software-properties``` -> ```python3-software-properties```
     	    * line 202 ```ipython``` -> ```ipython3```
     	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+    	* ```pip install ipython```
     	* ```bash install-deps```
     	* ```./install.sh```
     	* ```source ~/.bashrc```
-    	* fix luarockspeck uses outdated (unsupported) URLs, by forcing git to correct them on the fly
+    	* fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
     	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
 			* ```git config --global url."https://".insteadOf git://```
  		* ```luarocks install torch```
  		* ```luarocks install nn```
  		* ```luarocks install optim```
  		* ```luarocks install lua-cjson```
- 		* ```luarocks install cutorch```
- 		* ```luarocks install cunn```
-        * ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
+ 		* &#x1F534; TODO ```luarocks install cutorch```
+ 		* &#x1F534; TODO ```luarocks install cunn```
+        * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling

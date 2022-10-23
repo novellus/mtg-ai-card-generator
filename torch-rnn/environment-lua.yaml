@@ -1,6 +1,0 @@
-name: torch-rnn-lua
-channels:
-  - defaults
-dependencies:
-  - lua
-  - luarocks
