@@ -77,7 +77,7 @@
 	* fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
 	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
 		* ```git config --global url."https://".insteadOf git://```
-    * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally
+    * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally and fiddle until it works
     	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
     	* ```cd ~/torch```
     	* edit ```install-deps```
@@ -89,13 +89,24 @@
     	* ```bash install-deps```
     	* ```./install.sh```
     	* ```source ~/.bashrc```
+    	* purge cmake from torch and install the latest version
+    		* ```sudo apt-get purge cmake```
+    		* ```cd ~```
+			* ```git clone https://github.com/Kitware/CMake.git```
+			* ```cd CMake```
+			* ```./bootstrap; make; sudo make install```
+			* ```cd ~/torch```
+			* ```rm -fr cmake/3.6/Modules/FindCUDA*```
+		* patch cutorch duplicate atomic definition
+			* ```cp atomic.patch ~/torch/extra/cutorch/.```
+			* ```cd ~/torch/extra/cutorch/.```
+			* ```patch -p1 < atomic.patch```
  		* ```luarocks install torch```
  		* ```luarocks install nn```
  		* ```luarocks install optim```
  		* ```luarocks install lua-cjson```
- 		* &#x1F534; TODO ```luarocks install cutorch```
  		* &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cutorch```
- 		* &#x1F534; TODO ```luarocks install cunn```
+ 		* &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn```
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
