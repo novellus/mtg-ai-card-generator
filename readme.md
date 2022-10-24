@@ -101,6 +101,10 @@
             * ```cp cutorch_init.patch ~/torch/extra/cutorch/.```
             * ```cd ~/torch/extra/cutorch/.```
             * ```patch -p1 < cutorch_init.patch```
+        * patch cdnn SparserLinear to remove sparse matrices
+            * ```cp sparselinear.patch ~/torch/extra/cunn/.```
+            * ```cd ~/torch/extra/cunn/.```
+            * ```patch -p1 < sparselinear.patch```
         * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
         * ```./clean.sh```
         * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```

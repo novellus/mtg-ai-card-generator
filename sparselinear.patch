@@ -1,0 +1,40 @@
+diff --git a/lib/THCUNN/generic/SparseLinear.cu b/lib/THCUNN/generic/SparseLinear.cu
+index 07eda62..108eec5 100644
+--- a/lib/THCUNN/generic/SparseLinear.cu
++++ b/lib/THCUNN/generic/SparseLinear.cu
+@@ -91,7 +91,7 @@ void THNN_(SparseLinear_updateOutput)(
+   cusparseCreateMatDescr(&descr);
+   cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+   cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ONE);
+-  #ifdef THC_REAL_IS_FLOAT
++  /*#ifdef THC_REAL_IS_FLOAT
+   cusparseScsrmm(cusparse_handle,
+   #elif defined(THC_REAL_IS_DOUBLE)
+   cusparseDcsrmm(cusparse_handle,
+@@ -105,7 +105,7 @@ void THNN_(SparseLinear_updateOutput)(
+       THCudaIntTensor_data(state, colInds),
+       THCTensor_(data)(state, weight), inDim,
+       &one, THCTensor_(data)(state, buffer), batchnum
+-  );
++  );*/
+   THCTensor_(transpose)(state, buffer, NULL, 0, 1);
+ 
+   // We do work in the buffer to keep the output contiguous
+@@ -190,7 +190,7 @@ void THNN_(SparseLinear_accGradParameters)(
+   cusparseCreateMatDescr(&descr);
+   cusparseSetMatType(descr,CUSPARSE_MATRIX_TYPE_GENERAL);
+   cusparseSetMatIndexBase(descr,CUSPARSE_INDEX_BASE_ONE);
+-  #ifdef THC_REAL_IS_FLOAT
++  /*#ifdef THC_REAL_IS_FLOAT
+   cusparseScsrmm(cusparse_handle,
+   #elif defined(THC_REAL_IS_DOUBLE)
+   cusparseDcsrmm(cusparse_handle,
+@@ -204,7 +204,7 @@ void THNN_(SparseLinear_accGradParameters)(
+       THCudaIntTensor_data(state, rowInds),
+       THCTensor_(data)(state, buf), batchnum,
+       &one, THCTensor_(data)(state, gradWeight), inDim
+-  );
++  );*/
+ 
+   THCTensor_(sum)(state, buf, gradOutput, 0, 1);
+   THCTensor_(resize1d)(state, buf, outDim);
