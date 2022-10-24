@@ -84,7 +84,7 @@
         * ```git clone https://github.com/Kitware/CMake.git```
         * ```cd CMake```
         * ```./bootstrap; make; sudo make install```
-    * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally and fiddle until it works
+    * conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works
         * ```git clone https://github.com/torch/distro.git ~/torch --recursive```
             * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```
         * ```cd ~/torch```
@@ -97,6 +97,10 @@
             * ```cp atomic.patch ~/torch/extra/cutorch/.```
             * ```cd ~/torch/extra/cutorch/.```
             * ```patch -p1 < atomic.patch```
+        * patch cutorch init
+            * ```cp cutorch_init.patch ~/torch/extra/cutorch/.```
+            * ```cd ~/torch/extra/cutorch/.```
+            * ```patch -p1 < cutorch_init.patch```
         * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
         * ```./clean.sh```
         * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```
@@ -107,8 +111,9 @@
         * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install nn```
         * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install optim```
         * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install lua-cjson```
-        * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cutorch```
-        * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn```
+        * ```cd ~/torch/extra/cutorch``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
+        * ```cd ~/torch/extra/cunn``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
+        <!-- * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn``` -->
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
