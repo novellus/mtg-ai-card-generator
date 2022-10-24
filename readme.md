@@ -69,7 +69,14 @@
 		* add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
 		* ```sudo apt update```
 		* ```sudo apt install gcc-6 g++-6```
+	* soft link cuda to ```gcc-6``` and ```g++-6```
+		* ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
+		* ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
+	* link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
 	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+	* fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
+	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
+		* ```git config --global url."https://".insteadOf git://```
     * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally
     	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
     	* ```cd ~/torch```
@@ -82,14 +89,12 @@
     	* ```bash install-deps```
     	* ```./install.sh```
     	* ```source ~/.bashrc```
-    	* fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
-    	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
-			* ```git config --global url."https://".insteadOf git://```
  		* ```luarocks install torch```
  		* ```luarocks install nn```
  		* ```luarocks install optim```
  		* ```luarocks install lua-cjson```
  		* &#x1F534; TODO ```luarocks install cutorch```
+ 		* &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cutorch```
  		* &#x1F534; TODO ```luarocks install cunn```
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
