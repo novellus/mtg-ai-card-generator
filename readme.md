@@ -65,13 +65,19 @@
 	* ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
 	* install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
+	* install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
+		* add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
+		* ```sudo apt update```
+		* ```sudo apt install gcc-6 g++-6```
+	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
     * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally
     	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
     	* ```cd ~/torch```
     	* edit ```install-deps```
     	    * line 178 ```python-software-properties``` -> ```python3-software-properties```
     	    * line 202 ```ipython``` -> ```ipython3```
-    	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+    	* edit ```install.sh```
+    		* comment out everything inside of the conditionals on ```path_to_nvcc```
     	* ```pip install ipython```
     	* ```bash install-deps```
     	* ```./install.sh```
