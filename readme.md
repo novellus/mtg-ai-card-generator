@@ -62,51 +62,53 @@
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
     * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
 * &#x1F534; TODO torch-rnn
-	* ```sudo apt-get install libhdf5-dev```
+    * ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
-	* install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
-	* install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
-		* add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
-		* ```sudo apt update```
-		* ```sudo apt install gcc-6 g++-6```
-	* soft link cuda to ```gcc-6``` and ```g++-6```
-		* ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
-		* ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
-	* link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
-	* add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
-	* fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
-	    * ```git config --global url."https://github.com/".insteadOf git@github.com```
-		* ```git config --global url."https://".insteadOf git://```
+    * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
+    * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
+        * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
+        * ```sudo apt update```
+        * ```sudo apt install gcc-6 g++-6```
+    * soft link cuda to ```gcc-6``` and ```g++-6```
+        * ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
+        * ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
+    * link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
+    * add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+    * fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
+        * ```git config --global url."https://github.com/".insteadOf git@github.com```
+        * ```git config --global url."https://".insteadOf git://```
+    * ```pip install ipython```
+    * purge and install latest cmake
+        * ```sudo apt-get purge cmake```
+        * ```cd ~```
+        * ```git clone https://github.com/Kitware/CMake.git```
+        * ```cd CMake```
+        * ```./bootstrap; make; sudo make install```
     * conda doesn't handle lua / torch very well, and lua-torch is no longer maintained, so just install torch globally and fiddle until it works
-    	* ```git clone https://github.com/torch/distro.git ~/torch --recursive```
-    	* ```cd ~/torch```
-    	* edit ```install-deps```
-    	    * line 178 ```python-software-properties``` -> ```python3-software-properties```
-    	    * line 202 ```ipython``` -> ```ipython3```
-    	* edit ```install.sh```
-    		* comment out everything inside of the conditionals on ```path_to_nvcc```
-    	* ```pip install ipython```
-    	* ```bash install-deps```
-    	* ```./install.sh```
-    	* ```source ~/.bashrc```
-    	* purge cmake from torch and install the latest version
-    		* ```sudo apt-get purge cmake```
-    		* ```cd ~```
-			* ```git clone https://github.com/Kitware/CMake.git```
-			* ```cd CMake```
-			* ```./bootstrap; make; sudo make install```
-			* ```cd ~/torch```
-			* ```rm -fr cmake/3.6/Modules/FindCUDA*```
-		* patch cutorch duplicate atomic definition
-			* ```cp atomic.patch ~/torch/extra/cutorch/.```
-			* ```cd ~/torch/extra/cutorch/.```
-			* ```patch -p1 < atomic.patch```
- 		* ```luarocks install torch```
- 		* ```luarocks install nn```
- 		* ```luarocks install optim```
- 		* ```luarocks install lua-cjson```
- 		* &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cutorch```
- 		* &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn```
+        * ```git clone https://github.com/torch/distro.git ~/torch --recursive```
+            * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```
+        * ```cd ~/torch```
+        * edit ```install-deps```
+            * line 178 ```python-software-properties``` -> ```python3-software-properties```
+            * line 202 ```ipython``` -> ```ipython3```
+        * edit ```install.sh```
+            * comment out everything inside of the conditionals on ```path_to_nvcc```
+        * patch cutorch duplicate atomic definition
+            * ```cp atomic.patch ~/torch/extra/cutorch/.```
+            * ```cd ~/torch/extra/cutorch/.```
+            * ```patch -p1 < atomic.patch```
+        * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
+        * ```./clean.sh```
+        * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```
+        * ```bash install-deps```
+        * ```./install.sh```
+        * ```source ~/.bashrc```
+        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install torch```
+        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install nn```
+        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install optim```
+        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install lua-cjson```
+        * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cutorch```
+        * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn```
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
