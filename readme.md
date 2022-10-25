@@ -61,7 +61,7 @@
     * Finish setting up ntlk ```python -m nltk.downloader all```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
     * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
-* &#x1F534; TODO torch-rnn
+* torch-rnn
     * ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
     * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
@@ -141,9 +141,8 @@
             * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
         * install torch-hdf5
             * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
-            * ```cd ~/torch/cutorch```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-        * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
+            * ```cd ~/torch/torch-hdf5```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
