@@ -12,7 +12,7 @@
 # git-subtree management
 * subtree list, with changes made to each repo
     * [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
-        * &#x1F534; TODO Created environment.yaml for conda management
+        * Created environment.yaml for python portion of the environment
         * Implemented whispering during sampling
         * &#x1F534; TODO Preprocessing script branched to
             * partition input data on arbitrary delimeter (eg between encoded cards)
