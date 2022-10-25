@@ -95,15 +95,15 @@
             * comment out everything inside of the conditionals on ```path_to_nvcc```
         * patch cutorch duplicate atomic definition
             * ```cp atomic.patch ~/torch/extra/cutorch/.```
-            * ```cd ~/torch/extra/cutorch/.```
+            * ```cd ~/torch/extra/cutorch```
             * ```patch -p1 < atomic.patch```
         * patch cutorch init
             * ```cp cutorch_init.patch ~/torch/extra/cutorch/.```
-            * ```cd ~/torch/extra/cutorch/.```
+            * ```cd ~/torch/extra/cutorch```
             * ```patch -p1 < cutorch_init.patch```
-        * patch cdnn SparserLinear to remove sparse matrices
+        * patch cunn SparserLinear to remove sparse matrices
             * ```cp sparselinear.patch ~/torch/extra/cunn/.```
-            * ```cd ~/torch/extra/cunn/.```
+            * ```cd ~/torch/extra/cunn```
             * ```patch -p1 < sparselinear.patch```
         * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
         * ```./clean.sh```
@@ -111,13 +111,36 @@
         * ```bash install-deps```
         * ```./install.sh```
         * ```source ~/.bashrc```
-        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install torch```
-        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install nn```
-        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install optim```
-        * ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install lua-cjson```
-        * ```cd ~/torch/extra/cutorch``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-        * ```cd ~/torch/extra/cunn``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
-        <!-- * &#x1F534; TODO ```CC=gcc-6 CXX=g++-6 install/bin/luarocks install cunn``` -->
+        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install torch```
+        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install nn```
+        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install optim```
+        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install lua-cjson```
+        * &#x1F534; TODO install cutorch
+            * ```git clone https://github.com/torch/cutorch.git ~/torch/cutorch```
+            * patch cutorch duplicate atomic definition
+                * ```cp atomic.patch ~/torch/cutorch/.```
+                * ```cd ~/torch/cutorch```
+                * ```patch -p1 < atomic.patch```
+            * patch cutorch init
+                * ```cp cutorch_init.patch ~/torch/cutorch/.```
+                * ```cd ~/torch/cutorch```
+                * ```patch -p1 < cutorch_init.patch```
+            * ```cd ~/torch/cutorch```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
+        * &#x1F534; TODO install cunn
+            * ```git clone https://github.com/torch/cunn.git ~/torch/cunn```
+            * patch cunn SparserLinear to remove sparse matrices
+                * ```cp sparselinear.patch ~/torch/cunn/.```
+                * ```cd ~/torch/cunn```
+                * ```patch -p1 < sparselinear.patch```
+            * patch cunn LookupTable
+                * ```cp lookuptable.patch ~/torch/cunn/.```
+                * ```cd ~/torch/cunn```
+                * ```patch -p1 < lookuptable.patch```
+            * ```cd ~/torch/cunn```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
+        * &#x1F534; TODO ```cd ~/torch/extra/cutorch``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
+        * &#x1F534; TODO ```cd ~/torch/extra/cunn``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 

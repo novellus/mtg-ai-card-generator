@@ -1,6 +1,7 @@
 stable-diffusion/models/ldm/stable-diffusion-v1/*
 stable-diffusion/src/*
 stable-diffusion/outputs/*
+stable-diffusion/ideas/*
 stable-diffusion/logs/*
 mtgencode/data/AllPrintings.json
 all_printings_encoded.txt

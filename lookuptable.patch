@@ -1,0 +1,27 @@
+diff --git a/lib/THCUNN/LookupTable.cu b/lib/THCUNN/LookupTable.cu
+index 116639b..e3112e8 100644
+--- a/lib/THCUNN/LookupTable.cu
++++ b/lib/THCUNN/LookupTable.cu
+@@ -13,6 +13,7 @@
+ #include "THCHalf.h"
+ #include "THCHalfAutoNumerics.cuh"
+ #include "THCTensorSort.cuh"
++#define FULL_MASK 0xffffffff
+ 
+ const int WARP_SIZE = 32;
+ 
+@@ -41,12 +42,12 @@ __device__ __forceinline__ bool warpHasCollision(int val)
+   #pragma unroll
+   for (int i = 1; i <= 16; i++)
+   {
+-    dup |= (values[offset + ((laneId + i) % 32)] == val);
++    dup |= (__shfl_sync(FULL_MASK, val, (laneId + i) % 32) == val);
+   }
+ 
+ #endif
+ 
+-  return __any(dup) != 0;
++  return __any_sync(FULL_MASK, dup) != 0;
+ }
+ 
+ template <typename Dtype>
