@@ -86,7 +86,7 @@
         * ```./bootstrap; make; sudo make install```
     * conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works
         * ```git clone https://github.com/torch/distro.git ~/torch --recursive```
-            * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```
+            <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
         * ```cd ~/torch```
         * edit ```install-deps```
             * line 178 ```python-software-properties``` -> ```python3-software-properties```
@@ -115,7 +115,7 @@
         * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install nn```
         * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install optim```
         * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install lua-cjson```
-        * &#x1F534; TODO install cutorch
+        * install cutorch
             * ```git clone https://github.com/torch/cutorch.git ~/torch/cutorch```
             * patch cutorch duplicate atomic definition
                 * ```cp atomic.patch ~/torch/cutorch/.```
@@ -127,7 +127,7 @@
                 * ```patch -p1 < cutorch_init.patch```
             * ```cd ~/torch/cutorch```
             * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-        * &#x1F534; TODO install cunn
+        * install cunn
             * ```git clone https://github.com/torch/cunn.git ~/torch/cunn```
             * patch cunn SparserLinear to remove sparse matrices
                 * ```cp sparselinear.patch ~/torch/cunn/.```
@@ -139,8 +139,10 @@
                 * ```patch -p1 < lookuptable.patch```
             * ```cd ~/torch/cunn```
             * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
-        * &#x1F534; TODO ```cd ~/torch/extra/cutorch``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-        * &#x1F534; TODO ```cd ~/torch/extra/cunn``` ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
+        * install torch-hdf5
+            * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
+            * ```cd ~/torch/cutorch```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
         * &#x1F534; TODO ```cd torch-hdf5``` and ```luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
