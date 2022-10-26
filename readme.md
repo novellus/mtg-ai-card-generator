@@ -34,6 +34,7 @@
         * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
         * Fixed card name encoding on double sided cards, stripped reverse card name from card title
+        * &#x1F534; TODO Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -60,7 +61,9 @@
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * Finish setting up ntlk ```python -m nltk.downloader all```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
-    * Encode this data with ```python encode.py -r -e named data/AllPrintings.json ../all_printings_encoded.txt```
+    * Encode data
+        * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/all_printings_encoded.txt```
+        * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt ```
 * torch-rnn
     * ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
