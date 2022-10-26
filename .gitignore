@@ -4,7 +4,6 @@ stable-diffusion/outputs/*
 stable-diffusion/ideas/*
 stable-diffusion/logs/*
 mtgencode/data/AllPrintings.json
-all_printings_encoded.txt
 *__pycache__*
 *.egg-info*
 tmp.py
