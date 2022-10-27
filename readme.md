@@ -34,7 +34,7 @@
         * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
         * Fixed card name encoding on double sided cards, stripped reverse card name from card title
-        * &#x1F534; TODO Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
+        * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
