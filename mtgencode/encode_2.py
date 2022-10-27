@@ -4,8 +4,10 @@ import pprint
 import random
 import re
 import sys
+import tabulate
 
 from collections import namedtuple
+from collections import defaultdict
 
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
 sys.path.append(libdir)
@@ -28,6 +30,8 @@ def encode_names(j, args):
             names.add(processed_name)
 
     # TODO extra
+    if args.extra_names:
+        raise NotImplementedError('extra_names')
 
     names = sorted(list(names))
 
@@ -70,8 +74,10 @@ def encode_flavor(j, args):
                 ))
 
     # TODO extra
+    if args.extra_flavor:
+        raise NotImplementedError('extra_flavor')
 
-    data = sorted(data, key = lambda x: x.name)
+    data = sorted(list(data), key = lambda x: (x.name, x.flavor))
 
     # randomize data order
     if not args.stable:
@@ -87,16 +93,51 @@ def encode_flavor(j, args):
     f.close()
 
 
+def process_artist_field(s):
+    s = s.lower()
+    s = s.strip()
+    s = re.sub(r'\s+', ' ', s)  # no extraneous white space
+    s = utils.to_ascii(s)
+
+    return s
+
+
+def artist_stats(j, args):
+    # collect data from input
+    data = defaultdict(int)
+    for s_key in list(j['data'].keys()):
+        for card in j['data'][s_key]['cards']:
+            if 'artist' in card and card['artist']:
+                processed_artist = process_artist_field(card['artist'])
+                data[processed_artist] += 1
+
+    # order data
+    stats = sorted(list(data.items()), key=lambda x: x[1], reverse=True)
+
+    # write out data
+    headers = ['artist', 'count']
+    file_text = tabulate.tabulate(stats, headers=headers)
+
+    # file_text = f'{headers[0]}|{headers[1]}\n'
+    # for entry in stats:
+    #     file_text += f'{entry[0]}|{entry[1]}\n'
+
+    f = open(args.outfile_artists, 'w')
+    f.write(file_text)
+    f.close()
+
+
 def main(args):
     f = open(args.infile, encoding='UTF-8')
     j = json.loads(f.read())
     f.close()
 
-    stabilize_shuffles()
 
+    stabilize_shuffles()
     encode_names(j, args)
+    stabilize_shuffles()
     encode_flavor(j, args)
-    # TODO artist stats
+    artist_stats(j, args)
 
 
 if __name__ == '__main__':
