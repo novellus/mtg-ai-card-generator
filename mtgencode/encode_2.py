@@ -15,7 +15,7 @@ import cardlib
 import utils
 
 
-def stabilize_shuffles():
+def stabilize_shuffle():
     # This should give a random but consistent ordering, to make comparing changes
     # between the output of different versions easier.
     random.seed(1371367)
@@ -37,6 +37,7 @@ def encode_names(j, args):
 
     # randomize data order
     if not args.stable:
+        stabilize_shuffle()
         random.shuffle(names)
 
     # write out data
@@ -81,6 +82,7 @@ def encode_flavor(j, args):
 
     # randomize data order
     if not args.stable:
+        stabilize_shuffle()
         random.shuffle(data)
 
     # write out data
@@ -132,10 +134,7 @@ def main(args):
     j = json.loads(f.read())
     f.close()
 
-
-    stabilize_shuffles()
     encode_names(j, args)
-    stabilize_shuffles()
     encode_flavor(j, args)
     artist_stats(j, args)
 
