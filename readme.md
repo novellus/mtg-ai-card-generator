@@ -63,7 +63,7 @@
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
     * Encode data
         * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/all_printings_encoded.txt```
-        * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt ```
+        * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt```
 * torch-rnn
     * ```sudo apt-get install libhdf5-dev```
     * ```conda env create -f environment-python.yaml```
