@@ -43,7 +43,6 @@
             * Added fully specifiable output dir and filename options to samplers
         * Safety filter disabled
         * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
-    * [torch-rnn/torch-hdf5](https://github.com/deepmind/torch-hdf5) (used as-is)
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -126,6 +125,8 @@
                 * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
                 * ```cd ~/torch/torch-hdf5```
                 * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
+    * preprocess data sets
+        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
