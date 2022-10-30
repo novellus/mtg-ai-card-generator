@@ -15,7 +15,7 @@
         * Created environment.yaml for python portion of the environment
         * Implemented whispering during sampling
         * &#x1F534; TODO Preprocessing script branched to
-            * partition input data on arbitrary delimeter (eg between encoded cards)
+            * partition input data on specified delimeter (eg between encoded cards)
             * randomize the chunk order
             * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
             * store the data as processed chunks, which can be order randomized during batching
@@ -65,87 +65,67 @@
         * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/all_printings_encoded.txt```
         * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt```
 * torch-rnn
-    * ```sudo apt-get install libhdf5-dev```
-    * ```conda env create -f environment-python.yaml```
-    * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
-    * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
-        * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
-        * ```sudo apt update```
-        * ```sudo apt install gcc-6 g++-6```
-    * soft link cuda to ```gcc-6``` and ```g++-6```
-        * ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
-        * ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
-    * link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
-    * add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
-    * fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
-        * ```git config --global url."https://github.com/".insteadOf git@github.com```
-        * ```git config --global url."https://".insteadOf git://```
-    * ```pip install ipython```
-    * purge and install latest cmake
-        * ```sudo apt-get purge cmake```
-        * ```cd ~```
-        * ```git clone https://github.com/Kitware/CMake.git```
-        * ```cd CMake```
-        * ```./bootstrap; make; sudo make install```
-    * conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works
+    * ```conda env create -f environment-python.yaml```. Use this inviropnment only for the preprocessing script.
+    * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works.
+        * ```sudo apt-get install libhdf5-dev```
+        * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
+        * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
+            * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
+            * ```sudo apt update```
+            * ```sudo apt install gcc-6 g++-6```
+        * soft link cuda to ```gcc-6``` and ```g++-6```
+            * ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
+            * ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
+        * link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
+        * add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+        * fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
+            * ```git config --global url."https://github.com/".insteadOf git@github.com```
+            * ```git config --global url."https://".insteadOf git://```
+        * ```pip install ipython```
+        * purge and install latest cmake
+            * ```sudo apt-get purge cmake```
+            * ```cd ~```
+            * ```git clone https://github.com/Kitware/CMake.git```
+            * ```cd CMake```
+            * ```./bootstrap; make; sudo make install```
         * ```git clone https://github.com/torch/distro.git ~/torch --recursive```
             <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
-        * ```cd ~/torch```
-        * edit ```install-deps```
-            * line 178 ```python-software-properties``` -> ```python3-software-properties```
-            * line 202 ```ipython``` -> ```ipython3```
-        * edit ```install.sh```
-            * comment out everything inside of the conditionals on ```path_to_nvcc```
-        * patch cutorch duplicate atomic definition
-            * ```cp atomic.patch ~/torch/extra/cutorch/.```
-            * ```cd ~/torch/extra/cutorch```
-            * ```patch -p1 < atomic.patch```
-        * patch cutorch init
-            * ```cp cutorch_init.patch ~/torch/extra/cutorch/.```
-            * ```cd ~/torch/extra/cutorch```
-            * ```patch -p1 < cutorch_init.patch```
-        * patch cunn SparserLinear to remove sparse matrices
-            * ```cp sparselinear.patch ~/torch/extra/cunn/.```
-            * ```cd ~/torch/extra/cunn```
-            * ```patch -p1 < sparselinear.patch```
-        * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
-        * ```./clean.sh```
-        * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```
-        * ```bash install-deps```
-        * ```./install.sh```
-        * ```source ~/.bashrc```
-        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install torch```
-        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install nn```
-        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install optim```
-        * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install lua-cjson```
-        * install cutorch
-            * ```git clone https://github.com/torch/cutorch.git ~/torch/cutorch```
-            * patch cutorch duplicate atomic definition
-                * ```cp atomic.patch ~/torch/cutorch/.```
-                * ```cd ~/torch/cutorch```
+            * ```cd ~/torch```
+            * edit ```install-deps```
+                * line 178 ```python-software-properties``` -> ```python3-software-properties```
+                * line 202 ```ipython``` -> ```ipython3```
+            * edit ```install.sh```
+                * comment out everything inside of the conditionals on ```path_to_nvcc```
+            * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
+            * ```./clean.sh```
+            * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```
+            * ```bash install-deps```
+            * ```./install.sh```
+            * ```source ~/.bashrc```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install torch```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install nn```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install optim```
+            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install lua-cjson```
+            * patch and install cutorch
+                * ```git clone https://github.com/torch/cutorch.git ~/torch/cutorch```
+                * ```cp atomic.patch ~/torch/cutorch/.``` (duplicate atomic definition)
+                * ```cp cutorch_init.patch ~/torch/cutorch/.``` (init)
                 * ```patch -p1 < atomic.patch```
-            * patch cutorch init
-                * ```cp cutorch_init.patch ~/torch/cutorch/.```
-                * ```cd ~/torch/cutorch```
                 * ```patch -p1 < cutorch_init.patch```
-            * ```cd ~/torch/cutorch```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-        * install cunn
-            * ```git clone https://github.com/torch/cunn.git ~/torch/cunn```
-            * patch cunn SparserLinear to remove sparse matrices
-                * ```cp sparselinear.patch ~/torch/cunn/.```
+                * ```cd ~/torch/cutorch```
+                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
+            * patch and install cunn
+                * ```git clone https://github.com/torch/cunn.git ~/torch/cunn```
+                * ```cp sparselinear.patch ~/torch/cunn/.``` (remove sparse matrices)
+                * ```cp lookuptable.patch ~/torch/cunn/.``` (LookupTable)
                 * ```cd ~/torch/cunn```
                 * ```patch -p1 < sparselinear.patch```
-            * patch cunn LookupTable
-                * ```cp lookuptable.patch ~/torch/cunn/.```
-                * ```cd ~/torch/cunn```
                 * ```patch -p1 < lookuptable.patch```
-            * ```cd ~/torch/cunn```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
-        * install torch-hdf5
-            * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
-            * ```cd ~/torch/torch-hdf5```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
+                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
+            * install torch-hdf5
+                * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
+                * ```cd ~/torch/torch-hdf5```
+                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
