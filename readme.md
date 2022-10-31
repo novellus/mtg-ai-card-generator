@@ -156,8 +156,8 @@
     * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
-    * &#x1F534; TODO training
-    * &#x1F534; TODO sampling
+    * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint```
+    * ```th sampla.lua -checkpoint ../nns/names/checkpoint_1000.t7```
 * &#x1F534; TODO main repo
 
 
