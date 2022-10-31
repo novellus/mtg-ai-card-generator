@@ -14,14 +14,15 @@
     * [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
         * Created environment.yaml for python portion of the environment
         * Implemented whispering during sampling
-        * &#x1F534; TODO Preprocessing script branched to
+        * &#x1F534; TODO Updated DataLoader to optionally accept a zero test fraction
+        * &#x1F534; TODO Updated preprocessor to
             * partition input data on specified delimeter (eg between encoded cards)
             * randomize the chunk order
             * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
             * store the data as processed chunks, which can be order randomized during batching
-        * &#x1F534; TODO DataLoader updated to
+        * &#x1F534; TODO Updated DataLoader to
             * accept data chunks instead of raw data from the new proprocessing script
-            * dynamically randomize the order of the chunks each epoch, assigning chunks to a random batch
+            * dynamically randomize the order of the chunks each epoch, and the batch locality of each chunk
             * and assign a fraction of those chunks to each batch; instead of assigning a fraction of raw data
         * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
