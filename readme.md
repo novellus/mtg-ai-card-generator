@@ -64,6 +64,7 @@
     * Encode data
         * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/main_text.txt```
         * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt```
+        * &#x1F534; TODO Add extra names and flavor
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works. The order of these steps is critical.
         * install ```libhdf5-dev```
