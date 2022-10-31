@@ -160,6 +160,7 @@ function LM:sample(kwargs)
   local T = utils.get_kwarg(kwargs, 'length', 100)
   local start_text = utils.get_kwarg(kwargs, 'start_text', '')
   local whisper_text = utils.get_kwarg(kwargs, 'whisper_text', '')
+  local whisper_every_newline = utils.get_kwarg(kwargs, 'whisper_every_newline', 1)
   local verbose = utils.get_kwarg(kwargs, 'verbose', 0)
   local sample = utils.get_kwarg(kwargs, 'sample', 1)
   local temperature = utils.get_kwarg(kwargs, 'temperature', 1)
@@ -171,7 +172,7 @@ function LM:sample(kwargs)
   local enable_whisper = #whisper_text > 0
   if enable_whisper then
     if verbose > 0 then
-      print('Whispering "' .. whisper_text .. '" every newline')
+      print('Whispering "' .. whisper_text .. '" every ' .. whisper_every_newline .. ' newlines')
     end
 
     local newline_count = 0
@@ -222,13 +223,16 @@ function LM:sample(kwargs)
     -- whisper mtg card names after two consecutive newlines
     if enable_whisper then
       -- check conditions for whispering to begin
+      if verbose > 0 then
+        print('--A' .. tostring(newline_count) .. '--')
+      end
       if next_char == newline_idx then
         newline_count = newline_count + 1
       else
         newline_count = 0
       end
 
-      if newline_count >= 2 then
+      if newline_count >= whisper_every_newline then
         -- assume we aren't directly chaining whispers
         newline_count = 0
 
