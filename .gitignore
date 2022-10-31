@@ -4,6 +4,8 @@ stable-diffusion/outputs/*
 stable-diffusion/ideas/*
 stable-diffusion/logs/*
 mtgencode/data/AllPrintings.json
+encoded_data_sources/*.h5
+encoded_data_sources/*.json
 *__pycache__*
 *.egg-info*
 tmp.py
