@@ -170,18 +170,20 @@ function LM:sample(kwargs)
 
   -- whispering constants
   local enable_whisper = #whisper_text > 0
+  if enable_whisper and verbose > 0 then
+    print('Whispering "' .. whisper_text .. '" every ' .. whisper_every_newline .. ' newlines')
+  end
+
+  local newline_count = 0
+  local encoded_whisper_text = nil
+  local s_encoded_whisper_text = nil
+  local newline_idx = nil
+
+  -- precompute newline encoding and encoded whisper text
   if enable_whisper then
-    if verbose > 0 then
-      print('Whispering "' .. whisper_text .. '" every ' .. whisper_every_newline .. ' newlines')
-    end
-
-    local newline_count = 0
-    -- precompute newline encoding
-    local newline_idx = self.token_to_idx['\n']
-
-    -- precompute encoded whisper text
-    local encoded_whisper_text = self:encode_string(whisper_text):view(1, -1)
-    local s_encoded_whisper_text = encoded_whisper_text:size(2)
+    newline_idx = self.token_to_idx['\n']
+    encoded_whisper_text = self:encode_string(whisper_text):view(1, -1)
+    s_encoded_whisper_text = encoded_whisper_text:size(2)
   end
 
   -- seed start_text
@@ -223,10 +225,7 @@ function LM:sample(kwargs)
     -- whisper mtg card names after two consecutive newlines
     if enable_whisper then
       -- check conditions for whispering to begin
-      if verbose > 0 then
-        print('--A' .. tostring(newline_count) .. '--')
-      end
-      if next_char == newline_idx then
+      if next_char[{1, 1}] == newline_idx then
         newline_count = newline_count + 1
       else
         newline_count = 0
@@ -241,8 +240,8 @@ function LM:sample(kwargs)
         if sample_chars_remaining >= s_encoded_whisper_text then
           -- use the whole whisper text (pre-encoded)
           local final_index = t + s_encoded_whisper_text - 1
-          sampled[{{}, {t, final_index}}]:copy(encoded_whisper_text)
-          scores = self:forward(encoded_whisper_text)[{{}, {final_index, final_index}}]
+          sampled[{{}, {t, final_index}}]: copy(encoded_whisper_text)
+          scores = self:forward(encoded_whisper_text)[{{}, {s_encoded_whisper_text, s_encoded_whisper_text}}]
           t = t + s_encoded_whisper_text
         else
           -- encode a subset of the whisper text, up to sample length, which will be the end of the sample
@@ -251,7 +250,7 @@ function LM:sample(kwargs)
           s_encoded_whisper_text = encoded_whisper_text:size(2)
           local final_index = t + s_encoded_whisper_text - 1
           sampled[{{}, {t, final_index}}]:copy(encoded_whisper_text)
-          scores = self:forward(encoded_whisper_text)[{{}, {final_index, final_index}}]
+          scores = self:forward(encoded_whisper_text)[{{}, {s_encoded_whisper_text, s_encoded_whisper_text}}]
           t = t + s_encoded_whisper_text
         end
       end
