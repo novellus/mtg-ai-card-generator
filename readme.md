@@ -61,12 +61,16 @@
     * Finish setting up ntlk ```python -m nltk.downloader all```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
     * Encode data
-        * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/all_printings_encoded.txt```
+        * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/main_text.txt```
         * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt```
 * torch-rnn
-    * ```conda env create -f environment-python.yaml```. Use this inviropnment only for the preprocessing script.
-    * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works.
-        * ```sudo apt-get install libhdf5-dev```
+    * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally and fiddle until it works. The order of these steps is critical.
+        * install ```libhdf5-dev```
+            * add ```deb [trusted=yes check-valid-until=no] http://dk.archive.ubuntu.com/ubuntu/ trusty main universe``` to ```/etc/apt/sources.list```
+            * ```sudo apt update```
+            * ```sudo apt-get install libhdf5-dev==1.8.11*```
+            * ```sudo apt-mark hold libhdf5-dev``` to pin version
+        * ```conda env create -f environment-python.yaml```. Use this enviropnment only for the preprocessing script
         * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
         * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
             * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
@@ -126,7 +130,9 @@
                 * ```cd ~/torch/torch-hdf5```
                 * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
     * preprocess data sets
+        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0```
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0```
+        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0```
 * &#x1F534; TODO main repo
 
 # AI Training and Sampling
@@ -148,7 +154,9 @@
 * stable diffusion - vram-optimized
     * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
-* &#x1F534; TODO torch-rnn
+* torch-rnn
+    * &#x1F534; TODO training
+    * &#x1F534; TODO sampling
 * &#x1F534; TODO main repo
 
 
