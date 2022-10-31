@@ -27,6 +27,7 @@
         * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
             * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
+        * &#x1F534; TODO Updated sampler to optionally save output to specified file instead of printing to console
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
@@ -158,7 +159,7 @@
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
     * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint```
-    * ```th sampla.lua -checkpoint ../nns/names/checkpoint_1000.t7```
+    * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7```
 * &#x1F534; TODO main repo
 
 
