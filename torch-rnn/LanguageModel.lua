@@ -223,7 +223,7 @@ function LM:sample(kwargs)
     t = t + 1
 
     -- whisper mtg card names after two consecutive newlines
-    if enable_whisper then
+    if enable_whisper and t <= T then
       -- check conditions for whispering to begin
       if next_char[{1, 1}] == newline_idx then
         newline_count = newline_count + 1
