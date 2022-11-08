@@ -9,4 +9,4 @@ encoded_data_sources/*.json
 nns/*
 *__pycache__*
 *.egg-info*
-tmp.py
+tmp*.py

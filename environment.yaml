@@ -1,0 +1,8 @@
+name: mtg-ai-main
+channels:
+  - defaults
+dependencies:
+  - python=3.10.6
+  - pip
+  - pip:
+    - pillow==9.3.0
