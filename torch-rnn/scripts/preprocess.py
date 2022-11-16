@@ -116,6 +116,7 @@ if __name__ == '__main__':
       f.create_dataset('val/' + str(i), data=c)
     for i, c in enumerate(test):
       f.create_dataset('test/' + str(i), data=c)
+    f.create_dataset('chunk_delimiter', data=str_to_idx_array(args.chunk_delimiter, dtype))
 
   # For 'bytes' encoding, replace non-ascii characters so the json dump
   # doesn't crash
@@ -132,8 +133,7 @@ if __name__ == '__main__':
   json_data = {
     'token_to_idx': token_to_idx,
     'idx_to_token': {v: k for k, v in six.iteritems(token_to_idx)},
-    'chunk_delimiter': args.chunk_delimiter,
-    'dtype': dtype_str,
+    # 'dtype': dtype_str,
   }
   with open(args.output_json, 'w') as f:
     json.dump(json_data, f)
