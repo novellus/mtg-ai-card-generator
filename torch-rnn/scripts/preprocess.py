@@ -56,8 +56,8 @@ if __name__ == '__main__':
   # chunk data
   data = ''
   with codecs.open(args.input_txt, 'r', args.encoding) as f:
-    data = f.read()
-  chunks = list(data.split(args.chunk_delimiter))
+    data = f.read().strip()
+  chunks = [chunk.strip() for chunk in data.split(args.chunk_delimiter) if chunk.strip()]
   n_chunks = len(chunks)
 
   # randomize data order, before assigning chunks
@@ -69,9 +69,9 @@ if __name__ == '__main__':
   train_n_chunks = n_chunks - val_n_chunks - test_n_chunks
 
   # assign chunks
-  train = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if                                  i_chunk < train_n_chunks]
-  val   = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks                <= i_chunk < train_n_chunks + val_n_chunks]
-  test  = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks + val_n_chunks <= i_chunk]
+  train = [chunk for (i_chunk, chunk) in enumerate(chunks) if                                  i_chunk < train_n_chunks               ]
+  val   = [chunk for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks                <= i_chunk < train_n_chunks + val_n_chunks]
+  test  = [chunk for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks + val_n_chunks <= i_chunk                                ]
 
   assert len(train) == train_n_chunks
   assert len(val) == val_n_chunks
@@ -110,13 +110,20 @@ if __name__ == '__main__':
 
   # Write data to HDF5 file
   with h5py.File(args.output_h5, 'w') as f:
+    # index chunks starting at 1, for ease of use in target language (lua)
     for i, c in enumerate(train):
-      f.create_dataset('train/' + str(i), data=c)
+      f.create_dataset('train/' + str(i + 1), data=str_to_idx_array(c, dtype))
+
     for i, c in enumerate(val):
-      f.create_dataset('val/' + str(i), data=c)
+      f.create_dataset('val/' + str(i + 1), data=str_to_idx_array(c, dtype))
+
     for i, c in enumerate(test):
-      f.create_dataset('test/' + str(i), data=c)
+      f.create_dataset('test/' + str(i + 1), data=str_to_idx_array(c, dtype))
+
     f.create_dataset('chunk_delimiter', data=str_to_idx_array(args.chunk_delimiter, dtype))
+    f.create_dataset('train_vector', data=str_to_idx_array(args.chunk_delimiter.join(train), dtype))
+    f.create_dataset('val_vector', data=str_to_idx_array(args.chunk_delimiter.join(val), dtype))
+    f.create_dataset('test_vector', data=str_to_idx_array(args.chunk_delimiter.join(test), dtype))
 
   # For 'bytes' encoding, replace non-ascii characters so the json dump
   # doesn't crash
