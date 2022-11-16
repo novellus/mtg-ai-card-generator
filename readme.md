@@ -14,7 +14,7 @@
         * Created environment.yaml for python portion of the environment
         * Implemented whispering during sampling
         * &#x1F534; TODO Updated DataLoader to optionally accept a zero test fraction
-        * &#x1F534; TODO Updated preprocessor to
+        * Updated preprocessor to
             * partition input data on specified delimeter (eg between encoded cards)
             * randomize the chunk order
             * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
