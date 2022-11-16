@@ -8,17 +8,29 @@ import six
 import numpy as np
 import h5py
 import codecs
+import random
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input_txt', default='data/tiny-shakespeare.txt')
 parser.add_argument('--output_h5', default='data/tiny-shakespeare.h5')
 parser.add_argument('--output_json', default='data/tiny-shakespeare.json')
+parser.add_argument('--chunk_delimiter', type=str, default='\n')
 parser.add_argument('--val_frac', type=float, default=0.1)
 parser.add_argument('--test_frac', type=float, default=0.1)
 parser.add_argument('--quiet', action='store_true')
 parser.add_argument('--encoding', default='utf-8')
 args = parser.parse_args()
+
+
+def str_to_idx_array(s, dtype):
+  # returns np array of encoded string
+  ret = np.zeros(len(s), dtype=dtype)
+
+  for i, char in enumerate(s):
+    ret[i] = token_to_idx[char]
+
+  return ret
 
 
 if __name__ == '__main__':
@@ -34,48 +46,76 @@ if __name__ == '__main__':
         if char not in token_to_idx:
           token_to_idx[char] = len(token_to_idx) + 1
 
-  # Now we can figure out the split sizes
-  val_size = int(args.val_frac * total_size)
-  test_size = int(args.test_frac * total_size)
-  train_size = total_size - val_size - test_size
+  # Choose the datatype based on the vocabulary size
+  dtype = np.uint8
+  dtype_str = '8'
+  if len(token_to_idx) > 255:
+    dtype = np.uint32
+    dtype_str = '32'
 
+  # chunk data
+  data = ''
+  with codecs.open(args.input_txt, 'r', args.encoding) as f:
+    data = f.read()
+  chunks = list(data.split(args.chunk_delimiter))
+  n_chunks = len(chunks)
+
+  # randomize data order, before assigning chunks
+  random.shuffle(chunks)
+
+  # Now we can figure out the split sizes, in chunks
+  val_n_chunks = int(args.val_frac * n_chunks)
+  test_n_chunks = int(args.test_frac * n_chunks)
+  train_n_chunks = n_chunks - val_n_chunks - test_n_chunks
+
+  # assign chunks
+  train = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if                                  i_chunk < train_n_chunks]
+  val   = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks                <= i_chunk < train_n_chunks + val_n_chunks]
+  test  = [str_to_idx_array(chunk, dtype) for (i_chunk, chunk) in enumerate(chunks) if train_n_chunks + val_n_chunks <= i_chunk]
+
+  assert len(train) == train_n_chunks
+  assert len(val) == val_n_chunks
+  assert len(test) == test_n_chunks
+
+  # val_size = int(args.val_frac * total_size)
+  # test_size = int(args.test_frac * total_size)
+  # train_size = total_size - val_size - test_size
+
+  # print statistics
   if not args.quiet:
     print('Total vocabulary size: %d' % len(token_to_idx))
     print('Total tokens in file: %d' % total_size)
-    print('  Training size: %d' % train_size)
-    print('  Val size: %d' % val_size)
-    print('  Test size: %d' % test_size)
-
-  # Choose the datatype based on the vocabulary size
-  dtype = np.uint8
-  if len(token_to_idx) > 255:
-    dtype = np.uint32
-  if not args.quiet:
+    print('  Training n_chunks: %d' % train_n_chunks)
+    print('  Val n_chunks: %d' % val_n_chunks)
+    print('  Test n_chunks: %d' % test_n_chunks)
     print('Using dtype ', dtype)
 
   # Just load data into memory ... we'll have to do something more clever
   # for huge datasets but this should be fine for now
-  train = np.zeros(train_size, dtype=dtype)
-  val = np.zeros(val_size, dtype=dtype)
-  test = np.zeros(test_size, dtype=dtype)
-  splits = [train, val, test]
+  # train = np.zeros(train_size, dtype=dtype)
+  # val = np.zeros(val_size, dtype=dtype)
+  # test = np.zeros(test_size, dtype=dtype)
 
-  # Go through the file again and write data to numpy arrays
-  split_idx, cur_idx = 0, 0
-  with codecs.open(args.input_txt, 'r', args.encoding) as f:
-    for line in f:
-      for char in line:
-        splits[split_idx][cur_idx] = token_to_idx[char]
-        cur_idx += 1
-        if cur_idx == splits[split_idx].size:
-          split_idx += 1
-          cur_idx = 0
+  # # Go through the file again and write data to numpy arrays
+  # splits = [train, val, test]
+  # split_idx, cur_idx = 0, 0
+  # with codecs.open(args.input_txt, 'r', args.encoding) as f:
+  #   for line in f:
+  #     for char in line:
+  #       splits[split_idx][cur_idx] = token_to_idx[char]
+  #       cur_idx += 1
+  #       if cur_idx == splits[split_idx].size:
+  #         split_idx += 1
+  #         cur_idx = 0
 
   # Write data to HDF5 file
   with h5py.File(args.output_h5, 'w') as f:
-    f.create_dataset('train', data=train)
-    f.create_dataset('val', data=val)
-    f.create_dataset('test', data=test)
+    for i, c in enumerate(train):
+      f.create_dataset('train/' + str(i), data=c)
+    for i, c in enumerate(val):
+      f.create_dataset('val/' + str(i), data=c)
+    for i, c in enumerate(test):
+      f.create_dataset('test/' + str(i), data=c)
 
   # For 'bytes' encoding, replace non-ascii characters so the json dump
   # doesn't crash
@@ -92,6 +132,8 @@ if __name__ == '__main__':
   json_data = {
     'token_to_idx': token_to_idx,
     'idx_to_token': {v: k for k, v in six.iteritems(token_to_idx)},
+    'chunk_delimiter': args.chunk_delimiter,
+    'dtype': dtype_str,
   }
   with open(args.output_json, 'w') as f:
     json.dump(json_data, f)
