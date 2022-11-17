@@ -93,44 +93,8 @@
             * ```git clone https://github.com/Kitware/CMake.git```
             * ```cd CMake```
             * ```./bootstrap; make; sudo make install```
-        * ```git clone https://github.com/torch/distro.git ~/torch --recursive```
+        * install torch using ```install_torch.sh```. There will be several prompts.
             <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
-            * ```cd ~/torch```
-            * edit ```install-deps```
-                * line 178 ```python-software-properties``` -> ```python3-software-properties```
-                * line 202 ```ipython``` -> ```ipython3```
-            * edit ```install.sh```
-                * comment out everything inside of the conditionals on ```path_to_nvcc```
-            * purge FindCuda from torch cmake ```rm -fr cmake/3.6/Modules/FindCUDA*```
-            * ```./clean.sh```
-            * ```export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"```
-            * ```bash install-deps```
-            * ```./install.sh```
-            * ```source ~/.bashrc```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install torch```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install nn```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install optim```
-            * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks install lua-cjson```
-            * patch and install cutorch
-                * ```git clone https://github.com/torch/cutorch.git ~/torch/cutorch```
-                * ```cp atomic.patch ~/torch/cutorch/.``` (duplicate atomic definition)
-                * ```cp cutorch_init.patch ~/torch/cutorch/.``` (init)
-                * ```patch -p1 < atomic.patch```
-                * ```patch -p1 < cutorch_init.patch```
-                * ```cd ~/torch/cutorch```
-                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cutorch-scm-1.rockspec```
-            * patch and install cunn
-                * ```git clone https://github.com/torch/cunn.git ~/torch/cunn```
-                * ```cp sparselinear.patch ~/torch/cunn/.``` (remove sparse matrices)
-                * ```cp lookuptable.patch ~/torch/cunn/.``` (LookupTable)
-                * ```cd ~/torch/cunn```
-                * ```patch -p1 < sparselinear.patch```
-                * ```patch -p1 < lookuptable.patch```
-                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make rocks/cunn-scm-1.rockspec```
-            * install torch-hdf5
-                * ```git clone https://github.com/deepmind/torch-hdf5 ~/torch/torch-hdf5```
-                * ```cd ~/torch/torch-hdf5```
-                * ```CC=gcc-6 CXX=g++-6 ~/torch/install/bin/luarocks make hdf5-0-0.rockspec```
     * preprocess data sets
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'```
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0```

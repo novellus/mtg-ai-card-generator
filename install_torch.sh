@@ -1,5 +1,8 @@
-repoDir = "~/mtg-ai-card-generator"
-torchDir = "~/torch"
+# exit on error
+set -e
+
+repoDir=$HOME"/mtg-ai-card-generator"
+torchDir=$HOME"/torch"
 
 
 echo "eliminating torch repo"
@@ -23,7 +26,7 @@ echo "installing base torch repo"
 export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"
 bash install-deps
 ./install.sh
-source ~/.bashrc
+source $HOME"/.bashrc"
 
 
 echo "installing torch rocks"
