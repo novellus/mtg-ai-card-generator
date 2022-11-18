@@ -19,13 +19,13 @@
             * randomize the chunk order
             * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
             * store the data as processed chunks, which can be order randomized during batching
-        * &#x1F534; TODO Updated DataLoader to
+        * Updated DataLoader to
             * accept data chunks instead of raw data from the new proprocessing script
             * dynamically randomize the order of the chunks each epoch, and the batch locality of each chunk
-            * and assign a fraction of those chunks to each batch; instead of assigning a fraction of raw data
         * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
             * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
+        * &#x1F534; TODO Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
         * &#x1F534; TODO Updated sampler to optionally save output to specified file instead of printing to console
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
