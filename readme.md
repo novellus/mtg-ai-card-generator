@@ -21,7 +21,7 @@
             * store the data as processed chunks, which can be order randomized during batching
         * Updated DataLoader to
             * accept data chunks instead of raw data from the new proprocessing script
-            * dynamically randomize the order of the chunks each epoch, and the batch locality of each chunk
+            * dynamically randomize the order and batch locality of the chunks each epoch
         * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
             * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
