@@ -101,6 +101,7 @@
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0```
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
+    * &#x1F534; TODO install mtg fonts
 
 # AI Training and Sampling
 * stable diffusion
