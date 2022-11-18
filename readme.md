@@ -93,7 +93,7 @@
             * ```git clone https://github.com/Kitware/CMake.git```
             * ```cd CMake```
             * ```./bootstrap; make; sudo make install```
-        * install torch using ```install_torch.sh```. There will be several prompts.
+        * install torch using ```bash install_torch2.sh |& tee torch-install-log.txt```. There will be several prompts.
             <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
     * preprocess data sets
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'```
