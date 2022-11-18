@@ -27,13 +27,6 @@ function DataLoader:__init(kwargs)
   self.splits.val = f:read('/val_vector'):all()
   self.splits.test = f:read('/test_vector'):all()
 
-  -- -- TODO remove
-  -- print('--F--' .. ', self.chunks.test: ' .. tostring(self.chunks.test))
-  -- for a, b in pairs(self.chunks.test) do
-  --   print('    --G-- ' .. tostring(a) .. ' : ' .. tostring(b))
-  -- end
-  -- os.exit()
-
   self.x_splits = {}
   self.y_splits = {}
   self.split_sizes = {}
@@ -43,6 +36,19 @@ function DataLoader:__init(kwargs)
   end
 
   self.split_idxs = {train=1, val=1, test=1}
+
+  self:init_random()
+end
+
+
+function DataLoader:init_random()
+  -- call random a few times to mitigate the well-known not-so-random lua issue
+  math.randomseed(os.time())
+  math.random()
+  math.random()
+  math.random()
+  math.random()
+  math.random()
 end
 
 
@@ -71,109 +77,37 @@ end
 function DataLoader:shuffle(x)
   -- shuffles a table in place via the Fisher–Yates algorithm
   -- assumes keys are contiguous positive integers begining at 1
-
-  -- TODO use randomseed os time
-  -- math.randomseed(os.time)
-  math.randomseed(2)
-  -- for i=1, 3000 do
-  --   print('--R-- ' .. tostring(math.random(i)))
-  -- end
-
-  -- -- TODO remove
-  -- for a, b in pairs(x) do
-  --   print('--T--' .. tostring(a) .. ' : ' .. tostring(b))
-  -- end
-  local tmp = {}
-  local tmp2 = {}
-  local tmp3 = 0
-  local tmp4 = 0
-
-  -- TODO use self function, remove print
-  -- for i = self:len(x), 2, -1 do
-  print('--P-- ' .. tostring(#x))
-  for i = 2556, 2, -1 do
-    -- local j = math.random(i)
-    tmp3 = i
-    tmp4 = math.random(i)
-
-    -- TODO remove
-    -- local j = 7.5
-    -- print('--S3-- ' .. tostring(i))
-    -- local a = j - 3
-    -- print('--S4-- ' .. tostring(a))
-    -- tmp[j] = 1
-    -- tmp2[i] = 1
-    -- tmp[1] = 1
-    -- tmp3 = j
-    -- tmp4 = i
-    -- print('--TMP3.2-- ' .. tostring(tmp3))
-
-    -- x[i], x[j] = x[j], x[i]
-
-    -- -- TODO remove
-    -- math.random(i)
-    -- math.random(i)
-    -- print(tostring(math.random(i)))
-    -- print('--S--' .. ', i: ' .. tostring(i) .. ', j: ' .. tostring(j))
-    -- print('--S2--' .. ' ' .. tostring(math.random(i)) .. ' ' .. tostring(math.random(i)) .. ' ' .. tostring(math.random(i)) .. ' ' .. tostring(math.random(i)) .. ' ' .. tostring(math.random(i)))
+  for i = self:len(x), 2, -1 do
+    local j = math.random(i)
+    x[i], x[j] = x[j], x[i]
   end
-
-  -- TODO remove
-  for a, b in pairs(x) do
-    print('--U-- ' .. tostring(a))
-  end
-
-  -- TODO remove
-  for a, b in pairs(tmp) do
-    print('--TMP-- ' .. tostring(a))
-  end
-
-  -- TODO remove
-  for a, b in pairs(tmp2) do
-    print('--TMP2-- ' .. tostring(a))
-  end
-
-  -- TODO remove
-  print('--TMP3-- ' .. tostring(tmp3))
-  print('--TMP4-- ' .. tostring(tmp4))
 end
 
 
 function DataLoader:concat_chunks(split)
   -- concatenates chunks into unified tensor
   i_split = 1
-
   n_delimeter = self.chunk_delimiter:size(1)
-
-  -- TODO remove
-  print('--C--' .. ', split: ' .. tostring(split) .. ', self.splits[split]:size(1): ' .. tostring(self.splits[split]:size(1)))
 
   for i_chunk = 1, self:len(self.chunks[split]) do
     -- add delimeter
     if i_chunk ~= 1 then
       for i_delimeter = 1, n_delimeter do
-        self.splits[split][i_split] = self.chunk_delimiter[i_delimeter]
+        self.splits[split][{{i_split, i_split}}] = self.chunk_delimiter[i_delimeter]
         i_split = i_split + 1
       end
     end
 
     -- copy chunk data
-    print('--D--' .. ', i_chunk: ' .. tostring(i_chunk))
-    print('--D2--' .. ', self:len(self.chunks[split]): ' .. tostring(self:len(self.chunks[split])))
-    print('--D3--' .. ', self.chunks[split][i_chunk]: ' .. tostring(self.chunks[split][i_chunk]))
-    print('--D4--' .. ', self.chunks[split][i_chunk]:size(1): ' .. tostring(self.chunks[split][i_chunk]:size(1)))
     for i_val = 1, self.chunks[split][i_chunk]:size(1) do
-      -- TODO remove
-      print('    --B--' .. ', i_val: ' .. tostring(i_val))
-
-      self.splits[split][i_split] = self.chunks[split][i_chunk][i_val]
+      self.splits[split][{{i_split, i_split}}] = self.chunks[split][i_chunk][i_val]
       i_split = i_split + 1
     end
   end
 end
 
 
-function DataLoader:createV(split)
+function DataLoader:process_chunks(split)
   -- creates input vector for XY split creation interface
   -- consumes chunked data
   -- randomizes chunk order, and joins into input vector
@@ -181,41 +115,21 @@ function DataLoader:createV(split)
   --     * symbols in mana costs
   --     * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
 
-  -- TODO remove
-  print('--A--')
-  print(self.chunks[split][4])
-  for a, b in pairs(self.chunks[split]) do
-    print('    --A2-- ' .. a)
-  end
-  -- print(self.chunks[split][1])
-  -- print(self.chunks[split][2])
-  -- print('--Z-- Exiting...')
-  -- os.exit()
-
   -- randomize chunk order
   self:shuffle(self.chunks[split])
 
-  -- TODO remove
-  os.exit()
-
   -- concatenate chunks
-  local v = self:concat_chunks(split)
-
-  -- TODO remove
-  print(v[{{1,25}}])
-  print('--Y-- Exiting...')
-  os.exit()
+  self:concat_chunks(split)
 
   -- TODO randomize encoded unordered mtg fields
   if self.rand_mtg_fields == 1 then
   end
-
-  return v
 end
 
 
 function DataLoader:setXYSplits(split)
-  local v = self:createV(split)
+  self:process_chunks(split)
+  local v = self.splits[split]
   local N, T = self.batch_size, self.seq_length
 
   local num = v:nElement()
