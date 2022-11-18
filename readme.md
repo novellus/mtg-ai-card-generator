@@ -130,6 +130,7 @@
 
 # Util
 * ```watch -n1 nvidia-smi``` to see GPU resource utilization
+* [torch docs](https://github.com/torch/torch7/blob/master/doc/tensor.md)
 
 
 # Prompt Development Tooling
