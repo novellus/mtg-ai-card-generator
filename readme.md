@@ -125,7 +125,7 @@
     * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint```
     * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint```
     * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_mtg_fields 1```
-    * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7```
+    * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7 -length 50```
 * &#x1F534; TODO main repo
 
 
