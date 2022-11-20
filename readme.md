@@ -24,8 +24,8 @@
             * dynamically randomize the order and batch locality of the chunks each epoch
         * Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
-            * card field order (other than the name field, which is kept as the first field and treated as defining for the card)
         * &#x1F534; TODO Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
+            * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
