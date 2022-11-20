@@ -13,6 +13,8 @@ function DataLoader:__init(kwargs)
   self.seq_length = utils.get_kwarg(kwargs, 'seq_length')
   self.rand_mtg_fields = utils.get_kwarg(kwargs, 'rand_mtg_fields')
 
+  self:init_random()
+
   -- Just slurp all the data into memory
   self.chunks = {}
   local f = hdf5.open(h5_file, 'r')
@@ -48,19 +50,15 @@ function DataLoader:__init(kwargs)
   end
 
   self.split_idxs = {train=1, val=1, test=1}
-
-  self:init_random()
 end
 
 
 function DataLoader:init_random()
   -- call random a few times to mitigate the well-known not-so-random lua issue
   math.randomseed(os.time())
-  math.random()
-  math.random()
-  math.random()
-  math.random()
-  math.random()
+  for _ = 1, 100 do
+    math.random()
+  end
 end
 
 
@@ -106,14 +104,14 @@ function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
   -- All character pairs and unary counters are then shuffled and rewritten in place
 
   -- copy data segment from s to create a static reference
-  s_clone = s:sub(start, stop):clone()  -- TODO check this works as expected. check indeces, bounds, and data are correct
-  atomic_substrings = {}
-  i_substring = 1
+  local s_clone = s:sub(start, stop):clone()
+  local atomic_substrings = {}
+  local i_substring = 1
 
   -- partition all characters into atomic_substrings, either one or two characters at a time 
-  i_char = 1
+  local i_char = 1
   while i_char <= (stop - start + 1) do
-    if s_clone[{1}] == self.mana_unary then
+    if s_clone[{i_char}] == self.mana_unary then
       atomic_substrings[i_substring] = s_clone:sub(i_char, i_char)
       i_char = i_char + 1
       i_substring = i_substring + 1
@@ -125,7 +123,7 @@ function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
     end
   end
 
-  len_atomic_substrings = i_substring
+  len_atomic_substrings = i_substring - 1
 
   -- shuffle substrings
   self:shuffle_list(atomic_substrings)
@@ -176,17 +174,27 @@ function DataLoader:process_chunks(split)
   -- randomize chunk order
   self:shuffle_list(self.chunks[split])
 
-  -- TODO remove
-  print('--A--' .. tostring(self.chunks[split][1][{1}]))
-  print('--B--' .. tostring(self.chunks[split][1][{{1,1}}]))
-  print('--B--' .. tostring(self.chunks[split][1][{{1,1}}]:size(1)))
-  os.exit()
-
   -- concatenate chunks
   self:concat_chunks(split)
 
-  -- TODO randomize encoded unordered mtg fields
   if self.rand_mtg_fields == 1 then
+    -- Parse character stream for mana open/close delimiters
+    local delimiter_start = 0  -- 0 is an invalid index
+    for i_char = 1, self.splits[split]:size(1) do
+      if delimiter_start == 0 then
+        if self.splits[split][{i_char}] == self.mana_open_delimeter then
+          delimiter_start = i_char
+        end
+      else
+        if self.splits[split][{i_char}] == self.mana_close_delimeter then
+          -- shuffle non-empty fields in place
+          if i_char - 1 >= delimiter_start + 1 then
+            self:shuffle_mtg_mana_cost(self.splits[split], delimiter_start + 1, i_char - 1)
+          end
+          delimiter_start = 0
+        end
+      end
+    end
 
   end
 end

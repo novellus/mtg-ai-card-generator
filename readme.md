@@ -22,11 +22,10 @@
         * Updated DataLoader to
             * accept data chunks instead of raw data from the new proprocessing script
             * dynamically randomize the order and batch locality of the chunks each epoch
-        * &#x1F534; TODO Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
+        * Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
-            * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
+            * &#x1F534; TODO card field order other than the name field, which is kept as the first field and treated as defining
         * &#x1F534; TODO Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
-        * &#x1F534; TODO Updated sampler to optionally save output to specified file instead of printing to console
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
@@ -124,6 +123,8 @@
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
     * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint```
+    * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint```
+    * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_mtg_fields 1```
     * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7```
 * &#x1F534; TODO main repo
 
