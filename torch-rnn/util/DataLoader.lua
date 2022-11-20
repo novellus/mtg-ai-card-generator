@@ -32,6 +32,8 @@ function DataLoader:__init(kwargs)
     self.mana_open_delimeter = token_to_idx['{']
     self.mana_close_delimeter = token_to_idx['}']
     self.mana_unary = token_to_idx['^']
+    self.card_sep = token_to_idx['\n']
+    self.card_field_sep = token_to_idx['|']
   end
 
   self.splits = {}
@@ -123,7 +125,7 @@ function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
     end
   end
 
-  len_atomic_substrings = i_substring - 1
+  local len_atomic_substrings = i_substring - 1
 
   -- shuffle substrings
   self:shuffle_list(atomic_substrings)
@@ -133,6 +135,48 @@ function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
   for i_substring = 1, len_atomic_substrings do
     for i_substring_char = 1, atomic_substrings[i_substring]:size(1) do
       s[{i_char}] = atomic_substrings[i_substring][i_substring_char]
+      i_char = i_char + 1
+    end
+  end
+
+end
+
+
+function DataLoader:shuffle_mtg_card_fields(s, start, stop)
+  -- shuffles in place the order of unordered mtg card fields
+  --  s is a linear tensor of encoded characters
+  --  start and stop indicate the first and last index of the fields to be shuffled
+  --  ending with a field sep delimeter, but not beginning with one
+  -- fields consist of arbitrary characters, not including the reserved field sep character
+
+  -- copy data segment from s to create a static reference
+  local s_clone = s:sub(start, stop):clone()
+  local substrings = {}
+  local i_substring = 1
+
+  -- partition all characters into substrings, including the field sep character to the right of each field, but not left
+  local field_start = 1  -- opening character guaranteed to be a field character (or ending separator in case of empty field)
+  for i_char = 1, (stop - start + 1) do
+    if i_char == (stop - start + 1) then
+      assert(s_clone[{i_char}] == self.card_field_sep)
+    end
+    if s_clone[{i_char}] == self.card_field_sep then
+      substrings[i_substring] = s_clone:sub(field_start, i_char)
+      i_substring = i_substring + 1
+      field_start = i_char + 1
+    end
+  end
+
+  local len_substrings = i_substring - 1
+
+  -- shuffle substrings
+  self:shuffle_list(substrings)
+
+  -- write shuffled substrings to original data
+  local i_char = start
+  for i_substring = 1, len_substrings do
+    for i_substring_char = 1, substrings[i_substring]:size(1) do
+      s[{i_char}] = substrings[i_substring][i_substring_char]
       i_char = i_char + 1
     end
   end
@@ -178,6 +222,7 @@ function DataLoader:process_chunks(split)
   self:concat_chunks(split)
 
   if self.rand_mtg_fields == 1 then
+    -- randomize mana cost token order
     -- Parse character stream for mana open/close delimiters
     local delimiter_start = 0  -- 0 is an invalid index
     for i_char = 1, self.splits[split]:size(1) do
@@ -192,6 +237,28 @@ function DataLoader:process_chunks(split)
             self:shuffle_mtg_mana_cost(self.splits[split], delimiter_start + 1, i_char - 1)
           end
           delimiter_start = 0
+        end
+      end
+    end
+
+    -- randomize mtg card field order, except the first field (card name)
+    --  the name field is treated as defining for the rest of the card, and should remain first
+    -- Parse character stream for field and card delimeters
+    local delimiter_start = 0
+    local field_delimeter_count = 0
+    for i_char = 1, self.splits[split]:size(1) do
+      if self.splits[split][{i_char}] == self.card_sep then
+        if field_delimeter_count > 2 then
+          self:shuffle_mtg_card_fields(self.splits[split], delimiter_start + 1, i_char - 1)
+        end
+        delimiter_start = 0
+        field_delimeter_count = 0
+
+      elseif self.splits[split][{i_char}] == self.card_field_sep then
+        field_delimeter_count = field_delimeter_count + 1
+        -- only begin randomization after the first field (name)
+        if field_delimeter_count == 2 then
+          delimiter_start = i_char
         end
       end
     end
