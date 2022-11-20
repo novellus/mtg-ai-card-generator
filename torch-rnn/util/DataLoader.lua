@@ -8,6 +8,7 @@ local DataLoader = torch.class('DataLoader')
 
 function DataLoader:__init(kwargs)
   local h5_file = utils.get_kwarg(kwargs, 'input_h5')
+  local json_file = utils.get_kwarg(kwargs, 'input_json')
   self.batch_size = utils.get_kwarg(kwargs, 'batch_size')
   self.seq_length = utils.get_kwarg(kwargs, 'seq_length')
   self.rand_mtg_fields = utils.get_kwarg(kwargs, 'rand_mtg_fields')
@@ -19,6 +20,17 @@ function DataLoader:__init(kwargs)
   self.chunks.val = f:read('/val'):all()
   self.chunks.test = f:read('/test'):all()
   self.chunk_delimiter = f:read('/chunk_delimiter'):all()
+
+  if self.rand_mtg_fields == 1 then
+    local vocab = utils.read_json(json_file)
+    local token_to_idx = {}
+    for k, v in pairs(vocab.token_to_idx) do
+      token_to_idx[k] = tonumber(v)
+    end
+    self.mana_open_delimeter = token_to_idx['{']
+    self.mana_close_delimeter = token_to_idx['}']
+    self.mana_unary = token_to_idx['^']
+  end
 
   self.splits = {}
   -- initialize tensors of correct size and data types
@@ -74,13 +86,25 @@ function DataLoader:len(x)
 end
 
 
-function DataLoader:shuffle(x)
+function DataLoader:shuffle_list(x)
   -- shuffles a table in place via the Fisher–Yates algorithm
   -- assumes keys are contiguous positive integers begining at 1
   for i = self:len(x), 2, -1 do
     local j = math.random(i)
     x[i], x[j] = x[j], x[i]
   end
+end
+
+
+function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
+-- shuffles in place the order of unordered mana cost strings
+--  s is a linear tensor of encoded characters
+--  start and stop indicate the first and last character of the mana cost substring
+-- mana costs consist of arbitrary character pairs, and unary counters
+--  Counters are always a single carret "^", which we use to distinguish character pairs
+-- The character pairs must stay together as an atomic substring
+-- All character pairs and unary counters are then shuffled and rewritted in place
+-- TODO
 end
 
 
@@ -116,7 +140,7 @@ function DataLoader:process_chunks(split)
   --     * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
 
   -- randomize chunk order
-  self:shuffle(self.chunks[split])
+  self:shuffle_list(self.chunks[split])
 
   -- concatenate chunks
   self:concat_chunks(split)
