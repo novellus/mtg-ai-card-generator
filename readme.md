@@ -98,6 +98,7 @@
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'```
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0```
         * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0```
+        * &#x1F534; TODO simplify vocab for flavor text until it fits in a uint8 encoding
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * &#x1F534; TODO install mtg fonts
