@@ -97,14 +97,48 @@ end
 
 
 function DataLoader:shuffle_mtg_mana_cost(s, start, stop)
--- shuffles in place the order of unordered mana cost strings
---  s is a linear tensor of encoded characters
---  start and stop indicate the first and last character of the mana cost substring
--- mana costs consist of arbitrary character pairs, and unary counters
---  Counters are always a single carret "^", which we use to distinguish character pairs
--- The character pairs must stay together as an atomic substring
--- All character pairs and unary counters are then shuffled and rewritted in place
--- TODO
+  -- shuffles in place the order of unordered mana cost strings
+  --  s is a linear tensor of encoded characters
+  --  start and stop indicate the first and last index of the mana cost substring
+  -- mana costs consist of arbitrary character pairs, and unary counters
+  --  Counters are always a single carret "^", which we use to distinguish character pairs
+  -- The character pairs must stay together as an atomic substring
+  -- All character pairs and unary counters are then shuffled and rewritten in place
+
+  -- copy data segment from s to create a static reference
+  s_clone = s:sub(start, stop):clone()  -- TODO check this works as expected. check indeces, bounds, and data are correct
+  atomic_substrings = {}
+  i_substring = 1
+
+  -- partition all characters into atomic_substrings, either one or two characters at a time 
+  i_char = 1
+  while i_char <= (stop - start + 1) do
+    if s_clone[{1}] == self.mana_unary then
+      atomic_substrings[i_substring] = s_clone:sub(i_char, i_char)
+      i_char = i_char + 1
+      i_substring = i_substring + 1
+
+    else
+      atomic_substrings[i_substring] = s_clone:sub(i_char, i_char + 1)
+      i_char = i_char + 2
+      i_substring = i_substring + 1
+    end
+  end
+
+  len_atomic_substrings = i_substring
+
+  -- shuffle substrings
+  self:shuffle_list(atomic_substrings)
+
+  -- write shuffled substrings to original data
+  i_char = start
+  for i_substring = 1, len_atomic_substrings do
+    for i_substring_char = 1, atomic_substrings[i_substring]:size(1) do
+      s[{i_char}] = atomic_substrings[i_substring][i_substring_char]
+      i_char = i_char + 1
+    end
+  end
+
 end
 
 
@@ -142,11 +176,18 @@ function DataLoader:process_chunks(split)
   -- randomize chunk order
   self:shuffle_list(self.chunks[split])
 
+  -- TODO remove
+  print('--A--' .. tostring(self.chunks[split][1][{1}]))
+  print('--B--' .. tostring(self.chunks[split][1][{{1,1}}]))
+  print('--B--' .. tostring(self.chunks[split][1][{{1,1}}]:size(1)))
+  os.exit()
+
   -- concatenate chunks
   self:concat_chunks(split)
 
   -- TODO randomize encoded unordered mtg fields
   if self.rand_mtg_fields == 1 then
+
   end
 end
 
