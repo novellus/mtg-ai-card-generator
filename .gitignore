@@ -10,5 +10,6 @@ nns/*
 *__pycache__*
 *.egg-info*
 tmp*.py
+tmp
 torch-install-log.txt
 SD_target.py

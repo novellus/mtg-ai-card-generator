@@ -24,8 +24,8 @@
             * dynamically randomize the order and batch locality of the chunks each epoch
         * Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
             * symbols in mana costs
-        * &#x1F534; TODO Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
             * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
+        * &#x1F534; TODO Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
@@ -33,7 +33,8 @@
         * Fixed rarity parsing error
         * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
-        * Fixed card name encoding on double sided cards, stripped reverse card name from card title
+        * Fixed card name encoding on double sided cards: stripped reverse card name from card title
+        * &#x1F534; TODO Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
         * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
