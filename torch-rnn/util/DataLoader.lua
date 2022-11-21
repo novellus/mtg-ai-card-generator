@@ -11,6 +11,7 @@ function DataLoader:__init(kwargs)
   local json_file = utils.get_kwarg(kwargs, 'input_json')
   self.batch_size = utils.get_kwarg(kwargs, 'batch_size')
   self.seq_length = utils.get_kwarg(kwargs, 'seq_length')
+  self.rand_chunks = utils.get_kwarg(kwargs, 'rand_chunks')
   self.rand_mtg_fields = utils.get_kwarg(kwargs, 'rand_mtg_fields')
 
   self:init_random()
@@ -217,7 +218,9 @@ function DataLoader:process_chunks(split)
   --     * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
 
   -- randomize chunk order
-  self:shuffle_list(self.chunks[split])
+  if self.rand_chunks == 1 then
+    self:shuffle_list(self.chunks[split])
+  end
 
   -- concatenate chunks
   self:concat_chunks(split)

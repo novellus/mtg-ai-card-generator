@@ -15,6 +15,7 @@ cmd:option('-input_h5', 'data/tiny-shakespeare.h5')
 cmd:option('-input_json', 'data/tiny-shakespeare.json')
 cmd:option('-batch_size', 50)
 cmd:option('-seq_length', 50)
+cmd:option('-rand_chunks', 0)
 cmd:option('-rand_mtg_fields', 0)
 
 -- Model options
@@ -37,6 +38,7 @@ cmd:option('-lr_decay_factor', 0.5)
 -- Output options
 cmd:option('-print_every', 1)
 cmd:option('-checkpoint_every', 1000)
+cmd:option('-checkpoint_n_epochs', 0)  -- takes precidence over checkpoint_every if > 0
 cmd:option('-checkpoint_name', 'cv/checkpoint')
 
 -- Benchmark options
@@ -80,6 +82,14 @@ local idx_to_token = {}
 for k, v in pairs(vocab.idx_to_token) do
   idx_to_token[tonumber(k)] = v
 end
+
+
+-- checkpoint_n_epochs takes precidence over checkpoint_every
+-- must be set after the DataLoader is initialized so we know the size of epochs
+if opt.checkpoint_n_epochs > 0 then
+  opt.checkpoint_every = loader.split_sizes['train'] * opt.checkpoint_n_epochs
+end
+
 
 -- Initialize the model and criterion
 local opt_clone = torch.deserialize(torch.serialize(opt))
