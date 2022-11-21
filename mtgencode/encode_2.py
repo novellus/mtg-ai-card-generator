@@ -65,7 +65,7 @@ def encode_flavor(j, args):
     data = set()  # set for deduplication
     for s_key in list(j['data'].keys()):
         for card in j['data'][s_key]['cards']:
-            if 'flavorText' in card and card['flavorText']:
+            if 'flavorText' in card and card['flavorText'] and card['language'].lower() == 'english':
                 _, processed_name = cardlib.process_name_field(card['name'])
                 processed_flavor = process_flavor_field(card['flavorText'])
 
