@@ -1,3 +1,4 @@
+import argparse
 import re
 
 from matplotlib import pyplot as plt
@@ -22,11 +23,11 @@ with open(args.log_path) as f:
             data_training['epoch'].append(epoch)
             data_training['loss'].append(float(search_epoch_line.group(2)))
         elif search_val_line:
-            data_training['epoch'].append(epoch)
-            data_training['loss'].append(float(search_val_line.group(1)))
+            data_validation['epoch'].append(epoch)
+            data_validation['loss'].append(float(search_val_line.group(1)))
 
 
 plt.plot(data_training['epoch'], data_training['loss'], c='green', label='training loss')
-plt.plot(data_validation['epoch'], data_validation['loss'], c='green', label='validation loss')
+plt.plot(data_validation['epoch'], data_validation['loss'], c='red', label='validation loss')
 plt.legend()
 plt.show()
