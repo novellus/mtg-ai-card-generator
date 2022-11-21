@@ -1,0 +1,21 @@
+
+# Executes the multi-step preprocessing / encoding steps for the unencoded data sources
+
+# exit on error
+set -e
+
+
+rm -rf encoded_data_sources
+mkdir encoded_data_sources
+
+
+cd mtgencode
+conda run -n mtgencode python encode.py -r -e named ../unencoded_data_sources/AllPrintings.json ../encoded_data_sources/main_text.txt
+conda run -n mtgencode python encode_2.py ../unencoded_data_sources/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt
+
+
+cd ../torch-rnn
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0
+

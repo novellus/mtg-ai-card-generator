@@ -34,6 +34,11 @@ def name_pass_0_strip_reverse_side_names(s):
     return s
 
 
+def name_pass_0_strip_alchemy_version_prefix(s):
+    s = re.sub(r'^a-', '', s)
+    return s
+
+
 def name_pass_1_sanitize(s):
     s = s.replace('!', '')
     s = s.replace('?', '')

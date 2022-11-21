@@ -245,6 +245,7 @@ def process_name_field(s):
     # abstracted for use in 2nd encoder
     name_val = s.lower()
     name_val = transforms.name_pass_0_strip_reverse_side_names(name_val)
+    name_val = transforms.name_pass_0_strip_alchemy_version_prefix(name_val)
     name_orig = name_val
     name_val = transforms.name_pass_1_sanitize(name_val)
     name_val = utils.to_ascii(name_val)

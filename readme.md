@@ -34,8 +34,9 @@
         * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
         * Fixed card name encoding on double sided cards: stripped reverse card name from card title
-        * &#x1F534; TODO Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
+        * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
         * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
+            * &#x1F534; TODO simplify vocab for flavor text until it fits in a uint8 encoding
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
         * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
         * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -60,48 +61,41 @@
 * mtgencode
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * Finish setting up ntlk ```python -m nltk.downloader all```
-    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```mtgencode/data```
-    * Encode data
-        * ```python encode.py -r -e named data/AllPrintings.json ../encoded_data_sources/main_text.txt```
-        * ```python encode_2.py data/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt```
-        * &#x1F534; TODO Add extra names and flavor
+    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```encoded_data_sources/.```
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
-        * install ```libhdf5-dev```
-            * add ```deb [trusted=yes check-valid-until=no] http://dk.archive.ubuntu.com/ubuntu/ trusty main universe``` to ```/etc/apt/sources.list```
-            * ```sudo apt update```
-            * ```sudo apt-get install libhdf5-dev==1.8.11*```
-            * ```sudo apt-mark hold libhdf5-dev``` to pin version
-        * ```conda env create -f environment-python.yaml```. Use this enviropnment only for the preprocessing script
-        * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
-        * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
-            * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
-            * ```sudo apt update```
-            * ```sudo apt install gcc-6 g++-6```
-        * soft link cuda to ```gcc-6``` and ```g++-6```
-            * ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
-            * ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
-        * link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
-        * add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
-        * fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
-            * ```git config --global url."https://github.com/".insteadOf git@github.com```
-            * ```git config --global url."https://".insteadOf git://```
-        * ```pip install ipython```
-        * purge and install latest cmake
-            * ```sudo apt-get purge cmake```
-            * ```cd ~```
-            * ```git clone https://github.com/Kitware/CMake.git```
-            * ```cd CMake```
-            * ```./bootstrap; make; sudo make install```
-        * install torch using ```bash install_torch.sh |& tee torch-install-log.txt```. There will be several prompts.
-            <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
-    * preprocess data sets
-        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'```
-        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0```
-        * ```python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0```
-        * &#x1F534; TODO simplify vocab for flavor text until it fits in a uint8 encoding
+    * install ```libhdf5-dev```
+        * add ```deb [trusted=yes check-valid-until=no] http://dk.archive.ubuntu.com/ubuntu/ trusty main universe``` to ```/etc/apt/sources.list```
+        * ```sudo apt update```
+        * ```sudo apt-get install libhdf5-dev==1.8.11*```
+        * ```sudo apt-mark hold libhdf5-dev``` to pin version
+    * ```conda env create -f environment-python.yaml```. Use this enviropnment only for the preprocessing script
+    * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
+    * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
+        * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
+        * ```sudo apt update```
+        * ```sudo apt install gcc-6 g++-6```
+    * soft link cuda to ```gcc-6``` and ```g++-6```
+        * ```sudo ln -s /usr/bin/gcc-6 /usr/local/cuda/bin/gcc```
+        * ```sudo ln -s /usr/bin/g++-6 /usr/local/cuda/bin/g++```
+    * link missing cmake input ```sudo ln -s -T /usr/local/cuda-11.8/lib64/libcublas.so /usr/lib/x86_64-linux-gnu/libcublas_device.so```
+    * add repo for outdated software dependancies ```sudo add-apt-repository ppa:ubuntuhandbook1/ppa``` and ```sudo apt-get update```
+    * fix luarockspeck using outdated (unsupported) URLs, by forcing git to correct them on the fly
+        * ```git config --global url."https://github.com/".insteadOf git@github.com```
+        * ```git config --global url."https://".insteadOf git://```
+    * ```pip install ipython```
+    * purge and install latest cmake
+        * ```sudo apt-get purge cmake```
+        * ```cd ~```
+        * ```git clone https://github.com/Kitware/CMake.git```
+        * ```cd CMake```
+        * ```./bootstrap; make; sudo make install```
+    * install torch using ```bash install_torch.sh |& tee torch-install-log.txt```. There will be several prompts.
+        <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
 * &#x1F534; TODO main repo
-    * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
+    * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
+    * ```bash rebuild_data_sources.sh```
+    * &#x1F534; TODO Add extra names and flavor
     * &#x1F534; TODO install mtg fonts
 
 # AI Training and Sampling
