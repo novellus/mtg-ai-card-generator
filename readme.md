@@ -60,7 +60,7 @@
 * mtgencode
     * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
     * Finish setting up ntlk ```python -m nltk.downloader all```
-    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```encoded_data_sources/.```
+    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
     * install ```libhdf5-dev```
