@@ -20,7 +20,7 @@ function DataLoader:__init(kwargs)
   local f = hdf5.open(h5_file, 'r')
   self.chunks.train = f:read('/train'):all()
   self.chunks.val = f:read('/val'):all()
-  self.chunks.test = f:read('/test'):all()
+  -- self.chunks.test = f:read('/test'):all()
   self.chunk_delimiter = f:read('/chunk_delimiter'):all()
 
   if self.rand_mtg_fields == 1 then
@@ -41,7 +41,7 @@ function DataLoader:__init(kwargs)
   -- to be overridden each time chunk order is randomized
   self.splits.train = f:read('/train_vector'):all()
   self.splits.val = f:read('/val_vector'):all()
-  self.splits.test = f:read('/test_vector'):all()
+  -- self.splits.test = f:read('/test_vector'):all()
 
   self.x_splits = {}
   self.y_splits = {}
@@ -51,7 +51,8 @@ function DataLoader:__init(kwargs)
     self:setXYSplits(split)  -- called many times
   end
 
-  self.split_idxs = {train=1, val=1, test=1}
+  -- self.split_idxs = {train=1, val=1, test=1}
+  self.split_idxs = {train=1, val=1}
 end
 
 

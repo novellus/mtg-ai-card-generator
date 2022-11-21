@@ -13,7 +13,7 @@
     * [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
         * Created environment.yaml for python portion of the environment
         * Implemented whispering during sampling
-        * &#x1F534; TODO Updated DataLoader to optionally accept a zero test fraction
+        * Removed test fraction loading from DataLoader, which is unused, so that it can accept an empty test fraction
         * Updated preprocessor to
             * partition input data on specified delimeter (eg between encoded cards)
             * randomize the chunk order
