@@ -20,7 +20,7 @@ cmd:option('-rand_mtg_fields', 0)
 
 -- Model options
 cmd:option('-init_from', '')
-cmd:option('-reset_stats', 0)
+cmd:option('-reset_iterations', 0)
 cmd:option('-model_type', 'lstm')
 cmd:option('-wordvec_size', 64)
 cmd:option('-rnn_size', 128)
@@ -38,7 +38,9 @@ cmd:option('-lr_decay_factor', 0.5)
 -- Output options
 cmd:option('-print_every', 1)
 cmd:option('-checkpoint_every', 1000)
-cmd:option('-checkpoint_n_epochs', 0)  -- takes precidence over checkpoint_every if > 0
+cmd:option('-checkpoint_n_epochs', 1)  -- takes precidence over checkpoint_every if > 0
+cmd:option('-validate_every', 1000)  -- note validation resets the model, so avoid doing this in the middle of an epoch
+cmd:option('-validate_n_epochs', 1)  -- takes precidence over validate_every if > 0
 cmd:option('-checkpoint_name', 'cv/checkpoint')
 
 -- Benchmark options
@@ -89,6 +91,9 @@ end
 if opt.checkpoint_n_epochs > 0 then
   opt.checkpoint_every = loader.split_sizes['train'] * opt.checkpoint_n_epochs
 end
+if opt.validate_n_epochs > 0 then
+  opt.validate_every = loader.split_sizes['val'] * opt.validate_n_epochs
+end
 
 
 -- Set up some variables we will use below
@@ -109,7 +114,7 @@ if opt.init_from ~= '' then
   print('Initializing from ', opt.init_from)
   local checkpoint = torch.load(opt.init_from)
   model = checkpoint.model:type(dtype)
-  if opt.reset_stats == 0 then
+  if opt.reset_iterations == 0 then
     -- TODO load more stats from json file
     start_i = checkpoint.i
   end
@@ -118,6 +123,12 @@ else
 end
 local params, grad_params = model:getParameters()
 local crit = nn.CrossEntropyCriterion():type(dtype)
+
+-- print model size
+num_params = params:size(1)
+model_size_bytes = num_params * 8  -- 64-bit double width floats
+model_size_MB = model_size_bytes / (10^6)
+print('model has ' .. tostring(num_params) .. ' parameters, totaling ' .. tostring(model_size_MB) .. ' MB')
 
 
 if opt.memory_benchmark == 1 then
@@ -179,6 +190,7 @@ end
 
 -- Train the model!
 local optim_config = {learningRate = opt.learning_rate}
+print('Setting learning rate to ' .. tostring(optim_config.learningRate))
 local num_train = loader.split_sizes['train']
 local num_iterations = opt.max_epochs * num_train
 model:training()
@@ -193,6 +205,7 @@ for i = start_i + 1, num_iterations do
     if epoch % opt.lr_decay_every == 0 then
       local old_lr = optim_config.learningRate
       optim_config = {learningRate = old_lr * opt.lr_decay_factor}
+      print('Setting learning rate to ' .. tostring(optim_config.learningRate))
     end
   end
 
@@ -207,9 +220,9 @@ for i = start_i + 1, num_iterations do
     print(string.format(unpack(args)))
   end
 
-  -- Maybe save a checkpoint
-  local check_every = opt.checkpoint_every
-  if (check_every > 0 and i % check_every == 0) or i == num_iterations then
+  -- Maybe run validation
+  local validate_every = opt.validate_n_epochs
+  if (validate_every > 0 and i % validate_every == 0) or i == num_iterations then
     -- Evaluate loss on the validation set. Note that we reset the state of
     -- the model; this might happen in the middle of an epoch, but that
     -- shouldn't cause too much trouble.
@@ -232,6 +245,9 @@ for i = start_i + 1, num_iterations do
     model:resetStates()
     model:training()
 
+  -- Maybe save a checkpoint
+  local check_every = opt.checkpoint_every
+  if (check_every > 0 and i % check_every == 0) or i == num_iterations then
     -- First save a JSON checkpoint, excluding the model
     -- TODO save more stats to json file
     local checkpoint = {

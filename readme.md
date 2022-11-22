@@ -34,7 +34,8 @@
             * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
         * Added option to trainer to set validation / checkpoint at a whole number of epochs, to avoid resetting the neural network in the middle of an arbitrarily segmented stream
         * &#x1F534; TODO Updated trainer to load history and learning rate from checkpoints
-        * &#x1F534; TODO Updated trainer to print learning rate each time its updated
+        * Updated trainer to print learning rate each time its updated
+        * Updated trainer to decouple checkpoint frequency from validation frequency and have CLI param for both
         * &#x1F534; TODO (ever?) Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
@@ -127,7 +128,7 @@
     * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
-    * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint -rand_chunks 1```
+    * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint -rand_chunks 1 -reset_iterations 0 -checkpoint_n_epochs 10 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 50 -seq_length 50 -dropout 0.1 |& tee -a ../nns/names/log.txt```
     * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1```
     * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_mtg_fields 1 -rand_chunks 1```
     * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7 -length 50```
