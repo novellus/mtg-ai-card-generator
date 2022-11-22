@@ -103,7 +103,7 @@
         <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
-    * ```bash rebuild_data_sources.sh```
+    * ```bash rebuild_data_sources.sh |& tee data-build-log.txt```
     * &#x1F534; TODO Add extra names and flavor
     * &#x1F534; TODO install mtg fonts
 
