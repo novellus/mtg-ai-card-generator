@@ -5,6 +5,7 @@ import random
 import re
 import sys
 import tabulate
+import yaml
 
 from collections import namedtuple
 from collections import defaultdict
@@ -22,16 +23,22 @@ def stabilize_shuffle():
 
 
 def encode_names(j, args):
-    # collect data from input
+    # collect data from primary input
     names = set()  # set for deduplication
     for s_key in list(j['data'].keys()):
         for card in j['data'][s_key]['cards']:
             _, processed_name = cardlib.process_name_field(card['name'])
             names.add(processed_name)
 
-    # TODO extra
+    # collect extra data from secondary (manual) sources
     if args.extra_names:
-        raise NotImplementedError('extra_names')
+        f = open(args.extra_names)
+        extra_names = yaml.load(f.read())
+        f.close()
+        
+        for name in extra_names:
+            _, processed_name = cardlib.process_name_field(name)
+            names.add(processed_name)
 
     names = sorted(list(names))
 
@@ -61,7 +68,7 @@ def encode_flavor(j, args):
     # data type
     Card = namedtuple('Entry', ['name', 'flavor'])
 
-    # collect data from input
+    # collect data from primary input
     data = set()  # set for deduplication
     for s_key in list(j['data'].keys()):
         for card in j['data'][s_key]['cards']:
@@ -75,8 +82,20 @@ def encode_flavor(j, args):
                 ))
 
     # TODO extra
+    # collect extra data from secondary (manual) sources
     if args.extra_flavor:
-        raise NotImplementedError('extra_flavor')
+        f = open(args.extra_flavor)
+        extra_flavor = yaml.load(f.read())
+        f.close()
+        
+        for name, flavor in extra_flavor.items():
+            _, processed_name = cardlib.process_name_field(name)
+            processed_flavor = process_flavor_field(flavor)
+
+            data.add(Card(
+                name = processed_name,
+                flavor = processed_flavor,
+            ))
 
     data = sorted(list(data), key = lambda x: (x.name, x.flavor))
 

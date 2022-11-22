@@ -9,3 +9,4 @@ dependencies:
     - nltk==3.7
     - numpy==1.23.3
     - tabulate
+    - pyyaml==5.4.1
