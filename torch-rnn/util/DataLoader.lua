@@ -47,6 +47,7 @@ function DataLoader:__init(kwargs)
   self.x_splits = {}
   self.y_splits = {}
   self.split_sizes = {}
+  self.printed_warnings = {train=0, val=0}
   for split, _ in pairs(self.chunks) do
     self:fix_chunk_indexing(split)  -- only called during init
     self:setXYSplits(split)  -- called many times
@@ -280,7 +281,10 @@ function DataLoader:setXYSplits(split)
   local N_cur = N
   if (N * T > num - 1) then
     N_cur = math.floor((num - 1) / T)
-    print(string.format("Not enough %s data, reducing batch size to %d", split, N_cur))
+    if self.printed_warnings[split] ~= 1 then
+      print(string.format("Not enough %s data, reducing batch size to %d", split, N_cur))
+      self.printed_warnings[split] = 1
+    end
   end
   local extra = num % (N_cur * T)
 
