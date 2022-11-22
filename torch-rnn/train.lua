@@ -20,7 +20,7 @@ cmd:option('-rand_mtg_fields', 0)
 
 -- Model options
 cmd:option('-init_from', '')
-cmd:option('-reset_iterations', 1)
+cmd:option('-reset_stats', 0)
 cmd:option('-model_type', 'lstm')
 cmd:option('-wordvec_size', 64)
 cmd:option('-rnn_size', 128)
@@ -91,6 +91,15 @@ if opt.checkpoint_n_epochs > 0 then
 end
 
 
+-- Set up some variables we will use below
+local N, T = opt.batch_size, opt.seq_length
+local train_loss_history = {}
+local val_loss_history = {}
+local val_loss_history_it = {}
+local forward_backward_times = {}
+local init_memory_usage, memory_usage = nil, {}
+
+
 -- Initialize the model and criterion
 local opt_clone = torch.deserialize(torch.serialize(opt))
 opt_clone.idx_to_token = idx_to_token
@@ -100,7 +109,8 @@ if opt.init_from ~= '' then
   print('Initializing from ', opt.init_from)
   local checkpoint = torch.load(opt.init_from)
   model = checkpoint.model:type(dtype)
-  if opt.reset_iterations == 0 then
+  if opt.reset_stats == 0 then
+    -- TODO load more stats from json file
     start_i = checkpoint.i
   end
 else
@@ -109,13 +119,6 @@ end
 local params, grad_params = model:getParameters()
 local crit = nn.CrossEntropyCriterion():type(dtype)
 
--- Set up some variables we will use below
-local N, T = opt.batch_size, opt.seq_length
-local train_loss_history = {}
-local val_loss_history = {}
-local val_loss_history_it = {}
-local forward_backward_times = {}
-local init_memory_usage, memory_usage = nil, {}
 
 if opt.memory_benchmark == 1 then
   -- This should only be enabled in GPU mode
@@ -230,6 +233,7 @@ for i = start_i + 1, num_iterations do
     model:training()
 
     -- First save a JSON checkpoint, excluding the model
+    -- TODO save more stats to json file
     local checkpoint = {
       opt = opt,
       train_loss_history = train_loss_history,

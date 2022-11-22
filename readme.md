@@ -34,6 +34,7 @@
             * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
         * Added option to trainer to set validation / checkpoint at a whole number of epochs, to avoid resetting the neural network in the middle of an arbitrarily segmented stream
         * &#x1F534; TODO Updated trainer to load history and learning rate from checkpoints
+        * &#x1F534; TODO Updated trainer to print learning rate each time its updated
         * &#x1F534; TODO (ever?) Updated DataLoader to assign a fraction of chunks to each batch; instead of assigning a fraction of raw data
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management

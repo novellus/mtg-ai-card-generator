@@ -10,15 +10,15 @@ mkdir encoded_data_sources
 
 
 cd mtgencode
-conda run -n mtgencode python encode.py -r -e named ../unencoded_data_sources/AllPrintings.json ../encoded_data_sources/main_text.txt
-conda run -n mtgencode python encode_2.py ../unencoded_data_sources/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt
+conda run -n mtgencode python encode.py -r -e named ../raw_data_sources/AllPrintings.json ../encoded_data_sources/main_text.txt
+conda run -n mtgencode python encode_2.py ../raw_data_sources/AllPrintings.json --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt
 
 
 cd ../torch-rnn
 echo "main_text:"
-conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --test_frac 0 --chunk_delimiter $'\n\n'
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --val_frac 0.005 --test_frac 0 --chunk_delimiter $'\n\n'
 echo "names:"
-conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --test_frac 0
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --val_frac 0.005 --test_frac 0
 echo "flavor:"
-conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --test_frac 0
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --val_frac 0.006 --test_frac 0
 
