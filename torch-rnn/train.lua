@@ -21,6 +21,7 @@ cmd:option('-rand_mtg_fields', 0)
 -- Model options
 cmd:option('-init_from', '')
 cmd:option('-reset_iterations', 0)
+cmd:option('-reset_learning_rate', 0)
 cmd:option('-model_type', 'lstm')
 cmd:option('-wordvec_size', 64)
 cmd:option('-rnn_size', 128)
@@ -32,7 +33,8 @@ cmd:option('-batchnorm', 0)
 cmd:option('-max_epochs', 50)
 cmd:option('-learning_rate', 2e-3)
 cmd:option('-grad_clip', 5)
-cmd:option('-lr_decay_every', 5)
+cmd:option('-lr_decay_every', 1000)
+cmd:option('-lr_decay_n_epochs', 1)  -- takes precidence over lr_decay_every if > 0
 cmd:option('-lr_decay_factor', 0.5)
 
 -- Output options
@@ -92,7 +94,10 @@ if opt.checkpoint_n_epochs > 0 then
   opt.checkpoint_every = loader.split_sizes['train'] * opt.checkpoint_n_epochs
 end
 if opt.validate_n_epochs > 0 then
-  opt.validate_every = loader.split_sizes['val'] * opt.validate_n_epochs
+  opt.validate_every = loader.split_sizes['train'] * opt.validate_n_epochs
+end
+if opt.lr_decay_n_epochs > 0 then
+  opt.lr_decay_every = loader.split_sizes['train'] * opt.lr_decay_n_epochs
 end
 
 
@@ -104,6 +109,7 @@ local val_loss_history_it = {}
 local forward_backward_times = {}
 local init_memory_usage, memory_usage = nil, {}
 
+local optim_config = {learningRate = opt.learning_rate}
 
 -- Initialize the model and criterion
 local opt_clone = torch.deserialize(torch.serialize(opt))
@@ -114,15 +120,24 @@ if opt.init_from ~= '' then
   print('Initializing from ', opt.init_from)
   local checkpoint = torch.load(opt.init_from)
   model = checkpoint.model:type(dtype)
+  train_loss_history = checkpoint.train_loss_history
+  val_loss_history = checkpoint.val_loss_history
+  val_loss_history_it = checkpoint.val_loss_history_it
+  forward_backward_times = checkpoint.forward_backward_times
+  memory_usage = checkpoint.memory_usage
   if opt.reset_iterations == 0 then
-    -- TODO load more stats from json file
     start_i = checkpoint.i
+  end
+  if opt.reset_learning_rate == 0 then
+    optim_config = {learningRate = checkpoint.learning_rate}
   end
 else
   model = nn.LanguageModel(opt_clone):type(dtype)
 end
 local params, grad_params = model:getParameters()
 local crit = nn.CrossEntropyCriterion():type(dtype)
+
+print('Learning rate = ' .. tostring(optim_config.learningRate))
 
 -- print model size
 num_params = params:size(1)
@@ -189,8 +204,6 @@ local function f(w)
 end
 
 -- Train the model!
-local optim_config = {learningRate = opt.learning_rate}
-print('Setting learning rate to ' .. tostring(optim_config.learningRate))
 local num_train = loader.split_sizes['train']
 local num_iterations = opt.max_epochs * num_train
 model:training()
@@ -200,13 +213,6 @@ for i = start_i + 1, num_iterations do
   -- Check if we are at the end of an epoch
   if i % num_train == 0 then
     model:resetStates() -- Reset hidden states
-
-    -- Maybe decay learning rate
-    if epoch % opt.lr_decay_every == 0 then
-      local old_lr = optim_config.learningRate
-      optim_config = {learningRate = old_lr * opt.lr_decay_factor}
-      print('Setting learning rate to ' .. tostring(optim_config.learningRate))
-    end
   end
 
   -- Take a gradient step and maybe print
@@ -221,7 +227,7 @@ for i = start_i + 1, num_iterations do
   end
 
   -- Maybe run validation
-  local validate_every = opt.validate_n_epochs
+  local validate_every = opt.validate_every
   if (validate_every > 0 and i % validate_every == 0) or i == num_iterations then
     -- Evaluate loss on the validation set. Note that we reset the state of
     -- the model; this might happen in the middle of an epoch, but that
@@ -244,6 +250,7 @@ for i = start_i + 1, num_iterations do
     table.insert(val_loss_history_it, i)
     model:resetStates()
     model:training()
+  end
 
   -- Maybe save a checkpoint
   local check_every = opt.checkpoint_every
@@ -257,6 +264,7 @@ for i = start_i + 1, num_iterations do
       val_loss_history_it = val_loss_history_it,
       forward_backward_times = forward_backward_times,
       memory_usage = memory_usage,
+      learning_rate = optim_config.learningRate,
       i = i
     }
     local filename = string.format('%s_%d.json', opt.checkpoint_name, i)
@@ -275,5 +283,13 @@ for i = start_i + 1, num_iterations do
     model:type(dtype)
     params, grad_params = model:getParameters()
     collectgarbage()
+  end
+
+  -- Maybe decay learning rate
+  local lr_decay_every = opt.lr_decay_every
+  if lr_decay_every > 0 and i % lr_decay_every == 0 then
+    local old_lr = optim_config.learningRate
+    optim_config = {learningRate = old_lr * opt.lr_decay_factor}
+    print('Learning rate = ' .. tostring(optim_config.learningRate))
   end
 end
