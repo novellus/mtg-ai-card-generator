@@ -9,11 +9,11 @@
 * data structure
     * ```raw_data_sources``` include user inputs for AI training data. These are processed into ```encoded_data_sources``` via ```rebuild_data_sources.sh```, which utilizes ```mtgencode``` and ```torch-rnn```.
     * ```nns``` contains trained text-based neural networks
-    * ```torch-rnn``` contains code for training and sampling the text neuranl networks
+    * ```torch-rnn``` contains code for training and sampling the text neural networks
     * ```stable-diffusion``` contains self-contained trained imaging neural networks and associated code
     * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
     * ```outputs``` contains final cards, card sheets, and intermediate outputs from each AI and processing stage
-    * ```stock_images``` contains template images for rendering the generated cards
+    * ```image_templates``` contains template images for rendering the generated cards
 
 
 # git-subtree management
