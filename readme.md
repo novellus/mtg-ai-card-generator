@@ -11,8 +11,8 @@
     * ```nns``` contains trained text-based neural networks
     * ```torch-rnn``` contains code for training and sampling the text neuranl networks
     * ```stable-diffusion``` contains self-contained trained imaging neural networks and associated code
-    * ```install_torch.sh``` and ```torch_patches``` are only used during environment setup, described bewlow
-    * ```outputs``` contain final cards, card sheets, and intermediate outputs from each AI and processing stage
+    * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
+    * ```outputs``` contains final cards, card sheets, and intermediate outputs from each AI and processing stage
 
 
 # git-subtree management
