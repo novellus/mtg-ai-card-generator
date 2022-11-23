@@ -13,6 +13,7 @@
     * ```stable-diffusion``` contains self-contained trained imaging neural networks and associated code
     * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
     * ```outputs``` contains final cards, card sheets, and intermediate outputs from each AI and processing stage
+    * ```stock_images``` contains template images for rendering the generated cards
 
 
 # git-subtree management
