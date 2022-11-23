@@ -36,6 +36,6 @@ plt.plot(data_training['epoch'], data_training['loss'], c='green', label='traini
 plt.plot(data_validation['epoch'], data_validation['loss'], c='red', label='validation loss')
 plt.legend(loc=2)
 plt.twinx()
-plt.plot(data_lr['epoch'], data_lr['lr'], c='blue', label='learning rate')
+plt.plot(data_lr['epoch'], data_lr['lr'], marker='x', c='blue', label='learning rate')
 plt.legend(loc=1)
 plt.show()
