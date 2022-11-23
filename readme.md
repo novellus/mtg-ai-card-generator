@@ -16,47 +16,53 @@
     * ```image_templates``` contains template images for rendering the generated cards
 
 
-# git-subtree management
-* subtree list, with changes made to each repo
-    * [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
-        * Created environment.yaml for python portion of the environment
-        * Implemented whispering during sampling
-        * Removed test fraction loading from DataLoader, which is unused, so that it can accept an empty test fraction
-        * Updated preprocessor to
-            * partition input data on specified delimeter (eg between encoded cards)
-            * randomize the chunk order
-            * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
-            * store the data as processed chunks, which can be order randomized during batching
-        * Updated DataLoader to
-            * accept data chunks instead of raw data from the new proprocessing script
-            * dynamically randomize the order and batch locality of the chunks each epoch
-        * Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
-            * symbols in mana costs
-            * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
-        * Added option to trainer to set validation / checkpoint at a whole number of epochs, to avoid resetting the neural network in the middle of an arbitrarily segmented stream
-        * Updated trainer to load history and learning rate from checkpoints
-        * Updated trainer to print learning rate each time its updated
-        * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
-        * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
-    * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
-        * Created environment.yaml for conda management
-        * Fixed reserved word ```set``` inappropriately used
-        * Added printline stats during parsing wehen verbose is specified
-        * Fixed rarity parsing error
-        * Added sticker type cards and planechase type sets to exclude by default list
-        * Added support for energy costs
-        * Fixed card name encoding on double sided cards: stripped reverse card name from card title
-        *   &#x1F534; TODO Fixed double sided cards not recognized as such
-        * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
-        * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
-    * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
-        * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
-        * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
-            * Added watermarker
-            * cleaned up interfaces
-            * Added fully specifiable output dir and filename options to samplers
-        * Safety filter disabled
-        * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
+# Workflow / Getting Started
+* Run through the environment setup section below
+* Train up some neural nets for names, flavor and main text. See the training section below.
+* Finally, use the main generator ```generate_cards.py``` to sample the AIs, process + decode the raw data, and render the final cards.
+* Optionally create card sheets for deckbuilding in Tabletop Simulator via ```build_sheets.py```
+
+
+# Subtree List and their Customizations
+* [torch-rnn](https://github.com/jcjohnson/torch-rnn) with some modifications inspired by [mtg-rnn](https://github.com/billzorn/mtg-rnn)
+    * Created environment.yaml for python portion of the environment
+    * Implemented whispering during sampling
+    * Removed test fraction loading from DataLoader, which is unused, so that it can accept an empty test fraction
+    * Updated preprocessor to
+        * partition input data on specified delimeter (eg between encoded cards)
+        * randomize the chunk order
+        * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
+        * store the data as processed chunks, which can be order randomized during batching
+    * Updated DataLoader to
+        * accept data chunks instead of raw data from the new proprocessing script
+        * dynamically randomize the order and batch locality of the chunks each epoch
+    * Added option to DataLoader to dynamically randomize the order of structured content in encoded mtg cards in each batch
+        * symbols in mana costs
+        * card field order (other than the card name field, which is always the first field and treated as defining for the AI)
+    * Added option to trainer to set validation / checkpoint at a whole number of epochs, to avoid resetting the neural network in the middle of an arbitrarily segmented stream
+    * Updated trainer to load history and learning rate from checkpoints
+    * Updated trainer to print learning rate each time its updated
+    * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
+    * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
+* [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
+    * Created environment.yaml for conda management
+    * Fixed reserved word ```set``` inappropriately used
+    * Added printline stats during parsing wehen verbose is specified
+    * Fixed rarity parsing error
+    * Added sticker type cards and planechase type sets to exclude by default list
+    * Added support for energy costs
+    * Fixed card name encoding on double sided cards: stripped reverse card name from card title
+    *   &#x1F534; TODO Fixed double sided cards not recognized as such
+    * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
+    * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
+* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
+    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
+    * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
+        * Added watermarker
+        * cleaned up interfaces
+        * Added fully specifiable output dir and filename options to samplers
+    * Safety filter disabled
+    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -110,7 +116,7 @@
     * &#x1F534; TODO Add extra names and flavor
     * &#x1F534; TODO install mtg fonts
 
-# Usage / AI Training and Sampling
+# AI Training and Sampling
 * stable diffusion
     * execute ```conda activate ldm``` at the berginning of each bash session
     * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --n_samples 1 --n_iter 1 --skip_grid --H 64 --W 64 --prompt <text>```
