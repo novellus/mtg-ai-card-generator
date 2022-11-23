@@ -304,11 +304,14 @@ for i = start_i + 1, num_iterations do
   local lr_decay_every = opt.lr_decay_every
   if lr_decay_every > 0 and i % lr_decay_every == 0 then
     local old_lr = optim_config.learningRate
-    print('--A--' .. tostring(optim_config))
-    for k, v in pairs(optim_config) do
-      print('--B--' .. tostring(k) .. ' : ' .. tostring(v))
-    end
-    optim_config = {learningRate = old_lr * opt.lr_decay_factor}
+
+    -- is it ok to not clear the rest of the state when setting a new lr?
+    --  optim stores state in config automatically...
+    --  *not* clearing state results in much smoother losses, so sticking with that for now
+    --  state is cleared on reset tho, so might consider saving state, but it would be the same size as the NN...
+    optim_config.learningRate = old_lr * opt.lr_decay_factor
+    -- optim_config = {learningRate = old_lr * opt.lr_decay_factor}
+
     table.insert(learning_rate_history_key, float_epoch)
     table.insert(learning_rate_history_val, optim_config.learningRate)
     print('Learning rate = ' .. tostring(optim_config.learningRate))

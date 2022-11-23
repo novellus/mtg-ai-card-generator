@@ -36,6 +36,7 @@
         * Updated trainer to load history and learning rate from checkpoints
         * Updated trainer to print learning rate each time its updated
         * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
+        * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
     * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
         * Created environment.yaml for conda management
         * Fixed reserved word ```set``` inappropriately used
@@ -44,6 +45,7 @@
         * Added sticker type cards and planechase type sets to exclude by default list
         * Added support for energy costs
         * Fixed card name encoding on double sided cards: stripped reverse card name from card title
+        *   &#x1F534; TODO Fixed double sided cards not recognized as such
         * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
         * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
     * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
