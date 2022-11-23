@@ -1,4 +1,5 @@
 import argparse
+import json
 import re
 
 from matplotlib import pyplot as plt
@@ -6,36 +7,18 @@ from collections import defaultdict
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--log_path', type=str,)
+parser.add_argument('--json_path', type=str,)
 args = parser.parse_args()
 
-
-data_training = defaultdict(list)
-data_validation = defaultdict(list)
-data_lr = defaultdict(list)
-
-with open(args.log_path) as f:
-    epoch = None
-    for line in f:
-        search_epoch_line = re.search(r'^Epoch ([\d\.]+) [^\n]* loss = ([\d\.]+)\s+$', line)
-        search_val_line = re.search(r'^val_loss =\s+([\d\.e\-]+)\s+$', line)
-        search_lr_line = re.search(r'^Learning rate =\s+([\d\.e\-]+)\s+$', line)
-        if search_epoch_line:
-            epoch = float(search_epoch_line.group(1))
-            data_training['epoch'].append(epoch)
-            data_training['loss'].append(float(search_epoch_line.group(2)))
-        elif search_val_line:
-            data_validation['epoch'].append(epoch)
-            data_validation['loss'].append(float(search_val_line.group(1)))
-        elif search_lr_line:
-            data_lr['epoch'].append(epoch)
-            data_lr['lr'].append(float(search_lr_line.group(1)))
+with open(args.json_path) as f:
+    j = json.load(f)
 
 
-plt.plot(data_training['epoch'], data_training['loss'], c='green', label='training loss')
-plt.plot(data_validation['epoch'], data_validation['loss'], c='red', label='validation loss')
+plt.plot(j['train_loss_history_key'], j['train_loss_history_val'], c='green', label='training loss')
+plt.plot(j['val_loss_history_key'], j['val_loss_history_val'], c='red', label='validation loss')
 plt.legend(loc=2)
 plt.twinx()
-plt.plot(data_lr['epoch'], data_lr['lr'], marker='x', c='blue', label='learning rate')
+plt.plot(j['learning_rate_history_key'], j['learning_rate_history_val'], marker='x', c='blue', label='learning rate')
 plt.legend(loc=1)
+plt.title(args.json_path)
 plt.show()

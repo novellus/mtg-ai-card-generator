@@ -87,25 +87,31 @@ for k, v in pairs(vocab.idx_to_token) do
   idx_to_token[tonumber(k)] = v
 end
 
+local num_train = loader.split_sizes['train']
+local num_iterations = opt.max_epochs * num_train
+
 
 -- checkpoint_n_epochs takes precidence over checkpoint_every
 -- must be set after the DataLoader is initialized so we know the size of epochs
 if opt.checkpoint_n_epochs > 0 then
-  opt.checkpoint_every = loader.split_sizes['train'] * opt.checkpoint_n_epochs
+  opt.checkpoint_every = num_train * opt.checkpoint_n_epochs
 end
 if opt.validate_n_epochs > 0 then
-  opt.validate_every = loader.split_sizes['train'] * opt.validate_n_epochs
+  opt.validate_every = num_train * opt.validate_n_epochs
 end
 if opt.lr_decay_n_epochs > 0 then
-  opt.lr_decay_every = loader.split_sizes['train'] * opt.lr_decay_n_epochs
+  opt.lr_decay_every = num_train * opt.lr_decay_n_epochs
 end
 
 
 -- Set up some variables we will use below
 local N, T = opt.batch_size, opt.seq_length
-local train_loss_history = {}
-local val_loss_history = {}
-local val_loss_history_it = {}
+local train_loss_history_key = {}  -- encoded as json, which does not support poroper dicts, or the lua json library does not
+local train_loss_history_val = {}
+local val_loss_history_key = {}
+local val_loss_history_val = {}
+local learning_rate_history_key = {}
+local learning_rate_history_val = {}
 local forward_backward_times = {}
 local init_memory_usage, memory_usage = nil, {}
 
@@ -120,9 +126,12 @@ if opt.init_from ~= '' then
   print('Initializing from ', opt.init_from)
   local checkpoint = torch.load(opt.init_from)
   model = checkpoint.model:type(dtype)
-  train_loss_history = checkpoint.train_loss_history
-  val_loss_history = checkpoint.val_loss_history
-  val_loss_history_it = checkpoint.val_loss_history_it
+  train_loss_history_key = checkpoint.train_loss_history_key
+  train_loss_history_val = checkpoint.train_loss_history_val
+  val_loss_history_key = checkpoint.val_loss_history_key
+  val_loss_history_val = checkpoint.val_loss_history_val
+  learning_rate_history_key = checkpoint.learning_rate_history_key
+  learning_rate_history_val = checkpoint.learning_rate_history_val
   forward_backward_times = checkpoint.forward_backward_times
   memory_usage = checkpoint.memory_usage
   if opt.reset_iterations == 0 then
@@ -137,6 +146,9 @@ end
 local params, grad_params = model:getParameters()
 local crit = nn.CrossEntropyCriterion():type(dtype)
 
+local start_epoch = start_i / num_train + 1
+table.insert(learning_rate_history_key, start_epoch)
+table.insert(learning_rate_history_val, optim_config.learningRate)
 print('Learning rate = ' .. tostring(optim_config.learningRate))
 
 -- print model size
@@ -204,11 +216,10 @@ local function f(w)
 end
 
 -- Train the model!
-local num_train = loader.split_sizes['train']
-local num_iterations = opt.max_epochs * num_train
 model:training()
 for i = start_i + 1, num_iterations do
   local epoch = math.floor(i / num_train) + 1
+  local float_epoch = i / num_train + 1
 
   -- Check if we are at the end of an epoch
   if i % num_train == 0 then
@@ -218,9 +229,9 @@ for i = start_i + 1, num_iterations do
   -- Take a gradient step and maybe print
   -- Note that adam returns a singleton array of losses
   local _, loss = optim.adam(f, params, optim_config)
-  table.insert(train_loss_history, loss[1])
+  table.insert(train_loss_history_key, float_epoch)
+  table.insert(train_loss_history_val, loss[1])
   if opt.print_every > 0 and i % opt.print_every == 0 then
-    local float_epoch = i / num_train + 1
     local msg = 'Epoch %.2f / %d, i = %d / %d, loss = %f'
     local args = {msg, float_epoch, opt.max_epochs, i, num_iterations, loss[1]}
     print(string.format(unpack(args)))
@@ -246,8 +257,8 @@ for i = start_i + 1, num_iterations do
     end
     val_loss = val_loss / num_val
     print('val_loss = ', val_loss)
-    table.insert(val_loss_history, val_loss)
-    table.insert(val_loss_history_it, i)
+    table.insert(val_loss_history_key, float_epoch)
+    table.insert(val_loss_history_val, val_loss)
     model:resetStates()
     model:training()
   end
@@ -260,15 +271,18 @@ for i = start_i + 1, num_iterations do
     -- TODO save more stats to json file
     local checkpoint = {
       opt = opt,
-      train_loss_history = train_loss_history,
-      val_loss_history = val_loss_history,
-      val_loss_history_it = val_loss_history_it,
+      train_loss_history_key = train_loss_history_key,
+      train_loss_history_val = train_loss_history_val,
+      val_loss_history_key = val_loss_history_key,
+      val_loss_history_val = val_loss_history_val,
+      learning_rate_history_key = learning_rate_history_key,
+      learning_rate_history_val = learning_rate_history_val,
       forward_backward_times = forward_backward_times,
       memory_usage = memory_usage,
       learning_rate = optim_config.learningRate,
       i = i
     }
-    local filename = string.format('%s_%d.json', opt.checkpoint_name, i)
+    local filename = string.format('%s_%f.json', opt.checkpoint_name, float_epoch)
     -- Make sure the output directory exists before we try to write it
     paths.mkdir(paths.dirname(filename))
     utils.write_json(filename, checkpoint)
@@ -278,7 +292,7 @@ for i = start_i + 1, num_iterations do
     model:clearState()
     model:float()
     checkpoint.model = model
-    local filename = string.format('%s_%d.t7', opt.checkpoint_name, i)
+    local filename = string.format('%s_%f.t7', opt.checkpoint_name, float_epoch)
     paths.mkdir(paths.dirname(filename))
     torch.save(filename, checkpoint)
     model:type(dtype)
@@ -290,7 +304,13 @@ for i = start_i + 1, num_iterations do
   local lr_decay_every = opt.lr_decay_every
   if lr_decay_every > 0 and i % lr_decay_every == 0 then
     local old_lr = optim_config.learningRate
+    print('--A--' .. tostring(optim_config))
+    for k, v in pairs(optim_config) do
+      print('--B--' .. tostring(k) .. ' : ' .. tostring(v))
+    end
     optim_config = {learningRate = old_lr * opt.lr_decay_factor}
+    table.insert(learning_rate_history_key, float_epoch)
+    table.insert(learning_rate_history_val, optim_config.learningRate)
     print('Learning rate = ' .. tostring(optim_config.learningRate))
   end
 end
