@@ -255,6 +255,7 @@ for i = start_i + 1, num_iterations do
   -- Maybe save a checkpoint
   local check_every = opt.checkpoint_every
   if (check_every > 0 and i % check_every == 0) or i == num_iterations then
+    print('Saving a checkpoint')
     -- First save a JSON checkpoint, excluding the model
     -- TODO save more stats to json file
     local checkpoint = {
