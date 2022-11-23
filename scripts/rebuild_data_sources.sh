@@ -5,6 +5,7 @@
 set -e
 
 
+cd ..
 rm -rf encoded_data_sources
 mkdir encoded_data_sources
 
