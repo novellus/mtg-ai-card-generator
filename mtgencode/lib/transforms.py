@@ -29,9 +29,11 @@ unary_counter = utils.unary_counter
 # Name Passes.
 
 
-def name_pass_0_strip_reverse_side_names(s):
-    s = re.sub(r' // .*$', '', s)
-    return s
+def name_pass_0_strip_reverse_side_names(s, faceName=None):
+    s2 = re.sub(r' // .*$', '', s)
+    if s2 != s and faceName is not None:
+        return faceName
+    return s2
 
 
 def name_pass_0_strip_alchemy_version_prefix(s):

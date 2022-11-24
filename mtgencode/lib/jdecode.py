@@ -47,6 +47,8 @@ def mtg_open_json(fname, verbose = False):
                 uid = uid + '_' + cardname + '_'
             else:
                 uid = uid + '_' + cardnumber
+            if 'side' in card and uid[-1] not in 'ab':  # handle database change to labeling scheme
+                uid += card['side']
 
             # aggregate by name to avoid duplicates, not counting bsides
             if not uid[-1] == 'b':
@@ -65,8 +67,8 @@ def mtg_open_json(fname, verbose = False):
         aside_uid = uid[:-1] + 'a'
         if aside_uid in asides:
             # the second check handles the brothers yamazaki edge case
-            if not asides[aside_uid]['name'] == bsides[uid]['name']:
-                asides[aside_uid][utils.json_field_bside] = bsides[uid]
+            # if not asides[aside_uid]['name'] == bsides[uid]['name']:  # handle database change to labeling scheme
+            asides[aside_uid][utils.json_field_bside] = bsides[uid]
         else:
             pass
             # this exposes some coldsnap theme deck bsides that aren't

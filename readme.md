@@ -51,8 +51,7 @@
     * Fixed rarity parsing error
     * Added sticker type cards and planechase type sets to exclude by default list
     * Added support for energy costs
-    * Fixed card name encoding on double sided cards: stripped reverse card name from card title
-    *   &#x1F534; TODO Fixed double sided cards not recognized as such
+    * Fixed recognition and encoding of double sided cards: stripped reverse card name from card title and used newer json fields for proper card name and side
     * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
     * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)

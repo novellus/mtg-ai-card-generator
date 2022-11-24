@@ -241,10 +241,18 @@ def fields_check_valid(fields):
 # starter - boolean
 
 
-def process_name_field(s):
+def process_name_field(src_json=None, s=None):
     # abstracted for use in 2nd encoder
-    name_val = s.lower()
-    name_val = transforms.name_pass_0_strip_reverse_side_names(name_val)
+    assert src_json or s
+
+    faceName = None
+    if src_json:
+        s = src_json['name']
+        if 'faceName' in src_json:
+            faceName = src_json['faceName']
+
+    name_val = transforms.name_pass_0_strip_reverse_side_names(s, faceName)
+    name_val = name_val.lower()
     name_val = transforms.name_pass_0_strip_alchemy_version_prefix(name_val)
     name_orig = name_val
     name_val = transforms.name_pass_1_sanitize(name_val)
@@ -260,7 +268,7 @@ def fields_from_json(src_json, linetrans = True, verbose = False):
 
     # we hardcode in what the things are called in the mtgjson format
     if 'name' in src_json:
-        name_orig, name_val = process_name_field(src_json['name'])
+        name_orig, name_val = process_name_field(src_json)
         fields[field_name] = [(-1, name_val)]
     else:
         name_orig = ''

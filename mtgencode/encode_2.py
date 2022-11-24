@@ -27,7 +27,7 @@ def encode_names(j, args):
     names = set()  # set for deduplication
     for s_key in list(j['data'].keys()):
         for card in j['data'][s_key]['cards']:
-            _, processed_name = cardlib.process_name_field(card['name'])
+            _, processed_name = cardlib.process_name_field(card)
             names.add(processed_name)
 
     # collect extra data from secondary (manual) sources
@@ -37,7 +37,7 @@ def encode_names(j, args):
         f.close()
         
         for name in extra_names:
-            _, processed_name = cardlib.process_name_field(name)
+            _, processed_name = cardlib.process_name_field(s=name)
             names.add(processed_name)
 
     names = sorted(list(names))
@@ -73,7 +73,7 @@ def encode_flavor(j, args):
     for s_key in list(j['data'].keys()):
         for card in j['data'][s_key]['cards']:
             if 'flavorText' in card and card['flavorText'] and card['language'].lower() == 'english':
-                _, processed_name = cardlib.process_name_field(card['name'])
+                _, processed_name = cardlib.process_name_field(card)
                 processed_flavor = process_flavor_field(card['flavorText'])
 
                 data.add(Card(
@@ -89,7 +89,7 @@ def encode_flavor(j, args):
         f.close()
         
         for name, flavor in extra_flavor.items():
-            _, processed_name = cardlib.process_name_field(name)
+            _, processed_name = cardlib.process_name_field(s=name)
             processed_flavor = process_flavor_field(flavor)
 
             data.add(Card(
