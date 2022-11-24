@@ -11,7 +11,7 @@ mkdir encoded_data_sources
 
 
 cd mtgencode
-conda run -n mtgencode python encode.py -r -e named ../raw_data_sources/AllPrintings.json ../encoded_data_sources/main_text.txt
+conda run -n mtgencode python encode.py -e named ../raw_data_sources/AllPrintings.json ../encoded_data_sources/main_text.txt
 conda run -n mtgencode python encode_2.py ../raw_data_sources/AllPrintings.json --extra_names ../raw_data_sources/names.yaml --extra_flavor ../raw_data_sources/flavor.yaml --outfile_names ../encoded_data_sources/names.txt --outfile_flavor ../encoded_data_sources/flavor.txt --outfile_artists ../encoded_data_sources/artists_stats.txt
 
 
