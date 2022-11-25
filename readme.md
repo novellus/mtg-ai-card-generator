@@ -44,6 +44,7 @@
     * Updated trainer to print learning rate each time its updated
     * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
     * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
+    * &#x1F534; TODO Added seed input option to sampler for repeatable sampling
 * [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
     * Created environment.yaml for conda management
     * Fixed reserved word ```set``` inappropriately used
