@@ -12,10 +12,18 @@ cmd:option('-whisper_text', '')
 cmd:option('-whisper_every_newline', 1)
 cmd:option('-sample', 1)
 cmd:option('-temperature', 1)
+cmd:option('-seed', 0)
 cmd:option('-gpu', 0)
 cmd:option('-gpu_backend', 'cuda')
 cmd:option('-verbose', 0)
 local opt = cmd:parse(arg)
+
+
+-- Enable repeatable sampling
+-- torch initializes with a random seed already, so manualSeed is only needed for repeatable outputs
+if opt.seed > 0 then
+  torch.manualSeed(opt.seed)
+end
 
 
 local checkpoint = torch.load(opt.checkpoint)
