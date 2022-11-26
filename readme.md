@@ -61,6 +61,7 @@
         * Added watermarker
         * cleaned up interfaces
         * Added fully specifiable output dir and filename options to samplers
+        * Added negative prompt feature, per [AUTOMATIC1111's wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Negative-prompt)
     * Safety filter disabled
     * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * each subtree has a remote under the same name as the directory
