@@ -69,6 +69,21 @@
 * pull subtree: ```git fetch <remote> <branch>``` and then ```git subtree pull --prefix <dir> <remote> <branch> --squash```
 
 
+# &#x1F534; main repo TODOs
+* Add extra names and flavor
+* pick overall rendered card styles, and acquire template images
+    * define which dynamic style choices are supported for the main generator
+        * frame: main (1500 x 1937 px) | planeswalker frame | unique land
+            * sub types for each color
+        * legendary frame change
+            * sub types for each color
+        * any icons appropriate? (eg for sets etc)
+        * indicate rarity?
+        * card back vs double sided (only matters for the tts card sheet)
+    * consider generating additional basic lands with custom / unique art via (choose tall / borderless land frames)
+    * main card style: I'm thinking either ```SNC -> Gilded``` or ```promo -> regular (borderless)```. M15 is the classic look, but not very sleek.
+
+
 # Environment Setup
 * stable diffusion
     * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
@@ -113,7 +128,6 @@
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * ```bash rebuild_data_sources.sh |& tee data-build-log.txt```
-    * &#x1F534; TODO Add extra names and flavor
     * &#x1F534; TODO install mtg fonts
 
 # AI Training and Sampling
