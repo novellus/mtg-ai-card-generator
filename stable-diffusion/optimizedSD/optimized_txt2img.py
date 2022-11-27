@@ -209,9 +209,9 @@ def main():
         help="Reduces inference time on the expense of 1GB VRAM",
     )
     parser.add_argument(
-        "--force_no_arg_weighting",
+        "--force_combined_prompt_weighting",
         action="store_true",
-        help="skips arg weighting even if prompt is formatted for it",
+        help="forces all prompts into main conditioning, leaving unconditioned-conditioning empty, even when negative weights are present",
     )
     parser.add_argument(
         "--precision", 
@@ -338,54 +338,31 @@ def main():
                     if isinstance(prompts, tuple):
                         prompts = list(prompts)
 
-                    # # '#' split negative prompts
-                    # split_prompt = prompts[0].split('#')
-                    # pos_prompt = split_prompt[0]
-                    # if len(split_prompt) > 1:
-                    #     neg_prompt = split_prompt[1]
-                    #     uc = modelCS.get_learned_conditioning(batch_size * [neg_prompt])
-                    # else:
-                    #     uc = modelCS.get_learned_conditioning(batch_size * [""])
-                    # c = modelCS.get_learned_conditioning(pos_prompt)
-
-                    # # classic negative prompts
-                    # subprompts, weights, neg_subprompts, neg_weights = split_weighted_subprompts(prompts[0])
-                    # uc = None
-                    # if opt.scale != 1.0:
-                    #     uc = modelCS.get_learned_conditioning(batch_size * [""])  # just for shape initialization...
-                    # if len(neg_subprompts) >= 1:
-                    #     uc = torch.zeros_like(uc)
-                    #     totalWeight = sum(neg_weights)
-                    #     # normalize each "sub prompt" and add it
-                    #     for i in range(len(neg_subprompts)):
-                    #         weight = neg_weights[i]
-                    #         weight = weight / totalWeight
-                    #         uc = torch.add(uc, modelCS.get_learned_conditioning(neg_subprompts[i]), alpha=weight)
-                    # if len(subprompts) >= 1:
-                    #     c = torch.zeros_like(uc)
-                    #     totalWeight = sum(weights)
-                    #     # normalize each "sub prompt" and add it
-                    #     for i in range(len(subprompts)):
-                    #         weight = weights[i]
-                    #         weight = weight / totalWeight
-                    #         c = torch.add(c, modelCS.get_learned_conditioning(subprompts[i]), alpha=weight)
-                    # else:
-                    #     c = modelCS.get_learned_conditioning(prompts)
-
-                    # intentionally broken negative prompts
+                    # classic negative prompts
                     subprompts, weights, neg_subprompts, neg_weights = split_weighted_subprompts(prompts[0])
-                    uc = modelCS.get_learned_conditioning(batch_size * [""])
+                    assert len(subprompts) >= 1
+                    totalWeight = None
+                    if opt.force_combined_prompt_weighting:
+                        totalWeight = sum(weights) - sum(neg_weights)  # might be negative, but cannot be zero
+                        assert totalWeight != 0
+                    totalPosWeight = totalWeight or sum(weights)
+                    totalNegWeight = totalWeight or sum(neg_weights)
+
+                    uc = modelCS.get_learned_conditioning(batch_size * [""])  # just for shape initialization...
                     c = torch.zeros_like(uc)
-                    totalWeight = sum(weights) - sum(neg_weights)
-                    # normalize each "sub prompt" and add it
                     for i in range(len(subprompts)):
                         weight = weights[i]
-                        weight = weight / totalWeight
+                        weight = weight / totalPosWeight
                         c = torch.add(c, modelCS.get_learned_conditioning(subprompts[i]), alpha=weight)
+                    if len(neg_subprompts) >= 1 and not opt.force_combined_prompt_weighting:
+                        uc = torch.zeros_like(uc)
                     for i in range(len(neg_subprompts)):
-                        weight = -neg_weights[i]
-                        weight = weight / totalWeight
-                        c = torch.add(c, modelCS.get_learned_conditioning(neg_subprompts[i]), alpha=weight)
+                        weight = neg_weights[i]
+                        weight = weight / totalNegWeight
+                        if not opt.force_combined_prompt_weighting:
+                            uc = torch.add(uc, modelCS.get_learned_conditioning(neg_subprompts[i]), alpha=weight)
+                        else:
+                            c = torch.add(c, modelCS.get_learned_conditioning(neg_subprompts[i]), alpha=-weight)
 
                     shape = [opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f]
 
