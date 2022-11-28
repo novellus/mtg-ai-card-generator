@@ -88,6 +88,14 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
     raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length} length, exceeded {max_resamples} resamples')
 
 
+def parse_flavor(chunk):
+    s = re.search(r'^.+\|(.+)$', chunk)
+    assert s is not None
+
+    flavor = s.group(1)
+    return flavor
+
+
 def resolve_folder_to_checkpoint_path(path):
     # return immediately if its a file
     if os.path.isfile(path):
@@ -153,8 +161,9 @@ def main(args):
         main_texts = sample_lstm(nn_path = args.main_text_nn,
                                  seed = args.seed,
                                  approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
-                                 num_chunks = 1,  # TODO add margin for mtgencode parser fail? Or maybe add mtgencode parsing to sample_lstm and abuse its retries?
+                                 num_chunks = 1,
                                  delimiter = '\n\n',
+                                 parser=None,  # TODO
                                  whisper_text = f'|1{name}|',
                                  whisper_every_newline = 2)
         data[name]['main_text'] = main_texts[0]
@@ -167,7 +176,8 @@ def main(args):
                               approx_length_per_chunk = LSTM_LEN_PER_FLAVOR,
                               num_chunks = 1,
                               delimiter = '\n',
-                              whisper_text = name,
+                              parser=parse_flavor,
+                              whisper_text = f'{name}|',
                               whisper_every_newline = 1)
         data[name]['flavor'] = flavors[0]
 
