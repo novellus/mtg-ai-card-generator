@@ -84,6 +84,13 @@
         * card back vs double sided (only matters for the tts card sheet)
     * consider generating additional basic lands with custom / unique art via (choose tall / borderless land frames)
     * main card style: I'm thinking either ```SNC -> Gilded``` or ```promo -> regular (borderless)```. M15 is the classic look, but not very sleek.
+* configure txt2img args
+    * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:-1 magic the gathering:-1" --force_combined_prompt_weighting```
+        * uses slightly broken negative weighting
+        * seems to produce card-like art instead of actual cards
+        * seems to only work at higher resolution (512x512 produces images of cards). I think the higher resolution is slightly broken in the base repo, which when combined with the slightly broken negative weighting, somehow comes out on top, statistically
+        * try to come up with args that eliminate cards while still enabling card-like art
+    * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:1 magic the gathering:1 text:-1 card frame:-1" --force_combined_prompt_weighting```
 
 
 # Environment Setup
@@ -125,11 +132,11 @@
         * ```git clone https://github.com/Kitware/CMake.git```
         * ```cd CMake```
         * ```./bootstrap; make; sudo make install```
-    * install torch using ```bash install_torch.sh |& tee torch-install-log.txt```. There will be several prompts.
+    * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
-    * ```bash rebuild_data_sources.sh |& tee data-build-log.txt```
+    * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
     * &#x1F534; TODO install mtg fonts
 
 # AI Training and Sampling

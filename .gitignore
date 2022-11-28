@@ -11,5 +11,5 @@ nns/*
 *.egg-info*
 tmp*.py
 tmp
-*-log.txt
+log-*.txt
 SD_target.py
