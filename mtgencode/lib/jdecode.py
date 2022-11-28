@@ -92,7 +92,7 @@ def default_exclude_layouts(layout):
     return layout in ['token', 'plane', 'scheme', 'phenomenon', 'vanguard']
 
 # centralized logic for opening files of cards, either encoded or json
-def mtg_open_file(fname, verbose = False,
+def mtg_open_file(fname, instring=None, verbose = False,
                   linetrans = True, fmt_ordered = cardlib.fmt_ordered_default,
                   exclude_sets = default_exclude_sets,
                   exclude_types = default_exclude_types,
@@ -152,10 +152,14 @@ def mtg_open_file(fname, verbose = False,
 
     # fall back to opening a normal encoded file
     else:
-        if verbose:
-            print('Opening encoded card file: ' + fname)
-        with open(fname, 'rt') as f:
-            text = f.read()
+        text = None
+        if instring is None:
+            if verbose:
+                print('Opening encoded card file: ' + fname)
+            with open(fname, 'rt') as f:
+                text = f.read()
+        else:
+            text = instring
         for card_src in text.split(utils.cardsep):
             if card_src:
                 card = cardlib.Card(card_src, fmt_ordered=fmt_ordered, verbose=verbose)

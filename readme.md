@@ -56,6 +56,14 @@
     * Fixed recognition and encoding of double sided cards: stripped reverse card name from card title and used newer json fields for proper card name and side
     * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
     * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
+    * Modified decoder to accept input string on cli instead of file
+    * added decoder ```out_encoding``` argument to fix bug when writing to stdout
+    * &#x1F534; TODO Added decoder features / fixed bugs so that it actually decodes the following encoded properties
+        * ```@``` -> card name
+        * lists ```[[choose one ~ = destroy target land.]]```
+        * counters ```for each % counter on @.\nCountertype % fungus```
+        * &#x1F534; TODO systematically check for all features being decoded properly
+    * &#x1F534; TODO added json output option to decoder
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```

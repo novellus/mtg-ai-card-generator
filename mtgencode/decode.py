@@ -12,9 +12,11 @@ import cardlib
 from cbow import CBOW
 from namediff import Namediff
 
-def main(fname, oname = None, verbose = True, encoding = 'std',
+def main(fname, instring, oname = None, verbose = True, encoding = 'std', out_encoding='utf-8',
          gatherer = False, for_forum = False, for_mse = False,
          creativity = False, vdump = False, for_html = False):
+
+    assert fname or instring
 
     # there is a sane thing to do here (namely, produce both at the same time)
     # but we don't support it yet.
@@ -46,7 +48,7 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
     else:
         raise ValueError('encode.py: unknown encoding: ' + encoding)
 
-    cards = jdecode.mtg_open_file(fname, verbose=verbose, fmt_ordered=fmt_ordered)
+    cards = jdecode.mtg_open_file(fname, instring, verbose=verbose, fmt_ordered=fmt_ordered)
 
     if creativity:
         namediff = Namediff()
@@ -105,7 +107,10 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
 
         for card in cards:
             if for_mse:
-                writer.write(card.to_mse().encode('utf-8'))
+                if out_encoding is not None:
+                    writer.write(card.to_mse().encode(out_encoding))
+                else:
+                    writer.write(card.to_mse())
                 fstring = ''
                 if card.json:
                     fstring += 'JSON:\n' + card.json + '\n'
@@ -119,7 +124,10 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
             else:
                 fstring = card.format(gatherer = gatherer, for_forum = for_forum,
                                       vdump = vdump, for_html = for_html)
-                writer.write((fstring + '\n').encode('utf-8'))
+                if out_encoding is not None:
+                    writer.write((fstring + '\n').encode(out_encoding))
+                else:
+                    writer.write(fstring + '\n')
 
             if creativity:
                 cstring = '~~ closest cards ~~\n'
@@ -132,9 +140,15 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
                     cstring += hoverimg(cardname, dist, namediff)
                 if for_mse:
                     cstring = ('\n\n' + cstring[:-1]).replace('\n', '\n\t\t')
-                writer.write(cstring.encode('utf-8'))
+                if out_encoding is not None:
+                    writer.write(cstring.encode(out_encoding))
+                else:
+                    writer.write(cstring)
 
-            writer.write('\n'.encode('utf-8'))
+            if out_encoding is not None:
+                writer.write('\n'.encode(out_encoding))
+            else:
+                writer.write('\n')
 
         if for_mse:
             # more formatting info
@@ -147,7 +161,10 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
                                       vdump = vdump, for_html = for_html)
             if creativity:
                 fstring = fstring[:-6] # chop off the closing </div> to stick stuff in
-            writer.write((fstring + '\n').encode('utf-8'))
+            if out_encoding is not None:
+                writer.write((fstring + '\n').encode(out_encoding))
+            else:
+                writer.write(fstring + '\n')
 
             if creativity:
                 cstring = '~~ closest cards ~~\n<br>\n'
@@ -160,9 +177,15 @@ def main(fname, oname = None, verbose = True, encoding = 'std',
                 for dist, cardname in nearest:
                     cstring += hoverimg(cardname, dist, namediff)
                 cstring = '<hr><div>' + cstring + '</div>\n</div>'
-                writer.write(cstring.encode('utf-8'))
+                if out_encoding is not None:
+                    writer.write(cstring.encode(out_encoding))
+                else:
+                    writer.write(cstring)
 
-            writer.write('\n'.encode('utf-8'))
+            if out_encoding is not None:
+                writer.write('\n'.encode(out_encoding))
+            else:
+                writer.write('\n')
 
     # Sorting by colors
     def sort_colors(card_set):
@@ -272,13 +295,17 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('infile', #nargs='?'. default=None,
+    parser.add_argument('-infile', default='',
                         help='encoded card file or json corpus to encode')
-    parser.add_argument('outfile', nargs='?', default=None,
+    parser.add_argument('-instring', default=None,
+                        help='encoded card string. must specify this or infile')
+    parser.add_argument('-outfile', default=None,
                         help='output file, defaults to stdout')
     parser.add_argument('-e', '--encoding', default='std', choices=utils.formats,
                         #help='{' + ','.join(formats) + '}',
-                        help='encoding format to use',
+                        help='encoding format to use')
+    parser.add_argument('-out_encoding', default='utf-8',
+                        help='encoding to use for output writer. Specify "none" for string instead of bytes',
     )
     parser.add_argument('-g', '--gatherer', action='store_true',
                         help='emulate Gatherer visual spoiler')
@@ -296,7 +323,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args.infile, args.outfile, verbose = args.verbose, encoding = args.encoding,
+    if args.out_encoding.lower() == 'none':
+        args.out_encoding = None
+
+    main(args.infile, args.instring, args.outfile, verbose = args.verbose, encoding = args.encoding, out_encoding=args.out_encoding,
          gatherer = args.gatherer, for_forum = args.forum, for_mse = args.mse,
          creativity = args.creativity, vdump = args.dump, for_html = args.html)
 

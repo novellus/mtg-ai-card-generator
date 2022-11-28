@@ -13,6 +13,7 @@ from collections import defaultdict
 CONDA_ENV_SD = 'ldm'
 CONDA_ENV_MTGENCODE = 'mtgencode'
 PATH_TORCH_RNN = '../torch-rnn'
+PATH_MTGENCODE = '../mtgencode'
 # average lengths, for initial LSTM sample length target
 LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change if the dataset changes
 LSTM_LEN_PER_MAIN_TEXT = math.ceil(4373216 / (23840 + 119))  # empirical, change if the dataset changes
@@ -20,7 +21,7 @@ LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change
 
 
 
-def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1):
+def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1, verbosity=0):
     # samples from nn at nn_path with seed
     #   whispers whisper_text if specified, at interval whisper_every_newline
     # initially samples a length of characters targeting the number of chunks with margin
@@ -72,7 +73,7 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
             new_chunks = []
             for chunk in chunks:
                 try:
-                    new_chunk = parser(chunk)
+                    new_chunk = parser(chunk, verbosity)
                     new_chunks.append(new_chunk)
                 except:
                     pass
@@ -88,12 +89,44 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
     raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length} length, exceeded {max_resamples} resamples')
 
 
-def parse_flavor(chunk):
+def parse_flavor(chunk, verbosity=0):
     s = re.search(r'^.+\|(.+)$', chunk)
     assert s is not None
 
     flavor = s.group(1)
     return flavor
+
+
+def parse_mtg_cards(chunk, verbosity=0):
+    # use mtgencode to decode the machine encoded card format, producing nice human readable fields
+
+    # escape double quotes for bash string encoding
+    chunk = re.sub('"', '\x22', chunk)
+
+    cmd = ( 'python decode.py'
+           f' -instring "{chunk}"'
+            ' -e named'
+            ' -out_encoding none'
+          )
+
+    try:
+        p = subprocess.run(f'conda run -n {CONDA_ENV_MTGENCODE} {cmd}',
+                           shell=True,
+                           capture_output=True,
+                           check=True,
+                           cwd=os.path.join(os.getcwd(), PATH_MTGENCODE))
+    except subprocess.CalledProcessError as e:
+        if verbosity > 0:
+            print('CalledProcessError details')
+            print(f'\tchunk: "{chunk}"')
+            print(f'\te.stdout: "{e.stdout}"')
+            print(f'\te.stderr: "{e.stderr}"')
+        raise
+    decoded_text = p.stdout.decode('utf-8')
+
+    # TODO parse json or whatever comes out of the decoder
+
+    return decoded_text
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -147,7 +180,8 @@ def main(args):
                         seed = args.seed,
                         approx_length_per_chunk = LSTM_LEN_PER_NAME,
                         num_chunks = args.num_cards,
-                        delimiter = '\n')
+                        delimiter = '\n',
+                        verbosity = args.verbosity)
 
     data = defaultdict(dict)
 
@@ -163,9 +197,10 @@ def main(args):
                                  approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
                                  num_chunks = 1,
                                  delimiter = '\n\n',
-                                 parser=None,  # TODO
+                                 parser=parse_mtg_cards,
                                  whisper_text = f'|1{name}|',
-                                 whisper_every_newline = 2)
+                                 whisper_every_newline = 2,
+                                 verbosity = args.verbosity)
         data[name]['main_text'] = main_texts[0]
 
         if args.verbosity > 1:
@@ -178,7 +213,8 @@ def main(args):
                               delimiter = '\n',
                               parser=parse_flavor,
                               whisper_text = f'{name}|',
-                              whisper_every_newline = 1)
+                              whisper_every_newline = 1,
+                              verbosity = args.verbosity)
         data[name]['flavor'] = flavors[0]
 
         if args.verbosity > 1:
@@ -186,11 +222,6 @@ def main(args):
 
     pprint.pprint(dict(data))
 
-
-# subprocess.run(f'conda run -n {CONDA_ENV_SD} {cmd} >> {log_path} 2>&1',
-#                shell=True,
-#                check=True,
-#                cwd=os.path.join(os.getcwd(), SD_PATH))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
