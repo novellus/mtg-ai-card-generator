@@ -33,6 +33,7 @@
         * randomize the chunk order
         * and assign a fraction of those chunks to training, validation, and testing; instead of assigning a fraction of raw data
         * store the data as processed chunks, which can be order randomized during batching
+    * stabalized shuffle order in preprocessor
     * Updated DataLoader to
         * accept data chunks instead of raw data from the new proprocessing script
         * dynamically randomize the order and batch locality of the chunks each epoch
@@ -91,6 +92,15 @@
         * seems to only work at higher resolution (512x512 produces images of cards). I think the higher resolution is slightly broken in the base repo, which when combined with the slightly broken negative weighting, somehow comes out on top, statistically
         * try to come up with args that eliminate cards while still enabling card-like art
     * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:1 magic the gathering:1 text:-1 card frame:-1" --force_combined_prompt_weighting```
+* consider switching to [AUTOMATIC1111's fork](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API), which has several feature advantages over the base repo
+    * textual inversion: train the neural network on mtg art, and encode a keyword
+        * could gather mtg art images from skryfall: [bulk card data](https://scryfall.com/docs/api/bulk-data) and [imagery api](https://scryfall.com/docs/api/images)
+    * high res fix or outpainting
+    * proper negative prompts
+    * prompt editing, if that proves useful for the odd style / name combinations
+    * face restoration
+    * png info
+    * need to start /stop a local server to query for image data
 
 
 # Environment Setup
