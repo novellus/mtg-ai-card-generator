@@ -11,6 +11,7 @@ from collections import defaultdict
 
 # Constants
 CONDA_ENV_SD = 'ldm'
+CONDA_ENV_MTGENCODE = 'mtgencode'
 PATH_TORCH_RNN = '../torch-rnn'
 # average lengths, for initial LSTM sample length target
 LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change if the dataset changes
@@ -19,7 +20,7 @@ LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change
 
 
 
-def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1):
+def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1):
     # samples from nn at nn_path with seed
     #   whispers whisper_text if specified, at interval whisper_every_newline
     # initially samples a length of characters targeting the number of chunks with margin
@@ -39,12 +40,12 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, i
     # sample nn
     for _ in range(max_resamples):
         cmd = ( 'th sample.lua'
-               f' -checkpoint {nn_path}'
+               f' -checkpoint "{nn_path}"'
                f' -length {length}'
                f' -seed {seed}'
               )
         if whisper_text is not None:
-            cmd += (f' -whisper_text {whisper_text}'
+            cmd += (f' -whisper_text "{whisper_text}"'
                     f' -whisper_every_newline {whisper_every_newline}'
                    )
 
@@ -118,9 +119,29 @@ def main(args):
                         num_chunks = args.num_cards,
                         delimiter = '\n')
 
-    pprint.pprint(names)
+    data = defaultdict(dict)
 
-    # data = defaultdict(dict)
+    # sample main text and flavor text
+    for name in names:
+        main_texts = sample_lstm(nn_path = args.main_text_nn,
+                                 seed = args.seed,
+                                 approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
+                                 num_chunks = 1,  # TODO add margin for mtgencode parser fail? Or maybe add mtgencode parsing to sample_lstm and abuse its retries?
+                                 delimiter = '\n\n',
+                                 whisper_text = f'|1{name}|',
+                                 whisper_every_newline = 2)
+        data[name]['main_text'] = main_texts[0]
+
+        flavors = sample_lstm(nn_path = args.flavor_nn,
+                              seed = args.seed,
+                              approx_length_per_chunk = LSTM_LEN_PER_FLAVOR,
+                              num_chunks = 1,
+                              delimiter = '\n',
+                              whisper_text = name,
+                              whisper_every_newline = 1)
+        data[name]['flavor'] = flavors[0]
+
+    pprint.pprint(dict(data))
 
 
 
