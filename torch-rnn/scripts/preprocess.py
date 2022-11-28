@@ -23,6 +23,12 @@ parser.add_argument('--encoding', default='utf-8')
 args = parser.parse_args()
 
 
+def stabilize_shuffle():
+    # This should give a random but consistent ordering, to make comparing changes
+    # between the output of different versions easier.
+    random.seed(1371367)
+
+
 def str_to_idx_array(s, dtype):
   # returns np array of encoded string
   ret = np.zeros(len(s), dtype=dtype)
@@ -61,6 +67,7 @@ if __name__ == '__main__':
   n_chunks = len(chunks)
 
   # randomize data order, before assigning chunks
+  stabilize_shuffle()
   random.shuffle(chunks)
 
   # Now we can figure out the split sizes, in chunks
