@@ -27,6 +27,8 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
     # chunks on delimiter
     # trims trimmed_delimiters chunks from both beginning and end of stream
     # optionally deduplicates chunks
+    # optionally parses chunks with given function
+    #   if parser raises an error, the chunk is discarded
     # checks for atleast num_chunks remaining
     #   resamples at geometrically higher lengths (*length_growth) if criterion not met
     #   raises error if max_resamples exceeded
@@ -66,6 +68,16 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
         if deduplicate:
             chunks = sorted(set(chunks), key=lambda x: chunks.index(x))
 
+        if parser is not None:
+            new_chunks = []
+            for chunk in chunks:
+                try:
+                    new_chunk = parser(chunk)
+                    new_chunks.append(new_chunk)
+                except:
+                    pass
+            chunks = new_chunks
+
         # check criterion
         if len(chunks) >= num_chunks:
             # trim to target number
@@ -104,15 +116,25 @@ def main(args):
     # assign seed
     if args.seed < 0:
         args.seed = random.randint(0, 1000000000)
-        if args.verbose:
-            print(f'setting seed top {args.seed}')
+        if args.verbosity > 1:
+            print(f'setting seed to {args.seed}')
 
     # resolve folders to checkpoints
     args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
     args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
     args.flavor_nn = resolve_folder_to_checkpoint_path(args.flavor_nn)
 
+    # resolve and create subdirectory within outdir
+    base_count = len(os.listdir(args.outdir))
+    args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
+    temp_dir = os.path.join(args.outdir, 'tmp')
+    os.makedirs(args.outdir)
+    os.makedirs(temp_dir)
+
     # sample names
+    if args.verbosity > 1:
+        print(f'sampling names')
+
     names = sample_lstm(nn_path = args.names_nn,
                         seed = args.seed,
                         approx_length_per_chunk = LSTM_LEN_PER_NAME,
@@ -122,7 +144,12 @@ def main(args):
     data = defaultdict(dict)
 
     # sample main text and flavor text
-    for name in names:
+    for i_name, name in enumerate(names):
+        if args.verbosity > 0:
+            print(f'Generating {i_name + 1} / {args.num_cards}')
+        if args.verbosity > 1:
+            print(f'sampling main_text')
+
         main_texts = sample_lstm(nn_path = args.main_text_nn,
                                  seed = args.seed,
                                  approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
@@ -131,6 +158,9 @@ def main(args):
                                  whisper_text = f'|1{name}|',
                                  whisper_every_newline = 2)
         data[name]['main_text'] = main_texts[0]
+
+        if args.verbosity > 1:
+            print(f'sampling flavor')
 
         flavors = sample_lstm(nn_path = args.flavor_nn,
                               seed = args.seed,
@@ -141,8 +171,10 @@ def main(args):
                               whisper_every_newline = 1)
         data[name]['flavor'] = flavors[0]
 
-    pprint.pprint(dict(data))
+        if args.verbosity > 1:
+            print(f'sampling txt2img')
 
+    pprint.pprint(dict(data))
 
 
 # subprocess.run(f'conda run -n {CONDA_ENV_SD} {cmd} >> {log_path} 2>&1',
@@ -159,7 +191,7 @@ if __name__ == '__main__':
     parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
     parser.add_argument("--generate_statistics", action='store_true', help="compute and store statistics over generated cards as yaml file in outdir")
-    parser.add_argument("--verbose", action='store_true')
+    parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
     main(args)
