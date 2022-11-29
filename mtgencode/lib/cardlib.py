@@ -707,6 +707,8 @@ class Card:
         else:
             data['loyalty'] = None
 
+        assert not (data['power_toughness'] and data['loyalty'])  # not valid
+
         if self.bside:
             data['b_side'] = self.bside.to_serializable()
 
