@@ -90,6 +90,7 @@
         * card back vs double sided (only matters for the tts card sheet)
     * consider generating additional basic lands with custom / unique art via (choose tall / borderless land frames)
     * main card style: I'm thinking either ```SNC -> Gilded``` or ```promo -> regular (borderless)```. M15 is the classic look, but not very sleek.
+    * create set / rarity symbols
 * configure txt2img args
     * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:-1 magic the gathering:-1" --force_combined_prompt_weighting```
         * uses slightly broken negative weighting
