@@ -653,6 +653,66 @@ class Card:
 
         return outstr
 
+    def to_serializable(self):
+        # returns a base data structure (eg not module dependant)
+        #   which is self-descriptive
+        #   and readily serializable
+
+        # fill in fields with serializable objects
+        # TODO walk through this mess of a copy/paste and make it do the right things
+        data = {}
+
+        cardname = self.__dict__[field_name]
+        cardname = transforms.name_unpass_1_dashes(cardname)
+        cardname = titlecase(cardname)
+        data['name'] = cardname
+
+        data['cost'] = self.__dict__[field_cost].format()
+        
+        data['supertypes'] = [titlecase(x) for x in self.__dict__[field_supertypes]]
+        data['maintypes'] = [titlecase(x) for x in self.__dict__[field_types]]
+        data['subtypes'] = [titlecase(x) for x in self.__dict__[field_subtypes]]
+
+        assert self.__dict__[field_rarity] in utils.json_rarity_unmap
+        data['rarity'] = utils.json_rarity_unmap[self.__dict__[field_rarity]].lower()
+
+        if self.__dict__[field_text].text:
+            # TODO uncomment these
+            main_text = self.__dict__[field_text].text
+            main_text = transforms.text_unpass_1_choice(main_text, delimit = True)
+            #main_text = transforms.text_unpass_2_counters(main_text)
+            #main_text = transforms.text_unpass_3_uncast(main_text)
+            main_text = transforms.text_unpass_4_unary(main_text)
+            main_text = transforms.text_unpass_5_symbols(main_text, for_forum=False, for_html=False)
+            main_text = sentencecase(main_text)
+            #main_text = transforms.text_unpass_6_cardname(main_text, cardname)
+            main_text = transforms.text_unpass_7_newlines(main_text)
+            #main_text = transforms.text_unpass_8_unicode(main_text)
+            newtext = Manatext('')
+            newtext.text = main_text
+            newtext.costs = self.__dict__[field_text].costs
+            data['main_text'] = newtext.format()
+        else:
+            data['main_text'] = ''
+
+        if self.__dict__[field_pt]:
+            power_toughness = utils.from_unary(self.__dict__[field_pt])
+            data['power_toughness'] = [int(x) for x in power_toughness.split('/')]
+        else:
+            data['power_toughness'] = []
+
+        if self.__dict__[field_loyalty]:
+            loyalty = utils.from_unary(self.__dict__[field_loyalty])
+            data['loyalty'] = int(loyalty)
+        else:
+            data['loyalty'] = None
+
+        if self.bside:
+            data['b_side'] = self.bside.to_serializable()
+
+        return data
+
+
     def format(self, gatherer = False, for_forum = False, vdump = False, for_html = False):
         linebreak = '\n'
         if for_html:

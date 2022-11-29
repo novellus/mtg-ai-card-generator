@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import json
 import sys
 import os
 import zipfile
@@ -12,9 +13,9 @@ import cardlib
 from cbow import CBOW
 from namediff import Namediff
 
-def main(fname, instring, oname = None, verbose = True, encoding = 'std', out_encoding='utf-8',
+def main(fname, instring, oname = None, verbose = True, encoding = 'std', out_encoding = 'utf-8',
          gatherer = False, for_forum = False, for_mse = False,
-         creativity = False, vdump = False, for_html = False):
+         creativity = False, vdump = False, for_html = False, to_json = False):
 
     assert fname or instring
 
@@ -83,76 +84,88 @@ def main(fname, instring, oname = None, verbose = True, encoding = 'std', out_en
         return namestr 
 
     def writecards(writer):
-        if for_mse:
-            # have to prepend a massive chunk of formatting info
-            writer.write(utils.mse_prepend)
+        if to_json:
+            data = []
+            for card in cards:
+                data.append(card.to_serializable())
 
-        if for_html:
-            # have to preapend html info
-            writer.write(utils.html_prepend)
-            # seperate the write function to allow for writing smaller chunks of cards at a time
-            segments = sort_colors(cards)
-            for i in range(len(segments)):
-                # sort color by CMC
-                segments[i] = sort_type(segments[i])
-                # this allows card boxes to be colored for each color 
-                # for coloring of each box seperately cardlib.Card.format() must change non-minimaly
-                writer.write('<div id="' + utils.segment_ids[i] + '">')
-                writehtml(writer, segments[i])
-                writer.write("</div><hr>")
-            # closing the html file
-            writer.write(utils.html_append)
-            return #break out of the write cards funcrion to avoid writing cards twice
-
-
-        for card in cards:
-            if for_mse:
-                if out_encoding is not None:
-                    writer.write(card.to_mse().encode(out_encoding))
-                else:
-                    writer.write(card.to_mse())
-                fstring = ''
-                if card.json:
-                    fstring += 'JSON:\n' + card.json + '\n'
-                if card.raw: 
-                    fstring += 'raw:\n' + card.raw + '\n'
-                fstring += '\n'
-                fstring += card.format(gatherer = gatherer, for_forum = for_forum,
-                                       vdump = vdump) + '\n'
-                fstring = fstring.replace('<', '(').replace('>', ')')
-                writer.write(('\n' + fstring[:-1]).replace('\n', '\n\t\t'))
-            else:
-                fstring = card.format(gatherer = gatherer, for_forum = for_forum,
-                                      vdump = vdump, for_html = for_html)
-                if out_encoding is not None:
-                    writer.write((fstring + '\n').encode(out_encoding))
-                else:
-                    writer.write(fstring + '\n')
-
-            if creativity:
-                cstring = '~~ closest cards ~~\n'
-                nearest = card.nearest_cards
-                for dist, cardname in nearest:
-                    cstring += hoverimg(cardname, dist, namediff)
-                cstring += '~~ closest names ~~\n'
-                nearest = card.nearest_names
-                for dist, cardname in nearest:
-                    cstring += hoverimg(cardname, dist, namediff)
-                if for_mse:
-                    cstring = ('\n\n' + cstring[:-1]).replace('\n', '\n\t\t')
-                if out_encoding is not None:
-                    writer.write(cstring.encode(out_encoding))
-                else:
-                    writer.write(cstring)
+            json_string = json.dumps(data)
 
             if out_encoding is not None:
-                writer.write('\n'.encode(out_encoding))
+                writer.write(json_string.encode(out_encoding))
             else:
-                writer.write('\n')
+                writer.write(json_string)
 
-        if for_mse:
-            # more formatting info
-            writer.write('version control:\n\ttype: none\napprentice code: ')
+        else:
+            if for_mse:
+                # have to prepend a massive chunk of formatting info
+                writer.write(utils.mse_prepend)
+
+            if for_html:
+                # have to preapend html info
+                writer.write(utils.html_prepend)
+                # seperate the write function to allow for writing smaller chunks of cards at a time
+                segments = sort_colors(cards)
+                for i in range(len(segments)):
+                    # sort color by CMC
+                    segments[i] = sort_type(segments[i])
+                    # this allows card boxes to be colored for each color 
+                    # for coloring of each box seperately cardlib.Card.format() must change non-minimaly
+                    writer.write('<div id="' + utils.segment_ids[i] + '">')
+                    writehtml(writer, segments[i])
+                    writer.write("</div><hr>")
+                # closing the html file
+                writer.write(utils.html_append)
+                return #break out of the write cards funcrion to avoid writing cards twice
+
+            for card in cards:
+                if for_mse:
+                    if out_encoding is not None:
+                        writer.write(card.to_mse().encode(out_encoding))
+                    else:
+                        writer.write(card.to_mse())
+                    fstring = ''
+                    if card.json:
+                        fstring += 'JSON:\n' + card.json + '\n'
+                    if card.raw: 
+                        fstring += 'raw:\n' + card.raw + '\n'
+                    fstring += '\n'
+                    fstring += card.format(gatherer = gatherer, for_forum = for_forum,
+                                           vdump = vdump) + '\n'
+                    fstring = fstring.replace('<', '(').replace('>', ')')
+                    writer.write(('\n' + fstring[:-1]).replace('\n', '\n\t\t'))
+                else:
+                    fstring = card.format(gatherer = gatherer, for_forum = for_forum,
+                                          vdump = vdump, for_html = for_html)
+                    if out_encoding is not None:
+                        writer.write((fstring + '\n').encode(out_encoding))
+                    else:
+                        writer.write(fstring + '\n')
+
+                if creativity:
+                    cstring = '~~ closest cards ~~\n'
+                    nearest = card.nearest_cards
+                    for dist, cardname in nearest:
+                        cstring += hoverimg(cardname, dist, namediff)
+                    cstring += '~~ closest names ~~\n'
+                    nearest = card.nearest_names
+                    for dist, cardname in nearest:
+                        cstring += hoverimg(cardname, dist, namediff)
+                    if for_mse:
+                        cstring = ('\n\n' + cstring[:-1]).replace('\n', '\n\t\t')
+                    if out_encoding is not None:
+                        writer.write(cstring.encode(out_encoding))
+                    else:
+                        writer.write(cstring)
+
+                if out_encoding is not None:
+                    writer.write('\n'.encode(out_encoding))
+                else:
+                    writer.write('\n')
+
+            if for_mse:
+                # more formatting info
+                writer.write('version control:\n\ttype: none\napprentice code: ')
             
 
     def writehtml(writer, card_set):
@@ -320,6 +333,8 @@ if __name__ == '__main__':
     parser.add_argument('-mse', '--mse', action='store_true', 
                         help='use Magic Set Editor 2 encoding; will output as .mse-set file')
     parser.add_argument('-html', '--html', action='store_true', help='create a .html file with pretty forum formatting')
+    parser.add_argument('-to_json', action='store_true',
+                        help='outputs in json format')
 
     args = parser.parse_args()
 
@@ -328,6 +343,6 @@ if __name__ == '__main__':
 
     main(args.infile, args.instring, args.outfile, verbose = args.verbose, encoding = args.encoding, out_encoding=args.out_encoding,
          gatherer = args.gatherer, for_forum = args.forum, for_mse = args.mse,
-         creativity = args.creativity, vdump = args.dump, for_html = args.html)
+         creativity = args.creativity, vdump = args.dump, for_html = args.html, to_json=args.to_json)
 
     exit(0)

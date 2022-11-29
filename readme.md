@@ -63,7 +63,8 @@
         * lists ```[[choose one ~ = destroy target land.]]```
         * counters ```for each % counter on @.\nCountertype % fungus```
         * &#x1F534; TODO systematically check for all features being decoded properly
-    * &#x1F534; TODO added json output option to decoder
+    * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
+    * fixed decoder decodes integer values as floats
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```

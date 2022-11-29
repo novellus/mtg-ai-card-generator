@@ -142,7 +142,7 @@ def from_unary(s):
     numbers = re.findall(re.escape(unary_marker + unary_counter) + '*', s)
     # again, largest first so we don't replace substrings and break everything
     for n in sorted(numbers, key=len, reverse=True):
-        i = (len(n) - len(unary_marker)) / len(unary_counter)
+        i = int((len(n) - len(unary_marker)) / len(unary_counter))
         s = s.replace(n, str(i))
     return s
 

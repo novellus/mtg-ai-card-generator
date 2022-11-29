@@ -1,4 +1,5 @@
 import argparse
+import json
 import math
 import os
 import pprint
@@ -107,6 +108,7 @@ def parse_mtg_cards(chunk, verbosity=0):
            f' -instring "{chunk}"'
             ' -e named'
             ' -out_encoding none'
+            ' -to_json'
           )
 
     try:
@@ -124,9 +126,14 @@ def parse_mtg_cards(chunk, verbosity=0):
         raise
     decoded_text = p.stdout.decode('utf-8')
 
-    # TODO parse json or whatever comes out of the decoder
+    j = json.loads(decoded_text)
+    j = j[0]  # we only asked batch decoder to operate on only one card
 
-    return decoded_text
+    # TODO remove
+    print('--A--', chunk)
+    print('\t--B--', j)
+
+    return j
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -183,7 +190,7 @@ def main(args):
                         delimiter = '\n',
                         verbosity = args.verbosity)
 
-    data = defaultdict(dict)
+    cards = []
 
     # sample main text and flavor text
     for i_name, name in enumerate(names):
@@ -192,16 +199,16 @@ def main(args):
         if args.verbosity > 1:
             print(f'sampling main_text')
 
-        main_texts = sample_lstm(nn_path = args.main_text_nn,
-                                 seed = args.seed,
-                                 approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
-                                 num_chunks = 1,
-                                 delimiter = '\n\n',
-                                 parser=parse_mtg_cards,
-                                 whisper_text = f'|1{name}|',
-                                 whisper_every_newline = 2,
-                                 verbosity = args.verbosity)
-        data[name]['main_text'] = main_texts[0]
+        sampled_cards = sample_lstm(nn_path = args.main_text_nn,
+                                    seed = args.seed,
+                                    approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
+                                    num_chunks = 1,
+                                    delimiter = '\n\n',
+                                    parser=parse_mtg_cards,
+                                    whisper_text = f'|1{name}|',
+                                    whisper_every_newline = 2,
+                                    verbosity = args.verbosity)
+        card = sampled_cards[0]  # includes the name field whispered to the nn
 
         if args.verbosity > 1:
             print(f'sampling flavor')
@@ -215,12 +222,14 @@ def main(args):
                               whisper_text = f'{name}|',
                               whisper_every_newline = 1,
                               verbosity = args.verbosity)
-        data[name]['flavor'] = flavors[0]
+        card['flavor'] = flavors[0]
+
+        cards.append(card)
 
         if args.verbosity > 1:
             print(f'sampling txt2img')
 
-    pprint.pprint(dict(data))
+    pprint.pprint(cards)
 
 
 if __name__ == '__main__':
