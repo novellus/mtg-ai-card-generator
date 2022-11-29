@@ -92,7 +92,7 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
     raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length} length, exceeded {max_resamples} resamples')
 
 
-def parse_flavor(chunk, verbosity=0):
+def parse_flavor(chunk, verbosity):
     s = re.search(r'^.+\|(.+)$', chunk)
     assert s is not None
 
@@ -100,7 +100,7 @@ def parse_flavor(chunk, verbosity=0):
     return flavor
 
 
-def parse_mtg_cards(chunk, verbosity=0):
+def parse_mtg_cards(chunk, verbosity):
     # use mtgencode to decode the machine encoded card format, producing nice human readable fields
 
     # escape double quotes for bash string encoding
@@ -180,6 +180,31 @@ def sample_txt2img(card, outdir, seed, verbosity):
     im = Image.open(temp_file_path)
     os.remove(temp_file_path)
     return im
+
+
+def render_card(card_data, art, outdir, verbosity):
+    # TODO
+    #   main card template
+    #       art
+    #       frame
+    #           legendary frame overlay
+    #       main mana cost
+    #       card name (not overlapping mana cost)
+    #       type lists
+    #       rarity
+    #       power/toughness graphic
+    #           text
+    #       main text box (sized together?)
+    #           main text
+    #               mana costs
+    #           flavor
+    #       card info
+    #           creator
+    #           date / seed
+    #           link to github
+    #   handle planeswalker
+    #   handle unique lands
+    pass
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -276,7 +301,21 @@ def main(args):
         if args.verbosity > 1:
             print(f'sampling txt2img')
 
-        sample_txt2img(card, args.outdir, args.seed, args.verbosity)
+        im = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
+
+        if args.verbosity > 1:
+            print(f'rendering card')
+
+        try:
+            render_card(card_data, art, outdir, verbosity)
+        except e:
+            # this should not normally occur
+            #   although some cards may have ridiculous stats
+            #   which may require extra logic to render
+            if verbosity > 0:  
+                print('Error while rendering card. Skipping this card')
+                print(card_data)
+                print(e)
 
     pprint.pprint(cards)
 
