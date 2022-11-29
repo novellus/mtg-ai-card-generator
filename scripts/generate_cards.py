@@ -8,12 +8,14 @@ import re
 import subprocess
 
 from collections import defaultdict
+from PIL import Image
 
 
 # Constants
 CONDA_ENV_SD = 'ldm'
 CONDA_ENV_MTGENCODE = 'mtgencode'
 PATH_TORCH_RNN = '../torch-rnn'
+PATH_SD = '../stable-diffusion'
 PATH_MTGENCODE = '../mtgencode'
 # average lengths, for initial LSTM sample length target
 LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change if the dataset changes
@@ -118,8 +120,8 @@ def parse_mtg_cards(chunk, verbosity=0):
                            check=True,
                            cwd=os.path.join(os.getcwd(), PATH_MTGENCODE))
     except subprocess.CalledProcessError as e:
-        if verbosity > 0:
-            print('CalledProcessError details')
+        if verbosity > 1:  # we expect this to happen sometimes, and don't need to report it at low verbosity
+            print('CalledProcessError in parse_mtg_cards, discarding this chunk')
             print(f'\tchunk: "{chunk}"')
             print(f'\te.stdout: "{e.stdout}"')
             print(f'\te.stderr: "{e.stderr}"')
@@ -130,6 +132,54 @@ def parse_mtg_cards(chunk, verbosity=0):
     j = j[0]  # we asked a batch decoder to operate on only one card
 
     return j
+
+
+def sample_txt2img(card, outdir, seed, verbosity):
+    # get outdir directory relative to command execution, rather than this script
+    outdir_rel = os.path.relpath(outdir, start=PATH_SD)
+
+    # remove temp file if it already exists, we only need one at a time
+    temp_file_path = os.path.join(outdir, 'tmp.png')
+    if os.path.exists(temp_file_path):
+        os.remove(temp_file_path)
+
+    if verbosity > 1:
+        print(f'saving temp image file to {outdir_rel} = {temp_file_path}')
+
+    # execute txt2img
+    prompt = card['name']
+
+    cmd = (f'python optimizedSD/optimized_txt2img.py'
+           f' --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt'
+           f' --outdir "{outdir_rel}"'
+           f' --out_filename "tmp.png"'
+           f' --n_samples 1'
+           f' --n_iter 1'
+           f' --H 960'
+           f' --W 768'
+           f' --seed {seed}'
+           # f' --turbo'  # encourages cinnamon crashes...
+           f' --prompt "{prompt}"'
+          )
+
+    try:
+        p = subprocess.run(f'conda run -n {CONDA_ENV_SD} {cmd}',
+                           shell=True,
+                           capture_output=True,
+                           check=True,
+                           cwd=os.path.join(os.getcwd(), PATH_SD))
+    except subprocess.CalledProcessError as e:
+        if verbosity > -1:  # always report this, since it is not caught at a higher level
+            print('CalledProcessError in sample_txt2img')
+            print(f'\tprompt: "{prompt}"')
+            print(f'\te.stdout: "{e.stdout}"')
+            print(f'\te.stderr: "{e.stderr}"')
+        raise
+
+    # open temp file, delete it, and return the image object
+    im = Image.open(temp_file_path)
+    os.remove(temp_file_path)
+    return im
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -168,12 +218,13 @@ def main(args):
     args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
     args.flavor_nn = resolve_folder_to_checkpoint_path(args.flavor_nn)
 
-    # resolve and create subdirectory within outdir
+    # resolve and create outdir
     base_count = len(os.listdir(args.outdir))
     args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
-    temp_dir = os.path.join(args.outdir, 'tmp')
     os.makedirs(args.outdir)
-    os.makedirs(temp_dir)
+
+    if args.verbosity > 2:
+        print(f'operating in {args.outdir}')
 
     # sample names
     if args.verbosity > 1:
@@ -224,6 +275,8 @@ def main(args):
 
         if args.verbosity > 1:
             print(f'sampling txt2img')
+
+        sample_txt2img(card, args.outdir, args.seed, args.verbosity)
 
     pprint.pprint(cards)
 

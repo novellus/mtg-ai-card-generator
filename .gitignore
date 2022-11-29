@@ -13,3 +13,4 @@ tmp*.py
 tmp
 log-*.txt
 SD_target.py
+outputs/*
