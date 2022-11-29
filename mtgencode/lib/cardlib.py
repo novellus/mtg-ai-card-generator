@@ -668,6 +668,8 @@ class Card:
         data['name'] = cardname
 
         data['cost'] = self.__dict__[field_cost].format()
+        if data['cost'] == '_NOCOST_':
+            data['cost'] = None
         
         data['supertypes'] = [titlecase(x) for x in self.__dict__[field_supertypes]]
         data['maintypes'] = [titlecase(x) for x in self.__dict__[field_types]]
