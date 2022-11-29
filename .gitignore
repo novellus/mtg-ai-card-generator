@@ -10,6 +10,7 @@ nns/*
 *__pycache__*
 *.egg-info*
 tmp*.py
+tmp.png
 tmp
 log-*.txt
 SD_target.py
