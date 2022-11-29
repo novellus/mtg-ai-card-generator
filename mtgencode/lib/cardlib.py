@@ -680,14 +680,14 @@ class Card:
             # TODO uncomment these
             main_text = self.__dict__[field_text].text
             main_text = transforms.text_unpass_1_choice(main_text, delimit = True)
-            #main_text = transforms.text_unpass_2_counters(main_text)
-            #main_text = transforms.text_unpass_3_uncast(main_text)
+            main_text = transforms.text_unpass_2_counters(main_text)
+            main_text = transforms.text_unpass_3_uncast(main_text)
             main_text = transforms.text_unpass_4_unary(main_text)
             main_text = transforms.text_unpass_5_symbols(main_text, for_forum=False, for_html=False)
             main_text = sentencecase(main_text)
-            #main_text = transforms.text_unpass_6_cardname(main_text, cardname)
+            main_text = transforms.text_unpass_6_cardname(main_text, cardname)
             main_text = transforms.text_unpass_7_newlines(main_text)
-            #main_text = transforms.text_unpass_8_unicode(main_text)
+            main_text = transforms.text_unpass_8_unicode(main_text)
             newtext = Manatext('')
             newtext.text = main_text
             newtext.costs = self.__dict__[field_text].costs

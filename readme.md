@@ -58,11 +58,7 @@
     * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
     * Modified decoder to accept input string on cli instead of file
     * added decoder ```out_encoding``` argument to fix bug when writing to stdout
-    * &#x1F534; TODO Added decoder features / fixed bugs so that it actually decodes the following encoded properties
-        * ```@``` -> card name
-        * lists ```[[choose one ~ = destroy target land.]]```
-        * counters ```for each % counter on @.\nCountertype % fungus```
-        * &#x1F534; TODO systematically check for all features being decoded properly
+    * Uncommented decoding steps so that it actually decodes all the encoded properties...
     * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
     * fixed decoder decodes integer values as floats
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)

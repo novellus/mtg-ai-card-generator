@@ -129,10 +129,6 @@ def parse_mtg_cards(chunk, verbosity=0):
     j = json.loads(decoded_text)
     j = j[0]  # we only asked batch decoder to operate on only one card
 
-    # TODO remove
-    print('--A--', chunk)
-    print('\t--B--', j)
-
     return j
 
 
