@@ -1,4 +1,5 @@
 import argparse
+import copy
 import json
 import math
 import os
@@ -9,6 +10,8 @@ import subprocess
 
 from collections import defaultdict
 from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 
 # Constants
@@ -17,10 +20,40 @@ CONDA_ENV_MTGENCODE = 'mtgencode'
 PATH_TORCH_RNN = '../torch-rnn'
 PATH_SD = '../stable-diffusion'
 PATH_MTGENCODE = '../mtgencode'
+
 # average lengths, for initial LSTM sample length target
 LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change if the dataset changes
 LSTM_LEN_PER_MAIN_TEXT = math.ceil(4373216 / (23840 + 119))  # empirical, change if the dataset changes
 LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change if the dataset changes
+
+MANA_SIZE_MAIN_COST = 78
+MANA_SPACING_MAIN_COST = 5
+MANA_SIZE_IN_TEXT = 51
+MANA_SPACING_IN_TEXT = 3
+
+# fonts assignments are hard to remember
+FONT_TITLE = '../image_templates/fonts/beleren-b.ttf'
+FONT_MAIN_TEXT = '../image_templates/fonts/mplantin.ttf'
+FONT_FLAVOR = '../image_templates/fonts/mplantin-i.ttf'
+FONT_MODULAR = '../image_templates/fonts/beleren-bsc.ttf'  # power/toughness, loyalty, mana costs, etc
+
+FONT_SIZE_MODULAR = 78  # TODO check size
+# defaults, may be overriden at runtime to coerce text fit
+DEFAULT_FONT_SIZE_TITLE = 96
+DEFAULT_FONT_SIZE_MAIN = 96
+
+mana_cost_to_human_readable = {'B': 'black',
+                               'C': 'colorless_only',
+                               'E': 'energy',
+                               'G': 'green',
+                               'P': 'phyrexian',
+                               'R': 'red',
+                               'S': 'snow',
+                               'U': 'blue',
+                               'W': 'white',
+                               'X': 'X',
+                               # '\d': 'colorless',  # handled programatically
+                              }
 
 
 
@@ -131,6 +164,14 @@ def parse_mtg_cards(chunk, verbosity):
     j = json.loads(decoded_text)
     j = j[0]  # we asked a batch decoder to operate on only one card
 
+    # create a backlink from the B-side back to the A-side
+    # recursive structure is probably not allowed in json, so we do the backlink here
+    if 'b_side' in j:
+        if 'b_side' in j['b_side']:
+            raise ValueError('Nested B-sides are not valid')
+
+        j['b_side']['a_side'] = j
+
     return j
 
 
@@ -182,13 +223,103 @@ def sample_txt2img(card, outdir, seed, verbosity):
     return im
 
 
+def parse_mana_symbols(mana_string):
+    # mana_string is eg "{C}{C}{2/W}{B/R}{X}"
+
+    symbols = re.findall(r'(?:\{([^\}]+)\})', mana_string)
+    assert symbols is not None
+    return list(symbols)
+
+
+def load_frame_main(card):
+    # returns image object for frame
+
+    subdir = '../image_templates/frames/borderless'
+
+    if card['maintypes'] == ['Land']:  # only has the land main-type
+        return Image.open(os.path.join(subdir, 'land.png'))
+
+    if card['cost'] is None:
+        if 'a_side' in card:
+            return load_frame_main(card['a_side'])
+        return Image.open(os.path.join(subdir, 'artifact.png'))  # artifact frame is default colorless
+
+    mana_colors_used = set(parse_mana_symbols(card['cost']))
+
+    # these symbols don't contribute to frame selection
+    for symbol in ['C', 'E', 'P', 'S', 'X']:
+        if symbol in mana_colors_used:
+            mana_colors_used.remove(symbol)
+
+    # colorless mana does not contribute to frame selection (its the backup if no colors are present)
+    for symbol in copy.deepcopy(mana_colors_used):
+        if re.search(r'^\d+$', symbol):
+            mana_colors_used.remove(symbol)
+
+    if len(mana_colors_used) == 0:
+        return Image.open(os.path.join(subdir, 'artifact.png'))  # artifact frame is default colorless
+    elif len(mana_colors_used) == 1:
+        return Image.open(os.path.join(subdir, mana_colors_used.pop() + '.png'))  # single colored mana
+    else:
+        return Image.open(os.path.join(subdir, 'multicolored.png'))
+
+
+def load_frame(card):
+    # TODO support other frame types, determined dynamically (eg planeswalker)
+    return load_frame_main(card)
+
+
+def render_mana_cost(mana_string, symbol_size, symbol_spacing):
+    # TODO support non-square symbols for energy?
+
+    subdir = '../image_templates/modular_elements'
+
+    symbols = parse_mana_symbols(mana_string)
+
+    # stabalize / standardize order
+    symbols.sort()  # TODO check sort order for standerdness with colin
+
+    # base image
+    width = (symbol_size * len(symbols)) + (symbol_spacing * (len(symbols) - 1))
+    im_mana = Image.new(mode='RGBA', size=(width, symbol_size))
+    im_mana.putalpha(0)  # full alpha base image
+
+    for i_symbol, symbol in enumerate(symbols):
+        # check for colorless mana
+        #   which is rendered as text over the mana-circle
+        #   no special case for colorless-only mana (nor any other mana), which has one dedicated symbol per cost
+        im_symbol = None
+        if re.search(r'^\d+$', symbol):
+            # acquire and resize the base image
+            im_symbol = Image.open(os.path.join(subdir, '0.png'))
+            im_symbol = im_symbol.resize((symbol_size, symbol_size))
+
+            # render cost as text over the base image
+            font = ImageFont.truetype(FONT_MODULAR, size=FONT_SIZE_MODULAR)
+            d = ImageDraw.Draw(im_symbol)
+            d.text((symbol_size//2, symbol_size//2), text=symbol, font=font, anchor='mm')
+
+        else:
+            # standardize file name lookup
+            symbol = re.sub('/', '', symbol)  # remove the '/'
+            symbol = ''.join(sorted(symbol))  # sort subsymbols, if there are multiple
+
+            # acquire and resize the symbol image
+            im_symbol = Image.open(os.path.join(subdir, symbol.lower() + '.png'))
+            im_symbol = im_symbol.resize((symbol_size, symbol_size))
+
+        # composite the images
+        im_mana.paste(im_symbol, (i_symbol * (symbol_size + symbol_spacing), 0), mask=im_symbol)
+
+    # TODO putalpha?
+
+    return im_mana
+
+
 def render_card(card_data, art, outdir, verbosity):
+    # image sizes and positions are all hard coded magic numbers
     # TODO
     #   main card template
-    #       art
-    #       frame
-    #           legendary frame overlay
-    #       main mana cost
     #       card name (not overlapping mana cost)
     #       type lists
     #       rarity
@@ -204,7 +335,32 @@ def render_card(card_data, art, outdir, verbosity):
     #           link to github
     #   handle planeswalker
     #   handle unique lands
-    pass
+
+    # art is the lowest layer of the card, but we need a full size image to paste it into
+    card = Image.new(mode='RGBA', size=(1500, 2100))
+
+    # resize and crop the art to fit in the frame
+    art = art.resize((1550, 1937))
+    art = art.crop((25, 0, 1525, 1937))
+    card.paste(art, box=(0, 0))
+
+    # add the frame over the art
+    frame = load_frame(card_data)
+    card.paste(frame, box=(0, 0), mask=frame)
+    card.putalpha(255)  # clear extra alpha mask from the image paste
+
+    # TODO add legendary frame overlay
+
+    # main mana cost
+    im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
+    w_position = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
+    card.paste(im_mana, box=(w_position, 122), mask=im_mana)
+    card.putalpha(255)  # clear extra alpha mask from the image paste
+
+    # save image
+    base_count = len(os.listdir(outdir))
+    out_path = os.path.join(outdir, f"{base_count:05}_{card_data['name']}.png")
+    card.save(out_path)
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -262,7 +418,11 @@ def main(args):
                         delimiter = '\n',
                         verbosity = args.verbosity)
 
-    cards = []
+    # stabilize processing order
+    #   names are guaranteed unique since the sampler deduplicates
+    names.sort()
+
+    cards = []  # TODO remove, unecessary. here for the pprint debugging below
 
     # sample main text and flavor text
     for i_name, name in enumerate(names):
@@ -307,7 +467,7 @@ def main(args):
             print(f'rendering card')
 
         try:
-            render_card(card_data, art, outdir, verbosity)
+            render_card(card_data, art, args.outdir, verbosity)
         except e:
             # this should not normally occur
             #   although some cards may have ridiculous stats

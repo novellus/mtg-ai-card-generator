@@ -186,6 +186,7 @@
 # Util
 * ```watch -n1 nvidia-smi``` to see GPU resource utilization
 * [torch docs](https://github.com/torch/torch7/blob/master/doc/tensor.md)
+* batch convert svg images to png ```find . -name "*.svg" | xargs inkscape --export-type=png --export-width=1000 --export-height=1000 --export-png-color-mode=RGBA_8 --batch-process```
 
 
 # Prompt Development Tooling
