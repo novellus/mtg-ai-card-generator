@@ -37,8 +37,8 @@ FONT_MAIN_TEXT = '../image_templates/fonts/mplantin.ttf'
 FONT_FLAVOR = '../image_templates/fonts/mplantin-i.ttf'
 FONT_MODULAR = '../image_templates/fonts/beleren-bsc.ttf'  # power/toughness, loyalty, mana costs, etc
 
-FONT_SIZE_MODULAR = 78  # TODO check size
 # defaults, may be overriden at runtime to coerce text fit
+DEFAULT_FONT_SIZE_MAIN_COST = 78
 DEFAULT_FONT_SIZE_TITLE = 96
 DEFAULT_FONT_SIZE_MAIN = 96
 
@@ -269,6 +269,27 @@ def load_frame(card):
     return load_frame_main(card)
 
 
+def font_size_largest_fit(text, max_text_size, font_path, target_font_size):
+    # returns the largest font size which renders the given text within max_text_size, but not larger than the target_font_size
+    #   max_text_size is 2-tuple indicating maximum width and height for the rendered text
+
+    max_width, max_height = max_text_size
+
+    im = Image.new(mode='RGBA', size=max_text_size)
+    d = ImageDraw.Draw(im)
+
+    # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
+    for font_size in range(target_font_size, 1, -1):
+        font = ImageFont.truetype(font_path, size=font_size)
+        (left, top, right, bottom) = d.textbbox((0,0), text, font=font, anchor='lt')
+        rendered_width = right - left
+        rendered_height = bottom - top
+        if rendered_width <= max_width and rendered_height <= max_height:
+            return font_size
+
+    raise RuntimeError(f'Could not render text "{text}" in given max_text_size {max_text_size} using font {font_path} at or below size {target_font_size}')
+
+
 def render_mana_cost(mana_string, symbol_size, symbol_spacing):
     # TODO support non-square symbols for energy?
 
@@ -295,7 +316,14 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             im_symbol = im_symbol.resize((symbol_size, symbol_size))
 
             # render cost as text over the base image
-            font = ImageFont.truetype(FONT_MODULAR, size=FONT_SIZE_MODULAR)
+
+            # downscale font size to fit the symbol text into the symbol image
+            #   necessary for costs > 9
+            #   bound text by max size of a square inscribed into the circlular symbol image
+            max_text_size = 2 * [math.floor(symbol_size / math.sqrt(2))]
+            font_size = font_size_largest_fit(symbol, max_text_size, FONT_MODULAR, DEFAULT_FONT_SIZE_MAIN_COST)
+
+            font = ImageFont.truetype(FONT_MODULAR, size=font_size)
             d = ImageDraw.Draw(im_symbol)
             d.text((symbol_size//2, symbol_size//2), text=symbol, font=font, anchor='mm', fill=(0,0,0,255))
 
