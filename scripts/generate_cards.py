@@ -42,6 +42,12 @@ DEFAULT_FONT_SIZE_MAIN_COST = 78
 DEFAULT_FONT_SIZE_TITLE = 96
 DEFAULT_FONT_SIZE_MAIN = 96
 
+TITLE_MAX_HEIGHT = MANA_SIZE_MAIN_COST  # keep these the same height
+# max width is computed dynamically, based on size of rendered mana cost
+
+HEIGHT_MID_TITLE = 161  # true middle of the image title field
+HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off center for a better look
+
 mana_cost_to_human_readable = {'B': 'black',
                                'C': 'colorless_only',
                                'E': 'energy',
@@ -269,25 +275,29 @@ def load_frame(card):
     return load_frame_main(card)
 
 
-def font_size_largest_fit(text, max_text_size, font_path, target_font_size):
-    # returns the largest font size which renders the given text within max_text_size, but not larger than the target_font_size
-    #   max_text_size is 2-tuple indicating maximum width and height for the rendered text
+def render_text_largest_fit(text, max_width, max_height, font_path, target_font_size, **kwargs):
+    # returns image of rendered text
+    #   with the largest font size that renders the given text within max_width and max_height
+    #   but not larger than the target_font_size
+    # kwargs are passed to ImageDraw.text
 
-    max_width, max_height = max_text_size
-
-    im = Image.new(mode='RGBA', size=max_text_size)
+    im = Image.new(mode='RGBA', size=(max_width, max_height))
     d = ImageDraw.Draw(im)
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(target_font_size, 1, -1):
         font = ImageFont.truetype(font_path, size=font_size)
+
         (left, top, right, bottom) = d.textbbox((0,0), text, font=font, anchor='lt')
         rendered_width = right - left
         rendered_height = bottom - top
-        if rendered_width <= max_width and rendered_height <= max_height:
-            return font_size
 
-    raise RuntimeError(f'Could not render text "{text}" in given max_text_size {max_text_size} using font {font_path} at or below size {target_font_size}')
+        if rendered_width <= max_width and rendered_height <= max_height:
+            d.text((0,0), text=text, font=font, anchor='lt', **kwargs)
+            im = im.crop((left, top, right, bottom))
+            return im
+
+    raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
 def render_mana_cost(mana_string, symbol_size, symbol_spacing):
@@ -316,16 +326,12 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             im_symbol = im_symbol.resize((symbol_size, symbol_size))
 
             # render cost as text over the base image
-
-            # downscale font size to fit the symbol text into the symbol image
-            #   necessary for costs > 9
-            #   bound text by max size of a square inscribed into the circlular symbol image
-            max_text_size = 2 * [math.floor(symbol_size / math.sqrt(2))]
-            font_size = font_size_largest_fit(symbol, max_text_size, FONT_MODULAR, DEFAULT_FONT_SIZE_MAIN_COST)
-
-            font = ImageFont.truetype(FONT_MODULAR, size=font_size)
-            d = ImageDraw.Draw(im_symbol)
-            d.text((symbol_size//2, symbol_size//2), text=symbol, font=font, anchor='mm', fill=(0,0,0,255))
+            #   bound text by max size of a square inscribed into the circular symbol image
+            size = math.floor(symbol_size / math.sqrt(2))
+            im_text = render_text_largest_fit(symbol, size, size, FONT_MODULAR, DEFAULT_FONT_SIZE_MAIN_COST, fill=(0,0,0,255))
+            position = [math.floor(im_symbol.width / 2 - im_text.width / 2),  # center text
+                        math.floor(im_symbol.height / 2 - im_text.height / 2)]
+            im_symbol.paste(im_text, box=position, mask=im_text)
 
         else:
             # standardize file name lookup
@@ -373,14 +379,27 @@ def render_card(card_data, art, outdir, verbosity):
     # add the frame over the art
     frame = load_frame(card_data)
     card.paste(frame, box=(0, 0), mask=frame)
-    card.putalpha(255)  # clear extra alpha mask from the image paste
 
     # TODO add legendary frame overlay
 
     # main mana cost
-    im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
-    main_cost_left_pos = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
-    card.paste(im_mana, box=(main_cost_left_pos, 122), mask=im_mana)
+    if card_data['cost'] is not None:
+        im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
+        main_cost_left = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
+        main_cost_top = HEIGHT_MID_TITLE - im_mana.height // 2
+        card.paste(im_mana, box=(main_cost_left, main_cost_top), mask=im_mana)
+    else:
+        main_cost_left = 1399
+
+    # name
+    left = 116
+    title_max_width = main_cost_left - left - MANA_SPACING_MAIN_COST  # use of MANA_SPACING here is an arbitrary spacer between title and mana cost
+    im_text = render_text_largest_fit(card_data['name'], title_max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
+    top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
+    card.paste(im_text, box=(left, top), mask=im_text)
+
+    # clear extra alpha masks from the image pastes
+    card.putalpha(255)
 
     # save image
     base_count = len(os.listdir(outdir))
