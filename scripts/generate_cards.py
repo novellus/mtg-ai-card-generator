@@ -297,7 +297,7 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             # render cost as text over the base image
             font = ImageFont.truetype(FONT_MODULAR, size=FONT_SIZE_MODULAR)
             d = ImageDraw.Draw(im_symbol)
-            d.text((symbol_size//2, symbol_size//2), text=symbol, font=font, anchor='mm')
+            d.text((symbol_size//2, symbol_size//2), text=symbol, font=font, anchor='mm', fill=(0,0,0,255))
 
         else:
             # standardize file name lookup
@@ -310,8 +310,6 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
 
         # composite the images
         im_mana.paste(im_symbol, (i_symbol * (symbol_size + symbol_spacing), 0), mask=im_symbol)
-
-    # TODO putalpha?
 
     return im_mana
 
@@ -353,9 +351,8 @@ def render_card(card_data, art, outdir, verbosity):
 
     # main mana cost
     im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
-    w_position = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
-    card.paste(im_mana, box=(w_position, 122), mask=im_mana)
-    card.putalpha(255)  # clear extra alpha mask from the image paste
+    main_cost_left_pos = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
+    card.paste(im_mana, box=(main_cost_left_pos, 122), mask=im_mana)
 
     # save image
     base_count = len(os.listdir(outdir))
