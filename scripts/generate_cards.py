@@ -359,9 +359,6 @@ def render_card(card_data, art, outdir, verbosity):
     # image sizes and positions are all hard coded magic numbers
     # TODO
     #   main card template
-    #       card name (not overlapping mana cost)
-    #       type lists
-    #       rarity
     #       power/toughness graphic
     #           text
     #       main text box (sized together?)
@@ -404,7 +401,7 @@ def render_card(card_data, art, outdir, verbosity):
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
-    # type
+    # type - width constraints are the same as card title
     type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
@@ -412,6 +409,8 @@ def render_card(card_data, art, outdir, verbosity):
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
+
+    # TODO rarity
 
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
