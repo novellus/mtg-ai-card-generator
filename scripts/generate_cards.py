@@ -45,8 +45,15 @@ DEFAULT_FONT_SIZE_MAIN = 96
 TITLE_MAX_HEIGHT = MANA_SIZE_MAIN_COST  # keep these the same height
 # max width is computed dynamically, based on size of rendered mana cost
 
+LEFT_TITLE_BOX = 116  # closest text should get to this side
+RIGHT_TITLE_BOX_MANA = 1394  # closest mana cost should get to this side
+RIGHT_TITLE_BOX_TEXT = 1383  # not fully symmetric since text is squarer than mana costs
+
 HEIGHT_MID_TITLE = 161  # true middle of the image title field
 HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off center for a better look
+
+HEIGHT_MID_TYPE = 1416
+HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 8  # text is rendered slightly off center for a better look
 
 mana_cost_to_human_readable = {'B': 'black',
                                'C': 'colorless_only',
@@ -385,18 +392,26 @@ def render_card(card_data, art, outdir, verbosity):
     # main mana cost
     if card_data['cost'] is not None:
         im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
-        main_cost_left = 1399 - im_mana.width - MANA_SPACING_MAIN_COST
-        main_cost_top = HEIGHT_MID_TITLE - im_mana.height // 2
-        card.paste(im_mana, box=(main_cost_left, main_cost_top), mask=im_mana)
+        left_main_cost = RIGHT_TITLE_BOX_MANA - im_mana.width
+        top_main_cost = HEIGHT_MID_TITLE - im_mana.height // 2
+        card.paste(im_mana, box=(left_main_cost, top_main_cost), mask=im_mana)
     else:
-        main_cost_left = 1399
+        left_main_cost = RIGHT_TITLE_BOX_TEXT  # zero width, adjusted for text spacing constraints
 
     # name
-    left = 116
-    title_max_width = main_cost_left - left - MANA_SPACING_MAIN_COST  # use of MANA_SPACING here is an arbitrary spacer between title and mana cost
-    im_text = render_text_largest_fit(card_data['name'], title_max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
+    max_width = left_main_cost - LEFT_TITLE_BOX - MANA_SPACING_MAIN_COST  # use of MANA_SPACING here is an arbitrary spacer between title and mana cost
+    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
-    card.paste(im_text, box=(left, top), mask=im_text)
+    card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
+
+    # type
+    type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
+    if card_data['subtypes']:
+        type_string += ' - ' + ' '.join(card_data['subtypes'])
+    max_width = RIGHT_TITLE_BOX_TEXT - LEFT_TITLE_BOX
+    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
+    top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
+    card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
