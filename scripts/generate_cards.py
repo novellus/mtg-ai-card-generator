@@ -41,6 +41,7 @@ FONT_MODULAR = '../image_templates/fonts/beleren-bsc.ttf'  # power/toughness, lo
 DEFAULT_FONT_SIZE_MAIN_COST = 78
 DEFAULT_FONT_SIZE_TITLE = 96
 DEFAULT_FONT_SIZE_MAIN = 96
+DEFAULT_FONT_SIZE_POWER_TOUGHNESS = 96  # also loyalty
 
 TITLE_MAX_HEIGHT = MANA_SIZE_MAIN_COST  # keep these the same height
 # max width is computed dynamically, based on size of rendered mana cost
@@ -355,12 +356,46 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
     return im_mana
 
 
+def load_power_toughness_overlay(card):
+    # returns image object for power / toughness overlay image
+    # which image we load depends on card details
+
+    subdir = '../image_templates/modular_elements'
+
+    if card['cost'] is None:
+        if 'a_side' in card:
+            return load_power_toughness_overlay(card['a_side'])
+        return Image.open(os.path.join(subdir, 'pt_colorless.png'))
+
+    mana_colors_used = set(parse_mana_symbols(card['cost']))
+
+    # these symbols don't contribute to selection
+    for symbol in ['C', 'E', 'P', 'S', 'X']:
+        if symbol in mana_colors_used:
+            mana_colors_used.remove(symbol)
+
+    # colorless mana does not contribute to selection (its the backup if no colors are present)
+    for symbol in copy.deepcopy(mana_colors_used):
+        if re.search(r'^\d+$', symbol):
+            mana_colors_used.remove(symbol)
+
+    if len(mana_colors_used) == 0:
+        if 'Artifact' in card['maintypes']:
+            return Image.open(os.path.join(subdir, 'pt_artifact.png'))
+        elif 'Vehicle' in card['subtypes']:
+            return Image.open(os.path.join(subdir, 'pt_vehicle.png'))
+        else:
+            return Image.open(os.path.join(subdir, 'pt_colorless.png'))
+    elif len(mana_colors_used) == 1:
+        return Image.open(os.path.join(subdir, 'pt_' + mana_colors_used.pop() + '.png'))  # single colored mana
+    else:
+        return Image.open(os.path.join(subdir, 'pt_multicolored.png'))
+
+
 def render_card(card_data, art, outdir, verbosity):
     # image sizes and positions are all hard coded magic numbers
     # TODO
     #   main card template
-    #       power/toughness graphic
-    #           text
     #       main text box (sized together?)
     #           main text
     #               mana costs
@@ -411,6 +446,21 @@ def render_card(card_data, art, outdir, verbosity):
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
     # TODO rarity
+
+    # power toughness
+    #   first render the infobox overlay
+    #   then render text on top of that
+    if card_data['power_toughness']:
+        im_pt = load_power_toughness_overlay(card_data)
+        card.paste(im_pt, box=(1137, 1858), mask=im_pt)  # magic numbers, image has assymetric partial alpha around the edges
+
+        pt_string = '/'.join([str(x) for x in card_data['power_toughness']])
+        im_text = render_text_largest_fit(pt_string, 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE_POWER_TOUGHNESS, fill=(0,0,0,255))
+        top = 1928 - im_text.height // 2
+        left = 1292 - im_text.width // 2
+        card.paste(im_text, box=(left, top), mask=im_text)
+
+    # TODO loyalty
 
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
