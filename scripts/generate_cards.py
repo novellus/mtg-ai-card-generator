@@ -28,8 +28,6 @@ LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change
 
 MANA_SIZE_MAIN_COST = 78
 MANA_SPACING_MAIN_COST = 5
-MANA_SIZE_IN_TEXT = 51
-MANA_SPACING_IN_TEXT = 3
 
 # fonts assignments are hard to remember
 FONT_TITLE = '../image_templates/fonts/beleren-b.ttf'
@@ -237,12 +235,15 @@ def sample_txt2img(card, outdir, seed, verbosity):
     return im
 
 
-def parse_mana_symbols(mana_string):
+def parse_mana_symbols(mana_string, None_acceptable=False):
     # mana_string is eg "{C}{C}{2/W}{B/R}{X}"
 
     symbols = re.findall(r'(?:\{([^\}]+)\})', mana_string)
-    assert symbols is not None
-    return list(symbols)
+    if symbols is not None:
+        symbols = list(symbols)
+    if not None_acceptable:
+        assert symbols is not None
+    return symbols
 
 
 def load_frame_main(card):
@@ -392,6 +393,182 @@ def load_power_toughness_overlay(card):
         return Image.open(os.path.join(subdir, 'pt_multicolored.png'))
 
 
+def kering_and_symbol_size(font_size):
+    # utility function for maintext rendering
+    # computes a vertical kerning, mana symbol size, and mana symbol spacing for rendering text at a given font size
+    # ties together the definition of kerning and symbol size
+    #   so that we don't get really small text with large whitespace gaps from inline symbology
+
+    # assume font size is in pixel height, make symbols and spacing the same height
+    symbol_size = font_size
+    vertical_kerning = font_size * 1.1  # TODO check margin
+    symbol_spacing = math.ceil(symbol_size * 0.064)  # Check magic number at various sizes
+
+    return vertical_kerning, symbol_size, symbol_spacing
+
+
+def render_multiline_text_and_symbols(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
+    # renders multiline text with inline symbols at given font size under max_width constraint
+    #   newlines are inserted at optimal locations anywhere there is whitespace
+    #       or in the middle of a word (delimited by whitespace) if and only if the word by itself exceeds the max_width constraint
+    #   honors newlines in the input text, forcing a newline at those locations, regardless of optimal spacing
+    #   inline symbols are sized and spaced appropriate to the font size
+    # Note that all consecutive whitespace other than newlines will be dissolved into a single space regardless of type
+    # returns rendered image and boolean
+    #   boolean indicates whether any words were broken up into multiple lines
+    # long_token_mode changes the following behaviors, and should probably only be used for recursion
+    #   text is only one overly long word
+    #   spaces are omitted during token recombination to form lines
+    #   returns list of rendered lines, instead of one rendered image
+
+    vertical_kerning, symbol_size, symbol_spacing = kering_and_symbol_size(font_size)
+    optional_space = '' if long_token_mode else ' '
+
+    def token_encodes_symbols(token):
+        return parse_mana_symbols(token, None_acceptable=True) is not None
+
+    # break text into words, symbols, and newline characters
+    #   which will be partitioned into rendered lines
+    #   rendered lines will then be added together to form a rendered multiline text
+    tokens = None
+    if not long_token_mode:
+        text = text.strip()
+        tokens = re.findall(r'(\n|[^\s]+)', text)
+        # alternatively break up symbol groups by default, but I probably don't want that
+        # tokens = re.findall(r'(\n|\{[^\}]+\}|[^\s]+)', text)
+    else:
+        if token_encodes_symbols(token):
+            tokens = re.findall(r'(\{[^\}]+\})', token)  # individual symbols
+        else:
+            tokens = list(token)  # individual characters
+
+    # construct test image for rendering size tests, but not for final text rendering
+    im_test = Image.new(mode='RGBA', size=(1, 1))  # size is irrelevant
+    d_test = ImageDraw.Draw(im_test)
+    font = ImageFont.truetype(font_path, size=font_size)
+
+    def render_text(t):
+        # check size, and then render on a minimally sized image
+        (left, top, right, bottom) = d_test.textbbox((0,0), t, font=font, anchor='lt')
+        rendered_width = right - left
+        rendered_height = bottom - top
+        im = Image.new(mode='RGBA', size=(rendered_width, rendered_height))
+        d = ImageDraw.Draw(im)
+        d.text((0,0), text=t, font=font, anchor='lt', **kwargs)
+        return im
+
+    # render line of text, adding one word at a time, until max_width constraint violation
+    # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
+    rendered_lines = []
+    line_images = []
+    consolidated_words = ''
+    while tokens:
+        # try adding one token to the line, then check constraints
+        token = tokens[0]
+        token_adds = None
+        cached_mana_render = None
+
+        if token == '\n':
+            # render any pending text and add it to the line now
+            if consolidated_words:
+                line_images.append(render_text(consolidated_words))
+                consolidated_words = ''
+            else:
+                line_images.append(None)  # None indicates empty line (no image)
+
+            # nothing further to compute for newlines
+            tokens.pop(0)
+            continue
+
+        elif token_encodes_symbols(token):
+            # render any pending text and add it to the line now
+            if consolidated_words:
+                line_images.append(render_text(consolidated_words))
+                consolidated_words = ''
+
+            cached_mana_render = render_mana_cost(token, symbol_size, symbol_spacing)
+            token_adds = cached_mana_render.width
+
+        elif type(token) == str:
+            # consolidate consecutive text into one text render so we don't have to deal with horizontal kerning
+            token_text = None
+            if consolidated_words:
+                token_text = consolidated_words + optional_space + token
+            else:
+                token_text = token
+            (left, top, right, bottom) = d_test.textbbox((0,0), token_text, font=font, anchor='lt')
+            rendered_width = right - left
+            token_adds = rendered_width
+
+        if line_images:
+            token_adds += symbol_spacing
+
+        composite_line_width = sum([x.width for x in line_images])
+        composite_line_width += symbol_spacing * (len(line_images) - 1)
+        composite_line_width += token_adds
+
+        # check constraints
+        if composite_line_width > max_width:
+            # render any pending text and add it to the line now, not including the current offending token
+            if consolidated_words:
+                line_images.append(render_text(consolidated_words))
+                consolidated_words = ''
+
+            # line is at max dimensions, so render final line image
+            if line_images
+                line_height = max([x.height for x in line_images])  # these should all be very close in height
+                line = Image.new(mode='RGBA', size=(composite_line_width, line_height))
+                horizontal_pos = 0
+                for im in line_images:
+                    position = [horizontal_pos,
+                                math.floor(line.height / 2 - im.height / 2)]  # vertically center image
+                    line.paste(im, box=position, mask=im)
+                    horizontal_pos += im.width + symbol_spacing
+                rendered_lines.append(line)
+                line_images = []
+
+            # handle tokens which when rendered by themselves already exceed max_width
+            # break these tokens up to fit
+            else:
+                lines = render_multiline_text_and_symbols(token, max_width, font_path, font_size, long_token_mode=True, **kwargs)
+                for line in lines[:-1]:
+                    rendered_lines.append(line)
+                # the last rendered line could have room for more stuff
+                line_images.append(lines[-1])
+
+        else:  # token fits on line
+            if token_encodes_symbols(token):
+                line_images.append(cached_mana_render)
+            else:
+                consolidated_words += optional_space + token
+            tokens.pop(0)
+
+    if long_token_mode:
+        # don't composite the multiline image yet
+        return rendered_lines
+
+    # finally, render all lines together
+    height += vertical_kerning * len(rendered_lines)
+    width = max([x.width for x in rendered_lines])
+    multiline = Image.new(mode='RGBA', size=(composite_line_width, line_height))
+    for i_im, im in enumerate(rendered_lines):
+        multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
+
+    return multiline
+
+
+def render_multiline_text_and_symbols_largest_fit(text, max_width, max_height, font_path, target_font_size, **kwargs)
+    # returns image of rendered multiline text 
+    #   with inline symbols
+    #   with optimally located linebreaks inserted at whitespace locations
+    #   with the largest font size that renders the given text within max_width and max_height
+    #   but not larger than the target_font_size
+    # kwargs are passed to ImageDraw.text
+    # works a bit differently from render_text_largest_fit due to
+    #   multiline with arbitrary linebreak locations introduces a 2nd optimization variable
+    #   inline symbols adds additional spacing / rendering requirements
+
+
 def render_card(card_data, art, outdir, verbosity):
     # image sizes and positions are all hard coded magic numbers
     # TODO
@@ -405,7 +582,6 @@ def render_card(card_data, art, outdir, verbosity):
     #           date / seed
     #           link to github
     #   handle planeswalker
-    #   handle unique lands
 
     # art is the lowest layer of the card, but we need a full size image to paste it into
     card = Image.new(mode='RGBA', size=(1500, 2100))
