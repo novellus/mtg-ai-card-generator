@@ -161,7 +161,7 @@
         * ```./bootstrap; make; sudo make install```
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
-* &#x1F534; TODO main repo
+* main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
 
@@ -189,7 +189,6 @@
     * ```mkdir -p ../nns/flavor && th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 200 -seq_length 750 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 5 -lr_decay_factor 0.9 |& tee -a ../nns/flavor/log.txt```
     * ```mkdir -p ../nns/main_text && th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_chunks 1 -rand_mtg_fields 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 400 -max_epochs 1000 -batch_size 100 -seq_length 1000 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.99 |& tee -a ../nns/main_text/log.txt```
     * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7 -length 50```
-* &#x1F534; TODO main repo
 
 
 # Util
