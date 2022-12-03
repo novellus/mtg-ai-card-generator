@@ -97,6 +97,8 @@
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
 * configure txt2img args
+    * consider adjusting the prompt to specify a specific style
+    * find a way to not render actual magic card elements, like borders, titles, mana, etc
     * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:-1 magic the gathering:-1" --force_combined_prompt_weighting```
         * uses slightly broken negative weighting
         * seems to produce card-like art instead of actual cards
@@ -113,6 +115,8 @@
         * png info
         * need to start /stop a local server to query for image data
 * Add extra names and flavor
+* finish training the AIs
+* generate a small-medium batch of cards for Colin to review
 
 
 # Environment Setup
