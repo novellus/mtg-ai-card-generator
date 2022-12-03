@@ -46,14 +46,14 @@ TITLE_MAX_HEIGHT = MANA_SIZE_MAIN_COST  # keep these the same height
 # max width is computed dynamically, based on size of rendered mana cost
 
 LEFT_TITLE_BOX = 116  # closest text should get to this side
-RIGHT_TITLE_BOX_MANA = 1394  # closest mana cost should get to this side
+RIGHT_TITLE_BOX_MANA = 1396  # closest mana cost should get to this side
 RIGHT_TITLE_BOX_TEXT = 1383  # not fully symmetric since text is squarer than mana costs
 
 HEIGHT_MID_TITLE = 161  # true middle of the image title field
 HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off center for a better look
 
-HEIGHT_MID_TYPE = 1416
-HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 8  # text is rendered slightly off center for a better look
+HEIGHT_MID_TYPE = 1418
+HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 6  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1505
 # BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
@@ -398,6 +398,24 @@ def load_power_toughness_overlay(card):
         return Image.open(os.path.join(subdir, 'pt_multicolored.png'))
 
 
+def load_set_symbol(card):
+    # returns image object for power / toughness overlay image
+    # which image we load depends on card details
+
+    subdir = '../image_templates/set_symbols'
+
+    if card['rarity'] in ['common', 'special', 'basic land']:
+        return Image.open(os.path.join(subdir, 'common.png'))
+    elif card['rarity'] == 'uncommon':
+        return Image.open(os.path.join(subdir, 'uncommon.png'))
+    elif card['rarity'] == 'rare':
+        return Image.open(os.path.join(subdir, 'rare.png'))
+    elif card['rarity'] == 'mythic rare':
+        return Image.open(os.path.join(subdir, 'mythic rare.png'))
+    else:
+        raise ValueError(f"unsupported rarity {card['rarity']}")
+
+
 def render_multiline_text_and_symbols(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
@@ -681,7 +699,12 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, b
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
     # TODO rarity
-    left_rarity = RIGHT_TITLE_BOX_TEXT
+    im_set = load_set_symbol(card_data)
+    im_set = im_set.resize((96, 96))
+    pos = (RIGHT_TITLE_BOX_MANA - im_set.width,
+           HEIGHT_MID_TYPE - im_set.height // 2)
+    card.paste(im_set, box=pos, mask=im_set)
+    left_rarity = pos[0]
 
     # type - width constraints are almost the same as card title
     type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
