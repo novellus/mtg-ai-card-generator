@@ -56,8 +56,7 @@ HEIGHT_MID_TYPE = 1416
 HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 8  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1498
-BOTTOM_MAIN_TEXT_BOX = 1863
-# BOTTOM_MAIN_TEXT_BOX = 1928  # if we aren't limited by the power toughness box
+# BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
 LEFT_MAIN_TEXT_BOX = 120
 RIGHT_MAIN_TEXT_BOX = 1380
 
@@ -412,6 +411,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
     #   text is only one overly long word
     #   spaces are omitted during token recombination to form lines
     #   returns list of rendered lines (and no boolean), instead of one rendered image
+    # TODO support planeswalker symbology
 
     # size vertical kerning and symbols together
     #   so that we don't get really small text with large whitespace gaps from inline symbology
@@ -590,8 +590,14 @@ def render_main_text_box(card):
     #   inline symbols adds additional spacing / rendering requirements
     #   multiple fields need to be sized simultaneously
 
+    # dynamically shorten main text if one of these is rendered
+    if card['power_toughness'] or card['loyalty']:
+        bottom_main_text_box = 1863
+    else:
+        bottom_main_text_box = 1928
+
     width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
-    max_height = BOTTOM_MAIN_TEXT_BOX - TOP_MAIN_TEXT_BOX
+    max_height = bottom_main_text_box - TOP_MAIN_TEXT_BOX
     sep_bar = Image.open('../image_templates/modular_elements/whitebar.png')
     sep_bar = sep_bar.resize((math.ceil(width * 1.05), 6))  # auto-crop some of the more faded edges
 
@@ -640,13 +646,6 @@ def render_main_text_box(card):
 
 def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp):
     # image sizes and positions are all hard coded magic numbers
-    # TODO
-    #   main card template
-    #       card info
-    #           creator
-    #           date / seed
-    #           link to github
-    #   handle planeswalker
 
     # art is the lowest layer of the card, but we need a full size image to paste it into
     card = Image.new(mode='RGBA', size=(1500, 2100))
@@ -833,20 +832,20 @@ def main(args):
         if args.verbosity > 1:
             print(f'sampling txt2img')
 
-        im = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
+        art = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
 
         if args.verbosity > 1:
             print(f'rendering card')
 
         try:
-            render_card(card_data, art, args.outdir, verbosity, base_count, args.seed, timestamp)
-        except e:
+            render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp)
+        except Exception as e:
             # this should not normally occur
             #   although some cards may have ridiculous stats
             #   which may require extra logic to render
-            if verbosity > 0:  
+            if args.verbosity > 0:  
                 print('Error while rendering card. Skipping this card')
-                print(card_data)
+                print(card)
                 print(e)
 
     pprint.pprint(cards)
