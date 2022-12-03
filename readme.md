@@ -78,20 +78,23 @@
 
 
 # &#x1F534; main repo TODOs
-* Add extra names and flavor
-* pick overall rendered card styles, and acquire template images
-    * define which dynamic style choices are supported for the main generator
-        * frame: main (1500 x 1937 px) | planeswalker frame | unique land
-            * sub types for each color
-        * legendary frame change
-            * sub types for each color
-        * any icons appropriate? (eg for sets etc)
-        * indicate rarity?
-        * card back vs double sided (only matters for the tts card sheet)
-    * consider generating additional basic lands with custom / unique art via (choose tall / borderless land frames)
-    * main card style: I'm thinking either ```SNC -> Gilded``` or ```promo -> regular (borderless)```. M15 is the classic look, but not very sleek.
-    * create set / rarity symbols
+* renderer
+    * support planeswalkers
+        * different frame?
+        * loyalty increase / deccrease icons in main text box
+        * loyalty box in lower right corner
+    * limit mana render space to at most half the title bar
+    * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
+    * add legendary frame
+    * add set / rarity symbol
         * banana cat?
+* increment seed after each art generation so that the art isn't all similar
+* statistics
+* generate additional basic lands with custom / unique art
+    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
+        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
+    * add 2nd ```main_basics``` function for generating these basics
+        * probably add an argument to specify prompt? Or use a standard set?
 * configure txt2img args
     * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:-1 magic the gathering:-1" --force_combined_prompt_weighting```
         * uses slightly broken negative weighting
@@ -99,18 +102,16 @@
         * seems to only work at higher resolution (512x512 produces images of cards). I think the higher resolution is slightly broken in the base repo, which when combined with the slightly broken negative weighting, somehow comes out on top, statistically
         * try to come up with args that eliminate cards while still enabling card-like art
     * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:1 magic the gathering:1 text:-1 card frame:-1" --force_combined_prompt_weighting```
-* consider switching to [AUTOMATIC1111's fork](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API), which has several feature advantages over the base repo
-    * textual inversion: train the neural network on mtg art, and encode a keyword
-        * could gather mtg art images from skryfall: [bulk card data](https://scryfall.com/docs/api/bulk-data) and [imagery api](https://scryfall.com/docs/api/images)
-    * high res fix or outpainting
-    * proper negative prompts
-    * prompt editing, if that proves useful for the odd style / name combinations
-    * face restoration
-    * png info
-    * need to start /stop a local server to query for image data
-* increment seed after each art generation so taht the art isn't all similar
-* limit mana render space to at most half the title bar
-* fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
+    * consider switching to [AUTOMATIC1111's fork](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API), which has several feature advantages over the base repo
+        * textual inversion: train the neural network on mtg art, and encode a keyword
+            * could gather mtg art images from skryfall: [bulk card data](https://scryfall.com/docs/api/bulk-data) and [imagery api](https://scryfall.com/docs/api/images)
+        * high res fix or outpainting
+        * proper negative prompts
+        * prompt editing, if that proves useful for the odd style / name combinations
+        * face restoration
+        * png info
+        * need to start /stop a local server to query for image data
+* Add extra names and flavor
 
 
 # Environment Setup
