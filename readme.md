@@ -79,6 +79,7 @@
 
 # &#x1F534; main repo TODOs
 * renderer
+    * add info text for nn names
     * support planeswalkers
         * different frame?
         * loyalty increase / deccrease icons in main text box
