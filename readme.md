@@ -88,6 +88,7 @@
     * add legendary frame
     * add set / rarity symbol
         * banana cat?
+    * decrease save file resolution to limit file size
 * increment seed after each art generation so that the art isn't all similar
 * statistics
 * generate additional basic lands with custom / unique art
