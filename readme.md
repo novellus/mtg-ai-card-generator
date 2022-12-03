@@ -87,8 +87,6 @@
     * limit mana render space to at most half the title bar
     * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
     * add legendary frame
-    * add set / rarity symbol
-        * banana cat?
     * decrease save file resolution to limit file size
 * increment seed after each art generation so that the art isn't all similar
 * statistics
