@@ -108,6 +108,10 @@
     * face restoration
     * png info
     * need to start /stop a local server to query for image data
+* fix double quote escaping in bash commands to decoder
+* increment seed after each art generation so taht the art isn't all similar
+* limit mana render space to at most half the title bar
+* fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
 
 
 # Environment Setup
@@ -154,7 +158,6 @@
 * &#x1F534; TODO main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
-    * &#x1F534; TODO install mtg fonts
 
 # AI Training and Sampling
 * stable diffusion

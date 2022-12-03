@@ -55,10 +55,10 @@ HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off ce
 HEIGHT_MID_TYPE = 1416
 HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 8  # text is rendered slightly off center for a better look
 
-TOP_MAIN_TEXT_BOX = 1498
+TOP_MAIN_TEXT_BOX = 1505
 # BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
-LEFT_MAIN_TEXT_BOX = 120
-RIGHT_MAIN_TEXT_BOX = 1380
+LEFT_MAIN_TEXT_BOX = 128
+RIGHT_MAIN_TEXT_BOX = 1375
 
 mana_cost_to_human_readable = {'B': 'black',
                                'C': 'colorless_only',
@@ -308,7 +308,7 @@ def render_text_largest_fit(text, max_width, max_height, font_path, target_font_
 
         if rendered_width <= max_width and rendered_height <= max_height:
             d.text((0,0), text=text, font=font, anchor='lt', **kwargs)
-            im = im.crop((left, top, right, bottom))
+            im = im.crop(im.getbbox())
             return im
 
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
@@ -454,6 +454,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
         im = Image.new(mode='RGBA', size=(rendered_width, rendered_height))
         d = ImageDraw.Draw(im)
         d.text((0,0), text=t, font=font, anchor='lt', **kwargs)
+        im = im.crop(im.getbbox())
         return im
 
     def render_line(l):
@@ -592,9 +593,9 @@ def render_main_text_box(card):
 
     # dynamically shorten main text if one of these is rendered
     if card['power_toughness'] or card['loyalty']:
-        bottom_main_text_box = 1863
+        bottom_main_text_box = 1858
     else:
-        bottom_main_text_box = 1928
+        bottom_main_text_box = 1923
 
     width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
     max_height = bottom_main_text_box - TOP_MAIN_TEXT_BOX
@@ -644,8 +645,11 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp):
+def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, base_count=None):
     # image sizes and positions are all hard coded magic numbers
+
+    # used for rendering b-sides at the same base_count
+    base_count = base_count or len(os.listdir(outdir))
 
     # art is the lowest layer of the card, but we need a full size image to paste it into
     card = Image.new(mode='RGBA', size=(1500, 2100))
@@ -708,13 +712,18 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp):
     card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
 
     # info text
+    side_id = None
+    if 'b_side' in card_data:
+        side_id = '_a-side'
+    elif 'a_side' in card_data:
+        side_id = '_b-side'
+
     d = ImageDraw.Draw(card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
-    base_count = len(os.listdir(outdir))
-    set_seed_number = f'{set_count:05}_{seed}_{base_count:05}'
+    card_id = f'{set_count:05}_{seed}_{base_count:05}{side_id or ""}'
     author = 'Novellus Cato'
     repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
-    d.text((100, 1971), text=set_seed_number, font=font, anchor='lt', fill=(255,255,255,255))
+    d.text((95, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
     d.text((100, 2006), text=timestamp, font=font, anchor='lt', fill=(255,255,255,255))
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
@@ -728,8 +737,11 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp):
     card.putalpha(255)
 
     # save image
-    out_path = os.path.join(outdir, f"{base_count:05}_{card_data['name']}.png")
+    f_name = f"{base_count:05}{side_id or ''}_{card_data['name']}"
+    out_path = os.path.join(outdir, f"{f_name}.png")
     card.save(out_path)
+
+    return base_count
 
 
 def resolve_folder_to_checkpoint_path(path):
@@ -793,7 +805,7 @@ def main(args):
     #   names are guaranteed unique since the sampler deduplicates
     names.sort()
 
-    cards = []  # TODO remove, unecessary. here for the pprint debugging below
+    cards = []
 
     # sample main text and flavor text
     for i_name, name in enumerate(names):
@@ -813,41 +825,40 @@ def main(args):
                                     verbosity = args.verbosity)
         card = sampled_cards[0]  # includes the name field whispered to the nn
 
-        if args.verbosity > 1:
-            print(f'sampling flavor')
+        def finish_card(card, card_num=None):
+            if args.verbosity > 1:
+                print(f'sampling flavor')
 
-        flavors = sample_lstm(nn_path = args.flavor_nn,
-                              seed = args.seed,
-                              approx_length_per_chunk = LSTM_LEN_PER_FLAVOR,
-                              num_chunks = 1,
-                              delimiter = '\n',
-                              parser=parse_flavor,
-                              whisper_text = f'{name}|',
-                              whisper_every_newline = 1,
-                              verbosity = args.verbosity)
-        card['flavor'] = flavors[0]
+            flavors = sample_lstm(nn_path = args.flavor_nn,
+                                  seed = args.seed,
+                                  approx_length_per_chunk = LSTM_LEN_PER_FLAVOR,
+                                  num_chunks = 1,
+                                  delimiter = '\n',
+                                  parser=parse_flavor,
+                                  whisper_text = f"{card['name']}|",
+                                  whisper_every_newline = 1,
+                                  verbosity = args.verbosity)
+            card['flavor'] = flavors[0]
+
+            if args.verbosity > 1:
+                print(f'sampling txt2img')
+
+            art = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
+
+            if args.verbosity > 1:
+                print(f'rendering card')
+
+            card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp, card_num)
+
+        card_num = finish_card(card)
+        if 'b_side' in card:
+            # render B-side at same card_num to ID side associations
+            # card_num becomes the first element of the file name, and is printed on the card face
+            finish_card(card['b_side'], card_num)
 
         cards.append(card)
 
-        if args.verbosity > 1:
-            print(f'sampling txt2img')
-
-        art = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
-
-        if args.verbosity > 1:
-            print(f'rendering card')
-
-        try:
-            render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp)
-        except Exception as e:
-            # this should not normally occur
-            #   although some cards may have ridiculous stats
-            #   which may require extra logic to render
-            if args.verbosity > 0:  
-                print('Error while rendering card. Skipping this card')
-                print(card)
-                print(e)
-
+    # TODO statistics over cards
     pprint.pprint(cards)
 
 
