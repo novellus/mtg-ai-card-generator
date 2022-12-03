@@ -155,10 +155,10 @@ def parse_mtg_cards(chunk, verbosity):
     # use mtgencode to decode the machine encoded card format, producing nice human readable fields
 
     # escape double quotes for bash string encoding
-    chunk = re.sub('"', '\x22', chunk)
+    chunk = re.sub('"', r'\\x22', chunk)
 
     cmd = ( 'python decode.py'
-           f' -instring "{chunk}"'
+           f' -instring $\'{chunk}\''
             ' -e named'
             ' -out_encoding none'
             ' -to_json'
