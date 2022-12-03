@@ -404,16 +404,8 @@ def load_set_symbol(card):
 
     subdir = '../image_templates/set_symbols'
 
-    if card['rarity'] in ['common', 'special', 'basic land']:
-        return Image.open(os.path.join(subdir, 'common.png'))
-    elif card['rarity'] == 'uncommon':
-        return Image.open(os.path.join(subdir, 'uncommon.png'))
-    elif card['rarity'] == 'rare':
-        return Image.open(os.path.join(subdir, 'rare.png'))
-    elif card['rarity'] == 'mythic rare':
-        return Image.open(os.path.join(subdir, 'mythic rare.png'))
-    else:
-        raise ValueError(f"unsupported rarity {card['rarity']}")
+    f_name = re.sub(' ', '_', card['rarity'])
+    return Image.open(os.path.join(subdir, f'{f_name}.png'))
 
 
 def render_multiline_text_and_symbols(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
