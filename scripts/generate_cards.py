@@ -245,8 +245,7 @@ def parse_mana_symbols(mana_string, None_acceptable=False):
     # mana_string is eg "{C}{C}{2/W}{B/R}{X}"
 
     symbols = re.findall(r'(?:\{([^\}]+)\})', mana_string)
-    if symbols is not None:
-        symbols = list(symbols)
+    symbols = list(symbols) or None  # convert empty list to None to raise errors on inappropriate usage
     if not None_acceptable:
         assert symbols is not None
     return symbols
@@ -406,8 +405,8 @@ def kering_and_symbol_size(font_size):
     #   so that we don't get really small text with large whitespace gaps from inline symbology
 
     # assume font size is in pixel height, make symbols and spacing the same height
-    symbol_size = font_size
-    vertical_kerning = font_size * 1.1  # TODO check margin
+    symbol_size = math.ceil(font_size * 0.8125)
+    vertical_kerning = math.ceil(font_size * 1.1)  # TODO check margin
     symbol_spacing = math.ceil(symbol_size * 0.064)  # Check magic number at various sizes
 
     return vertical_kerning, symbol_size, symbol_spacing
@@ -447,6 +446,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
             tokens = re.findall(r'(\{[^\}]+\})', token)  # individual symbols
         else:
             tokens = list(token)  # individual characters
+        assert len(tokens) > 1  # prevent infinite recursion. We should never get here unless something is malformatted
 
     # construct test image for rendering size tests, but not for final text rendering
     im_test = Image.new(mode='RGBA', size=(1, 1))  # size is irrelevant
@@ -476,6 +476,27 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
             horizontal_pos += im.width + symbol_spacing
         return line
 
+    def render_all_pending(render_None=False):
+        line_was_rendered = False
+        nonlocal rendered_lines
+        nonlocal line_images
+        nonlocal consolidated_words
+
+        # render any pending text and add it to the line
+        if consolidated_words:
+            line_images.append(render_text(consolidated_words))
+            consolidated_words = ''
+
+        # render any pending line images
+        if line_images:
+            rendered_lines.append(render_line(line_images))
+            line_images = []
+            line_was_rendered = True
+        elif render_None:
+            rendered_lines.append(None)  # None indicates empty line (no image)
+
+        return line_was_rendered
+
     rendered_lines = []
     line_images = []
     consolidated_words = ''
@@ -488,17 +509,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
 
         # try adding one token to the line, then check constraints
         if token == '\n':
-            # render any pending text and add it to the line now
-            if consolidated_words:
-                line_images.append(render_text(consolidated_words))
-                consolidated_words = ''
-
-            # render any pending line images
-            if line_images
-                rendered_lines.append(render_line(line_images))
-                line_images = []
-            else:
-                rendered_lines.append(None)  # None indicates empty line (no image)
+            render_all_pending(render_None=True)
 
             # nothing further to compute for newlines
             tokens.pop(0)
@@ -506,6 +517,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
 
         elif token_encodes_symbols(token):
             # render any pending text and add it to the line now
+            # but don't render the line incase this token still fits
             if consolidated_words:
                 line_images.append(render_text(consolidated_words))
                 consolidated_words = ''
@@ -533,19 +545,13 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
 
         # check constraints
         if composite_line_width > max_width:
-            # render any pending text and add it to the line now, not including the current offending token
-            if consolidated_words:
-                line_images.append(render_text(consolidated_words))
-                consolidated_words = ''
+            # line is at max dimensions, so render final line image, not including the current offending token
+            line_was_rendered = render_all_pending()
 
-            # line is at max dimensions, so render final line image
-            if line_images
-                rendered_lines.append(render_line(line_images))
-                line_images = []
-
+            # if nothing was rendered, then nothing was pending
             # handle tokens which when rendered by themselves already exceed max_width
             # break these tokens up to fit
-            else:
+            if not line_was_rendered:
                 lines = render_multiline_text_and_symbols(token, max_width, font_path, font_size, long_token_mode=True, **kwargs)
                 for line in lines[:-1]:
                     rendered_lines.append(line)
@@ -561,22 +567,16 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
             tokens.pop(0)
 
     # render any pending text or line images at the end of token list
-    if consolidated_words:
-        line_images.append(render_text(consolidated_words))
-        consolidated_words = ''
-
-    if line_images
-        rendered_lines.append(render_line(line_images))
-        line_images = []
+    render_all_pending()
 
     if long_token_mode:
         # don't composite the multiline image yet
         return rendered_lines
 
     # finally, render all lines together
-    height += vertical_kerning * len(rendered_lines)
+    height = vertical_kerning * len(rendered_lines)
     width = max([x.width for x in rendered_lines])
-    multiline = Image.new(mode='RGBA', size=(composite_line_width, line_height))
+    multiline = Image.new(mode='RGBA', size=(width, height))
     for i_im, im in enumerate(rendered_lines):
         multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
 
@@ -591,35 +591,56 @@ def render_main_text_box(card):
     # and
     #   with optimally located linebreaks
     #   with the largest font size that renders the given text within max_width and max_height
-    #   but not larger than the target_font_size
+    #   but not larger than the DEFAULT_FONT_SIZE_MAIN
     # works a bit differently from render_text_largest_fit due to
     #   multiline with arbitrary linebreak locations introduces a 2nd optimization variable
     #   inline symbols adds additional spacing / rendering requirements
     #   multiple fields need to be sized simultaneously
 
     width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
+    max_height = BOTTOM_MAIN_TEXT_BOX - TOP_MAIN_TEXT_BOX
     sep_bar = Image.open('../image_templates/modular_elements/whitebar.png')
-    # sep_bar = sep_bar.resize((width * 0.9, 2)) # TODO this?
+    sep_bar = sep_bar.resize((math.ceil(width * 1.05), 6))  # auto-crop some of the more faded edges
+
+    # prefer smaller fonts to broken tokens, unless font needs to be lowered below criterion
+    largest_rendered_with_broken_token = None
+    max_font_point_loss_to_unbreak_token = 10
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
-    for font_size in range(target_font_size, 1, -1):
-        im_main_text = render_multiline_text_and_symbols(card_data['main_text'], width, FONT_MAIN_TEXT, DEFAULT_FONT_SIZE_MAIN, fill=(255,255,255,255))
-        im_flavor = render_multiline_text_and_symbols(card_data['flavor'], width, FONT_FLAVOR, DEFAULT_FONT_SIZE_MAIN, fill=(255,255,255,255))
+    for font_size in range(DEFAULT_FONT_SIZE_MAIN, 1, -1):
+        im_main_text, broken_token = render_multiline_text_and_symbols(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+        im_flavor, _broken_token = render_multiline_text_and_symbols(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
+        broken_token = broken_token or _broken_token
 
-        height_sep_bar = font_size  # TODO check this sizing
+        height_sep_bar = math.floor(font_size *2/3)
+        height_sep_bar = max(height_sep_bar, sep_bar.height * 3)  # but no smaller than the actual graphic + margin
 
         composite_height = im_main_text.height + height_sep_bar + im_flavor.height
 
         if composite_height <= max_height:
             # render all 3 main-text-box images together
             im = Image.new(mode='RGBA', size=(width, composite_height))
-            im.paste(im_main_text, box=(0, 0), mask=im_main_text)
-            pos = (im_main_text.height + height_sep_bar // 2 - sep_bar.height // 2,  # centered between main text and flavor fields
-                   LEFT_MAIN_TEXT_BOX + width // 2 - sep_bar.width // 2)  # horizontally center
-            im.paste(sep_bar, box=pos, mask=sep_bar)
-            im.paste(im_flavor, box=(im_main_text.height + height_sep_bar, 0), mask=im_flavor)
+            im.putalpha(0)  # full alpha base image
 
-            return im
+            im.paste(im_main_text, box=(0, 0), mask=im_main_text)
+            pos = (math.floor(width / 2 - sep_bar.width / 2),  # horizontally center
+                   math.floor(im_main_text.height + height_sep_bar *1/3 - sep_bar.height / 2))  # centered-offset between main text and flavor fields
+            im.paste(sep_bar, box=pos, mask=sep_bar)
+            im.paste(im_flavor, box=(0, im_main_text.height + height_sep_bar), mask=im_flavor)
+
+            # return either this render, or a larger render with a broken token if it exists and meets criteria
+            # store broken token renders until we find an unbroken size to compare, or run out of search space
+            if broken_token and largest_rendered_with_broken_token is None:
+                largest_rendered_with_broken_token = (im, font_size)
+            else:
+                if (largest_rendered_with_broken_token is not None
+                    and largest_rendered_with_broken_token[1] - font_size <= max_font_point_loss_to_unbreak_token):
+                    return largest_rendered_with_broken_token[0]
+                return im
+
+    # if we can only render with a broken token, then do so
+    if largest_rendered_with_broken_token is not None:
+        return largest_rendered_with_broken_token[0]
 
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
@@ -693,7 +714,9 @@ def render_card(card_data, art, outdir, verbosity):
 
     # TODO loyalty
 
-    # main text
+    # main text box
+    im_main_text_box = render_main_text_box(card_data)
+    card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
 
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
