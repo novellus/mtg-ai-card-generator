@@ -1,5 +1,6 @@
 import argparse
 import copy
+import datetime
 import json
 import math
 import os
@@ -398,20 +399,6 @@ def load_power_toughness_overlay(card):
         return Image.open(os.path.join(subdir, 'pt_multicolored.png'))
 
 
-def kering_and_symbol_size(font_size):
-    # utility function for maintext rendering
-    # computes a vertical kerning, mana symbol size, and mana symbol spacing for rendering text at a given font size
-    # ties together the definition of kerning and symbol size
-    #   so that we don't get really small text with large whitespace gaps from inline symbology
-
-    # assume font size is in pixel height, make symbols and spacing the same height
-    symbol_size = math.ceil(font_size * 0.8125)
-    vertical_kerning = math.ceil(font_size * 1.1)  # TODO check margin
-    symbol_spacing = math.ceil(symbol_size * 0.064)  # Check magic number at various sizes
-
-    return vertical_kerning, symbol_size, symbol_spacing
-
-
 def render_multiline_text_and_symbols(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
@@ -426,7 +413,13 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
     #   spaces are omitted during token recombination to form lines
     #   returns list of rendered lines (and no boolean), instead of one rendered image
 
-    vertical_kerning, symbol_size, symbol_spacing = kering_and_symbol_size(font_size)
+    # size vertical kerning and symbols together
+    #   so that we don't get really small text with large whitespace gaps from inline symbology
+    # assume font size is in pixel height, make symbols and spacing the same height
+    symbol_size = math.ceil(font_size * 0.8125)
+    vertical_kerning = math.ceil(font_size * 1.1)
+    symbol_spacing = math.ceil(symbol_size * 0.064)
+
     optional_space = '' if long_token_mode else ' '
 
     def token_encodes_symbols(token):
@@ -586,8 +579,8 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
 def render_main_text_box(card):
     # returns image of main text box including these fields
     #   main text with inline symbols
+    #   field separator
     #   flavor text
-    #   field separator graphic
     # and
     #   with optimally located linebreaks
     #   with the largest font size that renders the given text within max_width and max_height
@@ -645,14 +638,10 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card_data, art, outdir, verbosity):
+def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp):
     # image sizes and positions are all hard coded magic numbers
     # TODO
     #   main card template
-    #       main text box (sized together?)
-    #           main text
-    #               mana costs
-    #           flavor
     #       card info
     #           creator
     #           date / seed
@@ -688,16 +677,17 @@ def render_card(card_data, art, outdir, verbosity):
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
-    # type - width constraints are the same as card title
+    # TODO rarity
+    left_rarity = RIGHT_TITLE_BOX_TEXT
+
+    # type - width constraints are almost the same as card title
     type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
-    max_width = RIGHT_TITLE_BOX_TEXT - LEFT_TITLE_BOX
+    max_width = left_rarity - LEFT_TITLE_BOX
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
-
-    # TODO rarity
 
     # power toughness
     #   first render the infobox overlay
@@ -718,11 +708,27 @@ def render_card(card_data, art, outdir, verbosity):
     im_main_text_box = render_main_text_box(card_data)
     card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
 
+    # info text
+    d = ImageDraw.Draw(card)
+    font = ImageFont.truetype(FONT_TITLE, size=35)
+    base_count = len(os.listdir(outdir))
+    set_seed_number = f'{set_count:05}_{seed}_{base_count:05}'
+    author = 'Novellus Cato'
+    repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
+    d.text((100, 1971), text=set_seed_number, font=font, anchor='lt', fill=(255,255,255,255))
+    d.text((100, 2006), text=timestamp, font=font, anchor='lt', fill=(255,255,255,255))
+
+    im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
+    im_brush = im_brush.resize((40, 25))
+    card.paste(im_brush, box=(100, 2043), mask=im_brush)
+    d.text((145, 2043), text=author, font=font, anchor='lt', fill=(255,255,255,255))
+
+    d.text((1399, 2006), text=repo_link, font=font, anchor='rt', fill=(255,255,255,255))
+
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
 
     # save image
-    base_count = len(os.listdir(outdir))
     out_path = os.path.join(outdir, f"{base_count:05}_{card_data['name']}.png")
     card.save(out_path)
 
@@ -757,6 +763,8 @@ def main(args):
         args.seed = random.randint(0, 1000000000)
         if args.verbosity > 1:
             print(f'setting seed to {args.seed}')
+
+    timestamp = datetime.datetime.utcnow().isoformat(sep=' ', timespec='seconds')
 
     # resolve folders to checkpoints
     args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
@@ -831,7 +839,7 @@ def main(args):
             print(f'rendering card')
 
         try:
-            render_card(card_data, art, args.outdir, verbosity)
+            render_card(card_data, art, args.outdir, verbosity, base_count, args.seed, timestamp)
         except e:
             # this should not normally occur
             #   although some cards may have ridiculous stats
