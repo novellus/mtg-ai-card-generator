@@ -27,23 +27,15 @@ LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change
 LSTM_LEN_PER_MAIN_TEXT = math.ceil(4373216 / (23840 + 119))  # empirical, change if the dataset changes
 LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change if the dataset changes
 
-MANA_SIZE_MAIN_COST = 78
-MANA_SPACING_MAIN_COST = 5
-
 # fonts assignments are hard to remember
 FONT_TITLE = '../image_templates/fonts/beleren-b.ttf'
 FONT_MAIN_TEXT = '../image_templates/fonts/mplantin.ttf'
 FONT_FLAVOR = '../image_templates/fonts/mplantin-i.ttf'
 FONT_MODULAR = '../image_templates/fonts/beleren-bsc.ttf'  # power/toughness, loyalty, mana costs, etc
 
-# defaults, may be overriden at runtime to coerce text fit
-DEFAULT_FONT_SIZE_MAIN_COST = 78
-DEFAULT_FONT_SIZE_TITLE = 96
-DEFAULT_FONT_SIZE_MAIN = 96
-DEFAULT_FONT_SIZE_POWER_TOUGHNESS = 96  # also loyalty
+DEFAULT_FONT_SIZE = 96  # may be overriden at runtime to coerce text fit
 
-TITLE_MAX_HEIGHT = MANA_SIZE_MAIN_COST  # keep these the same height
-# max width is computed dynamically, based on size of rendered mana cost
+TITLE_MAX_HEIGHT = 94
 
 LEFT_TITLE_BOX = 116  # closest text should get to this side
 RIGHT_TITLE_BOX_MANA = 1396  # closest mana cost should get to this side
@@ -52,8 +44,8 @@ RIGHT_TITLE_BOX_TEXT = 1383  # not fully symmetric since text is squarer than ma
 HEIGHT_MID_TITLE = 161  # true middle of the image title field
 HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off center for a better look
 
-HEIGHT_MID_TYPE = 1418
-HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 6  # text is rendered slightly off center for a better look
+HEIGHT_MID_TYPE = 1417
+HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 7  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1505
 # BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
@@ -297,7 +289,11 @@ def render_text_largest_fit(text, max_width, max_height, font_path, target_font_
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(target_font_size, 1, -1):
-        im, _ = render_complex_text(text, max_width, font_path, font_size, **kwargs)
+        try:
+            im, _ = render_complex_text(text, max_width, font_path, font_size, **kwargs)
+        except FontTooLargeError:
+            continue
+
         if im.height <= max_height:
             return im
 
@@ -332,7 +328,7 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             # render cost as text over the base image
             #   bound text by max size of a square inscribed into the circular symbol image
             size = math.floor(symbol_size / math.sqrt(2))
-            im_text = render_text_largest_fit(symbol, size, size, FONT_MODULAR, DEFAULT_FONT_SIZE_MAIN_COST, fill=(0,0,0,255))
+            im_text = render_text_largest_fit(symbol, size, size, FONT_MODULAR, symbol_size, fill=(0,0,0,255))
             position = [math.floor(im_symbol.width / 2 - im_text.width / 2),  # center text
                         math.floor(im_symbol.height / 2 - im_text.height / 2)]
             im_symbol.paste(im_text, box=position, mask=im_text)
@@ -398,6 +394,12 @@ def load_set_symbol(card):
     return Image.open(os.path.join(subdir, f'{f_name}.png'))
 
 
+class FontTooLargeError(Exception):
+    # raised to indicate the given operation with constraints is impossible
+    # ie that a single character at the specified font size violates the maximum width constraint
+    pass
+
+
 def render_complex_text(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
@@ -412,6 +414,13 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     #   spaces are omitted during token recombination to form lines
     #   returns list of rendered lines (and no boolean), instead of one rendered image
     # TODO support planeswalker symbology
+
+    assert max_width > 0
+    assert font_size > 0
+    assert font_path
+
+    if long_token_mode and len(text) == 1:
+        raise FontTooLargeError(f'{text}, {max_width}, {font_path}, {font_size}, {long_token_mode}, {kwargs}')
 
     # size vertical kerning and symbols together
     #   so that we don't get really small text with large whitespace gaps from inline symbology
@@ -435,10 +444,10 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         # alternatively break up symbol groups by default, but I probably don't want that
         # tokens = re.findall(r'(\n|\{[^\}]+\}|[^\s]+)', text)
     else:
-        if token_encodes_symbols(token):
-            tokens = re.findall(r'(\{[^\}]+\})', token)  # individual symbols
+        if token_encodes_symbols(text):
+            tokens = re.findall(r'(\{[^\}]+\})', text)  # individual symbols
         else:
-            tokens = list(token)  # individual characters
+            tokens = list(text)  # individual characters
         assert len(tokens) > 1  # prevent infinite recursion. We should never get here unless something is malformatted
 
     # construct test image for rendering size tests, but not for final text rendering
@@ -553,6 +562,7 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
                 # the last rendered line could have room for more stuff
                 line_images.append(lines[-1])
                 broken_token = True
+                tokens.pop(0)
 
         else:  # token fits on line
             if token_encodes_symbols(token):
@@ -575,7 +585,8 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     width = max([x.width for x in rendered_lines])
     multiline = Image.new(mode='RGBA', size=(width, height))
     for i_im, im in enumerate(rendered_lines):
-        multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
+        if im is not None:  # None => blank line
+            multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
     multiline = multiline.crop(multiline.getbbox())
 
     return multiline, broken_token
@@ -589,7 +600,7 @@ def render_main_text_box(card):
     # and
     #   with optimally located linebreaks
     #   with the largest font size that renders the given text within max_width and max_height
-    #   but not larger than the DEFAULT_FONT_SIZE_MAIN
+    #   but not larger than the DEFAULT_FONT_SIZE
     # works a bit differently from render_text_largest_fit due to
     #   multiline with arbitrary linebreak locations introduces a 2nd optimization variable
     #   inline symbols adds additional spacing / rendering requirements
@@ -611,7 +622,7 @@ def render_main_text_box(card):
     max_font_point_loss_to_unbreak_token = 10
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
-    for font_size in range(DEFAULT_FONT_SIZE_MAIN, 1, -1):
+    for font_size in range(DEFAULT_FONT_SIZE, 1, -1):
         im_main_text, broken_token = render_complex_text(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
         broken_token = broken_token or _broken_token
@@ -671,7 +682,8 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
 
     # main mana cost
     if card_data['cost'] is not None:
-        im_mana = render_mana_cost(card_data['cost'], MANA_SIZE_MAIN_COST, MANA_SPACING_MAIN_COST)
+        max_width = (RIGHT_TITLE_BOX_MANA - LEFT_TITLE_BOX) // 2
+        im_mana = render_text_largest_fit(card_data['cost'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, 120)
         left_main_cost = RIGHT_TITLE_BOX_MANA - im_mana.width
         top_main_cost = HEIGHT_MID_TITLE - im_mana.height // 2
         card.paste(im_mana, box=(left_main_cost, top_main_cost), mask=im_mana)
@@ -679,14 +691,14 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
         left_main_cost = RIGHT_TITLE_BOX_TEXT  # zero width, adjusted for text spacing constraints
 
     # name
-    max_width = left_main_cost - LEFT_TITLE_BOX - MANA_SPACING_MAIN_COST  # use of MANA_SPACING here is an arbitrary spacer between title and mana cost
-    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
+    max_width = left_main_cost - LEFT_TITLE_BOX - 5
+    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
     # set symbol
     im_set = load_set_symbol(card_data)
-    im_set = im_set.resize((96, 96))
+    im_set = im_set.resize((97, 97))
     pos = (RIGHT_TITLE_BOX_MANA - im_set.width,
            HEIGHT_MID_TYPE - im_set.height // 2)
     card.paste(im_set, box=pos, mask=im_set)
@@ -697,7 +709,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
     max_width = left_set - LEFT_TITLE_BOX
-    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
+    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
@@ -709,7 +721,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
         card.paste(im_pt, box=(1137, 1858), mask=im_pt)  # magic numbers, image has assymetric partial alpha around the edges
 
         pt_string = '/'.join([str(x) for x in card_data['power_toughness']])
-        im_text = render_text_largest_fit(pt_string, 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE_POWER_TOUGHNESS, fill=(0,0,0,255))
+        im_text = render_text_largest_fit(pt_string, 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
         top = 1928 - im_text.height // 2
         left = 1292 - im_text.width // 2
         card.paste(im_text, box=(left, top), mask=im_text)
