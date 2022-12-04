@@ -88,11 +88,6 @@
         * ```BELEREN_TALL_LETTERS = 'FGHIJKPQRVWgjpqy'```
     * decrease save file resolution to limit file size
 * statistics
-* generate additional basic lands with custom / unique art
-    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
-        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
-    * add 2nd ```main_basics``` function for generating these basics
-        * probably add an argument to specify prompt? Or use a standard set?
 * configure txt2img args
     * consider adjusting the prompt to specify a specific style
     * find a way to not render actual magic card elements, like borders, titles, mana, etc
@@ -114,6 +109,11 @@
 * Add extra names and flavor
 * finish training the AIs
 * generate a small-medium batch of cards for Colin to review
+* generate additional basic lands with custom / unique art
+    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
+        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
+    * add 2nd ```main_basics``` function for generating these basics
+        * probably add an argument to specify prompt? Or use a standard set?
 
 
 # Environment Setup
