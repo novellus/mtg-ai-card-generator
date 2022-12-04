@@ -61,6 +61,7 @@
     * Uncommented decoding steps so that it actually decodes all the encoded properties...
     * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
     * fixed decoder decodes integer values as floats
+    * fixed encoder didn't encode the ```mythic``` rarity properly
     * &#x1F534; TODO updated decoder ```text_unpass_1_choice``` to decode into human readable format
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
