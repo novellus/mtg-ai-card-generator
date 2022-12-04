@@ -726,7 +726,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     im_main_text_box = render_main_text_box(card_data)
     card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
 
-    # info text (1971, 2007, 2043)
+    # info text
     side_id = None
     if 'b_side' in card_data:
         side_id = '_a-side'
@@ -750,7 +750,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     d.text((100, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
     d.text((1166, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
 
-    im_nn_names = render_text_largest_fit(nn_names, 1299, 25, FONT_TITLE, 35, fill=(255,255,255,255))
+    im_nn_names = render_text_largest_fit(nn_names, 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
     card.paste(im_nn_names, box=(100, 2020 - im_nn_names.height // 2), mask=im_nn_names)
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
