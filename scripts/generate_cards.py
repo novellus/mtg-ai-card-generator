@@ -7,6 +7,7 @@ import os
 import pprint
 import random
 import re
+import shlex
 import subprocess
 
 from collections import defaultdict
@@ -149,11 +150,8 @@ def parse_flavor(chunk, verbosity):
 def parse_mtg_cards(chunk, verbosity):
     # use mtgencode to decode the machine encoded card format, producing nice human readable fields
 
-    # escape double quotes for bash string encoding
-    chunk = re.sub('"', r'\\x22', chunk)
-
     cmd = ( 'python decode.py'
-           f' -instring $\'{chunk}\''
+           f' -instring {shlex.quote(chunk)}'
             ' -e named'
             ' -out_encoding none'
             ' -to_json'
