@@ -61,6 +61,7 @@
     * Uncommented decoding steps so that it actually decodes all the encoded properties...
     * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
     * fixed decoder decodes integer values as floats
+    * &#x1F534; TODO updated decoder ```text_unpass_1_choice``` to decode into human readable format
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -189,6 +190,7 @@
 * ```watch -n1 nvidia-smi``` to see GPU resource utilization
 * [torch docs](https://github.com/torch/torch7/blob/master/doc/tensor.md)
 * batch convert svg images to png ```find . -name "*.svg" | xargs inkscape --export-type=png --export-width=1000 --export-height=1000 --export-png-color-mode=RGBA_8 --batch-process```
+<!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer -->
 
 
 # Prompt Development Tooling
