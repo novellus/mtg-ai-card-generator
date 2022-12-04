@@ -295,20 +295,10 @@ def render_text_largest_fit(text, max_width, max_height, font_path, target_font_
     #   but not larger than the target_font_size
     # kwargs are passed to ImageDraw.text
 
-    im = Image.new(mode='RGBA', size=(max_width, max_height))
-    d = ImageDraw.Draw(im)
-
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(target_font_size, 1, -1):
-        font = ImageFont.truetype(font_path, size=font_size)
-
-        (left, top, right, bottom) = d.textbbox((0,0), text, font=font, anchor='lt')
-        rendered_width = right - left
-        rendered_height = bottom - top
-
-        if rendered_width <= max_width and rendered_height <= max_height:
-            d.text((0,0), text=text, font=font, anchor='lt', **kwargs)
-            im = im.crop(im.getbbox())
+        im, _ = render_complex_text(text, max_width, font_path, font_size, **kwargs)
+        if im.height <= max_height:
             return im
 
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
@@ -408,7 +398,7 @@ def load_set_symbol(card):
     return Image.open(os.path.join(subdir, f'{f_name}.png'))
 
 
-def render_multiline_text_and_symbols(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
+def render_complex_text(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
     #       or in the middle of a word (delimited by whitespace) if and only if the word by itself exceeds the max_width constraint
@@ -478,6 +468,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
                         math.floor(line.height / 2 - im.height / 2)]  # vertically center image
             line.paste(im, box=position, mask=im)
             horizontal_pos += im.width + symbol_spacing
+        line = line.crop(line.getbbox())
         return line
 
     def render_all_pending(render_None=False):
@@ -556,7 +547,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
             # handle tokens which when rendered by themselves already exceed max_width
             # break these tokens up to fit
             if not line_was_rendered:
-                lines = render_multiline_text_and_symbols(token, max_width, font_path, font_size, long_token_mode=True, **kwargs)
+                lines = render_complex_text(token, max_width, font_path, font_size, long_token_mode=True, **kwargs)
                 for line in lines[:-1]:
                     rendered_lines.append(line)
                 # the last rendered line could have room for more stuff
@@ -567,7 +558,9 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
             if token_encodes_symbols(token):
                 line_images.append(cached_mana_render)
             else:
-                consolidated_words += optional_space + token
+                if consolidated_words:
+                    consolidated_words += optional_space
+                consolidated_words += token
             tokens.pop(0)
 
     # render any pending text or line images at the end of token list
@@ -583,6 +576,7 @@ def render_multiline_text_and_symbols(text, max_width, font_path, font_size, lon
     multiline = Image.new(mode='RGBA', size=(width, height))
     for i_im, im in enumerate(rendered_lines):
         multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
+    multiline = multiline.crop(multiline.getbbox())
 
     return multiline, broken_token
 
@@ -618,8 +612,8 @@ def render_main_text_box(card):
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(DEFAULT_FONT_SIZE_MAIN, 1, -1):
-        im_main_text, broken_token = render_multiline_text_and_symbols(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
-        im_flavor, _broken_token = render_multiline_text_and_symbols(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
+        im_main_text, broken_token = render_complex_text(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+        im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
         broken_token = broken_token or _broken_token
 
         height_sep_bar = math.floor(font_size *2/3)
@@ -634,7 +628,7 @@ def render_main_text_box(card):
 
             im.paste(im_main_text, box=(0, 0), mask=im_main_text)
             pos = (math.floor(width / 2 - sep_bar.width / 2),  # horizontally center
-                   math.floor(im_main_text.height + height_sep_bar *1/3 - sep_bar.height / 2))  # centered-offset between main text and flavor fields
+                   math.floor(im_main_text.height + height_sep_bar / 2 - sep_bar.height / 2))  # centered between main text and flavor fields
             im.paste(sep_bar, box=pos, mask=sep_bar)
             im.paste(im_flavor, box=(0, im_main_text.height + height_sep_bar), mask=im_flavor)
 
@@ -690,19 +684,19 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
-    # TODO rarity
+    # set symbol
     im_set = load_set_symbol(card_data)
     im_set = im_set.resize((96, 96))
     pos = (RIGHT_TITLE_BOX_MANA - im_set.width,
            HEIGHT_MID_TYPE - im_set.height // 2)
     card.paste(im_set, box=pos, mask=im_set)
-    left_rarity = pos[0]
+    left_set = pos[0]
 
     # type - width constraints are almost the same as card title
     type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
-    max_width = left_rarity - LEFT_TITLE_BOX
+    max_width = left_set - LEFT_TITLE_BOX
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE_TITLE, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
@@ -740,7 +734,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
         tail = os.path.join(tail_2, tail_1)
         name = re.sub(r'checkpoint_|\.t7', '', tail)
         _nns_names.append(name)
-    nn_names = ',  '.join(_nns_names)
+    nn_names = ', '.join(_nns_names)
 
     d = ImageDraw.Draw(card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
