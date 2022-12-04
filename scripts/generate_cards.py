@@ -42,10 +42,10 @@ RIGHT_TITLE_BOX_MANA = 1396  # closest mana cost should get to this side
 RIGHT_TITLE_BOX_TEXT = 1383  # not fully symmetric since text is squarer than mana costs
 
 HEIGHT_MID_TITLE = 161  # true middle of the image title field
-HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 8  # text is rendered slightly off center for a better look
+HEIGHT_MID_TITLE_TEXT = HEIGHT_MID_TITLE + 10  # text is rendered slightly off center for a better look
 
 HEIGHT_MID_TYPE = 1417
-HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 7  # text is rendered slightly off center for a better look
+HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 9  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1505
 # BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
@@ -284,11 +284,12 @@ def load_frame(card):
     return load_frame_main(card)
 
 
-def render_text_largest_fit(text, max_width, max_height, font_path, target_font_size, **kwargs):
+def render_text_largest_fit(text, max_width, max_height, font_path, target_font_size, crop_final=True, **kwargs):
     # returns image of rendered text
     #   with the largest font size that renders the given text within max_width and max_height
     #   but not larger than the target_font_size
     # kwargs are passed to ImageDraw.text
+    # if crop_final, the image is cropped to its non-zero bounding box before checking constraints
 
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(target_font_size, 1, -1):
@@ -296,6 +297,9 @@ def render_text_largest_fit(text, max_width, max_height, font_path, target_font_
             im, _ = render_complex_text(text, max_width, font_path, font_size, **kwargs)
         except FontTooLargeError:
             continue
+
+        if crop_final:
+            im = im.crop(im.getbbox())
 
         if im.height <= max_height:
             return im
@@ -466,7 +470,6 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         im = Image.new(mode='RGBA', size=(rendered_width, rendered_height))
         d = ImageDraw.Draw(im)
         d.text((0,0), text=t, font=font, anchor='lt', **kwargs)
-        im = im.crop(im.getbbox())
         return im
 
     def render_line(l):
@@ -480,7 +483,6 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
                         math.floor(line.height / 2 - im.height / 2)]  # vertically center image
             line.paste(im, box=position, mask=im)
             horizontal_pos += im.width + symbol_spacing
-        line = line.crop(line.getbbox())
         return line
 
     def render_all_pending(render_None=False):
@@ -590,7 +592,6 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     for i_im, im in enumerate(rendered_lines):
         if im is not None:  # None => blank line
             multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
-    multiline = multiline.crop(multiline.getbbox())
 
     return multiline, broken_token
 
@@ -604,10 +605,7 @@ def render_main_text_box(card):
     #   with optimally located linebreaks
     #   with the largest font size that renders the given text within max_width and max_height
     #   but not larger than the DEFAULT_FONT_SIZE
-    # works a bit differently from render_text_largest_fit due to
-    #   multiline with arbitrary linebreak locations introduces a 2nd optimization variable
-    #   inline symbols adds additional spacing / rendering requirements
-    #   multiple fields need to be sized simultaneously
+    # separate from render_text_largest_fit since multiple fields need to be optimized together
 
     # dynamically shorten main text if one of these is rendered
     if card['power_toughness'] or card['loyalty']:
@@ -627,7 +625,9 @@ def render_main_text_box(card):
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(DEFAULT_FONT_SIZE, 1, -1):
         im_main_text, broken_token = render_complex_text(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+        im_main_text = im_main_text.crop(im_main_text.getbbox())
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
+        im_flavor = im_flavor.crop(im_flavor.getbbox())
         broken_token = broken_token or _broken_token
 
         height_sep_bar = math.floor(font_size *2/3)
@@ -694,8 +694,11 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
         left_main_cost = RIGHT_TITLE_BOX_TEXT  # zero width, adjusted for text spacing constraints
 
     # name
+    # specifically don't crop title boxes, so that the text baseline is always in the same location
+    #   ie the text doesn't shift around depending on whether it contains tall characters dropping below the baseline
+    #   which would cause it to appear off center
     max_width = left_main_cost - LEFT_TITLE_BOX - 5
-    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
+    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 
@@ -712,7 +715,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
     max_width = left_set - LEFT_TITLE_BOX
-    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
+    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
 

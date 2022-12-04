@@ -84,8 +84,6 @@
         * loyalty increase / deccrease icons in main text box
         * loyalty box in lower right corner
     * add legendary frame
-    * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
-        * ```BELEREN_TALL_LETTERS = 'FGHIJKPQRVWgjpqy'```
     * decrease save file resolution to limit file size
 * statistics
 * configure txt2img args
