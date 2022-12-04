@@ -79,14 +79,13 @@
 
 # &#x1F534; TODOs
 * renderer
-    * add info text for nn names
+    * limit mana render space to at most half the title bar
     * support planeswalkers
         * different frame?
         * loyalty increase / deccrease icons in main text box
         * loyalty box in lower right corner
-    * limit mana render space to at most half the title bar
-    * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
     * add legendary frame
+    * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
     * decrease save file resolution to limit file size
 * increment seed after each art generation so that the art isn't all similar
 * statistics

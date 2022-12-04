@@ -655,7 +655,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, base_count=None):
+def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, nns_names, base_count=None):
     # image sizes and positions are all hard coded magic numbers
 
     # used for rendering b-sides at the same base_count
@@ -726,27 +726,38 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, b
     im_main_text_box = render_main_text_box(card_data)
     card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
 
-    # info text
+    # info text (1971, 2007, 2043)
     side_id = None
     if 'b_side' in card_data:
         side_id = '_a-side'
     elif 'a_side' in card_data:
         side_id = '_b-side'
 
+    _nns_names = []
+    for nn_path in nns_names:
+        head, tail_1 = os.path.split(nn_path)
+        _, tail_2 = os.path.split(head)
+        tail = os.path.join(tail_2, tail_1)
+        name = re.sub(r'checkpoint_|\.t7', '', tail)
+        _nns_names.append(name)
+    nn_names = ',  '.join(_nns_names)
+
     d = ImageDraw.Draw(card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
-    card_id = f'{set_count:05}_{seed}_{base_count:05}{side_id or ""}'
+    card_id = f'ID: {set_count:05}_{seed}_{base_count:05}{side_id or ""}'
     author = 'Novellus Cato'
     repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
-    d.text((95, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
-    d.text((100, 2006), text=timestamp, font=font, anchor='lt', fill=(255,255,255,255))
+    d.text((100, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
+    d.text((1166, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
+
+    im_nn_names = render_text_largest_fit(nn_names, 1299, 25, FONT_TITLE, 35, fill=(255,255,255,255))
+    card.paste(im_nn_names, box=(100, 2020 - im_nn_names.height // 2), mask=im_nn_names)
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
     im_brush = im_brush.resize((40, 25))
-    card.paste(im_brush, box=(100, 2043), mask=im_brush)
+    card.paste(im_brush, box=(100, 2043 + 2), mask=im_brush)
     d.text((145, 2043), text=author, font=font, anchor='lt', fill=(255,255,255,255))
-
-    d.text((1399, 2006), text=repo_link, font=font, anchor='rt', fill=(255,255,255,255))
+    d.text((1399, 2043), text=repo_link, font=font, anchor='rt', fill=(255,255,255,255))
 
     # clear extra alpha masks from the image pastes
     card.putalpha(255)
@@ -796,6 +807,7 @@ def main(args):
     args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
     args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
     args.flavor_nn = resolve_folder_to_checkpoint_path(args.flavor_nn)
+    nns_names = [args.names_nn, args.main_text_nn, args.flavor_nn]
 
     # resolve and create outdir
     base_count = len(os.listdir(args.outdir))
@@ -863,7 +875,7 @@ def main(args):
             if args.verbosity > 1:
                 print(f'rendering card')
 
-            card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp, card_num)
+            card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp, nns_names, card_num)
 
         card_num = finish_card(card)
         if 'b_side' in card:
