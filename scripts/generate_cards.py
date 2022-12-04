@@ -608,7 +608,9 @@ def render_main_text_box(card):
     # separate from render_text_largest_fit since multiple fields need to be optimized together
 
     # dynamically shorten main text if one of these is rendered
-    if card['power_toughness'] or card['loyalty']:
+    if card['loyalty']:
+        bottom_main_text_box = 1840
+    elif card['power_toughness']:
         bottom_main_text_box = 1858
     else:
         bottom_main_text_box = 1923
@@ -722,7 +724,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     # power toughness
     #   first render the infobox overlay
     #   then render text on top of that
-    if card_data['power_toughness']:
+    if card_data['power_toughness'] is not None:
         im_pt = load_power_toughness_overlay(card_data)
         card.paste(im_pt, box=(1137, 1858), mask=im_pt)  # magic numbers, image has assymetric partial alpha around the edges
 
@@ -732,7 +734,15 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
         left = 1292 - im_text.width // 2
         card.paste(im_text, box=(left, top), mask=im_text)
 
-    # TODO loyalty
+    # loyalty
+    if card_data['loyalty'] is not None:
+        im_loyalty = Image.open('../image_templates/modular_elements/loyalty.png')
+        card.paste(im_loyalty, box=(1200, 1847), mask=im_loyalty)
+
+        im_text = render_text_largest_fit(str(card_data['loyalty']), 154, 60, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
+        top = 1915 - im_text.height // 2
+        left = 1314 - im_text.width // 2
+        card.paste(im_text, box=(left, top), mask=im_text)
 
     # main text box
     im_main_text_box = render_main_text_box(card_data)
