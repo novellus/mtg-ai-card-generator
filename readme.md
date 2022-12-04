@@ -87,7 +87,6 @@
     * fix: title text without underhangs on the letters appears lower sitting than text that does (ie baseline is lower, and text is rendered larger)
         * ```BELEREN_TALL_LETTERS = 'FGHIJKPQRVWgjpqy'```
     * decrease save file resolution to limit file size
-* increment seed after each art generation so that the art isn't all similar
 * statistics
 * generate additional basic lands with custom / unique art
     * use unique type identifer (```Basic Land```?) to indicate usage of textless frames

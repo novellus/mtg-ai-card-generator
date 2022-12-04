@@ -111,6 +111,9 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter, p
         if trimmed_delimiters > 0:
             chunks = chunks[trimmed_delimiters : -trimmed_delimiters]
 
+        # trim leading / trailing whitepsace
+        chunks = [x.strip() for x in chunks]
+
         # deduplicate, but preserve order from the original input, for output stability over many runs
         if deduplicate:
             chunks = sorted(set(chunks), key=lambda x: chunks.index(x))
@@ -660,7 +663,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, nns_names, base_count=None):
+def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_diff, timestamp, nns_names, base_count=None):
     # image sizes and positions are all hard coded magic numbers
 
     # used for rendering b-sides at the same base_count
@@ -735,9 +738,9 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     # info text
     side_id = None
     if 'b_side' in card_data:
-        side_id = '_a-side'
+        side_id = '-A'
     elif 'a_side' in card_data:
-        side_id = '_b-side'
+        side_id = '-B'
 
     _nns_names = []
     for nn_path in nns_names:
@@ -750,7 +753,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
 
     d = ImageDraw.Draw(card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
-    card_id = f'ID: {set_count:05}_{seed}_{base_count:05}{side_id or ""}'
+    card_id = f'ID: {set_count:05}_{seed}+{art_seed_diff}_{base_count:05}{side_id or ""}'
     author = 'Novellus Cato'
     repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
     d.text((100, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
@@ -769,7 +772,10 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, timestamp, n
     card.putalpha(255)
 
     # save image
-    f_name = f"{base_count:05}{side_id or ''}_{card_data['name']}"
+    # the space in f_name is important for parsability
+    #   because the name is guaranteed to not start with a space
+    #   while it could (legally) start with "-A"
+    f_name = f"{base_count:05}{side_id or ''} {card_data['name']}"
     out_path = os.path.join(outdir, f"{f_name}.png")
     card.save(out_path)
 
@@ -840,6 +846,15 @@ def main(args):
 
     cards = []
 
+    # increment art seed each iteration for more unique images
+    # lstm samplers don't need this because they are seeded with a unique name
+    #   which creates a unique character probability distribution for the next character
+    #   and then the torch library uses the single stock seed to sample the next character from that distribution
+    #   which is still a net unique decision
+    # whereas the txt2img uses the seed to directly determine the base noise from which the image is generated
+    #   meaning identical seeds produce visually similar images, even given different prompts
+    art_seed_diff = 0
+
     # sample main text and flavor text
     for i_name, name in enumerate(names):
         if args.verbosity > 0:
@@ -859,6 +874,8 @@ def main(args):
         card = sampled_cards[0]  # includes the name field whispered to the nn
 
         def finish_card(card, card_num=None):
+            nonlocal art_seed_diff
+
             if args.verbosity > 1:
                 print(f'sampling flavor')
 
@@ -876,12 +893,13 @@ def main(args):
             if args.verbosity > 1:
                 print(f'sampling txt2img')
 
-            art = sample_txt2img(card, args.outdir, args.seed, args.verbosity)
+            art = sample_txt2img(card, args.outdir, args.seed + art_seed_diff, args.verbosity)
 
             if args.verbosity > 1:
                 print(f'rendering card')
 
-            card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, timestamp, nns_names, card_num)
+            card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, art_seed_diff, timestamp, nns_names, card_num)
+            art_seed_diff += 1
 
         card_num = finish_card(card)
         if 'b_side' in card:
