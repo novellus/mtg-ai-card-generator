@@ -317,8 +317,7 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
 
     # base image
     width = (symbol_size * len(symbols)) + (symbol_spacing * (len(symbols) - 1))
-    im_mana = Image.new(mode='RGBA', size=(width, symbol_size))
-    im_mana.putalpha(0)  # full alpha base image
+    im_mana = Image.new(mode='RGBA', size=(width, symbol_size), color=(0, 0, 0, 0))
 
     for i_symbol, symbol in enumerate(symbols):
         # check for colorless mana
@@ -334,9 +333,9 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             #   bound text by max size of a square inscribed into the circular symbol image
             size = math.floor(symbol_size / math.sqrt(2))
             im_text = render_text_largest_fit(symbol, size, size, FONT_MODULAR, symbol_size, fill=(0,0,0,255))
-            position = [math.floor(im_symbol.width / 2 - im_text.width / 2),  # center text
-                        math.floor(im_symbol.height / 2 - im_text.height / 2)]
-            im_symbol.paste(im_text, box=position, mask=im_text)
+            position = (math.floor(im_symbol.width / 2 - im_text.width / 2),  # center text
+                        math.floor(im_symbol.height / 2 - im_text.height / 2))
+            im_symbol.alpha_composite(im_text, dest=position)
 
         else:
             # standardize file name lookup
@@ -348,7 +347,7 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
             im_symbol = im_symbol.resize((symbol_size, symbol_size))
 
         # composite the images
-        im_mana.paste(im_symbol, (i_symbol * (symbol_size + symbol_spacing), 0), mask=im_symbol)
+        im_mana.alpha_composite(im_symbol, dest=(i_symbol * (symbol_size + symbol_spacing), 0))
 
     return im_mana
 
@@ -477,9 +476,9 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         line = Image.new(mode='RGBA', size=(width, height))
         horizontal_pos = 0
         for im in l:
-            position = [horizontal_pos,
-                        math.floor(line.height / 2 - im.height / 2)]  # vertically center image
-            line.paste(im, box=position, mask=im)
+            position = (horizontal_pos,
+                        math.floor(line.height / 2 - im.height / 2))  # vertically center image
+            line.alpha_composite(im, dest=position)
             horizontal_pos += im.width + symbol_spacing
         return line
 
@@ -589,7 +588,7 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     multiline = Image.new(mode='RGBA', size=(width, height))
     for i_im, im in enumerate(rendered_lines):
         if im is not None:  # None => blank line
-            multiline.paste(im, box=(0, i_im * vertical_kerning), mask=im)
+            multiline.alpha_composite(im, dest=(0, i_im * vertical_kerning))
 
     return multiline, broken_token
 
@@ -637,14 +636,13 @@ def render_main_text_box(card):
 
         if composite_height <= max_height:
             # render all 3 main-text-box images together
-            im = Image.new(mode='RGBA', size=(width, composite_height))
-            im.putalpha(0)  # full alpha base image
+            im = Image.new(mode='RGBA', size=(width, composite_height), color=(0, 0, 0, 0))
 
-            im.paste(im_main_text, box=(0, 0), mask=im_main_text)
+            im.alpha_composite(im_main_text, dest=(0, 0))
             pos = (math.floor(width / 2 - sep_bar.width / 2),  # horizontally center
                    math.floor(im_main_text.height + height_sep_bar / 2 - sep_bar.height / 2))  # centered between main text and flavor fields
-            im.paste(sep_bar, box=pos, mask=sep_bar)
-            im.paste(im_flavor, box=(0, im_main_text.height + height_sep_bar), mask=im_flavor)
+            im.alpha_composite(sep_bar, dest=pos)
+            im.alpha_composite(im_flavor, dest=(0, im_main_text.height + height_sep_bar))
 
             # return either this render, or a larger render with a broken token if it exists and meets criteria
             # store broken token renders until we find an unbroken size to compare, or run out of search space
@@ -679,7 +677,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
 
     # add the frame over the art
     frame = load_frame(card_data)
-    card.paste(frame, box=(0, 0), mask=frame)
+    card.alpha_composite(frame, dest=(0, 0))
 
     # TODO add legendary frame overlay
 
@@ -689,7 +687,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
         im_mana = render_text_largest_fit(card_data['cost'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, 120)
         left_main_cost = RIGHT_TITLE_BOX_MANA - im_mana.width
         top_main_cost = HEIGHT_MID_TITLE - im_mana.height // 2
-        card.paste(im_mana, box=(left_main_cost, top_main_cost), mask=im_mana)
+        card.alpha_composite(im_mana, dest=(left_main_cost, top_main_cost))
     else:
         left_main_cost = RIGHT_TITLE_BOX_TEXT  # zero width, adjusted for text spacing constraints
 
@@ -700,14 +698,14 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     max_width = left_main_cost - LEFT_TITLE_BOX - 5
     im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
-    card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
+    card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
 
     # set symbol
     im_set = load_set_symbol(card_data)
     im_set = im_set.resize((97, 97))
     pos = (RIGHT_TITLE_BOX_MANA - im_set.width,
            HEIGHT_MID_TYPE - im_set.height // 2)
-    card.paste(im_set, box=pos, mask=im_set)
+    card.alpha_composite(im_set, dest=pos)
     left_set = pos[0]
 
     # type - width constraints are almost the same as card title
@@ -717,34 +715,34 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     max_width = left_set - LEFT_TITLE_BOX
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
-    card.paste(im_text, box=(LEFT_TITLE_BOX, top), mask=im_text)
+    card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
 
     # power toughness
     #   first render the infobox overlay
     #   then render text on top of that
     if card_data['power_toughness'] is not None:
         im_pt = load_power_toughness_overlay(card_data)
-        card.paste(im_pt, box=(1137, 1858), mask=im_pt)  # magic numbers, image has assymetric partial alpha around the edges
+        card.alpha_composite(im_pt, dest=(1137, 1858))  # magic numbers, image has assymetric partial alpha around the edges
 
         pt_string = '/'.join([str(x) for x in card_data['power_toughness']])
         im_text = render_text_largest_fit(pt_string, 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
         top = 1928 - im_text.height // 2
         left = 1292 - im_text.width // 2
-        card.paste(im_text, box=(left, top), mask=im_text)
+        card.alpha_composite(im_text, dest=(left, top))
 
     # loyalty
     if card_data['loyalty'] is not None:
         im_loyalty = Image.open('../image_templates/modular_elements/loyalty.png')
-        card.paste(im_loyalty, box=(1200, 1847), mask=im_loyalty)
+        card.alpha_composite(im_loyalty, dest=(1200, 1847))
 
         im_text = render_text_largest_fit(str(card_data['loyalty']), 154, 60, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
         top = 1915 - im_text.height // 2
         left = 1314 - im_text.width // 2
-        card.paste(im_text, box=(left, top), mask=im_text)
+        card.alpha_composite(im_text, dest=(left, top))
 
     # main text box
     im_main_text_box = render_main_text_box(card_data)
-    card.paste(im_main_text_box, box=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX), mask=im_main_text_box)
+    card.alpha_composite(im_main_text_box, dest=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX))
 
     # info text
     side_id = None
@@ -771,16 +769,13 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     d.text((1166, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
 
     im_nn_names = render_text_largest_fit(nn_names, 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
-    card.paste(im_nn_names, box=(100, 2020 - im_nn_names.height // 2), mask=im_nn_names)
+    card.alpha_composite(im_nn_names, dest=(100, 2020 - im_nn_names.height // 2))
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
     im_brush = im_brush.resize((40, 25))
-    card.paste(im_brush, box=(100, 2043 + 2), mask=im_brush)
+    card.alpha_composite(im_brush, dest=(100, 2043 + 2))
     d.text((145, 2043), text=author, font=font, anchor='lt', fill=(255,255,255,255))
     d.text((1399, 2043), text=repo_link, font=font, anchor='rt', fill=(255,255,255,255))
-
-    # clear extra alpha masks from the image pastes
-    card.putalpha(255)
 
     # save image
     # the space in f_name is important for parsability
