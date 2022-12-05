@@ -63,6 +63,10 @@
     * fixed decoder decodes integer values as floats
     * fixed encoder didn't encode the ```mythic``` rarity properly
     * &#x1F534; TODO updated decoder ```text_unpass_1_choice``` to decode into human readable format
+    * &#x1F534; TODO fix ```icingdeath, frost tyrant``` card is encoded incorrectly
+        * out of order maintext
+        * quotes end in ```\"```, inserting an incorrect newline
+    * &#x1F534; TODO assertion for rarity encoding found in dict (ie no fallback)
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -84,7 +88,7 @@
     * support planeswalkers
         * different frame?
         * loyalty increase / deccrease icons in main text box
-        * loyalty box in lower right corner
+            * edit render_main box, rendering an icon and each section separately, then composite them together
     * add legendary frame
     * decrease save file resolution to limit file size
 * statistics
@@ -107,6 +111,7 @@
         * png info
         * need to start /stop a local server to query for image data
 * Add extra names and flavor
+* update plot utility to optionally accept a folder instead of path to checkpoint
 * finish training the AIs
 * generate a small-medium batch of cards for Colin to review
 * generate additional basic lands with custom / unique art
@@ -191,6 +196,7 @@
 * ```watch -n1 nvidia-smi``` to see GPU resource utilization
 * [torch docs](https://github.com/torch/torch7/blob/master/doc/tensor.md)
 * batch convert svg images to png ```find . -name "*.svg" | xargs inkscape --export-type=png --export-width=1000 --export-height=1000 --export-png-color-mode=RGBA_8 --batch-process```
+* ```python plot_nn_loss.py --json_path nns/names_1/checkpoint_21.000000.json```
 <!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer -->
 
 
