@@ -712,7 +712,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
     if card_data['subtypes']:
         type_string += ' - ' + ' '.join(card_data['subtypes'])
-    max_width = left_set - LEFT_TITLE_BOX
+    max_width = left_set - LEFT_TITLE_BOX - 5  # 5 is arbitrary spacing
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
