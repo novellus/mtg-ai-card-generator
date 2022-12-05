@@ -701,7 +701,7 @@ class Card:
             power_toughness = utils.from_unary(self.__dict__[field_pt])
             data['power_toughness'] = [int(x) for x in power_toughness.split('/')]
         else:
-            data['power_toughness'] = []
+            data['power_toughness'] = None
 
         if self.__dict__[field_loyalty]:
             loyalty = utils.from_unary(self.__dict__[field_loyalty])
