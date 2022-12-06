@@ -85,9 +85,6 @@
 
 # &#x1F534; TODOs
 * renderer
-    * support planeswalkers
-        * different frame?
-        * add loyalty backgrounds to each loyalty section?
     * add legendary frame
     * decrease save file resolution to limit file size
 * statistics
@@ -110,8 +107,8 @@
         * png info
         * need to start /stop a local server to query for image data
 * Add extra names and flavor
-* update plot utility to optionally accept a folder instead of path to checkpoint
 * finish training the AIs
+    * update plot utility to optionally accept a folder instead of path to checkpoint
 * generate a small-medium batch of cards for Colin to review
 * generate additional basic lands with custom / unique art
     * use unique type identifer (```Basic Land```?) to indicate usage of textless frames

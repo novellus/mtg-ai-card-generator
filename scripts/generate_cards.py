@@ -244,7 +244,7 @@ def parse_mana_symbols(mana_string, None_acceptable=False):
     return symbols
 
 
-def load_frame_main(card):
+def load_frame(card):
     # returns image object for frame
 
     subdir = '../image_templates/frames/borderless'
@@ -275,11 +275,6 @@ def load_frame_main(card):
         return Image.open(os.path.join(subdir, mana_colors_used.pop() + '.png'))  # single colored mana
     else:
         return Image.open(os.path.join(subdir, 'multicolored.png'))
-
-
-def load_frame(card):
-    # TODO support other frame types, determined dynamically (eg planeswalker)
-    return load_frame_main(card)
 
 
 def render_text_largest_fit(text, max_width, max_height, font_path, target_font_size, crop_final=True, **kwargs):
@@ -688,12 +683,11 @@ def render_main_text_box(card):
         broken_token = False
         im_main_texts = []
 
-        # size loyalty modifier icons: double normal symbol size
-        #   then render partitioned main text to the right of these
+        # size loyalty modifier icons
         vertical_kerning, symbol_size, symbol_spacing = symbol_sizing(font_size)
-        loyalty_height = 2 * symbol_size + vertical_kerning
-        loyalty_spacing = symbol_spacing * 2
-        # TODO set a minimum value for loyalty_height
+        loyalty_height = math.ceil(3 * symbol_size)
+        loyalty_spacing_horizontal = math.ceil(3 * symbol_spacing)
+        loyalty_spacing_vertical = math.ceil(0.5 * vertical_kerning)
 
         # the first partitioned element may not have any loyalty modifier preceeding it
         #   and indeed may be the only element in the list, if there are no encoded loyalty modifers
@@ -710,17 +704,20 @@ def render_main_text_box(card):
                 im_loyalty_mod = render_loyalty_modifier(mod_text, loyalty_height)
 
                 # render the text
-                sub_width = width - im_loyalty_mod.width - loyalty_spacing
+                sub_width = width - im_loyalty_mod.width - loyalty_spacing_horizontal
                 im_text, _broken_token = render_complex_text(main_text, sub_width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
                 im_text = im_text.crop(im_text.getbbox())
                 broken_token = broken_token or _broken_token
 
                 # composite both images
-                size = (im_loyalty_mod.width + loyalty_spacing + im_text.width,
+                size = (im_loyalty_mod.width + loyalty_spacing_horizontal + im_text.width,
                         max(im_loyalty_mod.height, im_text.height))
                 im = Image.new(mode='RGBA', size=size, color=(0, 0, 0, 0))
                 im.alpha_composite(im_loyalty_mod, dest=(0,0))
-                im.alpha_composite(im_text, dest=(im_loyalty_mod.width + loyalty_spacing, 0))
+                height = 0
+                if im_text.height < im_loyalty_mod.height:
+                    height = math.floor(im_loyalty_mod.height / 2 - im_text.height / 2)
+                im.alpha_composite(im_text, dest=(im_loyalty_mod.width + loyalty_spacing_horizontal, height))
 
                 im_main_texts.append(im)
 
@@ -733,7 +730,7 @@ def render_main_text_box(card):
         height_sep_bar = max(height_sep_bar, sep_bar.height * 3)  # but no smaller than the actual graphic + margin
 
         composite_height = sum([x.height for x in im_main_texts])
-        composite_height += loyalty_spacing * (len(im_main_texts) - 1)
+        composite_height += loyalty_spacing_vertical * (len(im_main_texts) - 1)
         composite_height += height_sep_bar + im_flavor.height
 
         if composite_height <= max_height:
@@ -743,8 +740,8 @@ def render_main_text_box(card):
             height = 0
             for im_main_text in im_main_texts:
                 im.alpha_composite(im_main_text, dest=(0, height))
-                height += im_main_text.height + loyalty_spacing
-            height_main_text = height - loyalty_spacing  # spacing after the main text is handled by the sep bar
+                height += im_main_text.height + loyalty_spacing_vertical
+            height_main_text = height - loyalty_spacing_vertical  # spacing after the main text is handled by the sep bar
 
             pos = (math.floor(width / 2 - sep_bar.width / 2),  # horizontally center
                    math.floor(height_main_text + height_sep_bar / 2 - sep_bar.height / 2))  # centered between main text and flavor fields
