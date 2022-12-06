@@ -9,6 +9,7 @@ import random
 import re
 import shlex
 import subprocess
+import yaml
 
 from collections import defaultdict
 from PIL import Image
@@ -1025,8 +1026,12 @@ def main(args):
 
         cards.append(card)
 
+    # save parsed card data for reference, search, debugging, etc
+    f = open(os.path.join(outdir, '_all_cards.yaml'))
+    f.write(yaml.dump(cards))
+    f.close()
+
     # TODO statistics over cards
-    pprint.pprint(cards)
 
 
 if __name__ == '__main__':
