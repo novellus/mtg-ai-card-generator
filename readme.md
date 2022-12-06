@@ -68,6 +68,11 @@
         * quotes end in ```\"```, inserting an incorrect newline
     * &#x1F534; TODO assertion for rarity encoding found in dict (ie no fallback)
     * &#x1F534; TODO fix decoding of counters allows undefined counters
+        * either throw an error, or change to any counter?
+    * &#x1F534; TODO ```X``` should be parsed into ```{X}``` in ```cardlib```
+    * &#x1F534; TODO fix renderer seems to drop some text when symbols and other text are collected into one word, eg ```{C}."``` is rendered as only ```{C}```
+    * &#x1F534; TODO Try to implement a parser in ```cardlib``` that checks for a definition for ```X``` and raises an error if there isn't one...
+    * &#x1F534; TODO Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
     * &#x1F534; TODO rewrite mtgencode from scratch?
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
