@@ -995,7 +995,7 @@ def main(args):
                                   num_chunks = 1,
                                   delimiter = '\n',
                                   parser=parse_flavor,
-                                  whisper_text = f"{card['name']}|",
+                                  whisper_text = f"{card['unparsed_name']}|",
                                   whisper_every_newline = 1,
                                   verbosity = args.verbosity)
             card['flavor'] = flavors[0]

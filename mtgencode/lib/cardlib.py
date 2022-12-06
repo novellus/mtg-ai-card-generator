@@ -662,6 +662,7 @@ class Card:
         # TODO walk through this mess of a copy/paste and make it do the right things
         data = {}
 
+        data['unparsed_name'] = self.__dict__[field_name]
         cardname = self.__dict__[field_name]
         cardname = transforms.name_unpass_1_dashes(cardname)
         cardname = titlecase(cardname)
