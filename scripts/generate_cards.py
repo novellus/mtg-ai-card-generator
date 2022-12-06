@@ -176,6 +176,10 @@ def parse_mtg_cards(chunk, verbosity):
     j = json.loads(decoded_text)
     j = j[0]  # we asked a batch decoder to operate on only one card
 
+    # store unparsed chunk which will be saved to file for later debugging
+    # note this attribut will never exist on the B-side, since there is only one chunk between them
+    j['unparsed'] = chunk
+
     # create a backlink from the B-side back to the A-side
     # recursive structure is probably not allowed in json, so we do the backlink here
     if 'b_side' in j:
@@ -773,12 +777,13 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     base_count = base_count or len(os.listdir(outdir))
 
     # art is the lowest layer of the card, but we need a full size image to paste it into
-    card = Image.new(mode='RGBA', size=(1500, 2100))
+    card = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
 
     # resize and crop the art to fit in the frame
-    art = art.resize((1550, 1937))
-    art = art.crop((25, 0, 1525, 1937))
-    card.paste(art, box=(0, 0))
+    if art is not None:
+        art = art.resize((1550, 1937))
+        art = art.crop((25, 0, 1525, 1937))
+        card.paste(art, box=(0, 0))
 
     # add the frame over the art
     frame = load_frame(card_data)
@@ -957,10 +962,6 @@ def main(args):
                         delimiter = '\n',
                         verbosity = args.verbosity)
 
-    # stabilize processing order
-    #   names are guaranteed unique since the sampler deduplicates
-    names.sort()
-
     cards = []
 
     # increment art seed each iteration for more unique images
@@ -1010,7 +1011,10 @@ def main(args):
             if args.verbosity > 1:
                 print(f'sampling txt2img')
 
-            art = sample_txt2img(card, args.outdir, args.seed + art_seed_diff, args.verbosity)
+            if not args.no_art:
+                art = sample_txt2img(card, args.outdir, args.seed + art_seed_diff, args.verbosity)
+            else:
+                art = None
 
             if args.verbosity > 1:
                 print(f'rendering card')
@@ -1026,8 +1030,8 @@ def main(args):
 
         cards.append(card)
 
-    # save parsed card data for reference, search, debugging, etc
-    f = open(os.path.join(outdir, '_all_cards.yaml'))
+    # save parsed card data for searchable/parsable reference, search, debugging, etc
+    f = open(os.path.join(args.outdir, '_all_cards.yaml'), 'w')
     f.write(yaml.dump(cards))
     f.close()
 
@@ -1042,6 +1046,7 @@ if __name__ == '__main__':
     parser.add_argument("--outdir", type=str, help="path to outdir. Files are saved in a subdirectory based on seed")
     parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
+    parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which takes most of the time. Useful for debugging")
     parser.add_argument("--generate_statistics", action='store_true', help="compute and store statistics over generated cards as yaml file in outdir")
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()

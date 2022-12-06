@@ -67,6 +67,8 @@
         * out of order maintext
         * quotes end in ```\"```, inserting an incorrect newline
     * &#x1F534; TODO assertion for rarity encoding found in dict (ie no fallback)
+    * &#x1F534; TODO fix decoding of counters allows undefined counters
+    * &#x1F534; TODO rewrite mtgencode from scratch?
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
