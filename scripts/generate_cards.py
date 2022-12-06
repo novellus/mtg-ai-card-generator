@@ -870,6 +870,12 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     author = 'Novellus Cato'
     repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
     d.text((100, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
+
+    right = 1399
+    if card_data['power_toughness'] is not None:
+        right = 1166
+    elif card_data['loyalty'] is not None:
+        right = 1219
     d.text((1166, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
 
     im_nn_names = render_text_largest_fit(nn_names, 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
