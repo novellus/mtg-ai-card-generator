@@ -54,18 +54,18 @@ TOP_MAIN_TEXT_BOX = 1505
 LEFT_MAIN_TEXT_BOX = 128
 RIGHT_MAIN_TEXT_BOX = 1375
 
-mana_cost_to_human_readable = {'B': 'black',
-                               'C': 'colorless_only',
-                               'E': 'energy',
-                               'G': 'green',
-                               'P': 'phyrexian',
-                               'R': 'red',
-                               'S': 'snow',
-                               'U': 'blue',
-                               'W': 'white',
-                               'X': 'X',
-                               # '\d': 'colorless',  # handled programatically
-                              }
+# mana_cost_to_human_readable = {'B': 'black',
+#                                'C': 'colorless_only',
+#                                'E': 'energy',
+#                                'G': 'green',
+#                                'P': 'phyrexian',
+#                                'R': 'red',
+#                                'S': 'snow',
+#                                'U': 'blue',
+#                                'W': 'white',
+#                                'X': 'X',
+#                                # '\d': 'colorless',  # handled programatically
+#                               }
 
 
 
