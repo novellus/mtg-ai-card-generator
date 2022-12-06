@@ -882,7 +882,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
         right = 1166
     elif card_data['loyalty'] is not None:
         right = 1219
-    d.text((1166, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
+    d.text((right, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
 
     im_nn_names = render_text_largest_fit(nn_names, 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
     card.alpha_composite(im_nn_names, dest=(100, 2020 - im_nn_names.height // 2))
