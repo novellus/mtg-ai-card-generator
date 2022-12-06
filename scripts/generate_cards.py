@@ -200,7 +200,7 @@ def sample_txt2img(card, outdir, seed, verbosity):
     if os.path.exists(temp_file_path):
         os.remove(temp_file_path)
 
-    if verbosity > 1:
+    if verbosity > 2:
         print(f'saving temp image file to {outdir_rel} = {temp_file_path}')
 
     # execute txt2img
@@ -952,7 +952,7 @@ def main(args):
         print(f'operating in {args.outdir}')
 
     # sample names
-    if args.verbosity > 1:
+    if args.verbosity > 2:
         print(f'sampling names')
 
     names = sample_lstm(nn_path = args.names_nn,
@@ -977,7 +977,7 @@ def main(args):
     for i_name, name in enumerate(names):
         if args.verbosity > 0:
             print(f'Generating {i_name + 1} / {args.num_cards}')
-        if args.verbosity > 1:
+        if args.verbosity > 2:
             print(f'sampling main_text')
 
         sampled_cards = sample_lstm(nn_path = args.main_text_nn,
@@ -994,7 +994,7 @@ def main(args):
         def finish_card(card, card_num=None):
             nonlocal art_seed_diff
 
-            if args.verbosity > 1:
+            if args.verbosity > 12:
                 print(f'sampling flavor')
 
             flavors = sample_lstm(nn_path = args.flavor_nn,
@@ -1008,7 +1008,7 @@ def main(args):
                                   verbosity = args.verbosity)
             card['flavor'] = flavors[0]
 
-            if args.verbosity > 1:
+            if args.verbosity > 2:
                 print(f'sampling txt2img')
 
             if not args.no_art:
@@ -1016,7 +1016,7 @@ def main(args):
             else:
                 art = None
 
-            if args.verbosity > 1:
+            if args.verbosity > 2:
                 print(f'rendering card')
 
             card_num = render_card(card, art, args.outdir, args.verbosity, base_count, args.seed, art_seed_diff, timestamp, nns_names, card_num)
