@@ -404,6 +404,16 @@ class FontTooLargeError(Exception):
     pass
 
 
+def symbol_sizing(font_size):
+    # size vertical kerning and symbols together
+    #   so that we don't get really small text with large whitespace gaps from inline symbology
+    vertical_kerning = math.ceil(font_size * 1.1)
+    symbol_size = math.ceil(font_size * 0.8125)
+    symbol_spacing = math.ceil(symbol_size * 0.064)
+
+    return vertical_kerning, symbol_size, symbol_spacing
+
+
 def render_complex_text(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
@@ -426,13 +436,7 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     if long_token_mode and len(text) == 1:
         raise FontTooLargeError(f'{text}, {max_width}, {font_path}, {font_size}, {long_token_mode}, {kwargs}')
 
-    # size vertical kerning and symbols together
-    #   so that we don't get really small text with large whitespace gaps from inline symbology
-    # assume font size is in pixel height, make symbols and spacing the same height
-    symbol_size = math.ceil(font_size * 0.8125)
-    vertical_kerning = math.ceil(font_size * 1.1)
-    symbol_spacing = math.ceil(symbol_size * 0.064)
-
+    vertical_kerning, symbol_size, symbol_spacing = symbol_sizing(font_size)
     optional_space = '' if long_token_mode else ' '
 
     def token_encodes_symbols(token):
@@ -593,6 +597,47 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     return multiline, broken_token
 
 
+def render_loyalty_modifier(mod_text, height):
+    loyalty_value = int(mod_text)
+    im_loyalty_mod = None
+    if loyalty_value == 0:
+        im_loyalty_mod = Image.open('../image_templates/modular_elements/+0.png')
+        im_text = render_text_largest_fit(mod_text, 155, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(124 - im_text.width / 2),
+                    math.floor(80 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+        im_text = render_text_largest_fit(':', 35, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(261 - im_text.width / 2),
+                    math.floor(80 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+    elif loyalty_value > 0:
+        im_loyalty_mod = Image.open('../image_templates/modular_elements/+.png')
+        im_text = render_text_largest_fit(mod_text, 155, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(124 - im_text.width / 2),
+                    math.floor(102 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+        im_text = render_text_largest_fit(':', 35, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(261 - im_text.width / 2),
+                    math.floor(102 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+    else:
+        im_loyalty_mod = Image.open('../image_templates/modular_elements/-.png')
+        im_text = render_text_largest_fit(mod_text, 155, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(124 - im_text.width / 2),
+                    math.floor(64 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+        im_text = render_text_largest_fit(':', 35, 71, FONT_MODULAR, 100, fill=(255,255,255,255))
+        position = (math.floor(261 - im_text.width / 2),
+                    math.floor(64 - im_text.height / 2))
+        im_loyalty_mod.alpha_composite(im_text, dest=position)
+
+    size = (math.ceil(height / im_loyalty_mod.height * im_loyalty_mod.width),
+                      height)
+    im_loyalty_mod = im_loyalty_mod.resize(size)
+
+    return im_loyalty_mod
+
+
 def render_main_text_box(card):
     # returns image of main text box including these fields
     #   main text with inline symbols
@@ -604,6 +649,7 @@ def render_main_text_box(card):
     #   but not larger than the DEFAULT_FONT_SIZE
     # separate from render_text_largest_fit since multiple fields need to be optimized together
 
+    # size main text box
     # dynamically shorten main text if one of these is rendered
     if card['loyalty']:
         bottom_main_text_box = 1840
@@ -615,16 +661,70 @@ def render_main_text_box(card):
     width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
     max_height = bottom_main_text_box - TOP_MAIN_TEXT_BOX
     sep_bar = Image.open('../image_templates/modular_elements/whitebar.png')
+    # TODO Refine this cropping / sizing
     sep_bar = sep_bar.resize((math.ceil(width * 1.05), 6))  # auto-crop some of the more faded edges
 
     # prefer smaller fonts to broken tokens, unless font needs to be lowered below criterion
     largest_rendered_with_broken_token = None
     max_font_point_loss_to_unbreak_token = 10
 
+    # parse main text for loyalty modifier symbols
+    # partition main text if these are found
+    # if these are not found, partitioned_main_text will be a list with only one element
+    partitioned_main_text = []  # list of [str-encoded loyalty +/- number, text to the right of the loyalty +/- icon]
+    tokens = re.split(r'\[([+-]?\d+)\]:\s*', card['main_text'])
+
+    if tokens[0] != '':
+        sub_tokens = [None, tokens[0]]
+        partitioned_main_text.append(sub_tokens)
+
+    for i in range(1, len(tokens), 2):  # re.split guarantees odd indeces are the captured group
+        sub_tokens = [tokens[i], tokens[i+1]]
+        partitioned_main_text.append(sub_tokens)
+
+    # search over the font_size space until constraints are met
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
     for font_size in range(DEFAULT_FONT_SIZE, 1, -1):
-        im_main_text, broken_token = render_complex_text(card['main_text'], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
-        im_main_text = im_main_text.crop(im_main_text.getbbox())
+        broken_token = False
+        im_main_texts = []
+
+        # size loyalty modifier icons: double normal symbol size
+        #   then render partitioned main text to the right of these
+        vertical_kerning, symbol_size, symbol_spacing = symbol_sizing(font_size)
+        loyalty_height = 2 * symbol_size + vertical_kerning
+        loyalty_spacing = symbol_spacing * 2
+        # TODO set a minimum value for loyalty_height
+
+        # the first partitioned element may not have any loyalty modifier preceeding it
+        #   and indeed may be the only element in the list, if there are no encoded loyalty modifers
+        if partitioned_main_text[0][0] is None:
+            im, _broken_token = render_complex_text(partitioned_main_text[0][1], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+            im = im.crop(im.getbbox())
+            im_main_texts.append(im)
+            broken_token = broken_token or _broken_token
+
+        # now render all loyalty icons, and render partitioned main text lines to the right of them
+        for mod_text, main_text in partitioned_main_text:
+            if mod_text is not None:
+                # render the loyalty modifer
+                im_loyalty_mod = render_loyalty_modifier(mod_text, loyalty_height)
+
+                # render the text
+                sub_width = width - im_loyalty_mod.width - loyalty_spacing
+                im_text, _broken_token = render_complex_text(main_text, sub_width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+                im_text = im_text.crop(im_text.getbbox())
+                broken_token = broken_token or _broken_token
+
+                # composite both images
+                size = (im_loyalty_mod.width + loyalty_spacing + im_text.width,
+                        max(im_loyalty_mod.height, im_text.height))
+                im = Image.new(mode='RGBA', size=size, color=(0, 0, 0, 0))
+                im.alpha_composite(im_loyalty_mod, dest=(0,0))
+                im.alpha_composite(im_text, dest=(im_loyalty_mod.width + loyalty_spacing, 0))
+
+                im_main_texts.append(im)
+
+        # render the flavor text
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
         im_flavor = im_flavor.crop(im_flavor.getbbox())
         broken_token = broken_token or _broken_token
@@ -632,17 +732,24 @@ def render_main_text_box(card):
         height_sep_bar = math.floor(font_size *2/3)
         height_sep_bar = max(height_sep_bar, sep_bar.height * 3)  # but no smaller than the actual graphic + margin
 
-        composite_height = im_main_text.height + height_sep_bar + im_flavor.height
+        composite_height = sum([x.height for x in im_main_texts])
+        composite_height += loyalty_spacing * (len(im_main_texts) - 1)
+        composite_height += height_sep_bar + im_flavor.height
 
         if composite_height <= max_height:
-            # render all 3 main-text-box images together
+            # composite all the main-text-box images together
             im = Image.new(mode='RGBA', size=(width, composite_height), color=(0, 0, 0, 0))
 
-            im.alpha_composite(im_main_text, dest=(0, 0))
+            height = 0
+            for im_main_text in im_main_texts:
+                im.alpha_composite(im_main_text, dest=(0, height))
+                height += im_main_text.height + loyalty_spacing
+            height_main_text = height - loyalty_spacing  # spacing after the main text is handled by the sep bar
+
             pos = (math.floor(width / 2 - sep_bar.width / 2),  # horizontally center
-                   math.floor(im_main_text.height + height_sep_bar / 2 - sep_bar.height / 2))  # centered between main text and flavor fields
+                   math.floor(height_main_text + height_sep_bar / 2 - sep_bar.height / 2))  # centered between main text and flavor fields
             im.alpha_composite(sep_bar, dest=pos)
-            im.alpha_composite(im_flavor, dest=(0, im_main_text.height + height_sep_bar))
+            im.alpha_composite(im_flavor, dest=(0, height_main_text + height_sep_bar))
 
             # return either this render, or a larger render with a broken token if it exists and meets criteria
             # store broken token renders until we find an unbroken size to compare, or run out of search space

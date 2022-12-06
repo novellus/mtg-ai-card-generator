@@ -87,8 +87,7 @@
 * renderer
     * support planeswalkers
         * different frame?
-        * loyalty increase / deccrease icons in main text box
-            * edit render_main box, rendering an icon and each section separately, then composite them together
+        * add loyalty backgrounds to each loyalty section?
     * add legendary frame
     * decrease save file resolution to limit file size
 * statistics
