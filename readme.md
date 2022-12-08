@@ -62,18 +62,12 @@
     * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
     * fixed decoder decodes integer values as floats
     * fixed encoder didn't encode the ```mythic``` rarity properly
-    * &#x1F534; TODO updated decoder ```text_unpass_1_choice``` to decode into human readable format
+    * &#x1F534; TODO update decoder ```text_unpass_1_choice``` to decode into human readable format
     * &#x1F534; TODO fix ```icingdeath, frost tyrant``` card is encoded incorrectly
         * out of order maintext
         * quotes end in ```\"```, inserting an incorrect newline
     * &#x1F534; TODO assertion for rarity encoding found in dict (ie no fallback)
-    * &#x1F534; TODO fix decoding of counters allows undefined counters
-        * either throw an error, or change to any counter?
-    * &#x1F534; TODO ```X``` should be parsed into ```{X}``` in ```cardlib```
-    * &#x1F534; TODO fix renderer seems to drop some text when symbols and other text are collected into one word, eg ```{C}."``` is rendered as only ```{C}```
-    * &#x1F534; TODO Try to implement a parser in ```cardlib``` that checks for a definition for ```X``` and raises an error if there isn't one...
-    * &#x1F534; TODO Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
-    * &#x1F534; TODO rewrite mtgencode from scratch?
+        * either throw an error
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -91,9 +85,10 @@
 
 
 # &#x1F534; TODOs
-* renderer
-    * add legendary frame
-    * decrease save file resolution to limit file size
+* fix renderer drops some text when symbols and other text are collected into one word, eg ```{C}."``` is rendered as only ```{C}```
+* Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
+* render add legendary frame
+* decrease save file resolution to limit file size
 * statistics
 * configure txt2img args
     * consider adjusting the prompt to specify a specific style
@@ -122,6 +117,85 @@
         * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
+* rewrite metgencode
+    * from readme
+        * Clean all the unicode junk like accents and unicode minus signs out of the text so there are fewer characters
+        * Remove all reminder text
+        * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order
+        * Put @ in for the name of the card
+        * Make all text lowercase, to make room for unique encoded characters, to simplify symtax at the cost of increasing vocab
+            * Except the variable X. Also make sure that where X is the variable X, it's coerced to uppercase
+
+        * Aggregate double sided cards
+        * Encode the following as unique symbols
+            * mana costs
+            * tap and untap symbols
+        * Convert numbers to unary format
+        * Simplify the syntax of dashes, so that - is only used as a minus sign, and ~ is used elsewhere
+        * Encode counters at %counterType, and make future references in each card use only % to simplify related parts syntax
+            * cards referencing multiple types of counters will define the type each time it changes in encoded character order
+        * Move the equip cost of equipment to the beginning of the text so that it's closer to the type
+        * Rename 'counter' in the context of 'counter target spell' to 'uncast'
+        * Put choices into [&^ = effect x = effect y] format
+            * TODO simplify this syntax
+        * Replace acutal newline characters with \ so that we can use newlines those to separate cards
+            * use carriage returns to separate card sides, and use newlines to separate cards
+        * Remove ability words from rules text
+            * TODO what is this????
+    * from cardlib
+        * names
+            * ```transforms.name_pass_0_strip_reverse_side_names(name, faceName)```
+            * ```name.lower()```
+            * ```transforms.name_pass_0_strip_alchemy_version_prefix(name)```
+            * ```transforms.name_pass_1_sanitize(name)```
+            * ```utils.to_ascii(name)```
+        * manacost
+            * ```Manacost(src_json['manaCost'], fmt = 'json')```
+            * ```=> utils.mana_translate(self.json.upper())```
+        * types
+            * ```fields[field_supertypes] = [(-1, [utils.to_ascii(s.lower()) for s in src_json['supertypes']])]```
+            * ```fields[field_types] = [(-1, [utils.to_ascii(s.lower()) for s in src_json['types']])]```
+            * ```fields[field_subtypes] = [(-1, [utils.to_ascii(s.lower()) .replace('"', "'").replace('-', utils.dash_marker) for s in src_json['subtypes']])]  # urza's lands...```
+        * rarity
+            * ```fields[field_rarity] = [(-1, utils.json_rarity_map[src_json['rarity']])]```
+        * loyalty
+            * ```fields[field_loyalty] = [(-1, utils.to_unary(str(src_json['loyalty'])))]```
+        * power toughness
+            * ```p_t = [utils.to_ascii(utils.to_unary(src_json['power'])), utils.to_ascii(utils.to_unary(src_json['toughness']))```
+        * maintext
+            * ```text_val = src_json['text'].lower()```
+            * ```text_val = transforms.text_pass_1_strip_rt(text_val)```
+            * ```text_val = transforms.text_pass_2_cardname(text_val, name_orig)```
+            * ```text_val = transforms.text_pass_3_unary(text_val)```
+            * ```text_val = transforms.text_pass_4a_dashes(text_val)```
+            * ```text_val = transforms.text_pass_4b_x(text_val)```
+            * ```text_val = transforms.text_pass_4c_abilitywords(text_val)```
+            * ```text_val = transforms.text_pass_5_counters(text_val)```
+            * ```text_val = transforms.text_pass_6_uncast(text_val)```
+            * ```text_val = transforms.text_pass_7_choice(text_val)```
+            * ```text_val = transforms.text_pass_8_equip(text_val)```
+            * ```text_val = transforms.text_pass_9_newlines(text_val)```
+            * ```text_val = transforms.text_pass_10_symbols(text_val)```
+            * ```text_val = transforms.text_pass_11_linetrans(text_val)```
+            * ```text_val = utils.to_ascii(text_val)```
+            * ```text_val = text_val.strip()```
+            * ```mtext = Manatext(text_val, fmt = 'json', verbose = verbose)```
+            * ```=> Manacost()```
+            * ```=> utils.mana_translate()```
+    * from jdecode
+        * ```if (o_set['type'] not in ['funny', 'memorabilia', 'alchemy', 'planechase']):```
+        * ```def default_exclude_sets(cardset): return cardset == 'Unglued' or cardset == 'Unhinged' or cardset == 'Celebration'```
+        * ```def default_exclude_types(cardtype): return cardtype in ['conspiracy', 'contraption', 'sticker']```
+        * ```def default_exclude_layouts(layout): return layout in ['token', 'plane', 'scheme', 'phenomenon', 'vanguard']```
+    * new stuff
+        * implement a validator after intake and before output.
+            * Raises an error on validation failure
+            * this can be tested on json data after parsing, and should not fail here
+            * and will be used to validate the AI generated text
+            * Try to implement a parser that checks for a definition for ```X```
+        * implement a correction / coersion function after intake of generated data, and before validation
+        * fix decoding of counters allows undefined counters
+
 
 
 # Environment Setup
@@ -168,6 +242,7 @@
 * main repo
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
+
 
 # AI Training and Sampling
 * stable diffusion
