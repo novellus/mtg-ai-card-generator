@@ -90,7 +90,6 @@
     * make sure all data needed to ```rerender``` the card is recorded in this file
         * create card ID in main and write to card output
     * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
-* fix renderer drops some text when symbols and other text are collected into one word, eg ```{C}."``` is rendered as only ```{C}```
 * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
 * render add legendary frame
 * decrease save file resolution to limit file size
