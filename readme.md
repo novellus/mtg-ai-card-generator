@@ -90,6 +90,8 @@
     * make sure all data needed to ```rerender``` the card is recorded in this file
         * create card ID in main and write to card output
     * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
+    * and then just call render with the prioritized set of fields
+    * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
 * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
 * render legendary frame
 * decrease save file resolution to limit file size

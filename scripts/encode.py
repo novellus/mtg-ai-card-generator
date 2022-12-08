@@ -17,8 +17,9 @@ def internal_format_to_AI_format():
     # consumes a single internal format, produces a single AI formatted string
     pass  # TODO
 
-def limit_to_human_review_fields():
-    # consumes a single internal format, returns internal format including only the fields fit for human review
+def limit_to_AI_fields():
+    # consumes a single internal format, returns internal format including only the fields which the AI processes
+    # used to produce a limited dataset for direct comparison after the AI processing
     pass  # TODO
 
 def validate():
@@ -31,12 +32,21 @@ def error_correct_AI():
     # OR maybe consumes internal format, returns internal format with error corrections applied
     pass  # TODO
 
-def unreversable_modification():
+def unreversable_modifications():
     # consumes a single internal format, produces a single internal format
     # makes changes which are not reversable by AI_to_internal_format
-    # this fuinction will return the dataset which can be directly compared to the dual_processed format for validity
+    # this function will return the dataset which can be directly compared to the dual_processed format for validity
     #   such as standardizing order of keywords
+    # since the changes made by this function are not validated by reversion, they should be reviewed by hand
     pass  # TODO
+
+def verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed):
+    # this helps validate that both the encoder and decorder are working properly, or at least have symmetric bugs
+    # consumes two lists of internally formatted cards, and compares them
+    # if the two are not equal, prints enormous amounts of debugging text
+    # this is only executed during encode_json_to_AI
+    #   and is a test of the program design over the space of the cards from AllPrintings.json
+    #   this does not process any of AI generated data
 
 def encode_json_to_AI()
     # consumes AllPrintings.json
@@ -49,20 +59,23 @@ def encode_json_to_AI()
     validate()
 
     # save an unmodified dataset for human review
-    internal_format_to_human_readable(cards_original, 'original_parsing.yaml')
+    internal_format_to_human_readable(cards_original, 'cards_original.yaml')
 
-    # TODO perform dataset modifications / standardizations which have no reverse
+    # perform dataset modifications / standardizations which have no reverse
+    cards_standard = []
+    for card in cards_original:
+        cards_standard.append(unreversable_modifications(card))
 
-
-    # save the modified dataset for human review
-    limited_cards = limit_to_human_review_fields(cards_original)
-    internal_format_to_human_readable(limited_cards, 'original_limited.yaml')
+    # save the standardized dataset for human review
+    internal_format_to_human_readable(cards_standard, 'cards_standard.yaml')
+    cards_limited_standard = limit_to_AI_fields(cards_original)
+    internal_format_to_human_readable(cards_limited_standard, 'cards_limited_standard.yaml')
 
     # transcribe to AI format, and save in designated location
     cards_AI = []
     for card in cards_original:
         cards_AI.append(internal_format_to_AI_format(card))
-    f = open(out_path, 'w')  # TODO byte encoding to prevent unintended OS transcriptions?
+    f = open(out_path, 'w')  # TODO use byte encoding to prevent unintended OS transcriptions?
     f.write('\n'.join(cards_AI))
     f.close()
 
@@ -73,4 +86,6 @@ def encode_json_to_AI()
 
     # save cards_dual_processed for human review
     internal_format_to_human_readable(cards_dual_processed, 'dual_processed.yaml')
+
+    verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed)
     
