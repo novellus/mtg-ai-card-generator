@@ -2,6 +2,7 @@ import argparse
 import copy
 import datetime
 import json
+import itertools
 import math
 import os
 import pprint
@@ -414,20 +415,33 @@ def symbol_sizing(font_size):
     return vertical_kerning, symbol_size, symbol_spacing
 
 
+def pairs(x):
+    # returns list of pairs of elements of x with no repeats
+    #   eg [(x[0], x[1]), (x[2], x[3]), ...]
+
+    for i, y in enumerate(itertools.pairwise(x)):
+        # drop the odd yields from itertools.pairwise
+        if i%2:
+            continue
+
+        yield y
+
+
 def render_complex_text(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace
     #       or in the middle of a word (delimited by whitespace) if and only if the word by itself exceeds the max_width constraint
-    #   honors newlines in the input text, forcing a newline at those locations, regardless of optimal spacing
     #   inline symbols are sized and spaced appropriate to the font size
-    # Note that all consecutive whitespace other than newlines will be dissolved into a single space regardless of type
+    #   honors whitespace most of the time
+    #       honors newlines in the input text, forcing a newline at those locations, regardless of optimal spacing
+    #       honors whitespace between words, except when a newline is inserted by this function (then it is dropped)
+    #       honors leading whitespace only when it occurs either after a newline in the text, or at the beginning of the text
+    #       drops all trailing whitespace
     # returns rendered image and boolean
     #   boolean indicates whether any words were broken up into multiple lines
     # long_token_mode changes the following behaviors, and should probably only be used for recursion
-    #   text is only one overly long word
-    #   spaces are omitted during token recombination to form lines
+    #   text should be only one overly long word
     #   returns list of rendered lines (and no boolean), instead of one rendered image
-    # TODO support planeswalker symbology
 
     assert max_width > 0
     assert font_size > 0
@@ -437,26 +451,33 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         raise FontTooLargeError(f'{text}, {max_width}, {font_path}, {font_size}, {long_token_mode}, {kwargs}')
 
     vertical_kerning, symbol_size, symbol_spacing = symbol_sizing(font_size)
-    optional_space = '' if long_token_mode else ' '
 
     def token_encodes_symbols(token):
         return parse_mana_symbols(token, None_acceptable=True) is not None
 
-    # break text into words, symbols, and newline characters
+    # break text into newlines, symbols, words, and whitespace tokens in priority order
     #   which will be partitioned into rendered lines
     #   rendered lines will then be added together to form a rendered multiline text
     tokens = None
+    text = text.strip()
     if not long_token_mode:
-        text = text.strip()
-        tokens = re.findall(r'(\n|[^\s]+)', text)
-        # alternatively break up symbol groups by default, but I probably don't want that
-        # tokens = re.findall(r'(\n|\{[^\}]+\}|[^\s]+)', text)
+        tokens = re.split(r'(\n|\{[^\}]+\}+|[^\s]+)', text)
     else:
         if token_encodes_symbols(text):
-            tokens = re.findall(r'(\{[^\}]+\})', text)  # individual symbols
+            tokens = re.split(r'(\{[^\}]+\})', text)  # individual symbols
         else:
-            tokens = list(text)  # individual characters
-        assert len(tokens) > 1  # prevent infinite recursion. We should never get here unless something is malformatted
+            tokens = re.split(r'(.)', text)  # individual characters
+
+        # prevent infinite recursion. We should never fail this unless something is malformatted
+        # 3 includes the beginning and end empty-string artifacts, so we're really looking for more than one proper-token
+        assert len(tokens) > 3
+
+    # artifacts of the re.split. Clear the last, but keep the first, to get an even number of tokens.
+    # tokens will be iterated over in pairs (whitespace, proper-token)
+    assert tokens[0] == ''
+    assert tokens[-1] == ''
+    del tokens[-1]
+    assert len(tokens) % 2 == 0
 
     # construct test image for rendering size tests, but not for final text rendering
     im_test = Image.new(mode='RGBA', size=(1, 1))  # size is irrelevant
@@ -510,10 +531,12 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     rendered_lines = []
     line_images = []
     consolidated_words = ''
+    honor_leading_whitespace = True  # honor whitespace at beginning of text (if any)
     broken_token = False
     # render line of text, adding one word at a time, until max_width constraint violation
     while tokens:
-        token = tokens[0]
+        whitespace = tokens[0]
+        token = tokens[1]
         token_adds = None
         cached_mana_render = None
 
@@ -522,7 +545,10 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
             render_all_pending(render_None=True)
 
             # nothing further to compute for newlines
+            # drop the trailing whitespace (if any)
+            tokens.pop(0)  # pop twice
             tokens.pop(0)
+            honor_leading_whitespace = True  # honor
             continue
 
         elif token_encodes_symbols(token):
@@ -538,8 +564,8 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         else:
             # consolidate consecutive text into one text render so we don't have to deal with horizontal kerning
             token_text = None
-            if consolidated_words:
-                token_text = consolidated_words + optional_space + token
+            if consolidated_words or honor_leading_whitespace:
+                token_text = consolidated_words + whitespace + token
             else:
                 token_text = token
             (left, top, right, bottom) = d_test.textbbox((0,0), token_text, font=font, anchor='lt')
@@ -568,16 +594,20 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
                 # the last rendered line could have room for more stuff
                 line_images.append(lines[-1])
                 broken_token = True
+                tokens.pop(0)  # pop twice
                 tokens.pop(0)
+                honor_leading_whitespace = False
 
         else:  # token fits on line
             if token_encodes_symbols(token):
                 line_images.append(cached_mana_render)
             else:
-                if consolidated_words:
-                    consolidated_words += optional_space
+                if consolidated_words or honor_leading_whitespace:
+                    consolidated_words += whitespace
                 consolidated_words += token
+            tokens.pop(0)  # pop twice
             tokens.pop(0)
+            honor_leading_whitespace = False
 
     # render any pending text or line images at the end of token list
     render_all_pending()
