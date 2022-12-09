@@ -5,32 +5,39 @@ def json_to_internal_format():
     # drops those cards which are not suitable for the AI to train with
     pass  # TODO
 
+
 def AI_to_internal_format():
     # consumes a single AI formatted string, produces a single internally formatted card
     pass  # TODO
+
 
 def internal_format_to_human_readable(cards, out_path):
     # consumes a list of internally formatted cards, produces a yaml file
     pass  # TODO
 
+
 def internal_format_to_AI_format():
     # consumes a single internal format, produces a single AI formatted string
     pass  # TODO
+
 
 def limit_to_AI_fields():
     # consumes a single internal format, returns internal format including only the fields which the AI processes
     # used to produce a limited dataset for direct comparison after the AI processing
     pass  # TODO
 
+
 def validate():
     # consumes internal format, returns boolean
     # should return True for all canonical cards, but may be True or False for AI generated cards
     pass  # TODO
 
+
 def error_correct_AI():
     # consumes AI format, returns AI format with error corrections applied
     # OR maybe consumes internal format, returns internal format with error corrections applied
     pass  # TODO
+
 
 def unreversable_modifications():
     # consumes a single internal format, produces a single internal format
@@ -40,6 +47,7 @@ def unreversable_modifications():
     # since the changes made by this function are not validated by reversion, they should be reviewed by hand
     pass  # TODO
 
+
 def verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed):
     # this helps validate that both the encoder and decorder are working properly, or at least have symmetric bugs
     # consumes two lists of internally formatted cards, and compares them
@@ -47,6 +55,8 @@ def verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed
     # this is only executed during encode_json_to_AI
     #   and is a test of the program design over the space of the cards from AllPrintings.json
     #   this does not process any of AI generated data
+    pass  # TODO
+
 
 def encode_json_to_AI()
     # consumes AllPrintings.json

@@ -453,16 +453,41 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     vertical_kerning, symbol_size, symbol_spacing = symbol_sizing(font_size)
 
     def token_encodes_symbols(token):
-        return parse_mana_symbols(token, None_acceptable=True) is not None
+        # only allow properly encoded symbol groups without leading/trailing/middling nonsense
+        #   which are guaranteed to be tokenized separately below
+        return re.search(r'^(\{[^\}\{\s}]+\})+$', token) is not None
 
-    # break text into newlines, symbols, words, and whitespace tokens in priority order
+    # break text into symbols, newlines, words, and whitespace tokens in priority order
     #   which will be partitioned into rendered lines
     #   rendered lines will then be added together to form a rendered multiline text
     tokens = None
     text = text.strip()
     if not long_token_mode:
-        tokens = re.split(r'(\n|\{[^\}]+\}+|[^\s]+)', text)
+        # tokinize in two steps
+        #   in the first step we extract just the encoded symbol groups, so that this syntax takes priority over word syntax
+        #   and can extract properly encoded symbols from the middle of partial/malformated symbols
+        #   eg '{{6}}' should be parsed as ['', '{', '', '{6}', '', '}', ''], and not as ['', '{{6}}', '']
+        #   a single re.split with a '|' concatenated regex pattern would not be able to make that priority distinction due to greedyness
+        tokens_one_deep = re.split(r'((?:\{[^\}\{\s}]+\})+)', text)
+        tokens_two_deep = []
+        for x in tokens_one_deep:
+            if not token_encodes_symbols(x):  # finally, breakup the non-symbols into newlines, words, and whitespace
+                 tokens_two_deep.extend(re.split(r'(\n|[^\s]+)', x))
+            else:
+                tokens_two_deep.append(x)
+
+        # now since we did nested re.split calls, we'll have consecutive whitespace (or empty strings)
+        # consolidate these, except newlines
+        tokens = []
+        for x in tokens_two_deep:
+            whitespace_not_newlines = r'^[^\S\n]+$'
+            if tokens and re.search(whitespace_not_newlines, tokens[-1]) and re.search(whitespace_not_newlines, x):
+                tokens[-1] += x
+            else:
+                tokens.append(x)
+
     else:
+        # either its fully symbols, or its not symbols at all, guaranteed from above
         if token_encodes_symbols(text):
             tokens = re.split(r'(\{[^\}]+\})', text)  # individual symbols
         else:
@@ -472,12 +497,16 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
         # 3 includes the beginning and end empty-string artifacts, so we're really looking for more than one proper-token
         assert len(tokens) > 3
 
-    # artifacts of the re.split. Clear the last, but keep the first, to get an even number of tokens.
-    # tokens will be iterated over in pairs (whitespace, proper-token)
+    # beginning/ending empty strings are artifacts of the re.split
+    #   clear the last, but keep the first, to get an even number of tokens
+    #   tokens will be iterated over in pairs (whitespace, proper-token)
+    # finally, make sure we get what we expect: a list where every odd-indexed token is whitespace (or empty string)
     assert tokens[0] == ''
     assert tokens[-1] == ''
     del tokens[-1]
-    assert len(tokens) % 2 == 0
+    assert len(tokens) % 2 == 0, tokens
+    for i, x in enumerate(tokens):
+        if not i%2: assert re.search(r'^\s*$', x) is not None
 
     # construct test image for rendering size tests, but not for final text rendering
     im_test = Image.new(mode='RGBA', size=(1, 1))  # size is irrelevant
