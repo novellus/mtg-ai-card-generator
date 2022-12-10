@@ -18,6 +18,7 @@ from collections import defaultdict
 #     'main_text'       : str
 #     'maintypes'       : list of str (possibly empty)
 #     'name'            : str
+#     'num_sides'       : int (1-5)
 #     'power_toughness' : 2-list of int or None
 #     'rarity'          : str
 #     'subtypes'        : list of str (possibly empty)
