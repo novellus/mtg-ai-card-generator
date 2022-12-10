@@ -27,7 +27,9 @@ from collections import defaultdict
 # }
 
 
-def deduplicate_cards(card_duplicates):
+def deduplicate_cards(cards):
+    # consumes list of internal formats, returns list of internal formats
+    # drops duplicate cards, such as reprints, foils, etc
     # TODO
     pass
 
@@ -41,19 +43,21 @@ def limit_to_AI_training_cards(cards):
 
 def json_to_internal_format(json_path):
     # consumes AllPrintings.json, produces list of internally formated cards
+    # deduplicates cards that repeat. See deduplicate_cards() for details
     # Docs for AllPrintings.json are located here: https://mtgjson.com/data-models/card-set/ etc
     #   we're iterating over 'Set' and then 'Card (Set)' objects, as defined by those docs
+
     f = open(json_path)
     j = json.load(f)
     f.close()
 
-    # collect all cards, storing duplicates as lists by resolved name
-    card_duplicates = defaultdict(list)  # name: [card, card, card]
+    cards = []
+
     for k_set, v_set in list(j['data'].items()):
         # collect set cards first, to make correct b-side associations
         # then add these to the aggregate set above
-        set_cards = defaultdict(list)
-        b_sides = []  # TODO sides go up to 'e'...
+        primary_sides = defaultdict(list)
+        non_primary_sides = defaultdict(list)  # side lettering goes up to 'e', so they are not all 'b' sides
 
         # this is a big and complicated dataset, so lets make sure the list of available information matches our expectations
         expected_keys = ['baseSetSize', 'cards', 'code', 'isFoilOnly', 'isOnlineOnly', 'keyruneCode', 'name', 'releaseDate', 'tokens', 'totalSetSize',
@@ -84,14 +88,85 @@ def json_to_internal_format(json_path):
             for k in expected_keys: assert k in j_card, k + str(j_card)
             for k in j_card: assert k in expected_keys or k in deprecated_keys or k in optional_keys or k in undocumented_keys, k + str(j_card)
 
-            card = {}
+            # create a backlink from the card object to its set
+            j_card['set'] = v_set
+
             # TODO write card fields
+            card = {'json_fields': j_card}
 
-            set_cards[card['name']].append(card)  # TODO: or assign to b-sides
+            # name
+            if 'faceName' in j_card:
+                card['name'] = j_card['faceName']
+            else:
+                card['name'] = j_card['name']
 
-    # then deduplicate by choosing # TODO attributes
+            # main_text
+            if 'isTextless' in j_card and j_card['isTextless']:
+                card['main_text'] = None
+            else:
+                assert 'text' in j_card or 'originalText' in j_card
+                if 'text' in j_card:
+                    card['main_text'] = j_card['text']
+                else:
+                    card['main_text'] = j_card['originalText']
 
-    # return cards
+            # cost
+            if 'manaCost' in j_card:
+                card['cost'] = j_card['manaCost']
+            else:
+                card['cost'] = None
+
+            # power_toughness
+            assert (('power' in j_card and 'toughness' in j_card)
+                 or ('power' not in j_card and 'toughness' not in j_card))
+            if 'power' in j_card:
+                card['power_toughness'] = [int(j_card['power'],) 
+                                           int(j_card['toughness'])]
+            else:
+                card['power_toughness'] = None
+
+            # loyalty
+            if 'loyalty' in j_card:
+                card['loyalty'] = int(j_card['loyalty'])
+            else:
+                card['loyalty'] = None
+            
+            # rarity
+            card['rarity'] = j_card['rarity']
+
+            # types
+            card['maintypes'] = j_card['types']
+            card['subtypes'] = j_card['subtypes']
+            card['supertypes'] = j_card['supertypes']
+
+            # assign as primary or non-primary card sides. Non-primary card sides will be sorted into their primaries later
+            if 'side' in j_card and j_card['side'] in ['b', 'c', 'd', 'e']:
+                assert 'otherFaceIds' in j_card
+                non_primary_sides.append(card)
+            else:
+                primary_sides.append(card)
+
+        # assign non_primary_sides to their primary side
+        for np_card in non_primary_sides:
+            for p_card in primary_sides:
+                if p_card['uuid'] in np_card['otherFaceIds']:
+                    p_card[np_card[side] + '_side'] = np_card
+                    break
+            else:
+                raise ValueError(f'Primary card not found for "{np_card['name']}" {np_card['uuid']}')
+
+        # populate num_sides field
+        for card in primary_sides:
+            num_sides = 1
+            if 'b_side' in card: num_sides += 1
+            if 'c_side' in card: num_sides += 1
+            if 'd_side' in card: num_sides += 1
+            if 'e_side' in card: num_sides += 1
+            card['num_sides'] = num_sides
+
+        cards.extend(primary_sides)
+
+    return cards
 
 
 def AI_to_internal_format(AI_string):
@@ -126,7 +201,10 @@ def limit_to_AI_fields(card):
 def validate(card):
     # consumes internal format, raises error on validation fail
     # should not raise error for all canonical cards, but may raise errors for AI generated cards
-    # for instance, check that X has a definition if it is present anywhere
+    
+    # check that X has a definition if it is present anywhere
+
+    # check that counters have a type definition (or are generic counters allowed?)
     pass  # TODO
 
 
@@ -173,6 +251,10 @@ def encode_json_to_AI(json_path, out_path):
     cards_standard = []
     for card in cards_original:
         cards_standard.append(unreversable_modifications(card))
+
+    # now deduplicate the cards
+    # We do this after standardization due to some unfortunate artifacts in the json fields, which are addressed in that step
+    cards_original = deduplicate_cards(cards_original)
 
     # save the standardized dataset for human review
     internal_format_to_human_readable(cards_standard, 'cards_standard.yaml')
