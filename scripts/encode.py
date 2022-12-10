@@ -4,14 +4,44 @@ import json
 from collections import defaultdict
 
 
+# internally formatted cards have the following fields. All fields are always present except those indicated as optional
+# {
+#     'a_side'          : internal format, optional, links to parent, present only on b-, c-, d-, and e- side cards
+#     'b_side'          : internal format, optional, present only on a-side (top-level) cards
+#     'c_side'          : internal format, optional, present only on a-side (top-level) cards
+#     'cost'            : str or None
+#     'd_side'          : internal format, optional, present only on a-side (top-level) cards
+#     'e_side'          : internal format, optional, present only on a-side (top-level) cards
+#     'json_fields'     : dict, optional, only exists if the card was converted from json,
+#                         contains select unmodified fields used in decision making (eg which cards should be encoded)
+#     'loyalty'         : int or None
+#     'main_text'       : str
+#     'maintypes'       : list of str (possibly empty)
+#     'name'            : str
+#     'power_toughness' : 2-list of int or None
+#     'rarity'          : str
+#     'subtypes'        : list of str (possibly empty)
+#     'supertypes'      : list of str (possibly empty)
+#     'unparsed_name'   : str
+# }
+
+
 def deduplicate_cards(card_duplicates):
+    # TODO
+    pass
+
+
+def limit_to_AI_training_cards(cards):
+    # consumes list of internal formats, returns list of internal formats
+    # drops those cards which are not suitable for the AI to train with
     # TODO
     pass
 
 
 def json_to_internal_format(json_path):
     # consumes AllPrintings.json, produces list of internally formated cards
-    # drops those cards which are not suitable for the AI to train with
+    # Docs for AllPrintings.json are located here: https://mtgjson.com/data-models/card-set/ etc
+    #   we're iterating over 'Set' and then 'Card (Set)' objects, as defined by those docs
     f = open(json_path)
     j = json.load(f)
     f.close()
@@ -22,7 +52,7 @@ def json_to_internal_format(json_path):
         # collect set cards first, to make correct b-side associations
         # then add these to the aggregate set above
         set_cards = defaultdict(list)
-        b_sides = []
+        b_sides = []  # TODO sides go up to 'e'...
 
         # this is a big and complicated dataset, so lets make sure the list of available information matches our expectations
         expected_keys = ['baseSetSize', 'cards', 'code', 'isFoilOnly', 'isOnlineOnly', 'keyruneCode', 'name', 'releaseDate', 'tokens', 'totalSetSize',
@@ -54,9 +84,9 @@ def json_to_internal_format(json_path):
             for k in j_card: assert k in expected_keys or k in deprecated_keys or k in optional_keys or k in undocumented_keys, k + str(j_card)
 
             card = {}
+            # TODO write card fields
 
-            set_cards[card['name']].append(card)  # TODO: or not
-            # TODO
+            set_cards[card['name']].append(card)  # TODO: or assign to b-sides
 
     # then deduplicate by choosing # TODO attributes
 
