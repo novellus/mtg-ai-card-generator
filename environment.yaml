@@ -7,3 +7,5 @@ dependencies:
   - pip:
     - pillow==9.3.0
     - matplotlib==3.6.2
+    - titlecase==2.4
+    - pyyaml==5.4.1
