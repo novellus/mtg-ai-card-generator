@@ -281,6 +281,7 @@
 * [torch docs](https://github.com/torch/torch7/blob/master/doc/tensor.md)
 * batch convert svg images to png ```find . -name "*.svg" | xargs inkscape --export-type=png --export-width=1000 --export-height=1000 --export-png-color-mode=RGBA_8 --batch-process```
 * ```python plot_nn_loss.py --json_path nns/names_1/checkpoint_21.000000.json```
+* after changing ```environment.yaml``` update the environment with ```conda deactivate && conda env remove --name mtg-ai-main && conda env create -f environment.yaml && conda activate mtg-ai-main```
 <!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer -->
 
 
