@@ -197,24 +197,27 @@ def internal_format_to_human_readable(cards, out_path):
 
 
 def internal_format_to_AI_format(card):
+    # consumes list of internal formats, returns list of internal formats
     # consumes a single internal format, produces a single AI formatted string
     # TODO
 
-    s = s.replace('-', dash_marker)
-    name_val = name_val.lower()
+    # s = s.replace('-', dash_marker)
+    # name_val = name_val.lower()
 
-    text_val = src_json['text'].lower()
-    text_val = transforms.text_pass_2_cardname(text_val, name_orig)
-    text_val = transforms.text_pass_3_unary(text_val)
-    text_val = transforms.text_pass_4a_dashes(text_val)
-    text_val = transforms.text_pass_5_counters(text_val)
-    text_val = transforms.text_pass_7_choice(text_val)
-    text_val = transforms.text_pass_9_newlines(text_val)
-    text_val = transforms.text_pass_10_symbols(text_val)
+    # text_val = src_json['text'].lower()
+    # text_val = transforms.text_pass_2_cardname(text_val, name_orig)
+    # text_val = transforms.text_pass_3_unary(text_val)
+    # text_val = transforms.text_pass_4a_dashes(text_val)
+    # text_val = transforms.text_pass_5_counters(text_val)
+    # text_val = transforms.text_pass_7_choice(text_val)
+    # text_val = transforms.text_pass_9_newlines(text_val)
+    # text_val = transforms.text_pass_10_symbols(text_val)
+
+    pass
 
 
 def limit_to_AI_fields(card):
-    # consumes a single internal format, returns internal format including only the fields which the AI processes
+    # consumes list of internal formats, returns list of internal formats including only the fields which the AI processes
     # used to produce a limited dataset for direct comparison after the AI processing
     pass  # TODO
 
@@ -237,102 +240,102 @@ def error_correct_AI(AI_string):
     pass  # TODO
 
 
-def unreversable_modifications(card):
-    # consumes a single internal format, produces a single internal format
+def unreversable_modifications(cards):
+    # consumes list of internal formats, returns list of internal formats
     # makes changes which are not reversable by AI_to_internal_format
     #   such as standardizing order of keywords
     # this function will return a dataset which can be directly compared to the dual_processed format for validity
     # since the changes made by this function are not validated by reversion, they should be reviewed by hand
     # TODO
 
-    card = copy.deepcopy(card)
+    cards = copy.deepcopy(cards)
+    for card in cards:
 
-    # strip text fields
-    card['name'] = card['name'].strip()
-    if card['main_text'] is not None:
-        card['main_text'] = card['main_text'].strip()
-    if card['flavor'] is not None:
-        card['main_text'] = card['main_text'].strip()
+        # strip text fields
+        card['name'] = card['name'].strip()
+        if card['main_text'] is not None:
+            card['main_text'] = card['main_text'].strip()
+        if card['flavor'] is not None:
+            card['flavor'] = card['flavor'].strip()
 
-    # fix alchemy symbol prepended to card names
-    card['name'] = re.sub(r'^A-', '', card['name'])
+        # fix alchemy symbol prepended to card names
+        card['name'] = re.sub(r'^A-', '', card['name'])
 
-    # convert one-off large nubmers to strings, since numbers are reserved characters
-    # normal (smaller) numbers will be converted to unary, but that doesn't make sense for these
-    # there also aren't very many number above 20 actually used
-    def sub_large_numbers(s):
-        s = re.sub('100,?000', 'one-hundred-thousand', s)
-        s = re.sub('1,?996', 'nineteen-ninety-six', s)  # date instead of amount?
-        s = re.sub('1,?000', 'one-thousand', s)
-        s = s.replace('200', 'two-hundred')
-        s = s.replace('100', 'one-hundred')
-        s = s.replace('50', 'fifly')
-        s = s.replace('40', 'forty')
-        s = s.replace('30', 'thirty')
-        s = s.replace('25', 'twenty-five')
-        return s
+        # convert one-off large nubmers to strings, since numbers are reserved characters
+        # normal (smaller) numbers will be converted to unary, but that doesn't make sense for these
+        # there also aren't very many number above 20 actually used
+        def sub_large_numbers(s):
+            s = re.sub('100,?000', 'one-hundred-thousand', s)
+            s = re.sub('1,?996', 'nineteen-ninety-six', s)  # date instead of amount?
+            s = re.sub('1,?000', 'one-thousand', s)
+            s = s.replace('200', 'two-hundred')
+            s = s.replace('100', 'one-hundred')
+            s = s.replace('50', 'fifly')
+            s = s.replace('40', 'forty')
+            s = s.replace('30', 'thirty')
+            s = s.replace('25', 'twenty-five')
+            return s
 
-    card['name'] = sub_large_numbers(card['name'])
-    if card['main_text'] is not None:
-        card['main_text'] = sub_large_numbers(card['main_text'])
+        card['name'] = sub_large_numbers(card['name'])
+        if card['main_text'] is not None:
+            card['main_text'] = sub_large_numbers(card['main_text'])
 
-    # convert common unicode characters to ascii, both for standardization for the AI, and to reduce vocab size
-    def sub_unicode(s):
-        # TODO check if we 
-        s = s.replace('\u2014', '-')    # unicode long dash
-        s = s.replace('\u2019', '"')    # single quote
-        s = s.replace('\u2018', '"')    # another single quote
-        s = s.replace('\u2212', '-')    # minus sign
-        s = s.replace('\xe6',   'ae')   # ae symbol
-        s = s.replace('\xfb',   'u')    # u with caret
-        s = s.replace('\xfa',   'u')    # u with accent
-        s = s.replace('\xe9',   'e')    # e with accent
-        s = s.replace('\xe1',   'a')    # a with accent
-        s = s.replace('\xe0',   'a')    # a with accent going the other way
-        s = s.replace('\xe2',   'a')    # a with caret
-        s = s.replace('\xf6',   'o')    # o with umlaut
-        s = s.replace('\xed',   'i')    # i with accent
-        s = s.replace('\u03c0', 'pi')   # pi
-        s = s.replace('\xae',   'r')    # Registered trademark as r
-        s = s.replace('\xbd',   '1/2')  # 1/2 unicode to string
-        s = s.replace('\u221e', 'inf')  # infinity
-        s = s.replace('\u2610', 'na')   # ballot box as na
-        return s
+        # convert common unicode characters to ascii, both for standardization for the AI, and to reduce vocab size
+        def sub_unicode(s):
+            # TODO check if we 
+            s = s.replace('\u2014', '-')    # unicode long dash
+            s = s.replace('\u2019', '"')    # single quote
+            s = s.replace('\u2018', '"')    # another single quote
+            s = s.replace('\u2212', '-')    # minus sign
+            s = s.replace('\xe6',   'ae')   # ae symbol
+            s = s.replace('\xfb',   'u')    # u with caret
+            s = s.replace('\xfa',   'u')    # u with accent
+            s = s.replace('\xe9',   'e')    # e with accent
+            s = s.replace('\xe1',   'a')    # a with accent
+            s = s.replace('\xe0',   'a')    # a with accent going the other way
+            s = s.replace('\xe2',   'a')    # a with caret
+            s = s.replace('\xf6',   'o')    # o with umlaut
+            s = s.replace('\xed',   'i')    # i with accent
+            s = s.replace('\u03c0', 'pi')   # pi
+            s = s.replace('\xae',   'r')    # Registered trademark as r
+            s = s.replace('\xbd',   '1/2')  # 1/2 unicode to string
+            s = s.replace('\u221e', 'inf')  # infinity
+            s = s.replace('\u2610', 'na')   # ballot box as na
+            return s
 
-    card['name'] = sub_unicode(card['name'])
-    if card['main_text'] is not None:
-        card['main_text'] = sub_unicode(card['main_text'])
-    if card['flavor'] is not None:
-        card['flavor'] = sub_unicode(card['flavor'])
+        card['name'] = sub_unicode(card['name'])
+        if card['main_text'] is not None:
+            card['main_text'] = sub_unicode(card['main_text'])
+        if card['flavor'] is not None:
+            card['flavor'] = sub_unicode(card['flavor'])
 
-    if card['main_text'] is not None:
-        # remove rules (keyword explanation) text
-        card['main_text'] = re.sub(r'\(.*\)', '', card['main_text'])  # this makes a pretty big assumption, which is hard to verify...
+        if card['main_text'] is not None:
+            # remove rules (keyword explanation) text
+            card['main_text'] = re.sub(r'\(.*\)', '', card['main_text'])  # this makes a pretty big assumption, which is hard to verify...
 
-        # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
-        # TODO check capitalization
-        ability_words = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation',
-                         'Converge', 'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour', 'Ferocious',
-                         'Formidable', 'Gear up', 'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces', 'Kinship', 'Landfall',
-                         'Lieutenant', 'Magecraft', 'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance', 'Raid', 'Rally', 'Revolt',
-                         'Spell mastery', 'Strive', 'Sweep', 'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',]
-        for word in ability_words:
-            card['main_text'] = re.sub(rf'{word}\s*-?\s*', '', card['main_text'])
+            # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
+            # TODO check capitalization
+            ability_words = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation',
+                             'Converge', 'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour', 'Ferocious',
+                             'Formidable', 'Gear up', 'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces', 'Kinship', 'Landfall',
+                             'Lieutenant', 'Magecraft', 'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance', 'Raid', 'Rally', 'Revolt',
+                             'Spell mastery', 'Strive', 'Sweep', 'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',]
+            card['main_text'] = re.sub(rf'({"|".join(ability_words)})\s*-?\s*', '', card['main_text'])
 
-        text_val = transforms.text_pass_4b_x(text_val)
-        text_val = transforms.text_pass_6_uncast(text_val)
-        text_val = transforms.text_pass_8_equip(text_val)
-        text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
+            # text_val = transforms.text_pass_4b_x(text_val)
+            # text_val = transforms.text_pass_6_uncast(text_val)
+            # text_val = transforms.text_pass_8_equip(text_val)
+            # text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
 
-    # TODO
-    # apply strict titlecasing to the card name
-    # this gives us a robust target for the AI to internal decoder, since the AI text is all lowercase
-    # apply the exact same transformation to the card name when found in the main text
-    #   since references to card title are encoded to special characters in the AI format, and we need to be able to find them later
+        # TODO
+        # apply strict titlecasing to the card name
+        # this gives us a robust target for the AI to internal decoder, since the AI text is all lowercase
+        # apply the exact same transformation to the card name when found in the main text
+        #   since references to card title are encoded to special characters in the AI format, and we need to be able to find them later
 
-    # TODO recurse on b-e sides
+        # TODO recurse on b-e sides
 
-    return card
+    return cards
 
 
 
@@ -358,23 +361,19 @@ def encode_json_to_AI(json_path, out_path):
         validate(card)
 
     # save an unmodified dataset for human review
-    internal_format_to_human_readable(cards_original, 'cards_original.yaml')
+    # internal_format_to_human_readable(cards_original, 'cards_original.yaml')
 
     # perform dataset modifications / standardizations which have no reverse
-    cards_standard = []
-    for card in cards_original:
-        cards_standard.append(unreversable_modifications(card))
+    cards_standard = unreversable_modifications(cards_original)
 
     # now deduplicate the cards
     # We do this after standardization due to some unfortunate artifacts in the json fields, which are addressed in that step
     cards_original = deduplicate_cards(cards_original)
 
     # save the standardized dataset for human review
-    internal_format_to_human_readable(cards_standard, 'cards_standard.yaml')
-    cards_limited_standard = []
-    for card in cards_original:
-        cards_limited_standard.append(limit_to_AI_fields(card))
-    internal_format_to_human_readable(cards_limited_standard, 'cards_limited_standard.yaml')
+    # internal_format_to_human_readable(cards_standard, 'cards_standard.yaml')
+    cards_limited_standard = limit_to_AI_fields(cards_standard)
+    # internal_format_to_human_readable(cards_limited_standard, 'cards_limited_standard.yaml')
 
     # transcribe to AI format, and save in designated location
     cards_AI = []
@@ -390,7 +389,7 @@ def encode_json_to_AI(json_path, out_path):
         cards_dual_processed.append(AI_to_internal_format(card))
 
     # save cards_dual_processed for human review
-    internal_format_to_human_readable(cards_dual_processed, 'cards_dual_processed.yaml')
+    # internal_format_to_human_readable(cards_dual_processed, 'cards_dual_processed.yaml')
 
     verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed)
 
