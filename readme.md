@@ -117,6 +117,7 @@
 * Add extra names and flavor
 * finish training the AIs
     * update plot utility to optionally accept a folder instead of path to checkpoint
+    * use 50% dropout, and increase the network sizes substantially  <!-- https://old.reddit.com/r/MachineLearning/comments/3oztvk/why_50_when_using_dropout/ -->
 * generate a small-medium batch of cards for Colin to review
 * generate additional basic lands with custom / unique art
     * use unique type identifer (```Basic Land```?) to indicate usage of textless frames

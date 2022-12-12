@@ -31,6 +31,50 @@ from collections import defaultdict
 # }
 
 
+def extend_all_cases(l):
+    # extends a list l with all reasonable cases for its original contents
+    new = []
+    new.extend([x.capitalize() for x in l])
+    new.extend([x.upper() for x in l])
+    new.extend([x.lower() for x in l])
+    new.extend([titlecase.titlecase(x) for x in l])
+    l.extend(new)
+    return l
+
+
+# constants describing mtg card attributes. These may need to be updated whenever new mechanics are released.
+# there may be some checks in specials cases where the code can detect that it doesn't know about a new mechanic
+#   but this is very limited
+#   for instance when asserting that the code has replaced all uses of "counter" as a verb
+#   it checks all remaining "counter" uses against the list of counters (noun, game mechanic)
+
+MTG_COUNTERS = [r'[\+\-]?\d+/[\+\-]?\d+',  # eg +1/+1, but aritrary numbers
+                'Acorn', 'Aegis', 'Age', 'Aim', 'Arrow', 'Arrowhead', 'Awakening', 'Blaze', 'Blood', 'Bloodline', 'Book', 'Bounty', 'Bribery', 'Brick', 'Cage',
+                'Carrion', 'Charge', 'Coin', 'Collection', 'Component', 'Contested', 'Corpse', 'Corruption', 'CRANK!', 'Credit', 'Croak', 'Crystal', 'Cube',
+                'Currency', 'Death', 'Deathtouch ', 'Delay', 'Depletion', 'Descent', 'Despair', 'Devotion', 'Divinity', 'Doom', 'Double strike ', 'Dream', 'Echo',
+                'Egg', 'Elixir', 'Ember', 'Energy', 'Enlightened', 'Eon', 'Experience', 'Eyeball', 'Eyestalk', 'Fade', 'Fate', 'Feather', 'Fetch', 'Filibuster',
+                'First strike ', 'Flame', 'Flood', 'Flying', 'Foreshadow', 'Fungus', 'Fury', 'Fuse', 'Gem', 'Ghostform', 'Glyph', 'Gold', 'Growth', 'Hack',
+                'Harmony', 'Hatching', 'Hatchling', 'Healing', 'Hexproof', 'Hit', 'Hone', 'Hoofprint', 'Hour', 'Hourglass', 'Hunger', 'Ice', 'Incarnation',
+                'Indestructible', 'Infection', 'Ingenuity', 'Intel', 'Intervention', 'Invitation', 'Isolation', 'Javelin', 'Judgment', 'Keyword', 'Ki', 'Kick',
+                'Knickknack', 'Knowledge', 'Landmark', 'Level', 'Lifelink', 'Lore', 'Loyalty', 'Luck', 'Magnet', 'Manabond', 'Manifestation', 'Mannequin',
+                'Matrix', 'Menace', 'Midway', 'Mine', 'Mining', 'Mire', 'Music', 'Muster', 'Necrodermis', 'Net', 'Night', 'Omen', 'Ore', 'Page', 'Pain',
+                'Palliation', 'Paralyzation', 'Pause', 'Petal', 'Petrification', 'Phylactery', 'Phyresis', 'Pin', 'Plague', 'Plot', 'Point', 'Poison', 'Polyp',
+                'Pressure', 'Prey', 'Pupa', 'Quest', 'Reach', 'Ritual', 'Rope', 'Rust', 'Scream', 'Scroll', 'Shell', 'Shield', 'Shred', 'Silver', 'Sleep',
+                'Sleight', 'Slime', 'Slumber', 'Soot', 'Soul', 'Spark', 'Spite',  'Spore', 'Stash', 'Storage', 'Strife', 'Study', 'Stun', 'Suspect', 'Task',
+                'Theft', 'Ticket', 'Tide', 'Time', 'Tower', 'Training', 'Trample', 'Trap', 'Treasure', 'Unity', 'Valor', 'Velocity', 'Verse', 'Vigilance',
+                'Vitality', 'Void', 'Vortex', 'Vow', 'Voyage', 'Wage', 'Winch', 'Wind', 'Wish',
+]
+MTG_COUNTERS = extend_all_cases(MTG_COUNTERS)
+
+MTG_ABILITY_WORDS = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation', 'Converge',
+                     'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour', 'Ferocious', 'Formidable', 'Gear up',
+                     'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces', 'Kinship', 'Landfall', 'Lieutenant', 'Magecraft',
+                     'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance', 'Raid', 'Rally', 'Revolt', 'Spell mastery', 'Strive', 'Sweep',
+                     'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',
+]
+MTG_ABILITY_WORDS = extend_all_cases(MTG_ABILITY_WORDS)
+
+
 def deduplicate_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops duplicate cards, such as reprints, foils, etc
@@ -314,13 +358,7 @@ def unreversable_modifications(cards):
             card['main_text'] = re.sub(r'\(.*\)', '', card['main_text'])  # this makes a pretty big assumption, which is hard to verify...
 
             # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
-            # TODO check capitalization
-            ability_words = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation',
-                             'Converge', 'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour', 'Ferocious',
-                             'Formidable', 'Gear up', 'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces', 'Kinship', 'Landfall',
-                             'Lieutenant', 'Magecraft', 'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance', 'Raid', 'Rally', 'Revolt',
-                             'Spell mastery', 'Strive', 'Sweep', 'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',]
-            card['main_text'] = re.sub(rf'({"|".join(ability_words)})\s*-?\s*', '', card['main_text'])
+            card['main_text'] = re.sub(rf'({"|".join(MTG_ABILITY_WORDS)})\s*-?\s*', '', card['main_text'])
 
             # Capitalize all X's and Y's, when acting as the variables X or Y.
             variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyY])(?=$|[\s:,\.\/\}])'
@@ -329,7 +367,8 @@ def unreversable_modifications(cards):
 
             # standardize verbiage for countering spells to "uncast"
             # this reduces overloading of the word "counter" for the AI
-            
+
+            # TODO validate that "counter" now only occurs as a noun
 
             # text_val = transforms.text_pass_6_uncast(text_val)
 
