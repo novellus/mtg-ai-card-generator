@@ -322,8 +322,17 @@ def unreversable_modifications(cards):
                              'Spell mastery', 'Strive', 'Sweep', 'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',]
             card['main_text'] = re.sub(rf'({"|".join(ability_words)})\s*-?\s*', '', card['main_text'])
 
-            # text_val = transforms.text_pass_4b_x(text_val)
+            # Capitalize all X's and Y's, when acting as the variables X or Y.
+            variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyY])(?=$|[\s:,\.\/\}])'
+            capilalize = lambda x: x.group(2).upper()
+            card['main_text'] = re.sub(variable_x_regex, capilalize, card['main_text'])
+
+            # standardize verbiage for countering spells to "uncast"
+            # this reduces overloading of the word "counter" for the AI
+            
+
             # text_val = transforms.text_pass_6_uncast(text_val)
+
             # text_val = transforms.text_pass_8_equip(text_val)
             # text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
 
