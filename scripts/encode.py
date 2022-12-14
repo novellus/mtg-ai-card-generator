@@ -17,8 +17,6 @@ from collections import defaultdict
 #     'd_side'          : internal format, optional, present only on a-side (top-level) cards
 #     'e_side'          : internal format, optional, present only on a-side (top-level) cards
 #     'flavor'          : str or None
-#     'json_fields'     : dict, optional, only exists if the card was converted from json,
-#                         contains select unmodified fields used in decision making (eg which cards should be encoded)
 #     'loyalty'         : str or None
 #     'main_text'       : str
 #     'maintypes'       : list of str (possibly empty)
@@ -75,6 +73,58 @@ MTG_ABILITY_WORDS = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in sh
 ]
 MTG_ABILITY_WORDS = extend_all_cases(MTG_ABILITY_WORDS)
 
+# mana costs are encoded as unique characters to reduce syntax burden on the AI, at the cost of increasing vocab
+# as long as vocab doesn't go above 255 characters, it's not a significant impact to performance
+# numerical mana is encoded differently (unary)
+MTG_MANA_ENCODING = {
+    '{1000000}' :                    ,  # special case, because we're not encoding that number in unary...
+    '{100}'     :                    ,  # special case, because we're not encoding that number in unary...
+    '{2/B}'     :                    ,  # Monocolored hybrid mana
+    '{2/G}'     :                    ,  # Monocolored hybrid mana
+    '{2/R}'     :                    ,  # Monocolored hybrid mana
+    '{2/U}'     :                    ,  # Monocolored hybrid mana
+    '{2/W}'     :                    ,  # Monocolored hybrid mana
+    '{A}'       :                    ,  # Acorn counter
+    '{B/G}'     :                    ,  # Hybrid mana
+    '{B/P}'     :                    ,  # Phyrexian mana
+    '{B/R}'     :                    ,  # Hybrid mana
+    '{B}'       :                    ,  # Standard black mana
+    '{CHAOS}'   :                    ,  # Chaos
+    '{C}'       :                    ,  # Colorless only
+    '{E}'       :                    ,  # Energy
+    '{G/P}'     :                    ,  # Phyrexian mana
+    '{G/U/P}'   :                    ,  # Phyrexian hybrid mana
+    '{G/U}'     :                    ,  # Hybrid mana
+    '{G/W/P}'   :                    ,  # Phyrexian hybrid mana
+    '{G/W}'     :                    ,  # Hybrid mana
+    '{G}'       :                    ,  # Standard green mana
+    '{HR}'      :                    ,  # Half-red mana
+    '{HW}'      :                    ,  # Half-white mana
+    '{P}'       :                    ,  # Colorless Phyrexian mana
+    '{Q}'       :                    ,  # Untap symbol
+    '{R/G}'     :                    ,  # Hybrid mana
+    '{R/P}'     :                    ,  # Phyrexian mana
+    '{R/W}'     :                    ,  # Hybrid mana
+    '{R}'       :                    ,  # Standard red mana
+    '{S}'       :                    ,  # Snow
+    '{TK}'      :                    ,  # Tokens
+    '{T}'       :                    ,  # Tap symbol
+    '{U/B}'     :                    ,  # Hybrid mana
+    '{U/P}'     :                    ,  # Phyrexian mana
+    '{U/R}'     :                    ,  # Hybrid mana
+    '{U}'       :                    ,  # Standard blue mana
+    '{W/B}'     :                    ,  # Hybrid mana
+    '{W/P}'     :                    ,  # Phyrexian mana
+    '{W/U}'     :                    ,  # Hybrid mana
+    '{W}'       :                    ,  # Standard white mana
+    '{X}'       :                    ,  # Variable 'X' mana
+    '{Y}'       :                    ,  # Variable 'Y' mana
+    '{Z}'       :                    ,  # Variable 'Z' mana
+    '{½}'       :                    ,  # Half colorless mana
+    '{∞}'       :                    ,  # infinity mana
+}
+MTG_MANA_DECODING = {v:k for k,v in MTG_MANA_ENCODING.items()}
+
 
 def deduplicate_cards_simple(cards):
     # consumes list of internal formats, returns list of internal formats
@@ -104,8 +154,11 @@ def deduplicate_cards_simple(cards):
 def limit_to_AI_training_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops those cards which are not suitable for the AI to train with
+
     # TODO
-    pass
+    limited_cards = cards
+
+    return limited_cards
 
 
 def json_to_internal_format(json_path):
@@ -158,7 +211,8 @@ def json_to_internal_format(json_path):
             # create a backlink from the card object to its set
             j_card['set'] = v_set
 
-            # TODO write card fields
+            # write card fields
+            # json_fields is a temporary field which will be removed at the end of this process
             card = {'json_fields': j_card}
 
             # name
@@ -236,6 +290,14 @@ def json_to_internal_format(json_path):
             if 'e_side' in card: num_sides += 1
             card['num_sides'] = num_sides
 
+        # finally, remove the json_fields temporary key
+        for card in primary_sides:
+            del card['json_fields']
+            if 'b_side' in card: del card['b_side']['json_fields']
+            if 'c_side' in card: del card['c_side']['json_fields']
+            if 'd_side' in card: del card['d_side']['json_fields']
+            if 'e_side' in card: del card['e_side']['json_fields']
+
         cards.extend(primary_sides)
 
     return cards
@@ -249,14 +311,10 @@ def AI_to_internal_format(AI_string):
     AI_string = error_correct_AI(AI_string)
     
     # TODO
+    pass
 
     validate(card)
     return card
-
-
-def internal_format_to_human_readable(cards, out_path):
-    # consumes a list of internally formatted cards, produces a yaml file
-    pass  # TODO
 
 
 def internal_format_to_AI_format(card):
@@ -264,13 +322,29 @@ def internal_format_to_AI_format(card):
     # consumes a single internal format, produces a single AI formatted string
     # TODO
 
+    # TODO
+    # convert all fields to lowercase
+    #   except mana costs
+    #   and except variable usage of X
+    #     'cost'            : str or None
+    #     'flavor'          : str or None
+    #     'loyalty'         : str or None
+    #     'main_text'       : str
+    #     'maintypes'       : list of str (possibly empty)
+    #     'name'            : str
+    #     'num_sides'       : int (1-5), optional, present only on a-side (top-level) cards
+    #     'power_toughness' : 2-list of str or None
+    #     'rarity'          : str
+    #     'subtypes'        : list of str (possibly empty)
+    #     'supertypes'      : list of str (possibly empty)
+
     # standardize verbiage for countering spells to "uncast"
     #   this reduces overloading of the word "counter" for the AI
     # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
-    # card['main_text'] = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', card['main_text'])
-    # card['main_text'] = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', card['main_text'])
+    main_text = card['main_text']
+    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
+    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
 
-    # s = s.replace('-', dash_marker)
     # name_val = name_val.lower()
 
     # text_val = src_json['text'].lower()
@@ -281,6 +355,8 @@ def internal_format_to_AI_format(card):
     # text_val = transforms.text_pass_7_choice(text_val)
     # text_val = transforms.text_pass_9_newlines(text_val)
     # text_val = transforms.text_pass_10_symbols(text_val)
+
+    # TODO recurse on b-e sides
 
     pass
 
@@ -340,8 +416,13 @@ def unreversable_modifications(card):
         card['main_text'] = sub_large_numbers(card['main_text'])
 
     # convert common unicode characters to ascii, both for standardization for the AI, and to reduce vocab size
+    # a few of these characters are intentionally commented out, we specifically want those unicode characters to remain
+    #   bullet: needs a unique replacement character anyway, so might as well use an actual bullet
+    #   1/2: avoid overloading the meaning of numbers or '/' character for the AI
+    #   inf: 
     def sub_unicode(s):
-        s = s.replace('\u2014', '-')    # unicode long dash
+        s = s.replace('\u2014', '-')    # long dash
+        # s = s.replace('\u2022': '*')  # bullet
         s = s.replace('\u2019', '"')    # single quote
         s = s.replace('\u2018', '"')    # another single quote
         s = s.replace('\u2212', '-')    # minus sign
@@ -356,8 +437,8 @@ def unreversable_modifications(card):
         s = s.replace('\xed',   'i')    # i with accent
         s = s.replace('\u03c0', 'pi')   # pi
         s = s.replace('\xae',   'r')    # Registered trademark as r
-        s = s.replace('\xbd',   '1/2')  # 1/2 unicode to string
-        s = s.replace('\u221e', 'inf')  # infinity
+        # s = s.replace('\xbd',   '1/2')  # 1/2
+        # s = s.replace('\u221e', 'inf')  # infinity
         s = s.replace('\u2610', 'na')   # ballot box as na
         return s
 
@@ -374,8 +455,8 @@ def unreversable_modifications(card):
         # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
         card['main_text'] = re.sub(rf'({"|".join(MTG_ABILITY_WORDS)})\s*-?\s*', '', card['main_text'])
 
-        # Capitalize all X's and Y's, when acting as the variables X or Y.
-        variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyY])(?=$|[\s:,\.\/\}])'
+        # Capitalize all X's, Y's, and Z's, when acting as variables
+        variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyYzZ])(?=$|[\s:,\.\/\}])'
         capitalize = lambda x: x.group(2).upper()
         card['main_text'] = re.sub(variable_x_regex, capitalize, card['main_text'])
 
@@ -413,7 +494,6 @@ def unreversable_modifications(card):
         card['e_side'] = unreversable_modifications(card['e_side'])
 
     return card
-
 
 
 def verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed):
