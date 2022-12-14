@@ -85,8 +85,10 @@ MTG_MANA_ENCODING = {
     '{2/U}'     :                    ,  # Monocolored hybrid mana
     '{2/W}'     :                    ,  # Monocolored hybrid mana
     '{A}'       :                    ,  # Acorn counter
+    '{B/G/P}'   :                    ,  # Phyrexian hybrid mana
     '{B/G}'     :                    ,  # Hybrid mana
     '{B/P}'     :                    ,  # Phyrexian mana
+    '{B/R/P}'   :                    ,  # Phyrexian hybrid mana
     '{B/R}'     :                    ,  # Hybrid mana
     '{B}'       :                    ,  # Standard black mana
     '{CHAOS}'   :                    ,  # Chaos
@@ -98,23 +100,33 @@ MTG_MANA_ENCODING = {
     '{G/W/P}'   :                    ,  # Phyrexian hybrid mana
     '{G/W}'     :                    ,  # Hybrid mana
     '{G}'       :                    ,  # Standard green mana
+    '{HB}'      :                    ,  # Half-black mana
+    '{HG}'      :                    ,  # Half-green mana
     '{HR}'      :                    ,  # Half-red mana
+    '{HS}'      :                    ,  # Half-snow mana
+    '{HU}'      :                    ,  # Half-blue mana
     '{HW}'      :                    ,  # Half-white mana
     '{P}'       :                    ,  # Colorless Phyrexian mana
     '{Q}'       :                    ,  # Untap symbol
+    '{R/G/P}'   :                    ,  # Phyrexian hybrid mana
     '{R/G}'     :                    ,  # Hybrid mana
     '{R/P}'     :                    ,  # Phyrexian mana
+    '{R/W/P}'   :                    ,  # Phyrexian hybrid mana
     '{R/W}'     :                    ,  # Hybrid mana
     '{R}'       :                    ,  # Standard red mana
     '{S}'       :                    ,  # Snow
     '{TK}'      :                    ,  # Tokens
     '{T}'       :                    ,  # Tap symbol
+    '{U/B/P}'   :                    ,  # Phyrexian hybrid mana
     '{U/B}'     :                    ,  # Hybrid mana
     '{U/P}'     :                    ,  # Phyrexian mana
+    '{U/R/P}'   :                    ,  # Phyrexian hybrid mana
     '{U/R}'     :                    ,  # Hybrid mana
     '{U}'       :                    ,  # Standard blue mana
+    '{W/B/P}'   :                    ,  # Phyrexian hybrid mana
     '{W/B}'     :                    ,  # Hybrid mana
     '{W/P}'     :                    ,  # Phyrexian mana
+    '{W/U/P}'   :                    ,  # Phyrexian hybrid mana
     '{W/U}'     :                    ,  # Hybrid mana
     '{W}'       :                    ,  # Standard white mana
     '{X}'       :                    ,  # Variable 'X' mana
@@ -400,15 +412,15 @@ def unreversable_modifications(card):
     # normal (smaller) numbers will be converted to unary, but that doesn't make sense for these
     # there also aren't very many number above 20 actually used
     def sub_large_numbers(s):
-        s = re.sub('100,?000', 'one-hundred-thousand', s)
-        s = re.sub('1,?996', 'nineteen-ninety-six', s)  # date instead of amount?
-        s = re.sub('1,?000', 'one-thousand', s)
-        s = s.replace('200', 'two-hundred')
-        s = s.replace('100', 'one-hundred')
-        s = s.replace('50', 'fifly')
-        s = s.replace('40', 'forty')
-        s = s.replace('30', 'thirty')
-        s = s.replace('25', 'twenty-five')
+        s = re.sub(r'100,?000(?![^\{]*\})', 'one-hundred-thousand', s)
+        s = re.sub(r'1,?996(?![^\{]*\})', 'nineteen-ninety-six', s)  # date instead of amount?
+        s = re.sub(r'1,?000(?![^\{]*\})', 'one-thousand', s)
+        s = re.sub(r'200(?![^\{]*\})', 'two-hundred', s)
+        s = re.sub(r'100(?![^\{]*\})', 'one-hundred', s)
+        s = re.sub(r'50(?![^\{]*\})', 'fifty', s)
+        s = re.sub(r'40(?![^\{]*\})', 'forty', s)
+        s = re.sub(r'30(?![^\{]*\})', 'thirty', s)
+        s = re.sub(r'25(?![^\{]*\})', 'twenty-five', s)
         return s
 
     card['name'] = sub_large_numbers(card['name'])
