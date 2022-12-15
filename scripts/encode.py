@@ -73,69 +73,87 @@ MTG_ABILITY_WORDS = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in sh
 ]
 MTG_ABILITY_WORDS = extend_all_cases(MTG_ABILITY_WORDS)
 
-# mana costs are encoded as unique characters to reduce syntax burden on the AI, at the cost of increasing vocab
-# as long as vocab doesn't go above 255 characters, it's not a significant impact to performance
-# numerical mana is encoded differently (unary)
-MTG_MANA_ENCODING = {
-    '{1000000}' :                    ,  # special case, because we're not encoding that number in unary...
-    '{100}'     :                    ,  # special case, because we're not encoding that number in unary...
-    '{2/B}'     :                    ,  # Monocolored hybrid mana
-    '{2/G}'     :                    ,  # Monocolored hybrid mana
-    '{2/R}'     :                    ,  # Monocolored hybrid mana
-    '{2/U}'     :                    ,  # Monocolored hybrid mana
-    '{2/W}'     :                    ,  # Monocolored hybrid mana
-    '{A}'       :                    ,  # Acorn counter
-    '{B/G/P}'   :                    ,  # Phyrexian hybrid mana
-    '{B/G}'     :                    ,  # Hybrid mana
-    '{B/P}'     :                    ,  # Phyrexian mana
-    '{B/R/P}'   :                    ,  # Phyrexian hybrid mana
-    '{B/R}'     :                    ,  # Hybrid mana
-    '{B}'       :                    ,  # Standard black mana
-    '{CHAOS}'   :                    ,  # Chaos
-    '{C}'       :                    ,  # Colorless only
-    '{E}'       :                    ,  # Energy
-    '{G/P}'     :                    ,  # Phyrexian mana
-    '{G/U/P}'   :                    ,  # Phyrexian hybrid mana
-    '{G/U}'     :                    ,  # Hybrid mana
-    '{G/W/P}'   :                    ,  # Phyrexian hybrid mana
-    '{G/W}'     :                    ,  # Hybrid mana
-    '{G}'       :                    ,  # Standard green mana
-    '{HB}'      :                    ,  # Half-black mana
-    '{HG}'      :                    ,  # Half-green mana
-    '{HR}'      :                    ,  # Half-red mana
-    '{HS}'      :                    ,  # Half-snow mana
-    '{HU}'      :                    ,  # Half-blue mana
-    '{HW}'      :                    ,  # Half-white mana
-    '{P}'       :                    ,  # Colorless Phyrexian mana
-    '{Q}'       :                    ,  # Untap symbol
-    '{R/G/P}'   :                    ,  # Phyrexian hybrid mana
-    '{R/G}'     :                    ,  # Hybrid mana
-    '{R/P}'     :                    ,  # Phyrexian mana
-    '{R/W/P}'   :                    ,  # Phyrexian hybrid mana
-    '{R/W}'     :                    ,  # Hybrid mana
-    '{R}'       :                    ,  # Standard red mana
-    '{S}'       :                    ,  # Snow
-    '{TK}'      :                    ,  # Tokens
-    '{T}'       :                    ,  # Tap symbol
-    '{U/B/P}'   :                    ,  # Phyrexian hybrid mana
-    '{U/B}'     :                    ,  # Hybrid mana
-    '{U/P}'     :                    ,  # Phyrexian mana
-    '{U/R/P}'   :                    ,  # Phyrexian hybrid mana
-    '{U/R}'     :                    ,  # Hybrid mana
-    '{U}'       :                    ,  # Standard blue mana
-    '{W/B/P}'   :                    ,  # Phyrexian hybrid mana
-    '{W/B}'     :                    ,  # Hybrid mana
-    '{W/P}'     :                    ,  # Phyrexian mana
-    '{W/U/P}'   :                    ,  # Phyrexian hybrid mana
-    '{W/U}'     :                    ,  # Hybrid mana
-    '{W}'       :                    ,  # Standard white mana
-    '{X}'       :                    ,  # Variable 'X' mana
-    '{Y}'       :                    ,  # Variable 'Y' mana
-    '{Z}'       :                    ,  # Variable 'Z' mana
-    '{½}'       :                    ,  # Half colorless mana
-    '{∞}'       :                    ,  # infinity mana
+# mana symbols use an extensible encoding mechanism so the AI can understand mana combinations and create new ones
+#   ie those similar to but technically unused in the base set {B/R/P}
+#   Use original encoding with a few modifications
+#       Use a leading M instead of brackets on both sides to reduce syntax burden on the AI
+#       drop all slashes
+#       numbered mana will be encoded in unary separately, so are not included in this list
+#           except big numbers, which don't make sense in unary
+#       multicharacter base symbols get a unique single character encoding
+#           chaos
+#           tikets
+#           big numbers
+#       all modifiers to the base symbol go to the right of the base symbol. This is mostly the case already, except
+#           half 'H' symbol goes to the right of the base symbol, to be consistent with all other modfifiers
+#           2 also goes to the right of the color (treating the color as the base symbol for an improved sampling distribution from the AI)
+# this is not entirely snytax free like I wanted, but we're trading some syntax for extensibility which is a win
+#   this is only slightly lower syntax than the original mtgencode library used, and more capable
+#   We can't quite eliminate the syntax
+#       leading or trailing mana separator is necessary so that encoded 'WU' -> ('{W/U}' or '{W}{U}') is not confusing
+#       a consistent leading character is probably simpler for the AI to understand than extra spaces
+#           and X, Y, Z, ½, ∞ already rerquire an additional character to distinguish usage as symbols vs text
+#           or they could use unique characters instead, but then the AI has less relatedness information
+MTG_SYMBOL_ENCODING = {
+    '{1000000}' : 'ML',    # special case, because we're not encoding that number in unary...
+    '{100}'     : 'MN',    # special case, because we're not encoding that number in unary...
+    '{2/B}'     : 'MB2',   # Monocolored hybrid mana
+    '{2/G}'     : 'MG2',   # Monocolored hybrid mana
+    '{2/R}'     : 'MR2',   # Monocolored hybrid mana
+    '{2/U}'     : 'MU2',   # Monocolored hybrid mana
+    '{2/W}'     : 'MW2',   # Monocolored hybrid mana
+    '{A}'       : 'MA',    # Acorn counter
+    '{B/G/P}'   : 'MBGP',  # Phyrexian hybrid mana
+    '{B/G}'     : 'MBG',   # Hybrid mana
+    '{B/P}'     : 'MBP',   # Phyrexian mana
+    '{B/R/P}'   : 'MBRP',  # Phyrexian hybrid mana
+    '{B/R}'     : 'MBR',   # Hybrid mana
+    '{B}'       : 'MB',    # Standard black mana
+    '{CHAOS}'   : 'MO',    # Chaos
+    '{C}'       : 'MC',    # Colorless only
+    '{E}'       : 'ME',    # Energy
+    '{G/P}'     : 'MGP',   # Phyrexian mana
+    '{G/U/P}'   : 'MGUP',  # Phyrexian hybrid mana
+    '{G/U}'     : 'MGU',   # Hybrid mana
+    '{G/W/P}'   : 'MGWP',  # Phyrexian hybrid mana
+    '{G/W}'     : 'MGW',   # Hybrid mana
+    '{G}'       : 'MG',    # Standard green mana
+    '{HB}'      : 'MBH',   # Half-black mana
+    '{HG}'      : 'MGH',   # Half-green mana
+    '{HR}'      : 'MRH',   # Half-red mana
+    '{HS}'      : 'MSH',   # Half-snow mana
+    '{HU}'      : 'MUH',   # Half-blue mana
+    '{HW}'      : 'MWH',   # Half-white mana
+    '{P}'       : 'MP',    # Colorless Phyrexian mana
+    '{Q}'       : 'MQ',    # Untap symbol
+    '{R/G/P}'   : 'MRGP',  # Phyrexian hybrid mana
+    '{R/G}'     : 'MRG',   # Hybrid mana
+    '{R/P}'     : 'MRP',   # Phyrexian mana
+    '{R/W/P}'   : 'MRWP',  # Phyrexian hybrid mana
+    '{R/W}'     : 'MRW',   # Hybrid mana
+    '{R}'       : 'MR',    # Standard red mana
+    '{S}'       : 'MS',    # Snow
+    '{TK}'      : 'MK',    # Tokens
+    '{T}'       : 'MT',    # Tap symbol
+    '{U/B/P}'   : 'MUBP',  # Phyrexian hybrid mana
+    '{U/B}'     : 'MUB',   # Hybrid mana
+    '{U/P}'     : 'MUP',   # Phyrexian mana
+    '{U/R/P}'   : 'MURP',  # Phyrexian hybrid mana
+    '{U/R}'     : 'MUR',   # Hybrid mana
+    '{U}'       : 'MU',    # Standard blue mana
+    '{W/B/P}'   : 'MWBP',  # Phyrexian hybrid mana
+    '{W/B}'     : 'MWB',   # Hybrid mana
+    '{W/P}'     : 'MWP',   # Phyrexian mana
+    '{W/U/P}'   : 'MWUP',  # Phyrexian hybrid mana
+    '{W/U}'     : 'MWU',   # Hybrid mana
+    '{W}'       : 'MW',    # Standard white mana
+    '{X}'       : 'MX',    # Variable 'X' mana
+    '{Y}'       : 'MY',    # Variable 'Y' mana
+    '{Z}'       : 'MZ',    # Variable 'Z' mana
+    '{½}'       : 'M½',    # Half colorless mana
+    '{∞}'       : 'M∞',    # infinity mana
 }
-MTG_MANA_DECODING = {v:k for k,v in MTG_MANA_ENCODING.items()}
+MTG_SYMBOL_DECODING = {v:k for k,v in MTG_MANA_ENCODING.items()}
 
 
 def deduplicate_cards_simple(cards):
