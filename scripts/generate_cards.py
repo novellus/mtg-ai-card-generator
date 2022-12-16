@@ -415,18 +415,6 @@ def symbol_sizing(font_size):
     return vertical_kerning, symbol_size, symbol_spacing
 
 
-def pairs(x):
-    # returns list of pairs of elements of x with no repeats
-    #   eg [(x[0], x[1]), (x[2], x[3]), ...]
-
-    for i, y in enumerate(itertools.pairwise(x)):
-        # drop the odd yields from itertools.pairwise
-        if i%2:
-            continue
-
-        yield y
-
-
 def render_complex_text(text, max_width, font_path, font_size, long_token_mode=False, **kwargs):
     # renders multiline text with inline symbols at given font size under max_width constraint
     #   newlines are inserted at optimal locations anywhere there is whitespace

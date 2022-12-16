@@ -1,8 +1,11 @@
 import argparse
 import copy
+import difflib
 import json
+import itertools
 import pprint
 import re
+import sys
 import titlecase
 
 from collections import defaultdict
@@ -18,14 +21,11 @@ from collections import defaultdict
 #     'e_side'          : internal format, optional, present only on a-side (top-level) cards
 #     'flavor'          : str or None
 #     'loyalty'         : str or None
-#     'main_text'       : str
-#     'maintypes'       : list of str (possibly empty)
+#     'main_text'       : str or None
+#     'type'            : str
 #     'name'            : str
-#     'num_sides'       : int (1-5), optional, present only on a-side (top-level) cards
 #     'power_toughness' : 2-list of str or None
 #     'rarity'          : str
-#     'subtypes'        : list of str (possibly empty)
-#     'supertypes'      : list of str (possibly empty)
 # }
 
 
@@ -88,13 +88,13 @@ MTG_ABILITY_WORDS = extend_all_cases(MTG_ABILITY_WORDS)
 #           half 'H' symbol goes to the right of the base symbol, to be consistent with all other modfifiers
 #           2 also goes to the right of the color (treating the color as the base symbol for an improved sampling distribution from the AI)
 # this is not entirely snytax free like I wanted, but we're trading some syntax for extensibility which is a win
-#   this is only slightly lower syntax than the original mtgencode library used, and more capable
+#   this is only slightly lower syntax than the original mtgencode library used, but more capable
 #   We can't quite eliminate the syntax
 #       leading or trailing mana separator is necessary so that encoded 'WU' -> ('{W/U}' or '{W}{U}') is not confusing
 #       a consistent leading character is probably simpler for the AI to understand than extra spaces
 #           and X, Y, Z, ½, ∞ already rerquire an additional character to distinguish usage as symbols vs text
 #           or they could use unique characters instead, but then the AI has less relatedness information
-MTG_SYMBOL_ENCODING = {
+MTG_SYMBOL_JSON_TO_AI_FORMAT = {
     '{1000000}' : 'ML',    # special case, because we're not encoding that number in unary...
     '{100}'     : 'MN',    # special case, because we're not encoding that number in unary...
     '{2/B}'     : 'MB2',   # Monocolored hybrid mana
@@ -153,10 +153,17 @@ MTG_SYMBOL_ENCODING = {
     '{½}'       : 'M½',    # Half colorless mana
     '{∞}'       : 'M∞',    # infinity mana
 }
-MTG_SYMBOL_DECODING = {v:k for k,v in MTG_MANA_ENCODING.items()}
+MTG_SYMBOL_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_SYMBOL_JSON_TO_AI_FORMAT.items()}
 
 
-def deduplicate_cards_simple(cards):
+def XYZ_variable_capitalize(s):
+    # Capitalize all X's, Y's, and Z's, when acting as variables
+    variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyYzZ])(?=$|[\s:,\.\/\}])'
+    capitalize = lambda x: x.group(2).upper()
+    return re.sub(variable_x_regex, capitalize, s)
+
+
+def deduplicate_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops identical copies of cards
 
@@ -291,9 +298,7 @@ def json_to_internal_format(json_path):
             card['rarity'] = j_card['rarity']
 
             # types
-            card['maintypes'] = j_card['types']
-            card['subtypes'] = j_card['subtypes']
-            card['supertypes'] = j_card['supertypes']
+            card['type'] = j_card['type']
 
             # assign as primary or non-primary card sides. Non-primary card sides will be sorted into their primaries later
             if 'side' in j_card and j_card['side'] in ['b', 'c', 'd', 'e']:
@@ -311,14 +316,11 @@ def json_to_internal_format(json_path):
             else:
                 raise ValueError(f"Primary card not found for \"{np_card['name']}\" {np_card['json_fields']['uuid']}")
 
-        # populate num_sides field
+        # verify b-e sides don't skip letters (always in order)
         for card in primary_sides:
-            num_sides = 1
-            if 'b_side' in card: num_sides += 1
-            if 'c_side' in card: num_sides += 1
-            if 'd_side' in card: num_sides += 1
-            if 'e_side' in card: num_sides += 1
-            card['num_sides'] = num_sides
+            if 'c_side' in card: assert 'b_side' in card 
+            if 'd_side' in card: assert 'c_side' in card 
+            if 'e_side' in card: assert 'd_side' in card 
 
         # finally, remove the json_fields temporary key
         for card in primary_sides:
@@ -333,18 +335,16 @@ def json_to_internal_format(json_path):
     return cards
 
 
-def AI_to_internal_format(AI_string):
-    # consumes a single AI formatted string, produces a single internally formatted card
-    # runs error correction, parsing, and validation before returning the card
-    # may raise errors during validation
+def pairs(x):
+    # returns list of pairs of elements of x with no repeats
+    #   eg [(x[0], x[1]), (x[2], x[3]), ...]
 
-    AI_string = error_correct_AI(AI_string)
-    
-    # TODO
-    pass
+    for i, y in enumerate(itertools.pairwise(x)):
+        # drop the odd yields from itertools.pairwise
+        if i%2:
+            continue
 
-    validate(card)
-    return card
+        yield y
 
 
 def internal_format_to_AI_format(card):
@@ -352,32 +352,38 @@ def internal_format_to_AI_format(card):
     # consumes a single internal format, produces a single AI formatted string
     # TODO
 
-    # TODO
-    # convert all fields to lowercase
+    # convert fields to local variables, specifically do not edit input dict
+    # add default values for AI fields when card fields are None
+    cost            = card['cost'] or ''
+    loyalty         = card['loyalty'] or ''
+    main_text       = card['main_text'] or ''
+    type_string     = card['type']
+    name            = card['name']
+    power_toughness = card['power_toughness'] or []
+    rarity          = card['rarity']
+
+    # str encode the power and toughness
+    power_toughness = '/'.join(power_toughness)
+
+    # TODO substitute name for unique character in main text so that there's only one copy of the full name
+
+    # TODO substitute dashes for a unique character $ to avoid overloading the symbol's meaning (dash vs negative)
+    #   name
+    #   main text
+    #   type
+
+    # TODO convert all fields to lowercase
     #   except mana costs
-    #   and except variable usage of X
-    #     'cost'            : str or None
-    #     'flavor'          : str or None
-    #     'loyalty'         : str or None
-    #     'main_text'       : str
-    #     'maintypes'       : list of str (possibly empty)
-    #     'name'            : str
-    #     'num_sides'       : int (1-5), optional, present only on a-side (top-level) cards
-    #     'power_toughness' : 2-list of str or None
-    #     'rarity'          : str
-    #     'subtypes'        : list of str (possibly empty)
-    #     'supertypes'      : list of str (possibly empty)
+    #   and except variable usage of X, Y, and Z
+
+    # TODO encode symbols (including mana) in AI format
 
     # standardize verbiage for countering spells to "uncast"
     #   this reduces overloading of the word "counter" for the AI
     # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
-    main_text = card['main_text']
-    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
-    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
+    # TODO uncoment
+    # main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
 
-    # name_val = name_val.lower()
-
-    # text_val = src_json['text'].lower()
     # text_val = transforms.text_pass_2_cardname(text_val, name_orig)
     # text_val = transforms.text_pass_3_unary(text_val)
     # text_val = transforms.text_pass_4a_dashes(text_val)
@@ -386,9 +392,63 @@ def internal_format_to_AI_format(card):
     # text_val = transforms.text_pass_9_newlines(text_val)
     # text_val = transforms.text_pass_10_symbols(text_val)
 
-    # TODO recurse on b-e sides
+    # label fields for the AI
+    #   this increases syntax, but regularizes AI output, so is a net win
+    AI_string = f'{name}|1{cost}|2{type_string}|3{loyalty}|4{power_toughness}|5{rarity}|6{main_text}'
 
-    pass
+    # recurse on b-e sides
+    if 'b_side' in card:
+        AI_string += '\r' + internal_format_to_AI_format(card['b_side'])
+    if 'c_side' in card:
+        AI_string += '\r' + internal_format_to_AI_format(card['c_side'])
+    if 'd_side' in card:
+        AI_string += '\r' + internal_format_to_AI_format(card['d_side'])
+    if 'e_side' in card:
+        AI_string += '\r' + internal_format_to_AI_format(card['e_side'])
+
+    return AI_string
+
+
+def AI_to_internal_format(AI_string):
+    # consumes a single AI formatted string, produces a single internally formatted card
+    # runs error correction, parsing, and validation before returning the card
+    # may raise errors during validation
+    # TODO
+
+    AI_string = error_correct_AI(AI_string)
+
+    sides = AI_string.split('\r')
+    assert sides
+
+    card = {}
+    fields = re.split(r'(\|\d)', sides[0])
+    card['name'] = fields[0]
+
+    for field_id, field in pairs(fields[1:]):
+        field_name = {'|1': 'cost', '|2': 'type', '|3': 'loyalty', '|4': 'power_toughness', '|5': 'rarity', '|6': 'main_text'}[field_id]
+        card[field_name] = field
+
+
+    # insert None values instead of empty strings
+    card['cost'] = card['cost'] or None
+    card['loyalty'] = card['loyalty'] or None
+    card['power_toughness'] = card['power_toughness'] or None
+    card['main_text'] = card['main_text'] or None
+
+    # decode power toughness
+    if card['power_toughness'] is not None:
+        card['power_toughness'] = card['power_toughness'].split('/')
+
+    # recurse on b-e sides
+    if len(sides) >= 2: card['b_side'] = AI_to_internal_format(sides[1])
+    if len(sides) >= 3: card['c_side'] = AI_to_internal_format(sides[2])
+    if len(sides) >= 4: card['d_side'] = AI_to_internal_format(sides[3])
+    if len(sides) >= 5: card['e_side'] = AI_to_internal_format(sides[4])
+    if len(sides) > 5:
+        raise NotImplementedError('Too many sides, only implemented a-e sides')
+    
+    validate(card)
+    return card
 
 
 def validate(card):
@@ -406,7 +466,11 @@ def validate(card):
 def error_correct_AI(AI_string):
     # consumes AI format, returns AI format with error corrections applied
     # OR maybe consumes internal format, returns internal format with error corrections applied
-    pass  # TODO
+    # TODO
+
+    # TODO strip string
+
+    return AI_string
 
 
 def unreversable_modifications(card):
@@ -480,17 +544,16 @@ def unreversable_modifications(card):
 
     if card['main_text'] is not None:
         # remove rules (keyword explanation) text
-        card['main_text'] = re.sub(r'\(.*\)', '', card['main_text'])  # this makes a pretty big assumption, which is hard to verify...
+        # TODO this makes a pretty big assumption that that all parentheses are useless, which is hard to verify...
+        # TODO this deletes all text from the card named "Plains"
+        card['main_text'] = re.sub(r'(?<!^)\(.*\)', '', card['main_text'])
 
         # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
         card['main_text'] = re.sub(rf'({"|".join(MTG_ABILITY_WORDS)})\s*-?\s*', '', card['main_text'])
 
-        # Capitalize all X's, Y's, and Z's, when acting as variables
-        variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyYzZ])(?=$|[\s:,\.\/\}])'
-        capitalize = lambda x: x.group(2).upper()
-        card['main_text'] = re.sub(variable_x_regex, capitalize, card['main_text'])
+        card['main_text'] = XYZ_variable_capitalize(card['main_text'])
 
-        # TODO maybe?
+        # TODO maybe? Improves regularization
         # text_val = transforms.text_pass_8_equip(text_val)
         #   careful about things like this "Equip Shaman, Warlock, or Wizard {1}"
         # text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
@@ -498,6 +561,9 @@ def unreversable_modifications(card):
         # remove trailing whitespace on a line, and remove blank lines, which might for instance by introduced by the above
         # don't remove leading whitespace, which might be intentional formatting
         card['main_text'] = re.sub(r'\s+(?=\n|$)', '', card['main_text'])
+
+        # make field None if it is now empty
+        card['main_text'] = card['main_text'] or None
 
     # apply strict titlecasing to the card name
     # this gives us a robust target for the AI to internal decoder, since the AI text is all lowercase
@@ -526,17 +592,31 @@ def unreversable_modifications(card):
     return card
 
 
-def verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed):
+def verify_decoder_reverses_encoder(cards, cards_dual_processed):
     # this helps validate that both the encoder and decorder are working properly, or at least have symmetric bugs
     # consumes two lists of internally formatted cards, and compares them
     # if the two are not equal, raises error
     # this is only executed during encode_json_to_AI
     #   and is a test of the program design over the space of the cards from AllPrintings.json
     #   this does not process any AI generated data
-    pass  # TODO
+
+    if cards == cards_dual_processed:
+        print('Encoder -> Decoder loop passed verification!')
+    else:
+        for i_card, card in enumerate(cards):
+            card_dp = cards_dual_processed[i_card]
+            if card != card_dp:
+                print('Encoder -> Decoder loop Failed, printing one card diff for context.')
+                print(card['name'])
+                card_lines    = pprint.pformat(card).split('\n')
+                card_dp_lines = pprint.pformat(card_dp).split('\n')
+                diff = difflib.unified_diff(card_lines, card_dp_lines)
+                diff = list(diff)
+                pprint.pprint(diff)
+                sys.exit(1)
 
 
-def encode_json_to_AI(json_path, out_path):
+def encode_json_to_AI_main(json_path, out_path):
     # consumes AllPrintings.json
     # runs through encoding and decoding steps
     #   comapares encoded+decoded dataset to original dataset for end-to-end validity checking
@@ -552,10 +632,19 @@ def encode_json_to_AI(json_path, out_path):
 
     # deduplicate the cards
     # We do this after standardization due to some unfortunate artifacts in the json fields, which are addressed in that step
-    cards = deduplicate_cards_simple(cards)
+    cards = deduplicate_cards(cards)
 
     # limit dataset to those cards upon which the AI should train
     cards = limit_to_AI_training_cards(cards)
+
+    # drop the flavor text, we don't encode it in this function
+    #   and we need the field omitted for the encoder -> decoder loop verification
+    for card in cards:
+        del card['flavor']
+        if 'b_side' in card: del card['b_side']['flavor']
+        if 'c_side' in card: del card['c_side']['flavor']
+        if 'd_side' in card: del card['d_side']['flavor']
+        if 'e_side' in card: del card['e_side']['flavor']
 
     # transcribe to AI format, and save in designated location
     cards_AI = [internal_format_to_AI_format(card) for card in cards]
@@ -565,7 +654,15 @@ def encode_json_to_AI(json_path, out_path):
 
     # decode AI format back to internal format, and then compare to the limited dataset from above
     cards_dual_processed = [AI_to_internal_format(card) for card in cards_AI]
-    verify_decoder_reverses_encoder(cards_limited_standard, cards_dual_processed)
+    verify_decoder_reverses_encoder(cards, cards_dual_processed)
+
+
+def encode_json_to_AI_flavor(json_path, out_path):
+    pass  # TODO
+
+
+def encode_json_to_AI_names(json_path, out_path):
+    pass  # TODO
 
 
 if __name__ == '__main__':
@@ -574,5 +671,5 @@ if __name__ == '__main__':
     parser.add_argument("--out_path", type=str, help="path to output file")
     args = parser.parse_args()
 
-    encode_json_to_AI(args.json_path, args.out_path)
+    encode_json_to_AI_main(args.json_path, args.out_path)
 
