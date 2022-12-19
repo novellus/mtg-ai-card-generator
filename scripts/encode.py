@@ -772,6 +772,11 @@ def internal_format_to_AI_format(card):
     # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
     # TODO uncoment
     # main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
+    # main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
+
+    # convert newlines to a unique character
+    # we're going to reserve actual newlines for making the output file a bit more human readable
+    main_text = main_text.replace('\n', '\\')
 
     # text_val = transforms.text_pass_2_cardname(text_val, name_orig)
     # text_val = transforms.text_pass_3_unary(text_val)
@@ -787,13 +792,13 @@ def internal_format_to_AI_format(card):
 
     # recurse on b-e sides
     if 'b_side' in card:
-        AI_string += '\r' + internal_format_to_AI_format(card['b_side'])
+        AI_string += '␥' + internal_format_to_AI_format(card['b_side'])
     if 'c_side' in card:
-        AI_string += '\r' + internal_format_to_AI_format(card['c_side'])
+        AI_string += '␥' + internal_format_to_AI_format(card['c_side'])
     if 'd_side' in card:
-        AI_string += '\r' + internal_format_to_AI_format(card['d_side'])
+        AI_string += '␥' + internal_format_to_AI_format(card['d_side'])
     if 'e_side' in card:
-        AI_string += '\r' + internal_format_to_AI_format(card['e_side'])
+        AI_string += '␥' + internal_format_to_AI_format(card['e_side'])
 
     return AI_string
 
@@ -806,7 +811,7 @@ def AI_to_internal_format(AI_string):
 
     AI_string = error_correct_AI(AI_string)
 
-    sides = AI_string.split('\r')
+    sides = AI_string.split('␥')
     assert sides
 
     # breakup fields
@@ -821,6 +826,9 @@ def AI_to_internal_format(AI_string):
 
     for k, v in field_names.items():
         assert v in card, f'Failed to find field "{v}" in "{AI_string}" -> {fields}'
+
+    # decode newlines
+    card['main_text'] = card['main_text'].replace('\\', '\n')
 
     # decode symbols (including mana, excepting numerical)
     for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
@@ -1110,7 +1118,7 @@ def encode_json_to_AI_main(json_path, out_path):
 
     # transcribe to AI format, and save in designated location
     cards_AI = [internal_format_to_AI_format(card) for card in cards]
-    f = open(out_path, 'w')  # TODO use byte encoding to prevent unintended OS transcriptions?
+    f = open(out_path, 'w')
     f.write('\n'.join(cards_AI))
     f.close()
 
