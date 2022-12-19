@@ -709,6 +709,10 @@ def decimal_to_unary(s, mana=False):
     else:
         prefix = '⓪'
 
+    # handle leading zeros
+    if s[0] == '0' and len(s) > 1:
+        return prefix + decimal_to_unary(s[1:], mana=mana)
+
     return prefix + '^' * int(s)
 
 
@@ -867,6 +871,7 @@ def internal_format_to_AI_format(card):
     cost = re.sub(r'\{(\d+)\}', lambda x: decimal_to_unary(x.group(1), mana=True), cost)
     main_text = re.sub(r'\{(\d+)\}', lambda x: decimal_to_unary(x.group(1), mana=True), main_text)
     # all remaining numbers
+    name = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), name)
     loyalty = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), loyalty)
     main_text = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), main_text)
     power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), power_toughness)
@@ -970,6 +975,7 @@ def AI_to_internal_format(AI_string):
     card['cost'] = re.sub(r'⓿(\^*)', lambda x: '{' + unary_to_decimal(x.group(1)) + '}', card['cost'])
     card['main_text'] = re.sub(r'⓿(\^*)', lambda x: '{' + unary_to_decimal(x.group(1)) + '}', card['main_text'])
     # all remaining numbers
+    card['name'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['name'])
     card['loyalty'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['loyalty'])
     card['main_text'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['main_text'])
     card['power_toughness'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['power_toughness'])
@@ -1128,8 +1134,6 @@ def unreversable_modifications(card):
         #   The other card uses the 'CLANK!' counter
         card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
-        # TODO, actually, please do modify the card name so we don't overload the use of decimal numbers (also field IDs) for the AI
-        #   there is a card named '+2 Mace'
         # transform small (<= 20) text encoded numbers into decimal
         #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
         #   doing the decimal conversion step here instead of in that function provides a consistent encoder -> decoder loop target
