@@ -841,8 +841,8 @@ def AI_to_internal_format(AI_string):
     card['main_text'] = card['main_text'].replace('\\', '\n')
 
     # revert uncast to counter
-    card['main_text'] = card['main_text'].sub('uncast', 'counter')
-    card['main_text'] = card['main_text'].sub('Uncast', 'Counter')
+    card['main_text'] = card['main_text'].replace('uncast', 'counter')
+    card['main_text'] = card['main_text'].replace('Uncast', 'Counter')
 
     # decode symbols (including mana, excepting numerical)
     for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
@@ -1002,8 +1002,7 @@ def unreversable_modifications(card):
         # there are only two cards in the verse (at time of writing) which have capitalized counter names
         #   One card uses 'Shield counter' at the beginning of a sentence
         #   The other card uses the 'CLANK!' counter
-        # fuck em both
-        card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
+        # card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
         # TODO maybe? Improves regularization
         # text_val = transforms.text_pass_8_equip(text_val)
