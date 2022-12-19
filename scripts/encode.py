@@ -811,6 +811,8 @@ def internal_format_to_AI_format(card):
     power_toughness = card['power_toughness'] or []
     rarity          = card['rarity']
 
+    # TODO encode rarity as unique symbols
+
     # str encode the power and toughness
     power_toughness = '/'.join(power_toughness)
 
@@ -1086,15 +1088,20 @@ def unreversable_modifications(card):
         card['flavor'] = sub_unicode(card['flavor'])
 
     if card['main_text'] is not None:
-        # remove rules (keyword explanation) text
+        # remove reminder text (eg keyword explanations)
         # TODO this makes a pretty big assumption that that all parentheses are useless, which is hard to verify...
-        # TODO this deletes all text from the card named "Plains"
+        # TODO this removes some real rules text (not reminder), and all text from some cards (Plains)
         card['main_text'] = re.sub(r'(?<!^)\([^\)]*\)', '', card['main_text'])
 
         # remove ability words, which thematically groups cards with a common functionality, but have no actual rules meaning
         card['main_text'] = re.sub(rf'((?<=\s)|(?<=^))({"|".join(MTG_ABILITY_WORDS)})(\s*\-\s*|\s+)', '', card['main_text'])
 
         card['main_text'] = XYZ_variable_capitalize(card['main_text'])
+
+        # coerce pipes used in card descriptions to colons
+        # pipes were only used for one set, and they were used as colons would be. No other cards have pipes in their text.
+        # this reduces vocab and improves consistency for the AI
+        card['main_text'] = re.sub(r' *\|', ':', card['main_text'])
 
         # coerce counters to all lower case, to decrease recognition complexity for the AI
         # there are only two cards in the verse (at time of writing) which have capitalized counter names
