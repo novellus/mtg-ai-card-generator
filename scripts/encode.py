@@ -800,7 +800,6 @@ nwc = Number_Word_Converter()
 def internal_format_to_AI_format(card):
     # consumes list of internal formats, returns list of internal formats
     # consumes a single internal format, produces a single AI formatted string
-    # TODO
 
     # convert fields to local variables, specifically do not edit input dict
     # add default values for AI fields when card fields are None
@@ -883,11 +882,9 @@ def internal_format_to_AI_format(card):
     # we're going to reserve actual newlines for making the output file a bit more human readable
     main_text = main_text.replace('\n', '\\')
 
-    # text_val = transforms.text_pass_7_choice(text_val)
-
     # label fields for the AI
     #   this increases syntax, but regularizes AI output, so is a net win
-    AI_string = f'{name}|1{cost}|2{type_string}|3{loyalty}|4{power_toughness}|5{rarity}|6{main_text}'
+    AI_string = f'{name}∥1{cost}∥2{type_string}∥3{loyalty}∥4{power_toughness}∥5{rarity}∥6{main_text}'
 
     # recurse on b-e sides
     if 'b_side' in card:
@@ -906,7 +903,6 @@ def AI_to_internal_format(AI_string):
     # consumes a single AI formatted string, produces a single internally formatted card
     # runs error correction, parsing, and validation before returning the card
     # may raise errors during validation
-    # TODO
 
     AI_string = error_correct_AI(AI_string)
 
@@ -915,10 +911,10 @@ def AI_to_internal_format(AI_string):
 
     # breakup fields
     card = {}
-    fields = re.split(r'(\|\d)', sides[0])
+    fields = re.split(r'(∥\d)', sides[0])
     card['name'] = fields[0]
 
-    field_names = {'|1': 'cost', '|2': 'type', '|3': 'loyalty', '|4': 'power_toughness', '|5': 'rarity', '|6': 'main_text'}
+    field_names = {'∥1': 'cost', '∥2': 'type', '∥3': 'loyalty', '∥4': 'power_toughness', '∥5': 'rarity', '∥6': 'main_text'}
     for field_id, field in pairs(fields[1:]):
         field_name = field_names[field_id]
         card[field_name] = field
@@ -968,7 +964,7 @@ def AI_to_internal_format(AI_string):
     if card['power_toughness'] != '':
         card['power_toughness'] = card['power_toughness'].split('/')
 
-    # TODO replace backreferences to name
+    # replace backreferences to name
     card['main_text'] = card['main_text'].replace('@', card['name'])
 
     # insert None values instead of empty strings
@@ -1020,7 +1016,9 @@ def unreversable_modifications(card):
     
     # TODO substitute dashes used to indicate a range
     #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
-    # TODO also substitute pipes used as colons...
+    
+    # TODO standardize pipes used as colons
+    #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
 
     # strip text fields
     card['name'] = card['name'].strip()
