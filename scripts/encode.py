@@ -293,6 +293,7 @@ def XYZ_variable_capitalize(s):
 def deduplicate_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops identical copies of cards
+    # TODO if the only difference between cards is rarity, chooses only one of those copies
 
     # for performance reasons, group cards by name, and down-select within each name group
     #   this produces identical results since the name field is compared anyway
@@ -772,16 +773,20 @@ def internal_format_to_AI_format(card):
     power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), power_toughness)
 
     # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
-    # for each new counter type, encode it as '%type'
+    # for each new counter type, encode it as 'type%'
     # repeated counters of the same type will be encoded simply as '%'
-    # reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
-    # regex = fr'({"|".join(MTG_COUNTERS)}) counter(s?)'
-    # subs = re.findall(regex, main_text)
-    # main_text = re.sub(regex, reserved_char, main_text)
-    # for counter_type, plural in subs:
-    #     if counter_type
-    #     new = f'{t.lower()}'
-    #     main_text = main_text.replace(reserved_char, sub, 1)
+    reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
+    regex = fr'(?:(?<=^)|(?<=\W))({"|".join(MTG_COUNTERS)}) counter(?=$|\W)'
+    subs = re.findall(regex, main_text)
+    main_text = re.sub(regex, reserved_char, main_text)
+    previous_counter = None
+    for counter_type in subs:
+        if counter_type == previous_counter:
+            enc = '%'
+        else:
+            enc = f'{counter_type}%'
+        main_text = main_text.replace(reserved_char, enc, 1)
+        previous_counter = counter_type
 
     # standardize verbiage for countering spells to "uncast"
     #   this reduces overloading of the word "counter" for the AI
@@ -843,6 +848,17 @@ def AI_to_internal_format(AI_string):
     # revert uncast to counter
     card['main_text'] = card['main_text'].replace('uncast', 'counter')
     card['main_text'] = card['main_text'].replace('Uncast', 'Counter')
+
+    # decode counter syntax to human readable format
+    reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
+    regex = r'(\S*)%'
+    subs = re.findall(regex, card['main_text'])
+    card['main_text'] = re.sub(regex, reserved_char, card['main_text'])
+    counter_type = None
+    for new_type in subs:
+        counter_type = new_type or counter_type
+        assert counter_type is not None, card['main_text']  # don't let the AI not label the first counter
+        card['main_text'] = card['main_text'].replace(reserved_char, f'{counter_type} counter', 1)
 
     # decode symbols (including mana, excepting numerical)
     for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
@@ -1002,9 +1018,9 @@ def unreversable_modifications(card):
         # there are only two cards in the verse (at time of writing) which have capitalized counter names
         #   One card uses 'Shield counter' at the beginning of a sentence
         #   The other card uses the 'CLANK!' counter
-        # card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
+        card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
-        # TODO maybe? Improves regularization
+        # TODO maybe? Might improve regularization
         # text_val = transforms.text_pass_8_equip(text_val)
         #   careful about things like this "Equip Shaman, Warlock, or Wizard {1}"
         # text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
@@ -1039,7 +1055,7 @@ def unreversable_modifications(card):
     #   eg the card 'Icingdeath, Frost Tyrant' references tokens named 'Icingdeath, Frost Tounge'
     # subs = None
     # for i_substring, substring in enumerate(non_trivial_substrings(name)):
-    #     if i_substring == 0:  # TODO remove, substitute only the full name, and print all other matches for human review
+    #     if i_substring == 0:
     #         main_text = main_text.replace(substring, '@')
     #         main_text, subs = temporarily_remove_reserved_words(main_text)
     #     if i_substring > 0:
