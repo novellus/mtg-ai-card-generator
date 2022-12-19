@@ -293,7 +293,8 @@ def XYZ_variable_capitalize(s):
 def deduplicate_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops identical copies of cards
-    # TODO if the only difference between cards is rarity, chooses only one of those copies
+    # omits rarity in compared fields
+    #   In the case that rarity is the only distinction between two cards, arbitrarily picks the first one in the input list
 
     # for performance reasons, group cards by name, and down-select within each name group
     #   this produces identical results since the name field is compared anyway
@@ -309,9 +310,10 @@ def deduplicate_cards(cards):
     for name, group in groups.items():
         unique_group = []
         for card in group:
-            if card not in unique_group:
-                unique_group.append(card)
-        unique_cards.extend(unique_group)
+            card_restricted = {k:v for k,v in card.items() if k not in ['rarity']}
+            if card_restricted not in unique_group:
+                unique_group.append(card_restricted)
+                unique_cards.append(card)
 
     return unique_cards
 
@@ -1109,12 +1111,13 @@ def unreversable_modifications(card):
         #   The other card uses the 'CLANK!' counter
         card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
-        # TODO
-        # transform text smaller encoded numbers into decimal
+        # TODO, actually, please do modify the card name so we don't overload the use of decimal numbers (also field IDs) for the AI
+        #   there is a card named '+2 Mace'
+        # transform small (<= 20) text encoded numbers into decimal
         #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
         #   doing the decimal conversion step here instead of in that function provides a consistent encoder -> decoder loop target
         # eg "choose one " -> "choose 1 "
-        # first, remove the card name temporarily, as a precaution against modifying that
+        # remove the card name temporarily, as a precaution against modifying that
         #   Don't need to worry about modifying any reserved words, since none contain delimited number words
         card['main_text'] = card['main_text'].replace(card['name'], '@')
         num_regex = "|".join(nwc.NUMBER_WORDS)
