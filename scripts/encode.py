@@ -741,7 +741,7 @@ class Number_Word_Converter():
 
         total = 0
         intermediate = 0
-        for word in s.split():
+        for word in re.split(r'[ \-]', s.strip()):
             assert word in self.NUMBER_WORDS or word == 'and', 'Not a supported number word: ' + word
 
             multiply = self._multiply.get(word, 1)
@@ -1111,18 +1111,18 @@ def unreversable_modifications(card):
         # eg "choose one " -> "choose 1 "
         # first, remove the card name temporarily, as a precaution against modifying that
         #   Don't need to worry about modifying any reserved words, since none contain delimited number words
-        # card['main_text'] = card['main_text'].replace(card['name'], '@')
-        # num_regex = "|".join(nwc.NUMBER_WORDS)
-        # regex = fr'(?:(?<=^)|(?<=\W))((?:{num_regex})(?: (?:{num_regex}|and))*(?: (?:{num_regex}))?)(?=$|\W)'
-        # def convert(s):
-        #     s = s.group(1)
-        #     ns = nwc.str_to_int(s)
-        #     if int(ns) <= 20:
-        #         return ns
-        #     else:
-        #         return s  # don't convert large nubmers back to decimal (See above step which converts them to words)
-        # card['main_text'] = re.sub(regex, convert, card['main_text'])
-        # card['main_text'] = card['main_text'].replace('@', card['name'])  # replace card name
+        card['main_text'] = card['main_text'].replace(card['name'], '@')
+        num_regex = "|".join(nwc.NUMBER_WORDS)
+        regex = fr'(?:(?<=^)|(?<=\W))((?:{num_regex})(?:[ \-](?:{num_regex}|and))*(?:[ \-](?:{num_regex}))?)(?=$|\W)'
+        def convert(s):
+            s = s.group(1)
+            ns = nwc.str_to_int(s)
+            if int(ns) <= 20:
+                return ns
+            else:
+                return s  # don't convert large nubmers back to decimal (See above step which converts them to words)
+        card['main_text'] = re.sub(regex, convert, card['main_text'])
+        card['main_text'] = card['main_text'].replace('@', card['name'])  # replace card name
 
         # TODO maybe? Might improve regularization
         # text_val = transforms.text_pass_8_equip(text_val)
