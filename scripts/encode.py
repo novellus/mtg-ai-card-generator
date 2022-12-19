@@ -753,6 +753,10 @@ def internal_format_to_AI_format(card):
     # name = name.lower()
     # power_toughness = power_toughness.lower()
 
+    # reduce character overloading for dashes
+    # convert numerical minus signs to a unique character
+    main_text = re.sub(r'(?<!\w)-(?=\d)', '∓', main_text)
+
     # encode symbols (including mana, excepting numerical) in AI format
     for a, b in MTG_SYMBOL_JSON_TO_AI_FORMAT.items():
         main_text = main_text.replace(a, b)
@@ -767,24 +771,30 @@ def internal_format_to_AI_format(card):
     main_text = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), main_text)
     power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), power_toughness)
 
+    # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
+    # for each new counter type, encode it as '%type'
+    # repeated counters of the same type will be encoded simply as '%'
+    # reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
+    # regex = fr'({"|".join(MTG_COUNTERS)}) counter(s?)'
+    # subs = re.findall(regex, main_text)
+    # main_text = re.sub(regex, reserved_char, main_text)
+    # for counter_type, plural in subs:
+    #     if counter_type
+    #     new = f'{t.lower()}'
+    #     main_text = main_text.replace(reserved_char, sub, 1)
+
     # standardize verbiage for countering spells to "uncast"
     #   this reduces overloading of the word "counter" for the AI
     # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
-    # TODO uncoment
-    # main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
-    # main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
+    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
+    main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
 
     # convert newlines to a unique character
     # we're going to reserve actual newlines for making the output file a bit more human readable
     main_text = main_text.replace('\n', '\\')
 
-    # text_val = transforms.text_pass_2_cardname(text_val, name_orig)
-    # text_val = transforms.text_pass_3_unary(text_val)
-    # text_val = transforms.text_pass_4a_dashes(text_val)
     # text_val = transforms.text_pass_5_counters(text_val)
     # text_val = transforms.text_pass_7_choice(text_val)
-    # text_val = transforms.text_pass_9_newlines(text_val)
-    # text_val = transforms.text_pass_10_symbols(text_val)
 
     # label fields for the AI
     #   this increases syntax, but regularizes AI output, so is a net win
@@ -830,6 +840,10 @@ def AI_to_internal_format(AI_string):
     # decode newlines
     card['main_text'] = card['main_text'].replace('\\', '\n')
 
+    # revert uncast to counter
+    card['main_text'] = card['main_text'].sub('uncast', 'counter')
+    card['main_text'] = card['main_text'].sub('Uncast', 'Counter')
+
     # decode symbols (including mana, excepting numerical)
     for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
         card['main_text'] = card['main_text'].replace(a, b)
@@ -845,6 +859,10 @@ def AI_to_internal_format(AI_string):
     card['loyalty'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['loyalty'])
     card['main_text'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['main_text'])
     card['power_toughness'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['power_toughness'])
+
+    # reduce character overloading for dashes
+    # convert numerical minus signs to a unique character
+    card['main_text'] = re.sub(r'∓', '-', card['main_text'])
 
     # decode power toughness
     if card['power_toughness'] != '':
@@ -963,6 +981,7 @@ def unreversable_modifications(card):
         return s
 
     card['name'] = sub_unicode(card['name'])
+    card['type'] = sub_unicode(card['type'])
     if card['main_text'] is not None:
         card['main_text'] = sub_unicode(card['main_text'])
     if card['flavor'] is not None:
@@ -978,6 +997,13 @@ def unreversable_modifications(card):
         card['main_text'] = re.sub(rf'((?<=\s)|(?<=^))({"|".join(MTG_ABILITY_WORDS)})(\s*\-\s*|\s+)', '', card['main_text'])
 
         card['main_text'] = XYZ_variable_capitalize(card['main_text'])
+
+        # coerce counters to all lower case, to decrease recognition complexity for the AI
+        # there are only two cards in the verse (at time of writing) which have capitalized counter names
+        #   One card uses 'Shield counter' at the beginning of a sentence
+        #   The other card uses the 'CLANK!' counter
+        # fuck em both
+        card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
         # TODO maybe? Improves regularization
         # text_val = transforms.text_pass_8_equip(text_val)
