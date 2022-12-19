@@ -282,6 +282,16 @@ MTG_SYMBOL_JSON_TO_AI_FORMAT = {
 }
 MTG_SYMBOL_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_SYMBOL_JSON_TO_AI_FORMAT.items()}
 
+MTG_RARITY_JSON_TO_AI_FORMAT = {
+    'Common'     : '∫',
+    'Uncommon'   : '∬',
+    'Rare'       : '∭',
+    'Mythic'     : '∮',
+    'Special'    : '∯',
+    'Basic Land' : '∰',
+}
+MTG_RARITY_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_RARITY_JSON_TO_AI_FORMAT.items()}
+
 
 def XYZ_variable_capitalize(s):
     # Capitalize all X's, Y's, and Z's, when acting as variables
@@ -813,7 +823,8 @@ def internal_format_to_AI_format(card):
     power_toughness = card['power_toughness'] or []
     rarity          = card['rarity']
 
-    # TODO encode rarity as unique symbols
+    # encode rarity as unique symbols
+    rarity = MTG_RARITY_JSON_TO_AI_FORMAT[rarity]
 
     # str encode the power and toughness
     power_toughness = '/'.join(power_toughness)
@@ -929,6 +940,9 @@ def AI_to_internal_format(AI_string):
     # decode newlines
     card['main_text'] = card['main_text'].replace('\\', '\n')
 
+    # decode rarity
+    card['rarity'] = MTG_RARITY_AI_TO_JSON_FORMAT[card['rarity']]
+
     # revert uncast to counter
     card['main_text'] = card['main_text'].replace('uncast', 'counter')
     card['main_text'] = card['main_text'].replace('Uncast', 'Counter')
@@ -1021,15 +1035,18 @@ def unreversable_modifications(card):
     # TODO substitute dashes used to indicate a range
     #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
     
-    # TODO standardize pipes used as colons
-    #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
-
     # strip text fields
     card['name'] = card['name'].strip()
     if card['main_text'] is not None:
         card['main_text'] = card['main_text'].strip()
     if card['flavor'] is not None:
         card['flavor'] = card['flavor'].strip()
+
+    # coerce rarity to specific formatting
+    # this creates a robust encoder -> decoder loop target
+    card['rarity'] = card['rarity'].capitalize()
+    if card['rarity'] == 'Mythic Rare':
+        card['rarity'] = 'Mythic'
 
     # fix alchemy symbol prepended to card names
     card['name'] = re.sub(r'^A-', '', card['name'])
