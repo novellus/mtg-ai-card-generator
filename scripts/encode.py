@@ -707,6 +707,96 @@ def unary_to_decimal(s):
     return str(len(s))
 
 
+class Number_Word_Converter():
+    # converts number words to / from integers
+    # eg '37' <-> 'thirty seven'
+
+    def __init__(self):
+        self._units = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
+                  'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
+                  'sixteen', 'seventeen', 'eighteen', 'nineteen',
+        ]
+        self._tens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+        self._scales = ['hundred', 'thousand', 'million', 'billion', 'trillion']
+
+        self.NUMBER_WORDS = self._units + self._tens + self._scales
+
+        self._multiply = {}
+        self._increment = {}
+
+        for i_word, word in enumerate(self._units):
+            self._increment[word] = i_word
+
+        for i_word, word in enumerate(self._tens):
+            self._increment[word] = (i_word + 2) * 10
+
+        for i_word, word in enumerate(self._scales):
+            if i_word == 0:
+                self._multiply[word] = 10 ** 2
+            else:
+                self._multiply[word] = 10 ** (i_word * 3)
+
+    def str_to_int(self, s):
+        # eg 'thirty seven' -> '37'
+
+        total = 0
+        intermediate = 0
+        for word in s.split():
+            assert word in self.NUMBER_WORDS or word == 'and', 'Not a supported number word: ' + word
+
+            multiply = self._multiply.get(word, 1)
+            increment = self._increment.get(word, 0)
+            intermediate = intermediate * multiply + increment
+
+            if multiply > 100:
+                total += intermediate
+                intermediate = 0
+
+        return str(total + intermediate)
+
+    def int_to_str(s):
+        # eg '37' -> 'thirty seven'
+
+        s = str(s)  # allow actual integers as input
+        l = len(s)
+
+        words = []
+        digits = ''
+        for i_char, char in enumerate(s):
+            reverse_i_char = l - i_char - 1
+
+            scale = None
+            if reverse_i_char > 2:
+                scale = scales[reverse_i_char // 3]
+
+            terminates_scale = not reverse_i_char % 3
+
+            if not terminates_scale:
+                digits += char
+
+            else:
+                if len(digits) == 3:
+                    words.append(self._units[int(digits[0])])
+                    words.append(self._scales[0])
+                    digits = digits[1:]
+
+                if int(digits) < 20:
+                    words.append(self._units[int(digits)])
+                else:
+                    words.append(self._tens[int(digits[0] - 2)])
+                    words.append(self._units[int(digits[1])])
+
+                if scale is not None:
+                    words.append(self._scales[scale])
+
+                digits = ''
+
+        return ' '.join(words)
+
+
+nwc = Number_Word_Converter()
+
+
 def internal_format_to_AI_format(card):
     # consumes list of internal formats, returns list of internal formats
     # consumes a single internal format, produces a single AI formatted string
@@ -734,11 +824,6 @@ def internal_format_to_AI_format(card):
     #   so preventing accidental replacements of keywords while also replacing all names is difficult to verify
     if name not in MTG_KEYWORDS + MTG_TYPE_WORDS:
         main_text = main_text.replace(name, '@')
-
-    # TODO substitute dashes for a unique character $ to avoid overloading the symbol's meaning (dash vs negative)
-    #   name
-    #   main text
-    #   type
 
     # convert all fields to lowercase
     #   except mana costs
@@ -798,7 +883,6 @@ def internal_format_to_AI_format(card):
     # we're going to reserve actual newlines for making the output file a bit more human readable
     main_text = main_text.replace('\n', '\\')
 
-    # text_val = transforms.text_pass_5_counters(text_val)
     # text_val = transforms.text_pass_7_choice(text_val)
 
     # label fields for the AI
@@ -1020,6 +1104,26 @@ def unreversable_modifications(card):
         #   The other card uses the 'CLANK!' counter
         card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
 
+        # TODO
+        # transform text smaller encoded numbers into decimal
+        #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
+        #   doing the decimal conversion step here instead of in that function provides a consistent encoder -> decoder loop target
+        # eg "choose one " -> "choose 1 "
+        # first, remove the card name temporarily, as a precaution against modifying that
+        #   Don't need to worry about modifying any reserved words, since none contain delimited number words
+        # card['main_text'] = card['main_text'].replace(card['name'], '@')
+        # num_regex = "|".join(nwc.NUMBER_WORDS)
+        # regex = fr'(?:(?<=^)|(?<=\W))((?:{num_regex})(?: (?:{num_regex}|and))*(?: (?:{num_regex}))?)(?=$|\W)'
+        # def convert(s):
+        #     s = s.group(1)
+        #     ns = nwc.str_to_int(s)
+        #     if int(ns) <= 20:
+        #         return ns
+        #     else:
+        #         return s  # don't convert large nubmers back to decimal (See above step which converts them to words)
+        # card['main_text'] = re.sub(regex, convert, card['main_text'])
+        # card['main_text'] = card['main_text'].replace('@', card['name'])  # replace card name
+
         # TODO maybe? Might improve regularization
         # text_val = transforms.text_pass_8_equip(text_val)
         #   careful about things like this "Equip Shaman, Warlock, or Wizard {1}"
@@ -1079,15 +1183,16 @@ def unreversable_modifications(card):
     # this gives us a robust target for the AI to internal decoder, since the AI text is all lowercase
     # apply the exact same transformation to the card name when found in the main text
     #   since references to card title are encoded to special characters in the AI format, and we need to be able to find them later
-    new_name = titlecase.titlecase(card['name'].lower())  # lower() call ensures titlecaser doesn't try to get too smart about acronym capitalization
-    if card['main_text'] is not None:
-        segments = re.split(fr"({re.escape(card['name'])})", card['main_text'])
-        segments = list(segments)
-        for i_segment, segment in enumerate(segments):
-            if segment == card['name']:
-                segments[i_segment] = new_name
-        card['main_text'] = ''.join(segments)
-    card['name'] = new_name
+    # Since we chose to let the AI handle capitalization, we've disabled this block. It does otherwise work tho.
+    # new_name = titlecase.titlecase(card['name'].lower())  # lower() call ensures titlecaser doesn't try to get too smart about acronym capitalization
+    # if card['main_text'] is not None:
+    #     segments = re.split(fr"({re.escape(card['name'])})", card['main_text'])
+    #     segments = list(segments)
+    #     for i_segment, segment in enumerate(segments):
+    #         if segment == card['name']:
+    #             segments[i_segment] = new_name
+    #     card['main_text'] = ''.join(segments)
+    # card['name'] = new_name
 
     # recurse on b-e sides
     if 'b_side' in card:
