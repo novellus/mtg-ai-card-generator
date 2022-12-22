@@ -541,18 +541,20 @@ def validate(card):
     
     # check that X has a definition if it is present anywhere
 
-    # check that counters have a type definition (or are generic counters allowed?)
-
-    # check that the only numbers that exist are 
     pass  # TODO
 
 
 def error_correct_AI(AI_string):
     # consumes AI format, returns AI format with error corrections applied
-    # OR maybe consumes internal format, returns internal format with error corrections applied
+    #   OR maybe consumes internal format, returns internal format with error corrections applied
+    # Don't need to check validity of implicitely checked attributes
+    #   such as checking that counters have a type definition
+    #   because these will cause errors in the subsequent parser, which is fine
+    #   and in this case, there is no valid generic target to coerce an unspecified counter type to, so it's just going to be a parsing error
     # TODO
 
     # TODO strip string
+
 
     return AI_string
 
