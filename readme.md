@@ -93,6 +93,7 @@
     * and then just call render with the prioritized set of fields
     * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
     * add info text for git hash at time of creation. Encode in Base58 (8 characters?) https://en.wikipedia.org/wiki/Binary-to-text_encoding#Base58
+    * update renderer and image templates with corrected mana character order file names
 * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
 * render legendary frame
 * decrease save file resolution to limit file size

@@ -3,6 +3,7 @@ import copy
 import difflib
 import json
 import itertools
+import os
 import pprint
 import re
 import sys
@@ -27,7 +28,7 @@ from collections import namedtuple
 #     'main_text'       : str or None
 #     'type'            : str
 #     'name'            : str
-#     'power_toughness' : 2-list of str or None
+#     'power_toughness' : str or None
 #     'rarity'          : str
 # }
 
@@ -59,7 +60,7 @@ def deduplicate_cards(cards):
     for name, group in groups.items():
         unique_group = []
         for card in group:
-            card_restricted = {k:v for k,v in card.items() if k not in ['rarity']}
+            card_restricted = limit_fields(card, blacklist=['rarity'])
             if card_restricted not in unique_group:
                 unique_group.append(card_restricted)
                 unique_cards.append(card)
@@ -156,8 +157,7 @@ def json_to_internal_format(json_path):
             assert (('power' in j_card and 'toughness' in j_card)
                  or ('power' not in j_card and 'toughness' not in j_card))
             if 'power' in j_card:
-                card['power_toughness'] = [j_card['power'],
-                                           j_card['toughness']]
+                card['power_toughness'] = j_card['power'] + '/' + j_card['toughness']
             else:
                 card['power_toughness'] = None
 
@@ -350,14 +350,11 @@ def internal_format_to_AI_format(card):
     main_text       = card['main_text'] or ''
     type_string     = card['type']
     name            = card['name']
-    power_toughness = card['power_toughness'] or []
+    power_toughness = card['power_toughness'] or ''
     rarity          = card['rarity']
 
     # encode rarity as unique symbols
     rarity = MTG_RARITY_JSON_TO_AI_FORMAT[rarity]
-
-    # str encode the power and toughness
-    power_toughness = '/'.join(power_toughness)
 
     # substitute card name with a unique character in main text so that there's only one copy of the full name for the AI to handle
     # skip this step if the card name is exactly equal to a reserved word / phrase
@@ -512,10 +509,6 @@ def AI_to_internal_format(AI_string):
 
     # decode dashes
     card['main_text'] = re.sub(r'[∓⊖]', '-', card['main_text'])
-
-    # decode power toughness
-    if card['power_toughness'] != '':
-        card['power_toughness'] = card['power_toughness'].split('/')
 
     # replace backreferences to name
     card['main_text'] = card['main_text'].replace('@', card['name'])
@@ -727,32 +720,44 @@ def verify_decoder_reverses_encoder(cards, cards_dual_processed):
                 sys.exit(1)
 
 
-def encode_json_to_AI_main(json_path, out_path):
-    # consumes AllPrintings.json
+def limit_fields(card, whitelist=None, blacklist=None):
+    # efficiently creates a deep copy of card with fields limited to the provided white or black-listed fields
+    # whitelist and blacklist are lists of str
+    # recurses on optional b-e sides
+
+    assert whitelist or blacklist
+    assert not (whitelist and blacklist)
+
+    if whitelist:
+        card_restricted = {k:v for k,v in card.items() if k in whitelist}
+    else:
+        card_restricted = {k:v for k,v in card.items() if k not in blacklist}
+
+    if 'b_side' in card_restricted:
+        card_restricted['b_side'] = limit_fields(card_restricted['b_side'], whitelist, blacklist)
+    if 'c_side' in card_restricted:
+        card_restricted['c_side'] = limit_fields(card_restricted['c_side'], whitelist, blacklist)
+    if 'd_side' in card_restricted:
+        card_restricted['d_side'] = limit_fields(card_restricted['d_side'], whitelist, blacklist)
+    if 'e_side' in card_restricted:
+        card_restricted['e_side'] = limit_fields(card_restricted['e_side'], whitelist, blacklist)
+
+    return card_restricted
+
+
+def encode_json_to_AI_main(cards, out_path):
     # runs through encoding and decoding steps
     #   comapares encoded+decoded dataset to original dataset for end-to-end validity checking
-    # produces several local data files for human comparison / debugging if validation fails
     # saves encoded data file to designated location
-
-    cards = json_to_internal_format(json_path)
-    for card in cards:
-        validate(card)
-
-    # perform dataset modifications / standardizations which have no reverse
-    cards = [unreversable_modifications(card) for card in cards]
 
     # drop the flavor text, we don't encode it in this function
     #   and we need the field omitted for the encoder -> decoder loop verification
+    # also create a copy which we can modify
     # do this before deduplication so that this field is not considered
-    for card in cards:
-        del card['flavor']
-        if 'b_side' in card: del card['b_side']['flavor']
-        if 'c_side' in card: del card['c_side']['flavor']
-        if 'd_side' in card: del card['d_side']['flavor']
-        if 'e_side' in card: del card['e_side']['flavor']
+    cards = [limit_fields(card, blacklist=['flavor']) for card in cards]
 
     # deduplicate the cards
-    # We do this after standardization due to some unfortunate artifacts in the json fields, which are addressed in that step
+    # We do this after unreversable_modifications due to some unfortunate artifacts in the json fields, which are addressed in that step
     cards = deduplicate_cards(cards)
 
     # limit dataset to those cards upon which the AI should train
@@ -764,24 +769,46 @@ def encode_json_to_AI_main(json_path, out_path):
     f.write('\n'.join(cards_AI))
     f.close()
 
-    # decode AI format back to internal format, and then compare to the limited dataset from above
+    # decode AI format back to internal format, and then compare to the original dataset from above
     cards_dual_processed = [AI_to_internal_format(card) for card in cards_AI]
     verify_decoder_reverses_encoder(cards, cards_dual_processed)
 
 
-def encode_json_to_AI_flavor(json_path, out_path):
+def encode_json_to_AI_flavor(cards, out_path):
+    cards = [limit_fields(card, whitelist=['name', 'flavor']) for card in cards]
+    cards = deduplicate_cards(cards)
+
     pass  # TODO
 
 
-def encode_json_to_AI_names(json_path, out_path):
+def encode_json_to_AI_names(cards, out_path):
+    cards = [limit_fields(card, whitelist=['name']) for card in cards]
+    cards = deduplicate_cards(cards)
+
     pass  # TODO
+
+
+def encode_all(json_path, out_path):
+    # consumes AllPrintings.json
+    # produces encoded output files in folder out_path
+
+    cards = json_to_internal_format(json_path)
+    for card in cards:
+        validate(card)
+
+    # perform dataset modifications / standardizations which have no reverse
+    cards = [unreversable_modifications(card) for card in cards]
+
+    encode_json_to_AI_main(cards, os.path.join(out_path, 'main_text.txt'))
+    encode_json_to_AI_flavor(cards, os.path.join(out_path, 'flavor.txt'))
+    encode_json_to_AI_names(cards, os.path.join(out_path, 'names.txt'))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--json_path", type=str, help="path to names AllPrintings.json")
-    parser.add_argument("--out_path", type=str, help="path to output file")
+    parser.add_argument("--json_path", type=str, help="path to AllPrintings.json")
+    parser.add_argument("--out_path", type=str, help="path to output folder")
     args = parser.parse_args()
 
-    encode_json_to_AI_main(args.json_path, args.out_path)
+    encode_all(args.json_path, args.out_path)
 
