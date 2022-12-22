@@ -386,6 +386,10 @@ def internal_format_to_AI_format(card):
     # reduce character overloading for dashes
     # convert numerical minus signs to a unique character
     main_text = re.sub(r'(?<!\w)-(?=\d)', '∓', main_text)
+    
+    # substitute dashes used to indicate a range
+    #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
+    main_text = re.sub(r'(?<=\d)[\-](?=\d)', '⊖', main_text)
 
     # encode symbols (including mana, excepting numerical) in AI format
     for a, b in MTG_SYMBOL_JSON_TO_AI_FORMAT.items():
@@ -506,9 +510,8 @@ def AI_to_internal_format(AI_string):
     card['main_text'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['main_text'])
     card['power_toughness'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['power_toughness'])
 
-    # reduce character overloading for dashes
-    # convert numerical minus signs to a unique character
-    card['main_text'] = re.sub(r'∓', '-', card['main_text'])
+    # decode dashes
+    card['main_text'] = re.sub(r'[∓⊖]', '-', card['main_text'])
 
     # decode power toughness
     if card['power_toughness'] != '':
@@ -565,9 +568,6 @@ def unreversable_modifications(card):
     #   such as stripping and enforcing repeatable capitalization
     # this function will return a dataset which can be directly compared to the dual_processed format for validity
     # since the changes made by this function are not validated by reversion, they should be reviewed by hand
-    
-    # TODO substitute dashes used to indicate a range
-    #   eg 'Roll a d20...\n1–14 | Return all creature cards in your graveyard that were put there from the battlefield this turn to your hand.\n'
     
     # strip text fields
     card['name'] = card['name'].strip()
