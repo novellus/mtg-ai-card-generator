@@ -375,9 +375,13 @@ def internal_format_to_AI_format(card, spec='main_text'):
         if name not in MTG_KEYWORDS + MTG_TYPE_WORDS:
             main_text = main_text.replace(name, '@')
 
-    # TODO reduce character overloading for pluses
+    # reduce character overloading for pluses
     # convert pluses used to indicate sign (eg +5) to a unique character
-    # I think the only other plus signs are used to indicate ranges (eg 5+)
+    # The only other plus signs indicate ranges (eg 5+) or reference the symbol itself
+    if main_text is not None:
+        main_text = re.sub(r'\+(?=\d)', '⊕', main_text)
+    if flavor is not None:
+        flavor = re.sub(r'\+(?=\d)', '⊕', flavor)
 
     # reduce character overloading for dashes
     # convert numerical minus signs to a unique character
@@ -574,6 +578,12 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         card['main_text'] = re.sub(r'[∓⊖]', '-', card['main_text'])
     if 'flavor' in card:
         card['flavor'] = re.sub(r'[∓⊖]', '-', card['flavor'])
+
+    # decode plus symbols
+    if 'main_text' in card:
+        card['main_text'] = re.sub(r'[⊕]', '+', card['main_text'])
+    if 'flavor' in card:
+        card['flavor'] = re.sub(r'[⊕]', '+', card['flavor'])
 
     # replace backreferences to name
     if 'main_text' in card:

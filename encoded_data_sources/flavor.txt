@@ -10090,7 +10090,7 @@ Maggot Carrier∥"The mere sight of our undead allies sickens me. What unholy ba
 Maggot Carrier∥"We do not suddenly fall on death, but advance towards it by slight degrees; we die every day."↵-Seneca, *Epistles*, trans. Gummere
 Maggot Therapy∥"If this is the cure, I'd hate to see the disease."↵-Orim
 Magic Missile∥A tried-and-true favorite of many wizards, whatever their school.
-Magical Hacker∥1|= y()u (4|\| r3@d 7#][5, y0|_| /\r3 @ IVI0/\/$+3|2 &33|<
+Magical Hacker∥1|= y()u (4|\| r3@d 7#][5, y0|_| /\r3 @ IVI0/\/$⊕3|2 &33|<
 Magister Sphinx∥"These benighted worlds are thick with ignorance. I will educate them. They will listen, or they will die."
 Magistrate's Veto∥The magistrate had been the goblins' puppet for so long that he made the right decisions with little prompting.
 Magma Giant∥Its open mouth is a furnace blast that blisters the skin. Its smoking fists are meteors that split the earth.

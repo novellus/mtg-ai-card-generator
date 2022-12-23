@@ -47,6 +47,7 @@ Aboshan, Cephalid Emperor
 About Face
 Abrade
 Abrupt Decay
+Abscond
 Absolute Grace
 Absolute Law
 Absolver Thrull
@@ -166,6 +167,7 @@ Adriana, Captain of the Guard
 Adrix and Nev, Twincasters
 Adult Gold Dragon
 Adun Oakenshield
+Advance
 Advance Scout
 Advanced Hoverguard
 Advanced Stitchwing
@@ -177,6 +179,7 @@ Adventuring Gear
 Adventurous Impulse
 Adverse Conditions
 Advice from the Fae
+Advocate
 Advocate of the Beast
 Aegar, the Freezing Flame
 Aegis Angel
@@ -614,6 +617,7 @@ Anaba Spirit Crafter
 Anaconda
 Anafenza, Kin-Tree Spirit
 Anafenza, the Foremost
+Analyze
 Anara, Wolvid Familiar
 Anarchist
 Anarchy
@@ -752,6 +756,7 @@ Angrath, Captain of Chaos
 Angrath, Minotaur Pirate
 Angrath, the Flame-Chained
 Angry Mob
+Angry Pichu
 Anguished Unmaking
 Angus Mackenzie
 Anhelo, the Painter
@@ -855,6 +860,7 @@ Apprentice Sorcerer
 Apprentice Wizard
 Approach My Molten Realm
 Approach of the Second Sun
+Appropriate
 Apro
 Aquamoeba
 Aquamorph Entity
@@ -1241,6 +1247,7 @@ Assault Intercessor
 Assault Strobe
 Assault Suit
 Assault Zeppelid
+Assemble
 Assemble from Parts
 Assemble the Legion
 Assemble the Rank and Vile
@@ -1779,6 +1786,7 @@ Bastion of Remembrance
 Bat
 Bat Whisperer
 Bat-
+Bathe
 Bathe in Dragonfire
 Bathe in Light
 Baton of Courage
@@ -2848,6 +2856,7 @@ Bridge
 Bridge from Below
 Bright Reprisal
 Brightclimb Pathway
+Brighten
 Brightflame
 Brighthearth Banneret
 Brightling
@@ -3072,6 +3081,7 @@ Bursting Beebles
 Bury in Books
 Bushi Tenderfoot
 Bushmeat Poacher
+Bushwhack
 Busted!
 Butcher Ghoul
 Butcher Orgg
@@ -3203,6 +3213,7 @@ Camel
 Camellia
 Camelopardalis
 Camouflage
+Campaign
 Campaign of Vengeance
 Campfire
 Campus Guide
@@ -3747,6 +3758,7 @@ Chatterfang, Squirrel General
 Chatterstorm
 Cheap Ass
 Cheatyface
+Check
 Check for Traps
 Checkpoint Officer
 Checks and Balances
@@ -4181,7 +4193,9 @@ Coldsteel Heart
 Colfenor's Plans
 Colfenor's Urn
 Colfenor, the Last Yew
+Collaborate
 Collapsing Borders
+Collar
 Collar the Culprit
 Collared Peccary
 Collateral Damage
@@ -4197,6 +4211,7 @@ Collective Unconscious
 Collective Voyage
 Collector Ouphe
 Collector Protector
+Collide
 Collie
 Collision
 Collision of Realms
@@ -4408,6 +4423,7 @@ Contortionist Otter Storm
 Contortionist Troupe
 Contraband Kingpin
 Contraband Livestock
+Contract
 Contract Killing
 Contract from Below
 Contractual Safeguard
@@ -4424,6 +4440,7 @@ Convalescent Care
 Convergence of Dominion
 Conversion
 Conversion Chamber
+Convert
 Convicted Killer
 Conviction
 Convincing Mirage
@@ -4879,6 +4896,7 @@ Cupboard
 Curate
 Curator of Mysteries
 Curator's Ward
+Cure
 Curfew
 Curio Vendor
 Curiosity
@@ -5158,6 +5176,7 @@ Daru Stinger
 Daru Warchief
 Darwin"s Frog
 Daryl, Hunter of Walkers
+Dash
 Dash Hopes
 Daughter of Autumn
 Daunting Defender
@@ -5464,6 +5483,7 @@ Defiler of Instinct
 Defiler of Souls
 Defiler of Vigor
 Defiling Tears
+Define
 Deflecting Palm
 Deflecting Swat
 Deflection
@@ -5576,6 +5596,7 @@ Deranged Outcast
 Deranged Whelp
 Derelor
 Derevi, Empyrial Tactician
+Derive
 Dermoplasm
 Dermotaxi
 Descend on the Prey
@@ -5780,6 +5801,7 @@ Dire Undercurrents
 Dire Wolf Prowler
 Dire Wolves
 Dire-Strain Rampage
+Direct
 Direct Current
 Diregraf Captain
 Diregraf Colossus
@@ -5885,6 +5907,7 @@ Distant Melody
 Distant Memories
 Distemper of the Blood
 Distended Mindbender
+Distinguish
 Distorting Lens
 Distorting Wake
 Distortion Strike
@@ -6338,6 +6361,7 @@ Drudge Reavers
 Drudge Sentinel
 Drudge Skeletons
 Drudge Spell
+Drug
 Druid Class
 Druid Lyrist
 Druid of Horns
@@ -6589,6 +6613,7 @@ Eddytrail Hawk
 Edgar Markov
 Edgar's Awakening
 Edgar, Charmed Groom
+Edge
 Edge of Autumn
 Edge of Malacol
 Edge of the Divinity
@@ -6596,6 +6621,7 @@ Edgewalker
 Edgewall Innkeeper
 Edifice of Authority
 Edric, Spymaster of Trest
+Educate
 Eel Umbra
 Eelectrocute
 Eerie Interlude
@@ -6845,6 +6871,7 @@ Emerald Dragon
 Emerald Dragonfly
 Emerald Medallion
 Emerald Oryx
+Emerge
 Emerge Unscathed
 Emergence Zone
 Emergency Powers
@@ -7326,6 +7353,7 @@ Explosive Singularity
 Explosive Vegetation
 Explosive Welcome
 Exponential Growth
+Expose
 Expose Evil
 Expose to Daylight
 Expressive Iteration
@@ -7805,6 +7833,7 @@ Fighting Chance
 Fighting Drake
 Figure of Destiny
 Figure of Destiny Avatar
+File
 Filigree Angel
 Filigree Attendant
 Filigree Crawler
@@ -8086,6 +8115,7 @@ Flitterstep Eidolon
 Floating Shield
 Floating-Dream Zubera
 Flock of Rabid Sheep
+Flog
 Flood
 Flood Plain
 Flood of Recollection
@@ -8559,6 +8589,7 @@ Gaea's Skyfolk
 Gaea's Touch
 Gaea's Will
 Gahiji, Honored One
+Gain
 Gainsay
 Gala Greeters
 Galaxy
@@ -8671,6 +8702,7 @@ Gateway Plaza
 Gateway Shade
 Gateway Sneak
 Gathan Raiders
+Gather
 Gather Courage
 Gather Specimens
 Gather the Pack
@@ -8751,6 +8783,7 @@ General Tazri
 General's Enforcer
 General's Kabuto
 General's Regalia
+Generate
 Generated Horizons
 Generator Servant
 Generous Gift
@@ -10099,6 +10132,7 @@ Hand to Hand
 Handcuffs
 Hands of Binding
 Handy Dandy Clone Machine
+Hang
 Hangarback Walker
 Hanged Executioner
 Hangman
@@ -10187,6 +10221,7 @@ Harvesttide Infiltrator
 Harvesttide Sentry
 Hashep Oasis
 Hasran Ogress
+Hasten
 Hat
 Hat Trick
 Hatchery Spider
@@ -10580,6 +10615,7 @@ Historian's Boon
 Historian's Wisdom
 History of Benalia
 Hit
+Hitch
 Hitchclaw Recluse
 Hive Mind
 Hive Stirrings
@@ -10881,6 +10917,7 @@ Hurloon Wrangler
 Hurly-Burly
 Hurr Jackal
 Hurricane
+Hurtle
 Hush
 Hushbringer
 Hushwing Gryff
@@ -11059,6 +11096,7 @@ Imaginary Pet
 Imaginary Threats
 Imaryll, Elfhame Elite
 Imi Statue
+Imitate
 Immaculate Magistrate
 Immediate Action
 Immersturm
@@ -11300,6 +11338,7 @@ Ingenuity Engine
 Ingot Chewer
 Inheritance
 Inhumaniac
+Initiate
 Initiate of Blood
 Initiate's Companion
 Initiates of the Ebon Hand
@@ -11381,6 +11420,7 @@ Inspiring Unicorn
 Inspiring Vantage
 Inspiring Veteran
 Inspirit
+Install
 Instigator
 Instigator Gang
 Instill Energy
@@ -11558,6 +11598,7 @@ It Came from Planet Glurg
 It That Betrays
 It That Gets Left Hanging
 It of the Horrid Swarm
+Itemize
 Iterative Analysis
 Ith, High Arcanist
 Ivory Charm
@@ -12230,6 +12271,7 @@ Khod, Etlan Shiis Envoy
 Khorvath Brightflame
 Khorvath's Fury
 Kianne, Dean of Substance
+Kick
 Kick in the Door
 Kiddie Coaster
 Kiki-Jiki, Mirror Breaker
@@ -12841,6 +12883,7 @@ Leap of Flame
 Leapfrog
 Leaping Lizard
 Leaping Master
+Learn
 Learn from the Past
 Learned Learner
 Leashling
@@ -12851,6 +12894,7 @@ Leave
 Leave No Trace
 Leave in the Dust
 Leaves
+Led
 Ledev Champion
 Ledev Guardian
 Ledger Shredder
@@ -13128,6 +13172,7 @@ Lingering Mirage
 Lingering Phantom
 Lingering Souls
 Lingering Tormentor
+Link
 Linvala, Keeper of Silence
 Linvala, Shield of Sea Gate
 Linvala, the Preserver
@@ -13140,6 +13185,7 @@ Liquid Fire
 Liquify
 Liquimetal Coating
 Liquimetal Torque
+Listen
 Lithatog
 Lithoform Blight
 Lithoform Engine
@@ -13233,6 +13279,7 @@ Lodestone Bauble
 Lodestone Golem
 Lodestone Myr
 Lofty Denial
+Log
 Log Flume
 Logic Knot
 Lokhust Heavy Destroyer
@@ -13295,6 +13342,7 @@ Lorehold Pledgemage
 Lorescale Coatl
 Loreseeker's Stone
 Lorthos, the Tidemaker
+Lose
 Lose Calm
 Lose Focus
 Lose Hope
@@ -13430,6 +13478,7 @@ Lunk Errant
 Lupi
 Lupine Harbingers
 Lupine Prototype
+Lurch
 Lurching Rotbeast
 Lure
 Lure of Prey
@@ -13600,6 +13649,7 @@ Magus of the Will
 Mahadi, Emporium Master
 Mahamoti Djinn
 Maia
+Maim
 Main Event Horizon
 Mairsil, the Pretender
 Maja, Bretagard Protector
@@ -13702,6 +13752,7 @@ Manacles of Decay
 Manaforce Mace
 Manaforge Cinder
 Manaform Hellkite
+Manage
 Managorger Hydra
 Managorger Phoenix
 Manakin
@@ -13921,6 +13972,7 @@ Massacre Totem
 Massacre Wurm
 Massive Might
 Massive Raid
+Master
 Master Apothecary
 Master Biomancer
 Master Chef
@@ -13968,6 +14020,7 @@ Matsu-Tribe Birdstalker
 Matsu-Tribe Decoy
 Matsu-Tribe Sniper
 Matter Reshaper
+Maul
 Maul Splicer
 Maul of the Skyclaves
 Maulfist Doorbuster
@@ -14027,6 +14080,7 @@ Medomai the Ageless
 Medomai's Prophecy
 Meekstone
 Meerkat
+Meet
 Meet and Greet "Sisay"
 Meeting of the Five
 Megantic Sliver
@@ -14557,6 +14611,7 @@ Mobilize
 Mobilized District
 Mobilizer Mech
 Mochi
+Mock
 Mockery of Nature
 Mocking Doppelganger
 Model
@@ -15734,6 +15789,7 @@ Obscura Storefront
 Obscuring Aether
 Obscuring Haze
 Observant Alseid
+Observe
 Obsessive Astronomer
 Obsessive Collector
 Obsessive Search
@@ -15748,6 +15804,7 @@ Obsidian Giant
 Obsidian Obelisk
 Obstinate Baloth
 Obstinate Familiar
+Obtain
 Obuun, Mul Daya Ancestor
 Obzedat's Aid
 Obzedat, Ghost Council
@@ -16393,6 +16450,7 @@ Patriarch's Bidding
 Patriarch's Desire
 Patrician Geist
 Patrician's Scorn
+Patrol
 Patrol Hound
 Patrol Signaler
 Patron Wizard
@@ -16747,6 +16805,7 @@ Pir, Imaginative Rascal
 Piracy
 Piracy Charm
 Piranha Marsh
+Pirate
 Pirate Ship
 Pirate's Cutlass
 Pirate's Pillage
@@ -17225,6 +17284,7 @@ Protomatter Powder
 Prototype Portal
 Proud Mentor
 Proud Wildbonder
+Prove
 Proven Combatant
 Providence
 Provoke
@@ -17311,6 +17371,7 @@ Pulse of the Grid
 Pulse of the Tangle
 Pulsemage Advocate
 Pulverize
+Pummel
 Pumpkin
 Punctuate
 Puncture Blast
@@ -17530,6 +17591,7 @@ Rabid Wolverines
 Rabid Wombat
 Raccoon
 Raccoon Dog
+Race
 Racecourse Fury
 Racers' Ring
 Rack and Ruin
@@ -17753,6 +17815,7 @@ Ransack
 Ransack the Lab
 Rapacious Dragon
 Rapacious One
+Rape
 Raphael, Fiendish Savior
 Rapid Decay
 Rapid Fire
@@ -17783,6 +17846,7 @@ Ratadrabik of Urborg
 Ratcatcher
 Ratchet Bomb
 Ratchet, Field Medic
+Rate
 Rath's Edge
 Rathi Assassin
 Rathi Dragon
@@ -18166,6 +18230,7 @@ Renounce
 Renounce the Guilds
 Renowned Weaponsmith
 Renowned Weaver
+Reorganize
 Reparations
 Repay in Kind
 Repeal
@@ -18209,6 +18274,7 @@ Reservoir Walker
 Reset
 Reshape
 Reshape the Earth
+Resign
 Resilient Khenra
 Resilient Wanderer
 Resistance Fighter
@@ -18601,6 +18667,7 @@ Roaring Earth
 Roaring Primadox
 Roaring Slagwurm
 Roast
+Rob
 Rob the Archives
 Robaran Mercenaries
 Robber Fly
@@ -18617,6 +18684,7 @@ Roc Egg
 Roc Hatchling
 Roc of Kher Ridges
 Rocco, Cabaretti Caterer
+Rock
 Rock Badger
 Rock Basilisk
 Rock Hydra
@@ -19254,6 +19322,7 @@ Savai Triome
 Savannah
 Savannah Lions
 Savannah Sage
+Save
 Save Life
 Saving Grace
 Saving Grasp
@@ -19445,6 +19514,7 @@ Scrapyard Mongrel
 Scrapyard Recombiner
 Scrapyard Salvo
 Scrapyard Steelbreaker
+Scrawl
 Screamer-Killer
 Screaming Fury
 Screaming Seahawk
@@ -19476,10 +19546,12 @@ Scrounge
 Scrounger of Souls
 Scrounging Bandar
 Scrubland
+Scruff
 Scryb Ranger
 Scryb Sprites
 Scrying Glass
 Scrying Sheets
+Sculpt
 Sculpted Sunburst
 Sculpting Steel
 Sculptor of Winter
@@ -19749,6 +19821,7 @@ Sengir Nosferatu
 Sengir Vampire
 Sengir, the Dark Baron
 Sensation Gorger
+Sense
 Sensei Golden-Tail
 Sensei's Divining Top
 Senseless Rage
@@ -20162,6 +20235,7 @@ Shocking Grasp
 Shockmaw Dragon
 Shoe Tree
 Shoes
+Shoot
 Shore Keeper
 Shore Snapper
 Shore Up
@@ -20821,6 +20895,7 @@ Slow Worm
 Sludge Crawler
 Sludge Monster
 Sludge Strider
+Slug
 Sluggishness
 Sluiceway Scorpion
 Slum Reaper
@@ -20905,6 +20980,7 @@ Sneak Attack
 Sneaking Guide
 Sneaky Homunculus
 Snickering Squirrel
+Snitch
 Snooping Newsie
 Snorting Gahr
 Snow Day
@@ -21358,6 +21434,7 @@ Spidersilk Armor
 Spidersilk Net
 Spiderwig Boggart
 Spidery Grasp
+Spike
 Spike Breeder
 Spike Cannibal
 Spike Colony
@@ -21555,6 +21632,7 @@ Springleaf Drum
 Springmane Cervin
 Springmantle Cleric
 Springsage Ritual
+Sprint
 Sprinting Warbrute
 Sprite Dragon
 Sprite Noble
@@ -21566,6 +21644,7 @@ Sprouting Phytohydra
 Sprouting Renewal
 Sprouting Thrinax
 Sprouting Vines
+Spur
 Spur Grappler
 Spurnmage Advocate
 Spurred Wolverine
@@ -21782,6 +21861,7 @@ Stensia Bloodhall
 Stensia Innkeeper
 Stensia Masquerade
 Stensia Uprising
+Step
 Step Right Up
 Step Through
 Stephenson
@@ -21805,6 +21885,7 @@ Stigma Lasher
 Still Life
 Stillmoon Cavalier
 Stiltstrider
+Stimulate
 Stimulus Package
 Stingerfling Spider
 Stinging Barrier
@@ -22061,6 +22142,7 @@ Stronghold Zeppelin
 Structural Assault
 Structural Collapse
 Structural Distortion
+Structure
 Struggle
 Struggle for Sanity
 Struggle for Skemfar
@@ -22097,6 +22179,7 @@ Sublime Epiphany
 Sublime Exhalation
 Submerge
 Submerged Boneyard
+Submit
 Subra
 Subterranean Hangar
 Subterranean Scout
@@ -22325,6 +22408,7 @@ Suspension Field
 Suspicious Bookcase
 Suspicious Nanny
 Suspicious Stowaway
+Sustain
 Sustainer of the Realm
 Sustaining Spirit
 Sustenance
@@ -22477,6 +22561,7 @@ Syndicate Trafficker
 Synod Artificer
 Synod Centurion
 Synod Sanctum
+Synthesize
 Synthetic Destiny
 Syphon Essence
 Syphon Flesh
@@ -22492,6 +22577,7 @@ Syr Faren, the Hengehammer
 Syr Gwyn, Hero of Ashvale
 Syr Konrad, the Grim
 Syrix, Carrier of the Flame
+Systematize
 Sythis, Harvest's Hand
 Szadek, Lord of Secrets
 Szarekh, the Silent King
@@ -24026,6 +24112,7 @@ Tsabo's Web
 Tsunami
 Tuatara
 Tucanae
+Tug
 Tug of War
 Tuinvale Treefolk
 Tukatongue Thallid
@@ -24055,6 +24142,7 @@ Turkey
 Turn
 Turn Against
 Turn Aside
+Turn Off
 Turn into a Pumpkin
 Turn the Earth
 Turn the Tables
@@ -24481,6 +24569,7 @@ Utvara Scalper
 Uurg, Spawn of Turg
 Uvilda, Dean of Perfection
 Uyo, Silent Prophet
+Vacate
 Vacuumelt
 Vadrik, Astral Archmage
 Vadrok, Apex of Thunder
@@ -26433,145 +26522,45 @@ _____ Goblin
 _____ _____ Rocketship
 _____ _____ _____ Trespasser
 _____-o-saurus
-abscond
-advance
-advocate
-analyze
 anemone
-appropriate
 apricot blossom
-assemble
-bathe
 bluebell
 bougainvillea
-bow
-brighten
-bushwhack
 buttercup
 cactus flower
-campaign
 capital offense
 carnation
-check
 cherry blossom
 chrysanthemum
 cockscomb
-collaborate
-collar
-collide
-contract
-convert
-cure
 dahlia
 dandelion
-dash
-define
-derive
-direct
-distinguish
-divert
-drug
-edge
-educate
 eglantine
-emerge
-expose
-fan
-file
 flamboyant
-flog
 foxglove
-gain
-gather
-generate
 geranium
 gerbera
 gladiolus
-hang
-hasten
 hibiscus
-hitch
 hop
-hurtle
 hyacinth
-imitate
-initiate
-install
-itemize
 jasmine
-kick
-learn
-led
 lilac
 lily
-link
-listen
-log
-lose
-lurch
 magnolia
-maim
-manage
-master
-maul
-meet
-mimic
 mimosa
-mock
 morning glory
 moss rose
 narcissus
 nineteen-ninety-six World Champion
-observe
-obtain
 orange rose
 orchid
-order
 pansy
-patrol
 peony
-pirate
 poppy
-prepare
 primrose
-prove
-pummel
-race
-rape
-rate
-rebuild
-remove
-reorganize
-repulse
-resign
-restore
-rob
-rock
 rose
-save
-scrawl
-scruff
-sculpt
-sense
-shoot
-slay
-slug
-snitch
 snowdrop
-spike
-sprint
-spur
-step
-stimulate
-structure
-submit
 sunflower
-sustain
-synthesize
-systematize
 tuberose
-tug
-turn off
-vacate
 violet
-whack

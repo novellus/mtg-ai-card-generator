@@ -17,6 +17,8 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+from render import *
+
 
 # Constants
 CONDA_ENV_SD = 'ldm'

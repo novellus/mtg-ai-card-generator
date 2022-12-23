@@ -153,6 +153,7 @@
 * main repo
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
+    * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
 
 
