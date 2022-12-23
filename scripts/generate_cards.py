@@ -17,9 +17,9 @@ PATH_TORCH_RNN = '../torch-rnn'
 PATH_SD = '../stable-diffusion'
 
 # average lengths, for initial LSTM sample length target
-LSTM_LEN_PER_NAME =      math.ceil(439024  / (26908 + 135))  # empirical, change if the dataset changes
-LSTM_LEN_PER_MAIN_TEXT = math.ceil(4373216 / (23840 + 119))  # empirical, change if the dataset changes
-LSTM_LEN_PER_FLAVOR =    math.ceil(2048192 / (19427 + 117))  # empirical, change if the dataset changes
+LSTM_LEN_PER_MAIN_TEXT = 171  # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
+LSTM_LEN_PER_NAME =      16   # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
+LSTM_LEN_PER_FLAVOR =    105  # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
 
 
 # mana_cost_to_human_readable = {'B': 'black',

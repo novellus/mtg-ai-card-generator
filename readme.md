@@ -158,6 +158,8 @@
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
+        * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
+        * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
 
 
 # AI Training and Sampling
@@ -181,8 +183,8 @@
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
     * ```mkdir -p ../nns/names && th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 500 -seq_length 150 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.98 |& tee -a ../nns/names/log.txt```
-    * ```mkdir -p ../nns/flavor && th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 200 -seq_length 750 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 5 -lr_decay_factor 0.9 |& tee -a ../nns/flavor/log.txt```
-    * ```mkdir -p ../nns/main_text && th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_chunks 1 -rand_mtg_fields 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 400 -max_epochs 1000 -batch_size 100 -seq_length 1000 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.99 |& tee -a ../nns/main_text/log.txt```
+    * ```mkdir -p ../nns/flavor && th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 200 -seq_length 500 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 5 -lr_decay_factor 0.9 |& tee -a ../nns/flavor/log.txt```
+    * ```mkdir -p ../nns/main_text && th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_chunks 1 -rand_mtg_fields 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 400 -max_epochs 1000 -batch_size 100 -seq_length 900 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.99 |& tee -a ../nns/main_text/log.txt```
     * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7 -length 50```
 
 
