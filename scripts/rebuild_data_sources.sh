@@ -10,7 +10,7 @@ rm -rf encoded_data_sources
 mkdir encoded_data_sources
 
 
-cd mtgencode
+cd scripts
 conda run -n mtg-ai-main python -Wignore encode.py --json_path ../raw_data_sources/AllPrintings.json --out_path ../encoded_data_sources --extra_names ../raw_data_sources/names.yaml --extra_flavor ../raw_data_sources/flavor.yaml
 
 

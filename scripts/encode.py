@@ -169,7 +169,7 @@ def json_to_internal_format(json_path):
                 card['loyalty'] = None
 
             # flavor
-            if 'flavorText' in j_card:
+            if 'flavorText' in j_card and j_card['flavorText'] and j_card['language'].lower() == 'english':
                 card['flavor'] = j_card['flavorText']
             else:
                 card['flavor'] = None

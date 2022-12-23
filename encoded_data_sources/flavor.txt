@@ -132,7 +132,6 @@ Adventuring Gear∥An explorer's essentials in a wild world.
 Adventurous Impulse∥"Her quest began as all quests do, with one small step in an unexpected direction."↵-*The Explorer's Testament*
 Adventurous Impulse∥An adventure without a companion is hardly an adventure at all.
 Adventurous Impulse∥Every odyssey begins with a single step.
-Adventurous Impulse∥「彼女の探検は、すべての探検と同様に、予期せぬ方向への小さな一步から始まった。」↵--探検者の遺言
 Advisor∥Whisper in the right ear, and anything can happen
 Advocate of the Beast∥"I am neither their drover nor their leader. To these majestic beasts, I am simply their herdmate and nothing more."
 Aegis Automaton∥The streets of Ghirapur have become dangerous. It's good to have a dependable companion.
@@ -234,7 +233,6 @@ Agonizing Memories∥"I think little of the foes I've slain. But I'm haunted by 
 Agonizing Memories∥In the aftermath of war, when the slaying is long done, the greatest miseries come home to roost.
 Agonizing Remorse∥"Guilt is not absolution. Regret is not justice. But it is right that you suffer."↵-Extus Narr
 Agonizing Remorse∥The sharp memory of Daxos's death stabbed into Elspeth's soul.
-Agonizing Remorse∥「罪悪感は赦しではない。後悔は正義ではない。だたし、苦しむことは正しい。」↵--エクスタス・ナー
 Agonizing Syphon∥"Your death will take a mere moment, but it will feel like an eternity."↵-Vilis, Broker of Blood
 Agony Warp∥Life's circle has become inverted in Grixis. The same energy is endlessly recycled and becomes more stagnant with each pass.
 Agoraphobia∥"Everyone in this city is choosing sides. I choose inside."
@@ -375,7 +373,6 @@ Alpha Guard∥"Whimsy overflow in sector G! The gremlins are rampaging and the b
 Alpha Guard∥"Whimsy overflow in sector G! The gremlins are rampaging and the beetles are on fire!"
 Alpha Kavu∥Kavu leaders instinctively protect their herds from harm.
 Alpha Myr∥First to charge, first to fight.
-Alpha Myr∥Primero en cargar, primero en luchar.
 Alpha Status∥The best leaders are made by their followers.
 Alpha Tyrranax∥Hunger seized the tyrranax, and the Sylvok's vision quest ended in disaster.
 Alpine Grizzly∥The Temur welcome bears into the clan, fighting alongside them in battle. The relationship dates back to when they labored side by side under Sultai rule.
@@ -1090,7 +1087,6 @@ Awesome Presence∥"I shape my weapons from the fears of my enemies."↵-Chaeska
 Axebane Beast∥"Imagine a gigantic pine cone that's extremely territorial and always in a foul mood."↵-Zhosmir, urban huntmaster
 Axebane Guardian∥Only a worthy few are permitted within the sentient forest known as Axebane.
 Axebane Stag∥"When the spires have burned and the cobblestones are dust, he will take his rightful place as king of the wilds."↵-Kirce, Axebane guardian
-Axegrinder Giant∥Los gigantes mas iracundos son normalmente los armeros mas diestros. Sus agravios avivan interminables sesiones en la fragua, mientras se gruuen ferozmente a si mismos.
 Axegrinder Giant∥The angriest of giants are often the most skillful weaponsmiths. Their grudges fuel endless sessions at the forge, all the while growling ferociously to themselves.
 Axgard Braggart∥"Heavy? Ha! The Trollking of Mossrun was heavy, and I tossed him five miles!"
 Axgard Cavalry∥Riding the goat↵-Dwarven expression meaning↵"a foolhardy act of bravery"
@@ -1818,7 +1814,6 @@ Blue Elemental Blast∥"Contrary to popular wisdom, I find it's best to fight fi
 Blue Elemental Blast∥Nothing escapes a sharp mind.
 Blue Sun's Zenith∥"Five suns! Can you even imagine how complicated the orbital calculations must be? What I wouldn't give to tackle an equation like that!"↵-Zimone, Quandrix mage-student
 Blue Sun's Zenith∥"The Origin Query will wait. We must ensure we survive to return to it."↵-Pelyus, vedalken ordinar
-Blue Sun's Zenith∥「五つの太陽よ！軌道計算がどんなに複雑か想像できる？そんな方程式に挑戦できるというなら、何だって差し出すわ！」↵--クアンドリクスの魔導生徒、ジモーン
 Blufferfish∥Lying to a fish is such an unthinkable act, most planets don't even have a law against it.
 Blunt the Assault∥"Much can be gained from the appearance of vulnerability."↵-Ezuri, renegade leader
 Blur Sliver∥They move in a synchronized swarm, turning entire squads into heaps of bloody rags and bones in an instant.
@@ -2051,7 +2046,6 @@ Brainstorm∥"The secret is simply to know what you're going to do before you ev
 Brainstorm∥2012 Legacy Championship Winner
 Brainstorm∥The Changer of Ways often sends glimpses of possible futures to his most loyal acolytes, visions that would destroy lesser minds.
 Brainstorm∥The mizzium-sphere array drove her mind deep into the thought field, where only the rarest motes of genius may be plucked.
-Brainstorm∥「無限の考えが多元宇宙を流れ、開からた心を待っている。」↵--ビブリオプレックス：序論
 Brainwash∥"They're not your friends; they despise you. I'm the only one you can count on. Trust me."
 Bramble Creeper∥"I've seen the fully grown ones tear a baloth to gory ribbons in seconds."↵-Kivi, thornberry harvester
 Bramble Elemental∥In abandoned corners of Ravnica, nature has begun to reclaim what it once owned.
@@ -2494,7 +2488,6 @@ Cascading Cataracts∥"The rushing water is as the God-Pharaoh. It encompasses a
 Case the Joint∥Steel doors and iron bars are child's play for an Obscura operative.
 Cast Down∥"We simply cannot tolerate a petty thief among the servants. I'm afraid I'll have to let you go."↵-Rog, steward of House Rillyn
 Cast Down∥"Your life is finished, your name lost, and your work forgotten. It is as though Mazeura never existed."↵-*Chainer's Torment*
-Cast Down∥「誰でも死後に思い出してもらえるかは心配なもの。でも心配ないわ、死は名も無き者のものよ。あなたに名前がある限リ、それを堂々と掲げなさい。」↵――リリアナ
 Cast into Darkness∥In desperation the soldier prayed to Phenax, begging for the power to cheat the gorgon's gaze.
 Castigate∥"We have no need for military might. We wield two of the sharpest swords ever forged: Faith in our left hand, Wealth in our right."↵-Vuliev of the Ghost Council
 Casting of Bones∥"Only a necromancer would create such a foul form of divination."↵-Gerda Äagesdotter, Archmage of the Unseen
@@ -2674,7 +2667,6 @@ Channel the Suns∥To some the birth of the fifth sun was a sign of doom. To oth
 Channeled Force∥Few monsters challenged Narset after they sensed her power.
 Channel∥"As long as you are breathing, you always have something more to give."↵-Valentin, Witherbloom dean
 Channel∥To some mages, the meaning of life is less important than how much is left.
-Channel∥「呼吸しているかぎり、お前にはまだ貢献できるものがある。」↵--ウィザーブルームの学部長、ヴァレンティン
 Chant of the Skifsang∥The skifsang, seafarers of Nephalia, craft spells like other sailors craft nets-making them strong enough to snare even the deadliest catch.
 Chaos Confetti∥And you thought that was just an urban legend.
 Chaos Maw∥The food chain doesn't end at sandwurms.
@@ -2682,7 +2674,6 @@ Chaos Terminator Lord∥"Charge brothers! Death to the false Emperor!"
 Chaos Warp∥"Be careful when handling old magical trinkets. You never know who they've been."↵-Augusta, Lorehold dean
 Chaos Warp∥"Tzeentch cares not what they were or what they become. Only that they change."↵-Kairos Fateweaver
 Chaos Warp∥Confused but undeterred, the butterflies charged into battle.
-Chaos Warp∥「古い魔法の小物を扱うときは注意してください。それが以前に何者だったか分かりませんから。」↵--ロアホールドの学部長、オーガスタ
 Chaosphere∥"I dance the nothing dance, / Feet in the air, knives in the ground."↵-Femeref chant
 Chaotic Backlash∥The concept of thoughtweft fascinates the Nighthearth cult. Imagine, bringing agony to an entire people by torturing just one.
 Chapel Geist∥Death has bound it with chains of past regrets. Forever it searches for atonement, each kindness removing a single link.
@@ -2863,7 +2854,6 @@ Civilized Scholar∥"Me, angry? Of course not. Thanks to my research, I'm above 
 Claim of Erebos∥Priests of Erebos give an occasional reminder to mortals who have forgotten their mortality.
 Claim the Firstborn∥"The deal was struck and the favor had been done. And so, under the cover of night, the debt was paid."↵-*Tales of the Fae*
 Claim the Firstborn∥"Will! They have a copy of *Tales of the Fae* here! Want me to read you a bedtime story?"↵-Rowan Kenrith
-Claim the Firstborn∥「ヴィル！フェイの物語があるわ！寝る前に読み聞かせてあげましょうか？」↵--ローアン・ケンリス
 Claire D'Loon, Joy Sculptor∥She'll sculpt goblins, saprolings, Marit Lage . . . though that one takes a *lot* of balloons.
 Clairvoyance∥"As we followed the ice wall, we had the distinct feeling of being watched. Many of the party wanted to turn back."↵-Disa the Restless, journal entry
 Clam Session∥"Duke, Duke, Duke, Duke of Pearl . . . ."
@@ -3120,7 +3110,6 @@ Compost∥A fruit must rot before its seed can sprout.↵-Yavimaya saying
 Compulsive Research∥"Every Planeswalker remembers the first time their mind touched the staggering vastness of the Multiverse."↵-Kasmina
 Compulsive Research∥"Four parts molten bronze, yes . . . one part frozen mercury, yes, yes . . . but then what?"
 Compulsive Research∥"Four parts molten bronze, yes … one part frozen mercury, yes, yes … but then what?"
-Compulsive Research∥「プレインズウォーカーは皆、多元宇宙の驚異的な広大さに初めて精神が触れたときのことを覚えているわ。」↵--カズミな
 Compulsory Rest∥The pain of death is nothing compared to the pain of failure.
 Concealed Courtyard∥Where high society and dark opportunity intersect.
 Concealing Curtains∥Specifics were kept secret, but word quickly spread that the show was a must-see.
@@ -3321,7 +3310,6 @@ Counterspell∥"The duel was going badly for me, and Zur thought I was finished.
 Counterspell∥"The duel was going badly for me, and Zur thought I was finished. He boasted that he would eat my soul-but all he ate were his words."↵-Gustha Ebbasdotter, Kjeldoran royal mage
 Counterspell∥"Your attack has been rendered harmless. It is, however, quite pretty."↵-Saprazzan vizier
 Counterspell∥The pyromancer summoned up her mightiest onslaught of fire and rage. Jace feigned interest.
-Counterspell∥「効果を抑えるために、呪文の詳細を知る必要ありません。呪文が操作する現実の規則を再配置するだけでいいのです。」↵--クアンドルクスの学部長、イムブラハム
 Countersquall∥"The essence of every world, every spell, and every thought is power. Nothing else matters, because nothing else exists."↵-Nicol Bolas
 Countersquall∥Each of the twenty-three winds of Esper is named and chronicled, and every possible interaction with the flow of magic is exhaustively detailed.
 Countervailing Winds∥The Eternals had long since mastered every technique taught during the trials.
@@ -3518,7 +3506,6 @@ Crushing Vines∥"Your veil's curse won't stop me, deathmage. I have taken down 
 Crush∥A golem's hands know no tenderness.
 Crux of Fate∥"One brother fought for the sake of the Multiverse. The other for himself."↵-*The Elderspell Parable*
 Crux of Fate∥Ugin's whispered summons led Sarkhan Vol to the moment that would echo down the centuries and seal Tarkir's fate: the primal battle between Ugin and Nicol Bolas.
-Crux of Fate∥「兄弟の一人は多元宇宙のために戦った。もう一人は自分のために。」↵――*古呪の寓話*
 Cry of the Carnarium∥If your ears bleed, it's a party. If your eyes bleed, it's a Rakdos party.
 Cryoclasm∥The people of Terisiare had come to live on frozen fields as though on solid ground. Nothing reminded them of the difference more clearly than the rifts brought on by the Thaw.
 Crypsis∥Tritons borrow the camouflage of their oceanic prey to become predators on land.
@@ -3572,7 +3559,6 @@ Cultivate∥"The black lotus rises from adverse conditions and produces a rare b
 Cultivate∥"You'd be amazed how much a single plant has to teach you."↵-Lisette, Witherbloom dean
 Cultivate∥A single spore from a Tyranid Hive Ship can spell doom for a solar system.
 Cultivate∥All seeds share a common bond, calling to each other across infinity.
-Cultivate∥「たったひとつの植物が教えてくれることの多さに驚くと思います。」↵――ウィザーブルームの学部長、リセッテ
 Cumber Stone∥"The stone is more potent than ever. The flesh that creeps into our land will become even more slovenly and weak."↵-Niclavs, archmage of Esper
 Cunning Breezedancer∥"That which is beautiful in form can also be deadly."↵-Ishai, Ojutai dragonspeaker
 Cunning Evasion∥"Begin with your escape and work backward."↵-*Way of Secrets*
@@ -3758,8 +3744,6 @@ Dark Ritual∥"Leshrac, my liege, grant me the power I am due."↵-Lim-Dul, the 
 Dark Ritual∥"Praise Nurgle! For the plague to have progressed so quickly, truly his blessing must be upon us!"↵-Ku'gath Plaguefather
 Dark Ritual∥"The ceremony ended with a voice from the shadows, a voice with vast, ominous power."↵-Kifimbo, Shadow Guildmage
 Dark Ritual∥"They distrust my methods, but when they want results, whom do you think they seek?"↵-*Incantations of Lim-Dul*
-Dark Ritual∥「ファイレクシアは虚空から生まれた。 機械の父、偉大なるヨーグモスはその完成された形を予見なされた。 かくして『偉大なる進化』が始まった。」↵---ファイレクシア経典
-Dark Ritual∥「奴らは私の方法を信用していない。しかし成果が必要なとき、奴らが探すの誰だと思う？」↵--リム＝トゥールの決まり文句
 Dark Salvation∥Countless ghouls surged through Thraben's streets, and with them came the city's salvation.
 Dark Sphere∥"I was struck senseless for a moment, but revived when the strange curiosity I carried fell to the ground, screaming like a dying animal."↵-Barl, Lord Ith
 Dark Supplicant∥Cabal clerics serve two masters: their patriarch and their god.
@@ -4097,7 +4081,6 @@ Demonic Tutor∥"Demons prefer to deal with those who believe themselves too wis
 Demonic Tutor∥"Mama says it's my imagination, but I know you'd never lie to me."
 Demonic Tutor∥Beware the generosity of demons.
 Demonic Tutor∥Liliana learned the secrets she sought, but at a price that was etched on her fate.
-Demonic Tutor∥「悪魔は、自分が賢く、騙されることなどないと信じている者を好む。」 ー巻物入れに刻まれた言葉
 Demonic Vigor∥In the Cabal, death is just another mark of devotion.
 Demonmail Hauberk∥It comes off as easily as your own skin.
 Demonspine Whip∥Using a spine to break a slave's back appeals to the Grixis sense of irony.
@@ -4156,7 +4139,6 @@ Desolation Twin∥"With precise coordination and enough blood spilled, one can b
 Desolation∥"Kill a creature, destroy the present. Kill the land, destroy the future."↵-Kaervek
 Despark∥"A tale of a tyrant being humiliated and losing all his power? I'm inspired already!"↵-Killian, Silverquill mage-student
 Despark∥Liliana whispered to whatever consciousness Oketra and Bontu had left. "You are the gods. He is the usurper. You know what to do."
-Despark∥「屈辱を受けてすべての力を失った暴君の話？ それだけで刺激的だよ！」↵--シルバークイルの魔道生徒、キリアン
 Desperate Castaways∥A pirate crew without a ship is a crew that will do anything to get one.
 Desperate Charge∥"Lieutenants dishonored, corpses carted home; The general raises troops again to take revenge."
 Desperate Farmer∥A tragic moment pushed him to a blasphemous act.
@@ -4457,7 +4439,6 @@ Done for the Day∥Punchy was programmed to do two things: punch tickets and lov
 Doom Blade∥"An angel can shine like the sun, inspire the weak, and even threaten victory over darkness. But in the end it matters not, for it still dies like any other pest."↵-Ob Nixilis
 Doom Blade∥"One little word was all it took. The world shook as I said it. The doom of Zendikar was here at last."↵-Ob Nixilis
 Doom Blade∥The void is without substance but cuts like steel.
-Doom Blade∥「天使は太陽のように輝き、弱者を鼓舞し、暗闇を脅かし勝利を手にすることできる。しかし、結局そんなことは重要ではない。それでも最後は他の害虫と同じように死ぬのだから。」↵--オブ・ニクシリス
 Doom Foretold∥In the end, death usually has its way.
 Doom Whisperer∥The sound of every twisted secret tempts you to hear another.
 Doomed Artisan∥"Remember me not as I am, but as I should have been."
@@ -4791,7 +4772,6 @@ Duress∥Resistance is unthinkable.
 Duress∥Sarkhan was eager to take vengeance on Zurgo until he saw how lowly his old foe had become.
 Duress∥Solitude and starvation are brutal punishments, but even worse is all that time to think.
 Duress∥The Voldaren torture pits are so expansive that prisoners have a nasty tendency to be forgotten for years.
-Duress∥「魔法は大界に平和をもたらしたが、すぐに腐敗した。」↵--神秘の時代：呪文物語
 Durkwood Boars∥"And the unclean spirits went out, and entered the swine: and the herd ran violently . . . ."↵-*The Bible*, Mark 5:13
 Durkwood Boars∥"And the unclean spirits went out, and entered the swine: and the herd ran violently . . . ."↵-Mark 5:13
 Durkwood Boars∥"And the unclean spirits went out, and entered the swine; and the herd ran violently . . . ."↵-*The Bible*, Mark 5:13
@@ -4879,7 +4859,6 @@ Earsplitting Rats∥Rats come in one amount: too many.
 Earth Elemental∥Earth Elementals have the eternal strength of stone and the endurance of mountains. Primordially connected to the land they inhabit, they take a long-term view of things, scorning the impetuous haste of short-lived mortal creatures.
 Earth Elemental∥Earth elementals have the eternal strength of stone and the endurance of mountains. Primordially connected to the land they inhabit, they take a long-term view of things, scorning the impetuous haste of short-lived mortal creatures.
 Earth Elemental∥Its voice has the tremor of deafening thunder, its blow the force of an avalanche.
-Earth Elemental∥Los elementales de tierra tienen la fortaleza eterna de la piedra y la resistencia de las montauas. En contacto primordial con la tierra que habitan, contemplan las cosas a largo plazo y desprecian la prisa impetuosa de las criaturas mortales de vida efimera.
 Earth Servant∥"Fire. Air. Water. These elements spread, filling in the spaces they are not. But earth is implacable like a sullen child."↵-Jestus Dreya, *Of Elements and Eternity*
 Earth Surge∥"Some gardeners sing to plants. I tell them stories-stories of how they once ruled the world, of the mortals who destroyed their kind, and of revenge."↵-Bougrat, druid of the Cult of Yore
 Earth Tremor∥"Every cave-in is Moradin telling you to leave the earth where it is."↵-Halgar, dwarven recluse
@@ -4979,7 +4958,6 @@ Electrify∥"Some hid from the storm. I embraced it and learned its name."
 Electrodominance∥"Basically, we turn a bunch of little lightnings into one big lightning."
 Electrolyze∥"The hydraulic power grip was a failure, but the gauntlets were a shocking success."↵-Journal of the Prime Izmagnus
 Electrolyze∥The Izzet learn something from every lesson they teach.
-Electrolyze∥「水圧式パワーグリップは失敗だったが、その電手は大きな成功だった。」↵--首席イズマグナスの日誌
 Electropotence∥Where life and force collide.
 Electrostatic Bolt∥It's hard to avoid electric shock when the entire plane is metallic.
 Electrostatic Field∥"It's both an ingress-denial mechanism and an attractive hallway light!"↵-Daxiver, Izzet electromancer
@@ -4995,7 +4973,6 @@ Elenda, the Dusk Rose∥Her centuries-long search is ended.
 Elephant Grass∥"How have I angered nature that she would imprison me in a labyrinth of grass?"↵-Kasib ibn Naji, Letters
 Elephant Guide∥Nature's strength outlives the strong.
 Elesh Norn, Grand Cenobite∥"The Gitaxians whisper among themselves of other worlds. If they exist, we must bring Phyrexia's magnificence to them."
-Elesh Norn, Grand Cenobite∥|su,porkFst,GEyts,LecchuZFFGKMEDEauDut. |be,Gyyts,pFnenBePe,Qe,fyrshuZFGKDugSeDZnepyt.
 Elf Replica∥It hunts with unnerving ferocity.
 Elfhame Druid∥The bond between Llanowar elves and their kavu empowers both.
 Elfhame Palace∥Llanowar has seven elfhames, or kingdoms, each with its own ruler. Their palaces are objects of awe, wonder, and envy.
@@ -5006,7 +4983,6 @@ Eligeth, Crossroads Augur∥"There's no better place to divine the future than a
 Eliminate the Competition∥Open hostilities are strictly forbidden at the Inventors' Fair, but "accidents" still happen.
 Eliminate∥"Cruelty? No. This is necessity."↵-Kaervek
 Eliminate∥"It takes so little energy to erase a person. It's almost like the universe doesn't care that they existed at all."↵-Extus Narr
-Eliminate∥「人を消すのにほとんどエネルギーはいらない。稀で宇宙がその存在を全く気にしてないかのようにな。」↵--エクスタス・ナー
 Elite Archers∥Arrows fletched with the feathers of angels seldom miss their mark.
 Elite Archers∥They fletch their arrows with the feathers of angels.
 Elite Arrester∥"Hold it! I need to see your papers."
@@ -5110,7 +5086,6 @@ Elvish Visionary∥"From a tiny sprout, the greatest trees grow and flourish. Ma
 Elvish Visionary∥Before any major undertaking, a Cylian elf seeks the guidance of a visionary to learn the will of the gargantuan ancients.
 Elvish Warrior∥"My tales of war are the stories most asked for around the fires at night, but they're the ones I care least to tell."
 Elvish Warrior∥As graceful as a deer leaping a stream and as deadly as the wolf waiting in ambush on the other side, elvish warriors are the eyes of the forest as well as its unsheathed claws.
-Elvish Warrior∥Tan gracil como el ciervo saltando el arroyo y tan mortal como el lobo emboscando del otro lado, los guerreros elficos son los ojos del bosque al igual que sus garras desnudas.
 Emancipation Angel∥"You have done your best. I give you leave to rest."
 Embalmer's Tools∥"They might be dead, but these mummies are masters of their trade."↵-Jace Beleren
 Ember Beast∥Spot one ember beast, attack.↵Spot a second, best fall back.↵-Dwarven saying
@@ -5230,7 +5205,6 @@ Enlightened Tutor∥"Organization is often undervalued but rarely unjustified."�
 Enlightened Tutor∥The path offered by the academy is long and difficult, but those who brave it arrive at wisdom beyond compare.
 Enlisted Wurm∥A match for any army-even its own.
 Enormous Baloth∥Its diet consists of fruits, plants, small woodland animals, large woodland animals, woodlands, fruit groves, fruit farmers, and small cities.
-Enormous Baloth∥La sua dieta è composta da frutta, piante, piccoli animali del bosco, grossi animali del bosco, boschi, frutteti, fattorie e piccole citta.
 Enormous Energy Blade∥"Heavy? Maybe for you."
 Enraged Ceratok∥"There's no time to calm it down! Run!"
 Enraged Giant∥When fighting spilled over into Giant's Walk, the aether weapons and swooping airships angered the normally placid creatures.
@@ -5498,7 +5472,6 @@ Expendable Troops∥No doubt in their minds, no fear in their hearts.
 Experiment Kraj∥"Of course it will grow beyond control-it was designed to choose its own evolution."↵-Momir Vig
 Experimental Aviator∥"The little thopters seemed lonely up here, so I thought I'd join them."
 Experimental Frenzy∥Turns out coffee is the weird aunt of invention.
-Experimental Frenzy∥コーヒーは発明の偏屈な叔母であるのだ。
 Experimental Overload∥Explosions aren't necessarily failures, just a different kind of success.
 Exploding Borders∥Reuniting a world is not a gentle process.
 Exploration∥"Only when we journey into the unknown can we find the impossible."↵-Cyrul the Wanderer
@@ -5585,7 +5558,6 @@ Face of Divinity∥Pure souls shine bright as daybreak.
 Face of Fear∥"It's only frightened five people to death. Not my best work."↵-Braids, dementia summoner
 Face to Face∥Befuddled by this new game, Argg longed for the days of Rock, Rock, Rock.
 Faceless Haven∥It is everywhere and nowhere, a place unbound by logic, just beyond the real.
-Faceless Haven∥それはすべての場所、どこでもない場所。論理の束縛を超えた現実の向こう側。
 Faces of the Past∥The ties that bind can also strangle.
 Facet Reader∥"Every flaw in the crystal represents a moment where our strategy might go wrong."
 Facevaulter∥Boggarts get so excited when they find something new to smash that they really don't notice who gets underfoot.
@@ -5625,7 +5597,6 @@ Faithbearer Paladin∥"I've seen cathars riding to battle without a hint of fear
 Faithful Mending∥"What has been looted can be restored. The church lives on within us."
 Faithless Looting∥"Avacyn has abandoned us! We have nothing left except what we can take!"
 Faithless Looting∥"How did you get your hands on that? Wait, never mind. I don't want to know."↵-Plargg, Lorehold dean
-Faithless Looting∥「どうやってそれを手に入れたのだ？ いや、気にするな。答えは聞きたくない。」↵--ロアホールドの学部長、プラーグ
 Faithless Salvaging∥All that's left are broken beliefs.
 Faithless Salvaging∥Mood: A bit regretful but still looking for loot.
 Falcon Abomination∥The foulest of fowl.
@@ -5879,7 +5850,6 @@ Field of Dreams∥Some people say that the world is round, and if you travel far
 Field of Reality∥"The scholars of the Minamo School understood the veil between their world and that of the kami. Moreover, they knew how to exploit it."↵-*Observations of the Kami War*
 Fiend Binder∥She had not believed any shred of humanity remained in these writhing monsters until the twisted form of her partner appeared before her.
 Fiendish Duo∥Half the size, double the mayhem.
-Fiendish Duo∥大きさは半分、悪事は二倍。
 Fiendlash∥A fiery scourge for both flesh and soul.
 Fierce Guardianship∥"Hunt somewhere else. This is your only warning."↵-Gavi, nest warden
 Fierce Invocation∥Anger can empower those who embrace it.
@@ -6510,7 +6480,6 @@ Fyndhorn Elder∥"It is useful to be able to speak to the trees. But it is truly
 Fyndhorn Elves∥"Living side by side with the Elves for so long leaves me with no doubt that we serve the same goddess."↵-Kolbjorn, Elder Druid of the Juniper Order
 Fyndhorn Elves∥"Living side by side with the elves for so long leaves me with no doubt that we serve the same goddess."↵-Kolbjorn, elder druid of the Juniper Order
 Fyndhorn Elves∥"We could no more abandon the forest than the stars could abandon the night sky."
-Fyndhorn Elves∥„Wir konnen den Wald ebenso wenig verlassen wie die Sterne den Nachthimmel."
 Fyndhorn Pollen∥"I breathed deeply, and suddenly I knew not who or where I was."↵-Taaveti of Kelsinko, Elvish Hunter
 Fyndhorn Pollen∥"I breathed deeply, and suddenly I knew not who or where I was."↵-Taaveti of Kelsinko, elvish hunter
 Fynn, the Fangbearer∥"Come, Koma, and reclaim what you lost! Or does the great serpent fear a rematch?"
@@ -6799,7 +6768,6 @@ Gideon's Reproach∥On Amonkhet, Gideon lost both his sural and his faith in him
 Gideon's Sacrifice∥To Liliana's surprise, the cost of betraying Bolas did not fall on her.
 Gideon's Triumph∥His triumph came not from victory over his enemies, but from the salvation of those who survived.
 Gift of Estates∥"We asked for a home and received the world."↵-*Scroll of Nine Blessings*
-Gift of Estates∥「家を願い世界を受け取った。」↵--九つの祝福の巻物
 Gift of Fangs∥"You are one of the few to whom we offer our blessing. What fool would reject immortality?"↵-Runo Stromkirk
 Gift of Granite∥The blessing adds both protection to the recipient and weightlessness to the stone.
 Gift of Orzhova∥"Remember by whose gift you ascend."↵-Milana, Orzhov prelate
@@ -6931,7 +6899,6 @@ Glorybringer∥What the initiates face in the final trial is completely at Hazor
 Gloryscale Viashino∥"This is a new world and a new war. We need warriors who know chaos and how to combat it."↵-Lisha of the Azure
 Glory∥"Glory was gone; Glory was everywhere."↵-*Scroll of Beginnings*
 Glory∥"Glory was gone; Glory was everywhere."↵-Scroll of Beginnings
-Glory∥"תהילה נﬠלמה; תהילה הייתה בכל מקום."↵-מגילת ההיווצרות והמקור
 Glowering Rogon∥A herd of one.
 Glowing Anemone∥Beautiful to behold, terrible to be held.
 Glowrider∥"It is not yet time."
@@ -7508,7 +7475,6 @@ Growing Ranks∥"We will grow an army large enough to withstand the Izzet's madn
 Growth Cycle∥"Shed your faded husk! Emerge sleeker and stronger!"↵-Tyris, fauna shaman
 Growth Spiral∥"I've gleaned greater insight from the spiraling of a single fern than I have from all the books I've ever read."↵-Kianne, Quandrix dean
 Growth Spiral∥Cyclical and spiral patterns are the specialty of the Gyre Clade, which seeks to revitalize the cycles of nature.
-Growth Spiral∥「たったひとつのシダの渦から、今まで読んだどんな本よりも深い洞察を得ました。」↵--クアンドリクスの学部長、キアン
 Growth Spurt∥MORE TO LOVE: Friendly, nature-loving, Bunyonesque SEM seeks SEF looking for a huge commitment. . . . seeks atog prince
 Grudge Keeper∥"Your defiance is noted."
 Gruesome Deformity∥She wanted to inspire terror wherever she went. The demons happily granted her wish.
@@ -7711,7 +7677,6 @@ Harmonize∥"Animals commune with their environment without the need for languag
 Harmonize∥"Life's greatest lessons don't come from focus or concentration. They come from breathing and simply noticing."↵-Seton, centaur druid
 Harmonize∥"The bloody din of invasion faded↵And silent song rang through the woods again."↵-"Song of Freyalise"
 Harmonize∥"Words lie. People lie. The land tells the truth."
-Harmonize∥「侵略の血まみれの喧騒が消え↵そして再び静かな歌が森の中に鳴り響く。」↵--「フレイアリーズの歌」
 Harness Infinity∥"As I stepped into the star arch, it all became perfectly clear. Life and death are not opposites, but an endless path, twisting around and back upon itself, never ending and never beginning."↵-Zhaer, professor of biophilosophy
 Harness the Storm∥"There is no place like a rooftop laboratory in a lightning storm. It's where genius strikes."↵-Renna, Selhoff alchemist
 Harpoon Sniper∥Made from whiskergill bones, merrow spinebows can fire bolts through tree trunks.
@@ -8564,7 +8529,6 @@ Information Dealer∥"One wizard is a suspect. Two wizards are a conspiracy."↵
 Infuriate∥"No shirt, no shoes, no service."↵-Marketplace sign
 Infuriate∥"Renata launched a dozen arrows into the minotaur's thick hide, but the monster didn't slow its charge. The fury of Mogis was upon it."↵-Luphea of Setessa, *Histories*
 Infuriate∥"Some mages duel using intricate spellcraft and superior tactics. Others just get really, really mad."↵-*Secrets of the Feradorn Sorcerers*
-Infuriate∥「複雑な魔術と優れた戦術をもって決闘する魔道士もいる。一方で、とにかく怒りに任せるだけの魔道士もいる。」↵--フェラドルンの魔術師の秘密
 Infuse with Vitality∥Dina raised her cup to Killian's lips, and for the first time in his life, he knew compassion.
 Infuse with the Elements∥"Zendikar has given us the weapons to wage war on the appropriate scale."↵-Najiya, leader of the Tajuru
 Infuse∥"The potential for change lies in all things. Know a thing's nature, know its possibilities, and know it anew."↵-Gustha Ebbasdotter, Kjeldoran Royal Mage
@@ -8601,7 +8565,6 @@ Inordinate Rage∥"In my years wandering this land I've seen a veritable menager
 Inquisition of Kozilek∥"To dwell within the Blind Eternities is unthinkable. To encounter those who do could shatter the mind."↵-*Chronicle of the Titans*
 Inquisition of Kozilek∥After the awakening of the Eldrazi, some vampires took it upon themselves to remind the others where their loyalty should lie.
 Inquisition of Kozilek∥You will scream out your innermost secrets just to make it stop.
-Inquisition of Kozilek∥「久遠の闇の中に住むなど考えられない。精神を打ち砕く奴らに遭遇するなど。」↵--タイタン年代記
 Inquisition∥Many of those entrusted to Primata Delphine's care tended to express themselves with screams.
 Inquisitive Puppet∥"The strings were gone, but he still felt the pull of invisible forces tugging at his mind."↵-*Beyond the Great Henge*
 Inquisitor Exarch∥"Skin is the prison of the blessed and the stronghold of the heretic."↵-Argent Etchings, plate 64, passage 17
@@ -8843,7 +8806,6 @@ Jalum Tome∥"These glyphs describe a Thran device capable of controlling a mach
 Jalum Tome∥Most books simply deliver knowledge. This one expects some in return.
 Jalum Tome∥This timeworn relic was responsible for many of Urza's victories, though he never fully comprehended its mystic runes.
 Jalum Tome∥This timeworn relic was responsible for many of Urza's victories, though he never fully comprehended its mystical runes.
-Jamuraan Lion∥Der Lowe zwinkerte↵-Ausdruck der Femeref fur "noch einmal davongekommen
 Jamuraan Lion∥The lion blinked↵-Femeref expression meaning "situation avoided"
 Jandor's Saddlebags∥Each day of their journey, Jandor opened the saddlebags and found them full of mutton, quinces, cheese, date rolls, wine, and all manner of delicious and satisfying foods.
 Jandor's Saddlebags∥Your heart's desire is found within.↵-Saddlebag inscription
@@ -8906,7 +8868,6 @@ Jhovall Queen∥War-trained jhovalls eat twice their weight in war-trained soldi
 Jhovall Rider∥Don't be fooled by the riders' fluid grace-it takes years of practice to ride these beasts.
 Jilt∥"You're not my Hanna!"↵-Gerrard, to Yawgmoth
 Jin-Gitaxias, Core Augur∥"It is not a goal, but a process-the process of creating the perfect Phyrexia."
-Jin-Gitaxias, Core Augur∥|Fs,PccYpLZFst,suCEtCpunAodrm/wne%mfyrshuZFkKne%ym,CpunAodrm.
 Jinnie Fay, Jetmir's Second∥She watches Jetmir's back while her companions watch hers.
 Jinxed Idol∥"Here."
 Jinxed Idol∥"Please, honored friend, take it with my compliments. I insist."
@@ -9027,7 +8988,6 @@ Kalastria Nightwatch∥"Kalitas may have returned to mindless servitude beneath 
 Kaleidostone∥Once broken, who knows what worlds might grow from its shards?
 Kalonian Behemoth∥"Do not fire upon it-it is bad luck. And a waste of arrows."↵-Alera Benath, Kalonian ranger
 Kalonian Hydra∥Even baloths fear its feeding time.
-Kalonian Hydra∥Incluso los baloths le temen cuando es su hora de comer.
 Kalonian Tusker∥"And all this time I thought *we* were tracking *it*."↵-Juruk, Kalonian tracker
 Kamahl's Druidic Vow∥Centuries ago, a barbarian laid his rage to rest.
 Kamahl's Summons∥As Krosa unleashed the peace in Kamahl, he unleashed the fury in Krosa.
@@ -9449,7 +9409,6 @@ Krosan Druid∥"Druids endure disaster as seeds endure winter. Now Krosa blooms 
 Krosan Grip∥"Give up these unnatural weapons, these scrolls. Heart and mind and fist are enough."↵-Zyd, Kamahlite druid
 Krosan Grip∥"On a world where time was torn asunder, destruction ruled the minds of all."↵-*Multiversal Metahistories*
 Krosan Grip∥The Atlas Gauntlets did little to dissuade Vi of the notion that everything could be solved by punching.
-Krosan Grip∥「時がばらばらに引き裂かれた世界では、破壊がすべての心を支配した。」↵--多元宇宙の形而上史学
 Krosan Groundshaker∥You know it's coming when you hear the distant thunder. You know where it's been when you see the path of broken trees.
 Krosan Warchief∥It turns prey into predator.
 Krosan Wayfarer∥"The Krosan Forest lives, and druids are its seeds."↵-Seton, centaur druid
@@ -9536,7 +9495,6 @@ Lantern Spirit∥Bound to the square where she died, she calls out to those in d
 Lantern of Insight∥Each eye sees a different possibility for tomorrow.
 Lapse of Certainty∥Without a connection of mind and body, magic is just an idea stuck in the head, a word on the tip of a tongue.
 Laquatus's Champion∥Chainer's dark gift to a darker soul.
-Laquatus's Champion∥Темный дар Чейнера еще более темной душе.
 Laquatus's Creativity∥One never knows when inspiration will bubble up.
 Laquatus's Disdain∥"The first time was amusing, but now you're getting tiresome."
 Larceny∥Opportunity makes the thief.↵-Roman proverb
@@ -9580,7 +9538,6 @@ Lava Burst∥"Overkill? This isn't a game of Kick-the-Ouphe!"↵-Jaya Ballard, T
 Lava Burst∥"Overkill? This isn't a game of Kick-the-Ouphe!"↵-Jaya Ballard, task mage
 Lava Burst∥"Overkill? This isn't a game of kick-the-ouphe!"↵-Jaya Ballard, task mage
 Lava Coil∥"Commander, we caught the Dimir spy and took her ashes into custody."↵-Kramm, Wojek security officer
-Lava Coil∥「司令官、ディミーアのスパイを捕らえ、その遺灰を監禁しました。」↵――ウォジェクの警備兵、クラム
 Lava Dart∥"Small outbursts are healthy."↵-Koth of the Hammer
 Lava Flow∥People ran as never before at the thought of being buried and cremated at the same time.
 Lava Hounds∥What cats bury, dogs eat.↵-Urborg aphorism
@@ -9760,7 +9717,6 @@ Lightning Bolt∥"Hasn't she heard of knocking?!"↵-Snerd, Flaming Fist guard
 Lightning Bolt∥"My, how shocking."↵-Barrin, Tolarian archmage
 Lightning Bolt∥"The first mages witnessed the fury of the raging storm and wished to answer back."↵-*The Stormwright Texts*
 Lightning Bolt∥The sparkmage shrieked, calling on the rage of the storms of his youth. To his surprise, the sky responded with a fierce energy he'd never thought to see again.
-Lightning Bolt∥「最初の魔術師は荒れ狂う嵐の怒りを目撃し、それに応えようとした。」↵--嵐大工の文書
 Lightning Cloud∥The mightiest clouds sit upon spires of fire.↵-Femeref adage
 Lightning Dart∥Broken and punctured by dozens of Phyrexian portals, the angry sky began to spit lightning back at the world.
 Lightning Diadem∥"I fight for Keranos and for mortals. I see no contradiction."
@@ -9774,7 +9730,6 @@ Lightning Helix∥"Mages in the Blood Age would call down actual thunderstorms o
 Lightning Helix∥"Rage is not the answer. Rage followed by fitting vengeance is the answer."↵-Ajani
 Lightning Helix∥"Rage is not the answer. Rage followed by fitting vengeance is the answer."↵-Ajani Goldmane
 Lightning Helix∥Though less well-known than its army of soldiers, the Boros Legion's mage-priests are as respected by the innocent as they are hated by the ghosts of the guilty.
-Lightning Helix∥「血の時代の魔術師は、敵に雷雨の降らせていたという。我々もその技を模倣できるはずだ。」↵--ロアホールドの魔道生徒、ドラディエル
 Lightning Hounds∥Quick enough to avoid jhovalls when alone and fierce enough to attack them in packs, the hounds were as at home in the mountains as the Mercadians were atop theirs.
 Lightning Javelin∥The harpies descended without mercy upon Akros, only to find their attack put them within range of the javelineers.
 Lightning Mare∥When it passes, storm clouds bolt across the land.
@@ -9889,7 +9844,6 @@ Loam Dryad∥"I've never known dryads to suffer visitors in their woods. Beware 
 Loam Dweller∥"You know its mood by the plants that spring up around it. When it is placid, fields of lilies flow in its wake; when it is angry, every stem has a thorn."↵-Isao, Enlightened Bushi
 Loam Larva∥The forest floor of Murasa is home to life as diverse and vibrant as that of the canopy above.
 Loam Lion∥In Zendikar, today's grassland could be tomorrow's jungle, and hunting grounds change as quickly as the weather.
-Loam Lion∥ゼンディカーでは、今日の草原は明日の密林であり、狩場も天気と同じぐらいにすぐ変わってしまう。
 Loamdragger Giant∥Giants sleep soundly and long, sometimes for long enough that a crust of earth and moss grows over them. But inevitably something disturbs their slumber, and they wake unhappy.
 Loaming Shaman∥"The living don't ever stay living, and the dead don't always stay dead."↵-Jeddeg, philosopher of graves
 Loaming Shaman∥His work determines who is remembered and who feeds the worms.
@@ -10265,7 +10219,6 @@ Mana Short∥"Remove their power, and their will to fight will follow."↵-Tolar
 Mana Skimmer∥They traverse the mana-starved wastes in search of richer lands.
 Mana Tithe∥"The tyrant's bellow of rage trailed off into a whimper as the last of his fortune escaped his grasp."↵-*The Dethroner's Grimoire*
 Mana Tithe∥"Those who seek to upset the balance must be taxed for such ambitions."↵-Verithain, mesa high priest
-Mana Tithe∥「暴君の怒鳴り声は、最後の財宝がその手を逃げ出すと、次第に泣き言になりました。」↵--退位させる者のグリモワール
 Mana Vapors∥The scent of magic can rob you of your senses, blinding you to the world.
 Manabarbs∥"I don't know why people say a double-edged sword is bad. It's a sword. With two edges."↵-Kamahl, pit fighter
 Manaforce Mace∥As the shards merged, relics once thought mundane regained forgotten powers.
@@ -10529,7 +10482,6 @@ Memory Lapse∥"Um … oh … what was I saying?"↵-Reveka, Wizard Savant
 Memory Lapse∥"Um...oh...what was I saying?"↵-Reveka, wizard savant
 Memory Lapse∥"Where do our forgotten thoughts go? I knew once, but I can't remember."↵-Director Taiva, journal entry
 Memory Lapse∥What a lonely agony, the memory of memories lost.
-Memory Lapse∥「我々が忘れてしまった考えはどこへ行ってすまったのだ？かつて知っていたことが思い出せない。」↵--タイヴァ校長の日記
 Memory Leak∥"By halves does youth depart. I remember halves of names, halves of years, halves of myself."↵-Ogaro, wandering sage
 Memory Plunder∥"Vengeance is the echo of the victim's own crime."↵-Grensch, merrow cutthroat
 Memory Theft∥In the wilds, the ravens steal far more than baubles.
@@ -11231,7 +11183,6 @@ Mystic Zealot∥Nomad youths aspire to one of two roles in the tribe: priest or 
 Mystic of the Hidden Way∥"There are many different paths. The Great Teacher reveals them all."
 Mystic of the Hidden Way∥"There are no obstacles, only different paths."
 Mystical Dispute∥"Poor, lost mage. Your feet are on land, yet you're in over your head, aren't you?"
-Mystical Dispute∥「哀れな迷える魔道士よ。足は地についていても、手は届かない。そうだろう？」
 Mystical Tutor∥"It's not just what you know. It's knowing where to find what you don't."
 Mystical Tutor∥"Now, did I file that away under 'C' for 'Combo' or 'F' for 'Finisher?'"
 Mystical Tutor∥"To the tutors, a 'poem of sand' was of little account, a 'poem of ivory,' priceless."↵-Afari, *Tales*
@@ -11290,7 +11241,6 @@ Natural Obsolescence∥"It is folly to believe your precious inventions will end
 Natural Order∥"Nature is neither cruel nor kind. It operates on necessity, not sentiment."↵-Dina, Witherbloom mage-student
 Natural Order∥. . . but the price of Mangara's freedom was Asmira's life.
 Natural Order∥...but the price of Mangara's freedom was Asmira's life.
-Natural Order∥「自然は残酷でも親切でもない。感情ではなく、必要性に応じて機能するのよ。」↵――ウィザーブルームの魔道生徒、ダイナ
 Natural Spring∥"Jewels cannot be eaten nor gold drunk. What civilization trades, nature simply provides."↵-Molimo, maro-sorcerer
 Natural Spring∥Mirri listened intently, even as Hanna held the healing water to her lips. Would the sound of the spring drown out the elves' approach?
 Natural Spring∥The dying ask for water because they know it contains life.
@@ -11400,7 +11350,6 @@ Negate∥"Shatter your opponent's spell with enough force, and you'll shatter th
 Negate∥"The ancient kor were a clever bunch with a taste for nasty traps. Spikes, poison, fire pouring forth with no warning . . . I've seen and disabled them all. If you intend to raid a Skyclave, you'd be wise to hire me on."
 Negate∥"You cannot be an Ojutai monk. They prize wisdom and skill, and you have neither."↵-Siara, the Dragon's Mouth
 Negate∥Masters of the arcane savor a delicious irony. Their study of deep and complex arcana leads to such a simple end: the ability to say merely yes or no.
-Negate∥「十分な力で対戦相手の呪文を打ち砕けば、それで自信も打ち砕けるでしょう。」↵--障害の秘本、傍注
 Neglected Heirloom∥"There is a rich history in a blade like this."↵-Old Rutstein
 Neheb, the Eternal∥"This is what glory looks like."↵-Nicol Bolas
 Nekrataal∥"I have seen the horrors Kaervek has freed. My Betrayal is certain-but of Kaervek or of Jamuraa, I cannot say."↵-Jolrael
@@ -11875,7 +11824,6 @@ Opt∥"We need alternatives, Hanna," yelled Gerrard. "Now!"
 Opt∥The choice isn't whether to eat, but when to stop.
 Opt∥The crystal pulsed with the power of Teferi's Planeswalker spark. Had Jhoira given him a blessing or a curse?
 Opt∥The crystal pulsed with the power of Teferi's planeswalker spark. Had Jhoira given him a blessing or a curse?
-Opt∥「最もよく叶う願いは、自らの運命を選択したいという願いだ。」
 Opulent Palace∥The dense jungle surrenders to a lush and lavish expanse. At its center uncoil the spires of Qarsi Palace.
 Oracle of Dust∥Whatever it is searching for, it will stop at nothing to find it.
 Oracle of Nectars∥When elves find a fount of beauty, they protect it. Where there is beauty, there is hope.
@@ -12328,7 +12276,6 @@ Phalanx Tactics∥Every soldier has a place to stand and a role to play.
 Phantasmal Abomination∥Create an illusion so strong that it becomes another's reality, and you can become the master of all.
 Phantasmal Bear∥"You know it to be false, but when its claws find you, what you know won't matter much at all."↵-Pol Jamaar, illusionist
 Phantasmal Dragon∥Its hunger and ire are no less for being wrought of lies and mist.
-Phantasmal Dragon∥嘘と霧から生み出されたものにも関わらず、その飢えと怒りは力を持つ。
 Phantasmal Dreadmaw∥"That was perhaps the most terrifying thing I thought I almost saw."↵-Captain Lannery Storm
 Phantasmal Dreadmaw∥Action: Using the original art of Colossal Dreadmaw as inspiration, design an illusionary version of the dinosaur.
 Phantasmal Forces∥These beings embody the essence of true heroes long dead. Summoned from the dreamrealms, they rise to meet their enemies.
@@ -12920,7 +12867,6 @@ Putrefaction∥"Do you want to be alive or whole?"↵-Ta-Karnst, Cho-Arrim heale
 Putrefy∥"All matter, animate or not, rots when exposed to time. We merely speed up the process."↵-Ezoc, Golgari rot farmer
 Putrefy∥"From monarch to mulch as quick as could be."↵-*The Dethroner's Grimoire*
 Putrefy∥"We are all decaying, always in a state of near-death. One moment without breath and we begin to break down."↵-Cevraya, Golgari shaman
-Putrefy∥「王から肥料に、できるだけ早く。」↵--退位させる者のグリモワール
 Putrid Goblin∥Too stupid to survive, too dumb to die.
 Putrid Leech∥"The Golgari would say that life comes from death and death comes from life. But sometimes, death comes from the dead."↵-Vraska
 Putrid Leech∥It reacted to Naya's overabundant food supply by growing additional mouths.
@@ -13083,7 +13029,6 @@ Raging Goblin∥Charging alone takes uncommong daring or uncommon stupidity. Or 
 Raging Goblin∥He raged at the world, at his family, at his life. But mostly he just raged.
 Raging Goblin∥Volrath has bred them to fear only him. Are they charging into battle, or merely fleeing his wrath?
 Raging Gorilla∥"Every temper tantrum makes another angry gorilla."↵-Femeref children's myth
-Raging Kavu∥"Yavaimayae necesse mille annis fuit ut illa aluerent, sed modo momentum necesse fuit ut illa pretium probaverent."
 Raging Kavu∥It took Yavimaya a thousand years to breed them, but it took only seconds for them to prove their worth.
 Raging Kavu∥Yavaimayae necesse mille annis fuit ut illa aluerent, sed modo momentum necesse fuit ut illa pretium probaverent.
 Raging Kronch∥"Seeing so much easy prey makes her crazy. See how she snorts and drools?"↵-Dhuuz, kronch wrangler
@@ -13457,7 +13402,6 @@ Regress∥"Never look too deep, where the waters turn dark. What the sea has hid
 Regress∥"Once cast, a spell can be undone. But once revealed, a secret can never again be kept."↵-Pontifex, elder researcher
 Regrowth∥"Centuries of war had broken Arcavios, but a single seed began the long process of renewal."↵-*The Mystic Age: A Saga of Spells*
 Regrowth∥While the root remains, the tree yet lives.
-Regrowth∥「何世紀も続く競争がアルケヴィオスを破壊した。しかしひとつの種が、長い再生の道を歩み始めた。」↵--神秘の時代：呪文物語
 Reign of Chaos∥"The Burning Isles are the home to a dozen lords who claim dominion. Jamuraa will look to only one leader: me."↵-Kaervek
 Reign of Terror∥"I don't know what takes them; they die around me without time to scream."↵-Scout Ekemet, final journal
 Reincarnation∥"You cannot imagine what eyes you may look through tomorrow."↵-Aerona, elder druid
@@ -13674,7 +13618,6 @@ Reverse the Sands∥Worse than the years of aging was the burden of memory. The 
 Revitalize∥"A potion is no substitute for a skilled surgeon, but it will hold your bits in."↵-Torricks, battlefield medic
 Revitalize∥"Knight Kathryn closed her eyes, bracing herself for the end. When she opened them again, she stood triumphant over her foe."↵-Thadus the Healer, *Memoirs*
 Revitalize∥Esika alone knows how to distill the essence of the World Tree into the Cosmos Elixir, a magical substance which grants the Skoti god-family immortality.
-Revitalize∥「騎士カスリンは目を閉じ、最期を覚悟すました。再びめを開けると、勝利を勝ちっていたのです。」↵--癒し手のタダス、回顧録
 Revival Experiment∥What goes into the vivipods never quite matches what comes out.
 Revive∥Even what is lost beyond recall returns when coaxed by a dryad's hand.
 Revive∥Gerrard's heart ached, recalling the living wreath Mirri laid for her dead kin. No such memorial was left for her in Rath.
@@ -14207,7 +14150,6 @@ Sakura-Tribe Elder∥He'd chosen a sunlit clearing with open skies and an ample 
 Sakura-Tribe Elder∥Slain orochi warriors were buried with a tree sapling so they would become a part of the forest after death.
 Sakura-Tribe Elder∥Slain warriors were buried with a tree sapling, so they would become a part of the forest after death.
 Sakura-Tribe Elder∥There were no tombstones in orochi territory. Slain warriors were buried with a tree sapling, so they would become a part of the forest after death.
-Sakura-Tribe Elder∥大蛇の領地には墓石が無い。死んだ戦士は木の苗と共に埋められ、死して後に森の一部となるのだ。
 Sakura-Tribe Scout∥"Scouts of the Sakura Tribe spent two years wandering the forest to learn every leaf and tree. That knowledge was called upon during the Kami War to ensure the orochi's survival."↵-*The History of Kamigawa*
 Salivating Gremlins∥If an elf can dream it, a dwarf can build it, and a gremlin can eat it.
 Salt Marsh∥Only death breeds in stagnant water.↵-Urborg saying
@@ -14779,7 +14721,6 @@ Serra Angel∥Perfect justice in service of a perfect will.
 Serra Angel∥She soars on wings of Serra's light, her sword of faith meting out justice to the wicked.
 Serra Angel∥The angel remembers her past lives like dreams. Her song held up meadows. Her blade drove back darkness. Her wings carried her across the ages.
 Serra Angel∥When she flies above the good, they consider themselves blessed. When she flies above the wicked, they consider themselves dead.
-Serra Angel∥天使は過去の自分を夢のように思い出していた。自分の歌が牧草地を支えたこと。自分の刃が闇を追い返したこと。自分の翼がずっと自分を運んでいたことを。
 Serra Ascendant∥Faith in Serra is its own reward.
 Serra Avatar∥"Serra isn't dead. She lives on through me."
 Serra Avenger∥"Those who endure in the face of suffering, those whose faith shines long in evil days, they shall see salvation."↵-*Song of All*, canto 904
@@ -14949,7 +14890,6 @@ Shepherd of Heroes∥"Rest, friends. I will protect you."
 Shepherd of Rot∥"My priests swore loyalty to the Cabal not until death, but beyond it."↵-Cabal Patriarch
 Shepherd of the Flock∥Not all heroes carry swords.
 Shepherd of the Lost∥"Should you fall in the wilds, lift your voice to the Sky Realm. The one who answers will be your salvation."↵-Emeria's Creed
-Shepherd of the Lost∥www.MagicTheGathering.com↵www.mtg-jp.com
 Shield Bearer∥"You have almost completed your four years, my son. Soon you shall be a Skyknight."↵-Arna Kennerud, Skyknight
 Shield Bearer∥"You have almost completed your four years, my son. Soon you shall be a skyknight."↵-Arna Kennerud, skyknight
 Shield Dancer∥The harder your strike, the stronger her defense.
@@ -15011,7 +14951,6 @@ Shivan Dragon∥"It's just playing with us, Marsden."↵-Dafynne the Radiant, la
 Shivan Dragon∥The undisputed master of the mountains of Shiv.
 Shivan Dragon∥While it's true most Dragons are cruel, the Shivan Dragon seems to take particular glee in the misery of others, often tormenting its victims much like a cat plays with a mouse before delivering the final blow.
 Shivan Dragon∥While it's true most dragons are cruel, the Shivan dragon seems to take particular glee in the misery of others, often tormenting its victims much like a cat plays with a mouse before delivering the final blow.
-Shivan Dragon∥Неоспоримый хозяин Шиванских гор.
 Shivan Fire∥Sometimes Shivan dragons toy with their food. Other times they just cook it.
 Shivan Gorge∥Both forge and pyre.
 Shivan Harvest∥"The blood of your ancestors ran heavy on this soil. Now it's your turn to sacrifice for the glory of Shiv."↵-Viashino heretic
@@ -15035,7 +14974,6 @@ Shock∥"The beauty of it is they never see it coming. Ever."↵-Razzix, sparkma
 Shock∥"To this day, I have no idea if the heavens were obeying him or attacking him."↵-Ral Zarek, research notes
 Shock∥Lightning tethers souls to the world.↵-Kor saying
 Shock∥The tools of invention became the weapons of revolution.
-Shock∥「今もなお、天は彼に従っていたのか、彼を攻撃していたのか、私にはわからない。」↵--ラル・ザレックの研究記録
 Shoe Tree∥It grows several feet a year.
 Shore Keeper∥Over their long life spans, the larger trilobites accumulate vast treasure troves in their guts.
 Shore Snapper∥Kathari, the sickly aven of Grixis, have learned that the corpses by the shoreline are more trap than treat.
@@ -15147,7 +15085,6 @@ Sigiled Starfish∥Kruphix hid the most dire prophecies about humankind where hu
 Sign in Blood∥"It's always my brightest students who make the worst decisions."↵-Shaile, Silverquill dean
 Sign in Blood∥"You know I accept only one currency here, and yet you have sought me out. Why now do you hesitate?"↵-Xathrid demon
 Sign in Blood∥Little agonies pave the way to greater power.
-Sign in Blood∥「最悪の決断をするのは、いつも最も優秀な生徒です。」↵--シルバークイル学部長、シェイル
 Signal Pest∥It leaps from tree to tree, revealing the enemy's positions.
 Signal the Clans∥Gruul clanfolk obey few rules, but all feel bound to answer the call of the horn.
 Signpost Scarecrow∥"Accursed scarecrow! Sending folk in every direction is the same as sending them nowhere at all."↵-Corliss the Wanderer
@@ -15569,7 +15506,6 @@ Snake of the Golden Grove∥Some fruits are best left ungathered.
 Snakeform∥Losing his possessions distressed him, but the lack of limbs was strangely liberating.
 Snakeskin Veil∥"Does a serpent roar and chase its prey? No. A serpent waits silently for oblivious prey to draw near."
 Snakeskin Veil∥"Never reject the kindness of a serpent. It will not be offered twice."↵-Druidic manuscript fragment
-Snakeskin Veil∥「大蛇の親切は決して拒否してはならない。それは二度と施されることがないのだから。」↵--ドルイドの写本の欠片
 Snapback∥"If it returns years hence, our knowledge of how to combat it will be that much greater."↵-Andorel, Tolarian sentinel
 Snapping Creeper∥Its vast network of roots and vines keeps it aware of distant dangers.
 Snapping Drake∥Drakes claim to be dragons-until the dragons show up.
@@ -16066,7 +16002,6 @@ Springmane Cervin∥Cervins feed on the mana-rich plants around the star arches,
 Springmantle Cleric∥Hope and courage bloom in her wake.
 Springsage Ritual∥"Every evil destroyed is a strike against the enemy."↵-Erold, Gatstaf springsage
 Sprite Dragon∥Size of a pixie, rage of a hellkite.
-Sprite Dragon∥ピクシー並みの体、ヘルカイト並みの怒り。
 Sprite Noble∥"By thorn and by stone, we will fight to see the day when beauty returns to this world."
 Sprouting Phytohydra∥A hydra tender's problem isn't having enough defenses but enough pots.
 Sprouting Thrinax∥The vast network of predation on Jund has actually caused some strange creatures to adapt to being eaten.
@@ -16130,7 +16065,6 @@ Staff of the Sun Magus∥A symbol of conviction in uncertain times.
 Staff of the Wild Magus∥A symbol of ferocity in oppressive times.
 Stag Beetle∥Its voice crackles with the hum of a thousand wings beating at once.
 Staggering Insight∥"Only cowards flee from the truth."↵-Perisophia the philosopher
-Staggering Insight∥「真実から逃げ出すのは臆病者だけ。」↵――哲人ペリソフィア
 Stalker Hag∥Her hunt is silent until a bone snaps or flesh tears. Her victims never know to scream.
 Stalking Bloodsucker∥The pits feed both its thirst for combat and its thirst for blood.
 Stalking Drone∥As the Eldrazi adapted to the jungles of Zendikar, some took on the tactics of more familiar predators.
@@ -16337,7 +16271,6 @@ Stone Rain∥I cast a thousand tiny suns- Beware my many dawns.
 Stone Rain∥Soldiers often blocked off the steep mountain passes to ambush enemy troops in western and central China.
 Stone Rain∥The return of Ramos was foretold by devastating natural disasters and unnatural storms.
 Stone Rain∥There goes the neighborhood!
-Stone Rain∥「こうして、空槌のブルクはその燃える一瞬で称号と勝利の両方を手にした。」↵--戦呪文撮要
 Stone Spirit∥"The spirit of the stone is the spirit of strength."↵-Lovisa Coldeyes, Balduvian Chieftain
 Stone Spirit∥"The spirit of the stone is the spirit of strength."↵-Lovisa Coldeyes, Balduvian chieftain
 Stone-Seeder Hierophant∥Her touch brings to bare stone what water and sun bring to rich soil.
@@ -16440,7 +16373,6 @@ Strategic Planning∥"Plans evolved within the tent decide a victory 1,000 *li* 
 Strategic Planning∥"Plans evolved within the tent decide a victory 1,000 li away."
 Strategic Planning∥Alrund sees the future as a whorl of signs and symbols, omens interwoven in a intricate knotwork only he can decipher.
 Strategic Planning∥Alrund sees the future as a whorl of signs and symbols, omens interwoven in an intricate knotwork only he can decipher.
-Strategic Planning∥「私が与えられるのは情報だけよ。どの道を選ぶかはあなたの自由。」↵--アルケヴィオスの神託者、ジャジ
 Stratozeppelid∥The "Days of Darkness" mark the stratozeppelids' annual migration, when for five days they blot out the sun and trumpet their passing.
 Straw Golem∥"Don't look at me. *I* didn't build it."↵-Hanna, *Weatherlight* navigator
 Straw Soldiers∥The overnight appearance of miles of "armed" Wu forts at Guangling frightened a much vaster Wei force into fleeing for their lives.
@@ -16768,7 +16700,6 @@ Swords to Plowshares∥"The so-called barbarians will not respect us for our mil
 Swords to Plowshares∥He stood transfixed, able to do nothing but ponder a life of peace and redemption. It was the worst five minutes of his life.
 Swords to Plowshares∥The smallest seed of regret can bloom into redemption.
 Swords to Plowshares∥WE SHALL MELT THEM IN FIRE.
-Swords to Plowshares∥「刃使いは新たな敵へと怒りを向けた。根腐りとキャベジのナメクジだ。」 ー神話と奇跡、第七巻
 Swordwise Centaur∥The girl who would become the Champion of the Sun hacked furiously at the practice dummy. At last she stopped, breathing heavily, and looked up at her instructor. "So much anger," said the centaur. "I will teach you the ways of war, child. But first you must make peace with yourself."↵-*The Theriad*
 Sworn Companions∥"The trouble with youths these days is that, in outright defiance of their elders, they refuse to be bought."↵-Karlov of the Ghost Council
 Sworn Guardian∥For the River Heralds, the Immortal Sun is an object of terror and devastation. The idea that anyone would retrieve it for their own use is utterly abhorrent.
@@ -16920,7 +16851,6 @@ Tanglebloom∥Druids converted swaths of the Tangle into tanglebloom orchards. T
 Tanglebloom∥The bloom contains no seeds. It's meant only to nourish the forest's inhabitants.
 Tangleclaw Werewolf∥"What has long, flesh-rending claws and enormous, bone-crushing teeth?"↵-Halana, Kessig ranger
 Tangled Florahedron∥"As Bala Ged regrows, new forms of life blossom with unfettered wonder."↵-Doral, Bala Ged guide
-Tangled Florahedron∥「バーラ・ゲドが再び成長し始めると、自由奔放な驚くべき形の新たな命が花開いた。」↵――バーラ・ゲドの案内人、ドーラル
 Tangled Islet∥Many of Terisiare's islands are merely extensions of the root system of the Yavimaya magnigoth forests.
 Tanglepool Bridge∥The path to change is forged in insight.
 Tangleroot∥As if there's glitch in the system, the Tangle sometimes folds in on itself, throwing off sparks of mana in a mystifying display.
@@ -17351,7 +17281,6 @@ Thrill of Possibility∥"If the prospect of what could be doesn't electrify you 
 Thrill of Possibility∥"Remember all the great heroes who were careful and never did anything risky? Me neither."↵-Syr Carah, the Bold
 Thrill of Possibility∥"Right now, in these first moments of creation, it is simultaneously nothing and everything."
 Thrill of Possibility∥"The most delicious ingredients are often the most dangerous to obtain."↵-Asmoranomardicadaistinaculdacar, *The Underworld Cookbook*
-Thrill of Possibility∥「何ができるかという可能性に心が揺さぶられないなら、なぜストリクスヘイヴンに来たのか？」↵--プリズマリの学部長、ナサーリ
 Thrill-Kill Assassin∥As the bounty on Massacre Girl rose, so did the number of imitators.
 Thrilling Discovery∥"This must be the lost city of Zantafar, where my people lived before becoming nomads. Think of the history we'll learn here!"↵-Quintorius, Lorehold mage-student
 Thrilling Encore∥"Welcome to the winning team."
@@ -17484,7 +17413,6 @@ Time Walk∥2018 North America Vintage Championship
 Time Warp∥"Chronomancers have a rather different definition of living in the moment."↵-*The Millennium Tome*
 Time Warp∥"Let's do it again!"↵-Squee, goblin cabin hand
 Time Warp∥Just when you thought you'd survived the first wave.
-Time Warp∥「時間術士は、刹那に生きるということに関して特殊な定義を持っています。」↵--千年秘本
 Time Wipe∥"To comprehend the full answer requires years of temporal study. In short, they were now never born in the first place."↵-Teferi
 Time and Tide∥"Time may heal all wounds, but what heals time?"↵-Teferi
 Time of Heroes∥No one spoke. There was no need. The threat of the Eldrazi presented a simple choice: lay down your weapons and die for nothing, or hold them fast and die for something.
@@ -18146,7 +18074,6 @@ Upwelling∥Once again, Kamahl felt the full force of the Mirari's pull, but he 
 Ur-Golem's Eye∥It still stares accusingly at Memnarch, though millennia have passed since he separated the eye from its body.
 Ur-Golem's Eye∥Ur-golems once dominated the plane. Even now, they maintain a deep connection to it.
 Urabrask the Hidden∥When the Mirran resistance arrived, the furnace dwellers looked to Urabrask for guidance. His decree stunned the others: "Let them be."
-Urabrask the Hidden∥|DYsYf,mrodnCWrRvEDk,moACSEDFtLsun,DY,DYrbreLhSEGVABeeCC,t_oZSm. |DY,DeLmhuCsaYzyp/~proLYw,co.
 Urban Burgeoning∥The ruins of Old Prahv became a wildspace, although all birdsong was silenced by lingering Azorius magic.
 Urban Daggertooth∥Stop, smell the roses, eat the peoples.
 Urban Evolution∥As the Simic released more of their krasis experiments, they required new habitats, always at the expense of the locals.
@@ -18501,14 +18428,12 @@ Village Messenger∥"I'm afraid it's bad news."
 Village Rites∥"My colleagues revile the barbarity of the Blood Age, but I believe we have much to learn from the magics of endless war."↵-Embrose, Silverquill dean
 Village Rites∥"You were so eager to take and consume. Yet when asked to give, you refuse?"
 Village Rites∥The Skelle raise scorn poles in conquered villages-cursed totems of wood and bone that sap survivors of physical strength and the will to fight back.
-Village Rites∥「同僚たちは血の時代の野蛮さを避難しているが、俺は無限に続く戦争の魔法から学べることは多いと思っている。」↵--シルバークイルの学部長、エムブローズ
 Village Survivors∥As their villages fell to werewolves, fleeing refugees discovered they too had remarkable survival instincts.
 Village Watch∥"You have my word. You'll see no wolf attacks while we're around!"
 Villagers of Estwald∥You can spot a werewolf-infested town by its lack of butcher shops.
 Villainous Ogre∥"The war saw the ogres emerge from their caves, reeking of blood, with the power of oni in their veins."↵-*Observations of the Kami War*
 Villainous Wealth∥Gold buys death. Death earns gold.
 Vindicate∥"Don't mourn for me. This is my destiny."↵-Gerrard
-Vindicate∥"Hol visto intere civilta. sorgere e crollare. Voi mortali non siete che polvere per me."↵-Sorin Markov
 Vindicate∥"I am the mad one!"
 Vindicate∥"I have seen entire civilizations rise and fall. You mortals are but dust to me."↵-Sorin Markov
 Vindicate∥Some convictions are so strong that the world must break to accommodate them.
@@ -19004,7 +18929,6 @@ Weary Prisoner∥"Your guard attacked me. He got what was coming to him."
 Weaselback Redcap∥"I would rather cast myself into the abyss than let my blood stain the cap of those monsters."↵-Syr Alin, the Lion's Claw
 Weather the Storm∥"Neither blade nor tempest can assail the serenity of a tranquil mind."↵-*The Turrau Carvings*
 Weather the Storm∥"Quell your ego and anywhere can be as calm as a hurricane's eye."
-Weather the Storm∥「刃も嵐も、穏やかな心の静けさを攻撃することはできない。」↵--ターラウの彫刻
 Weatherseed Elf∥"My grandmother once told me the future of our world was inside the Weatherseed. When I touched it, I knew she was right."
 Weatherseed Faeries∥Two days after the forge was completed, the faeries were immune to its flames.
 Weave Fate∥Destiny is a flickering path among tangled possibilities.
@@ -19097,7 +19021,6 @@ Whirlpool Rider∥Where the wind meets the water, change is inevitable.
 Whirlwind Adept∥The Flowing Staff technique does not differentiate between offense and defense.
 Whirlwind Denial∥"If they try to storm your palace, you must become the storm."↵-*Handbook of Imperial Spellcraft*
 Whirlwind Denial∥"No, no, and ... no."
-Whirlwind Denial∥「彼らがあなたの宮殿を荒らそうとするなら、あなたが嵐にならなければなりません。」↵--帝国魔術の手引き
 Whirlwind of Thought∥As Narset struggled to meditate, tiny dragonlings spiraled around her, conjuring thoughts of ancient clans.
 Whirlwind∥Urza tried to rule the air, but Gaea taught him that she controlled all the elements.
 Whisk Away∥The maneuvers of the Abzan formation intrigued Ojutai in both their complexity and their futility.
