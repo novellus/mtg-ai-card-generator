@@ -702,11 +702,11 @@ def unreversable_modifications(card):
 
     # remove commas from decimal numbers (eg 100,000)
     # this simplifies syntax for the AI
-    # if 'name' in card and card['name'] is not None:
-    #     card['name'] = re.sub(r'(?<=\d),(?=\d)', '', card['name'])
+    if 'name' in card and card['name'] is not None:
+        card['name'] = re.sub(r'(?<=\d),(?=\d)', '', card['name'])
 
-    # if 'main_text' in card and card['main_text'] is not None:
-    #     card['main_text'] = re.sub(r'(?<=\d),(?=\d)', '', card['main_text'])
+    if 'main_text' in card and card['main_text'] is not None:
+        card['main_text'] = re.sub(r'(?<=\d),(?=\d)', '', card['main_text'])
 
     # transform text encoded numbers into decimal
     #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
@@ -894,8 +894,12 @@ def encode_json_to_AI_main(cards, out_path):
 def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
     # generates encoded data file for the flavor AI training
 
+    # flatten - this AI will not handle card sides
+    cards = flatten_sides(cards)
+
     # limit fields
-    cards = [limit_fields(card, whitelist=['name', 'flavor']) for card in cards if card['flavor'] is not None]
+    whitelist = ['name', 'flavor', 'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
+    cards = [limit_fields(card, whitelist=whitelist) for card in cards if card['flavor'] is not None]
 
     # import additional data files
     if extra_flavor is not None:
@@ -907,9 +911,7 @@ def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
         extra_cards = [unreversable_modifications(card) for card in extra_cards]
         cards.extend(extra_cards)
 
-    # flatten and deduplicate cards
-    # this AI will not handle card sides
-    cards = flatten_sides(cards)
+    # deduplicate
     cards = deduplicate_cards(cards)
 
     # transcribe to AI format, and save in designated location
@@ -926,8 +928,12 @@ def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
 def encode_json_to_AI_names(cards, out_path, extra_names=None):
     # generates encoded data file for the names AI training
 
+    # flatten - this AI will not handle card sides
+    cards = flatten_sides(cards)
+
     # limit fields
-    cards = [limit_fields(card, whitelist=['name']) for card in cards]
+    whitelist = ['name', 'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
+    cards = [limit_fields(card, whitelist=whitelist) for card in cards]
 
     # import additional data files
     if extra_names is not None:
@@ -939,9 +945,7 @@ def encode_json_to_AI_names(cards, out_path, extra_names=None):
         extra_cards = [unreversable_modifications(card) for card in extra_cards]
         cards.extend(extra_cards)
 
-    # flatten and deduplicate cards
-    # this AI will not handle card sides
-    cards = flatten_sides(cards)
+    # deduplicate
     cards = deduplicate_cards(cards)
 
     # transcribe to AI format, and save in designated location

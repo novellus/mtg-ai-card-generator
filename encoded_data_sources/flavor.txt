@@ -22,6 +22,7 @@ Abeyance①"I'm too modest a wizard to reveal the full extent of my abilities."�
 Abiding Grace①"Into the smothering dark, Serra spoke a single word: 'Hope.'"↵-*Song of All*, canto 2
 Abjure①Mirri's hackles rose as Ertai continued expounding his virtues. "If that arrogant brat doesn't shut up soon," she growled to herself, "I'm going to have to kill him."
 Abnormal Endurance①Tenacity prevails when hopes die.
+Abolisher of Bloodlines①Even if the rain turned to blood, her thirst would not be slaked.
 Abolish①As war raged on, the young mages became more direct in their tactics, often at great cost.
 Abomination of Llanowar①"Run!" screamed its living mouths. "Come!" cried its dead ones.
 Aboroth①The *Weatherlight* banked sharply as the colossal beast rose up to crush the lone rider. "My bet's on the dirt," Gerrard said flatly.
@@ -207,6 +208,7 @@ Afflict①When one of the Patriarch's champions displeased him, he would only sh
 Afterlife①Facets of life, reflections of the soul.
 Aftershock①"Every act of destruction has a repercussion."↵-Karn, silver golem
 Agadeem's Awakening①"Now is the death-hour, just before dawn. Wake, sleepers, and haunt the living!"↵-Vivias, Witch Vessel
+Agadeem, the Undercrypt①"Here below the hedron fields, souls and secrets lie entombed."↵-Vivias, Witch Vessel
 Ageless Entity①Tel-Jilad's sworn protectors are the trolls, yet more fearsome protectors were created by the Tangle itself.
 Ageless Guardian①Ancient ruins dot the world of Arcavios, most older than Strixhaven itself and many still guarded by soldiers from the Blood Age, centuries after their deaths.
 Agent of Erebos①Erebos's minions hunt the Returned and warn those who consider the same folly.
@@ -284,6 +286,7 @@ Akki War Paint①Akki paint bright, bold designs on their salvaged Imperial mech
 Akoum Boulderfoot①"If you're in Akoum and you glimpse a shadow overhead, the worst thing you can do is duck."↵-Chadir the Navigator
 Akoum Flameseeker①In the face of extinction, the most perilous endeavors can be cause for hope.
 Akoum Hellhound①Hellhound packs roam the Spikefields, basking in the harsh sunlight and lighting the night with their flames.
+Akoum Teeth①"Rock. Lava. Gravity. They're not cruel, but they're not forgiving either."↵-Tyrux, expedition warrior
 Akoum Warrior①"I'm not cruel, but I have no patience for your mistakes."↵-Tyrux, expedition warrior
 Akrasan Squire①Bant's armies are primarily composed of members of the Mortar caste, loyal commoners who haven't yet earned a sigil.
 Akroan Conscriptor①"The time to serve is now."
@@ -470,6 +473,7 @@ Ancestor Dragon①It is said that Yinglong gave birth to the qilin and the phoen
 Ancestor Dragon①It is said that Yinglong gave birth to the qilin and the phoenix, and after them, all the hairy and winged beings in the world. Thus it is known as the Ancestor Dragon.
 Ancestor's Chosen①"The will of all, by my hand done."
 Ancestor's Chosen①Empowered by generations of strength.
+Ancestor's Embrace①"Thank you, Grandmother. I love you too."
 Ancestor's Prophet①"We have faced horrors of war and terrors beyond imagining. We will overcome the uncertainties of this new life."
 Ancestral Anger①"One vampire for every family member I've lost."
 Ancestral Mask①"I pass to you all we have ever been. Go forth and become all we never could."
@@ -505,6 +509,7 @@ Ancient Spider①It outlived both king and castle.
 Ancient Tomb①There is no glory to be gained in the kingdom of the dead.↵-Vec tomb inscription
 Ancient Ziggurat①Built in honor of Alara's creatures, the ziggurat vanished long ago. When Progenitus awakened, the temple emerged again.
 Ancient Ziggurat①Leylines branch out from its foundation like roots from a tree. These draw mana from every region and welcome all living things into its verdant chambers.
+Ancient of the Equinox①"When the leaves fall and the nights grow cold, look elsewhere for firewood."↵-Ola of Lambholt
 And They Shall Know No Fear①"They are my bulwark against the Terror. They are the Defenders of Humanity. They are my Space Marines."↵-The Emperor of Mankind
 Andradite Leech①"Older specimens are completely encrusted with gems, which serve as both armor and weapons."↵-Tolarian research notes
 Angel of Despair①"I feel in them a sense of duty and commitment, yet I can feel nothing else. It is as if their duty is to an empty void."↵-Razia
@@ -595,6 +600,7 @@ Animate Object①Tap beverages with extreme caution.
 Animate Wall①"When you have been bitten with fangs of granite, you start to long for the ivory sabers of tigers."↵-Norin the Wary
 Animating Faerie①A true puppet master has no need for strings.
 Animation Module①Design leads to progress.
+Animus of Night's Reach①The dark myojin's gifts were instrumental in ending the Kami War.
 Anje Falkenrath①"We all hide a little madness behind our sophistication, do we not?"
 Ankh of Mishra①Tawnos finally cracked the puzzle: the strange structures did not house Mishra's malevolent creations but were themselves among his creations.
 Ankle Shanker①The stature of the fighter matters less than the depth of the cut.
@@ -719,6 +725,7 @@ Archangel of Thune①Even the wicked have nightmares.
 Archangel's Light①"This is the light of Avacyn. Even in her absence she offers us hope."↵-Radulf, priest of Avacyn
 Archangel①"My mother once told me angels sing their swords' names with each strike."↵-Sisay, Captain of the *Weatherlight*
 Archangel①The sky rang with the cries of armored seraphs, and the darkness made a tactical retreat.
+Archdemon of Greed①"The price is paid. The power is mine!"
 Archdemon of Unx①The necropolis at Unx was once a living city, its streets untrodden by death.
 Archelos, Lagoon Mystic①"Life ... is not ... a race."
 Archers of Qarsi①"We think of the naga as creeping cutthroats, slitherers in the swamps. But they are equally at home in the trees."↵-Goton, Qal Sisma shaman
@@ -729,8 +736,10 @@ Archetype of Endurance①Despite its fearsome stature, it is as elusive as a sha
 Archetype of Finality①She sees mortals not as they wish to be, but as what they will become.
 Archetype of Imagination①"Is it not the embodiment of our aspirations?"↵-Prokopios, astronomer of Meletis
 Archfiend of Depravity①"Why would I kill you all? Who then would be left to worship me?"
+Architect of Restoration①"A visionary looks at rubble and sees not only what was, but also what could be."↵-Onyx-Eye, architect of Eiganjo
 Architect of the Untamed①Next to her designs, life seems like a pale imitation.
 Architects of Will①This secret society of mages manipulates the beliefs and opinions of others.
+Archive Haunt①Cleaning up his life's work was his afterlife's work.
 Archivist of Oghma①"Knowledge is the greatest tool of the mortal mind, outweighing anything made by mortal hands. Before anything else can exist, the idea must exist."
 Archivist①"Knowledge is a feast for the mind. Savor every swallow."
 Archivist①"Sit down and read. Educate yourself for the coming conflicts."↵-Mary Harris "Mother" Jones
@@ -907,6 +916,8 @@ Ashiok's Adept①"Every nightmare is a caged bird that yearns to be set free."�
 Ashiok's Forerunner①"Every dream is a doorway."
 Ashiok's Skulker①"Fear writhes and whispers in the shadows of your mind. It is the enemy you always knew would come."↵-Ashiok
 Ashling, the Extinguisher①The Aurora had transformed her into a relentless force of destruction.
+Ashmouth Blade①"Its previous owners had some stories to share, I'm certain."↵-Old Rutstein
+Ashmouth Dragon①A dragon is born. A province burns.
 Ashmouth Hound①Its fiery paws make it easy to track, which is very useful when you want to go in exactly the opposite direction.
 Ashnod's Altar①"If you work at sawing up carcasses, you notice how the joints fit, how the nerves are arrayed, and how the skin peels back."↵-Ashnod, to Tawnos
 Ashnod's Altar①The Brothers' War scarred the land, but Ashnod left her mark in the bloodlines of those she tortured.
@@ -963,6 +974,7 @@ Attended Socialite①"Say hello to my little friend."
 Attrition①"I will trade life for life with the insurgents. Our resources, unlike theirs, are limitless."↵-Davvol, Evincar of Rath
 Attune with Aether①"I've never seen a world where aether weaves through every aspect of nature."
 Attunement①"The solution can hide for only so long."↵-Urza
+Atzal, Cave of Eternity①. . . but every end is a new beginning.
 Atzocan Archer①His arrows are fletched with feathers from the greatest of the winged dinosaurs.
 Atzocan Seer①Streams of gold and bright feathers flash in the orb, visions of past and future.
 Audacious Infiltrator①"This little critter can turn all of you to scrap in under thirty seconds! Come on, who wants to be the first to go? Try and stop me!"
@@ -1012,6 +1024,7 @@ Aurochs①One auroch may feed a village, but a herd will flatten it.
 Aurochs①One aurochs may feed a village, but a herd will flatten it.
 Aurora Champion①Many combatants at Valor's Reach wield glowing weapons to distract their enemies and delight the crowd.
 Aurora Griffin①Though a fierce fighter, its true value is that it inspires beleaguered forces.
+Aurora of Emrakul①"I felt compelled to take the twisted stone, and I abandoned my horse's burden to accommodate its weight. Now, its continued glow illuminates my home and warms my mind."↵-Garner Kroft, Moorland farmer
 Authority of the Consuls①Citizens are free to do as they wish, within the confines of the Consulate's laws.
 Autochthon Wurm①The trainer awoke to begin the journey from the wurm's tail to its head. The sun was setting when she arrived.
 Autograph Book①"It was a pleasure to meet me."↵-Captain Rex Nebula
@@ -1023,6 +1036,7 @@ Avacyn's Memorial①They had no marble, so the faithful repaired her likeness wi
 Avacyn's Pilgrim①"Avacyn's protection is everywhere. From the holy church to the sacred glade, all that we see is under her blessed watch."
 Avacyn, Angel of Hope①A golden helix streaked skyward from the Helvault. A thunderous explosion shattered the silver monolith and Avacyn emerged, free from her prison at last.
 Avacyn, Angel of Hope①Avacyn lives on in the hearts and minds of Innistrad's people.
+Avacyn, the Purifier①"Wings that once bore hope are now stained with blood. She is our guardian no longer."↵-Grete, cathar apostate
 Avacynian Missionaries①"We come bearing the word of Avacyn and the Lunarch Council."
 Avacynian Priest①Moorlanders speak in awe of the priests' talent for arriving just in time to drive off the wicked things that prowl the ravished parish.
 Avalanche Tusker①"Hold the high ground, then bring it to your enemy"↵-Surrak, khan of the Temur
@@ -1084,6 +1098,8 @@ Awe Strike①Stunned by the mere presence of the leonin kha, the nim raider quic
 Awe for the Guilds①When the guilds cooperate, the guildless celebrate their peaceful society. When the guilds clash, the guildless just try to keep out of the way.
 Awesome Presence①"At the core of all power is raw passion." -Gerda Äagesdotter, Archmage of the Unseen
 Awesome Presence①"I shape my weapons from the fears of my enemies."↵-Chaeska, Keeper of Tresserhorn
+Awoken Demon①Bones cracked, flesh split apart, and the screams of euphoric agony gave way to unholy laughter.
+Awoken Horror①"It serves as evidence of the ancient power of the deep, a reminder that the sea is the only thing worthy of reverence."↵-Runo Stromkirk
 Axebane Beast①"Imagine a gigantic pine cone that's extremely territorial and always in a foul mood."↵-Zhosmir, urban huntmaster
 Axebane Guardian①Only a worthy few are permitted within the sentient forest known as Axebane.
 Axebane Stag①"When the spires have burned and the cobblestones are dust, he will take his rightful place as king of the wilds."↵-Kirce, Axebane guardian
@@ -1162,6 +1178,7 @@ Baithook Angler①Geor was determined to stay out until he got a bite from somet
 Bake into a Pie①"My secret ingredient? Well, I can't tell you that. But here's a hint. It's not love."
 Baki's Curse①"Those who fling spells too quickly should have reason to regret it."↵-Baki, Wizard Attendant
 Bala Ged Recovery①"Always have a backup plan."↵-Doral, Bala Ged guide
+Bala Ged Sanctuary①"I know it's around here somewhere."↵-Doral, Bala Ged guide
 Bala Ged Scorpion①Fast and lethal, with a penchant for the weak and infirm.
 Balan, Wandering Knight①"What weapon will you bear against one who's mastered them all?"
 Balance of Power①"To empty your mind is to fill your grave."↵-Lat-Nam teaching
@@ -1220,6 +1237,7 @@ Bandage①Life is measured in inches. To a healer, every one of those inches is 
 Bandage①Takara shook with guilt. She knew the last image her father had seen was her sword flashing toward him.
 Bane Alley Blackguard①"I'm in the field of procurement, and business is good. The guilds want all kinds of maps and relics these days, though what they want them for I'm not quite sure."
 Bane of Bala Ged①The continent of Bala Ged was ravaged by massive Eldrazi of Ulamog's lineage, its lush jungles and cascading rivers reduced to dust.
+Bane of Hanweir①Technically he never left his post. He looks after the wolf wherever it goes.
 Bane of Progress①It sees shaped stone and carved wood as mutilations.
 Bane of Progress①Urza's forces tore across Argoth, and Argoth responded in kind.
 Bane's Contingency①"My whims dictate the fate of nations. Your pitiful mortal magic is no more significant than a gnat buzzing in my ear."
@@ -1330,6 +1348,7 @@ Bastion Protector①"By this oath, I pledge to stand by thee, against traitor, b
 Bastion of Remembrance①Lives taken are lives not easily forgotten.
 Bat Whisperer①"My little winged friends tell me which of these townsfolk are worth tasting for myself."
 Bathe in Dragonfire①The scent of cooked flesh lingers in the charred landscape of Tarkir.
+Bathe in Gold①For most, deadly. For a dragon, decadent.
 Bathe in Light①"Truth shines even in darkness. Those who march on the side of truth walk always in righteous light."
 Baton of Morale①"The Goblins would kill to get ahold of this one."↵-Arcum Dagsson, Soldevi Machinist
 Battalion Foot Soldier①"With me! Break this line and the rest will fall!"
@@ -1341,6 +1360,7 @@ Battering Sliver①Covered with hard shell-like plates, these slivers burrow thr
 Battershield Warrior①"I need no axe to best these weaklings."
 Battle Brawler①Every time he returns from battle unscathed, he feels a tinge of disappointment.
 Battle Cry①"In the thick of battle, you must keep your wits about you. Yelling a lot helps, too."↵-General Jarkeld, the Arctic Fox
+Battle Display①"Courage is the only shield I need."
 Battle Frenzy①"One day you, too, shall drink the blood of your foes. It is something to look forward to."↵-Toothlicker Harj, Orcish Captain
 Battle Hurda①"Murasan hurdas were too aggressive to tolerate a harness, so we put them on guard duty. Now the bandits can't get within spitting distance of us."↵-Bruse Tarl, Goma Fada nomad
 Battle Hymn①"A church is just wood and walls. A congregation is the faithful praising the angels."↵-Kolman, elder of Gatstaf
@@ -1469,6 +1489,7 @@ Beneath the Sands①Though buried and muffled, nature's whisper still called to 
 Benefaction of Rhonas①It falls to the gods to help all become worthy of the afterlife.
 Benevolent Ancestor①Although the door is flimsy and the lock pathetically small, Josuri's family never fears the night outside.
 Benevolent Bodyguard①"My destiny is to save others so their destinies may be achieved."
+Benevolent Geist①All his old grudges suddenly seemed laughably petty. So he laughed.
 Benevolent Unicorn①The best use for a unicorn's horn is to adorn a unicorn.↵-Femeref adage
 Bennie Bracks, Zoologist①His enthusiastic curiosity puts even the most fearsome of beasts at ease.
 Benthic Behemoth①"Deep devourer concealed in darkhome↵Shrouded it seeks all becomes fodder↵Once we swam alone and asea↵But no more."↵-*Rootwater Saga*
@@ -1492,6 +1513,7 @@ Besmirch①The whitest robes stain best.
 Bestial Menace①"My battle cry reaches ears far keener than yours."↵-Saidah, Joraga hunter
 Betrayal①"Sometimes a burden can be borne only on the shoulders of a willing enemy."↵-Suq'Ata aphorism
 Bewilder①"Teferi snapped his fingers, and the viashino started clucking like a chicken. Silly, yes, but exactly the thing we needed to break the stifling tension."↵-Jhoira, master artificer
+Beyeen Coast①"Stay close to my light. You don't want to get lost on the rocks."↵-Jejenar, Silundi lullmage
 Beyeen Veil①"All you minnows in the murk, come to my light."↵-Jejenar, Silundi lullmage
 Bhaal's Invoker①"The Lord of Murder has freed me from the shackles of mortal laws and gifted me with fire to carry out his will."
 Biblioplex Assistant①"I appreciate the help, and honestly, it's very entertaining."↵-Isabough of the Biblioplex
@@ -1510,6 +1532,7 @@ Binding Mummy①What the gods decree, the mummies enforce.
 Bind①"The battlefield is cluttered enough. Be still."↵-Multani, maro-sorcerer
 Biogenic Upgrade①"To survive exceptional times we must adapt by exceptional means."↵-Vannifar
 Biolume Egg①Serpents leave their eggs in the cold and inky depths...
+Biolume Serpent①...knowing their hatchlings are more fearsome than anything else that might come along.
 Bioluminary①The Gargantikari astroserpent hated the taste of merfolk, but the audience didn't need to know that.
 Biomantic Mastery①"Look beyond, to the vascular awareness that all life is a map to greater knowledge."↵-Momir Vig, *Biomancy*, vol. I
 Biomass Mutation①"A regression to ancient forms? A glimpse of future evolutions? Or a fleeting alteration of the present?"↵-Vorel of the Hull Clade
@@ -1560,6 +1583,7 @@ Black Poplar Shaman①It absorbs the pain of other treefolk, which leaves it bit
 Black Sun's Zenith①"Under the suns, Mirrodin kneels and begs us for perfection."↵-Geth, Lord of the Vault
 Blackblade Reforged①A weapon of evil, redeemed in Gideon's hand.
 Blackblade Reforged①It spilled the blood of one elder dragon. In Gideon's hands, it may yet taste another's.
+Blackbloom Bog①"The Raimunza River flows along the branches of jaddi trees for miles before plunging down to feed Blackbloom Lake."↵-Exena, expedition rogue
 Blackbloom Rogue①"If you ever want to get back up, do what I say."↵-Exena, expedition rogue
 Blackcleave Cliffs①Where the Oxidda Chain mingles with the Mephidross, oil-suffused metal crumbles away, leaving walls of blackened bones.
 Blackcleave Goblin①"Bitten? Save time, amputate now."↵-Lephar, loxodon surgeon
@@ -1735,6 +1759,8 @@ Blood-Chin Fanatic①"We are as brutal as our dragonlord. We strike like wild li
 Blood-Chin Rager①Kolaghan blades rarely stay clean for long.
 Blood-Cursed Knight①"The bloodlust shall not control me, for my oath is my greatest compulsion."
 Blood-Toll Harpy①When harpies demand a toll to cross through their territory, consider yourself lucky if they permit payment in coin.
+Bloodbat Summoner①"Do you mean to tell me that Lucy was bitten by such a bat . . . ?"
+Bloodbat Summoner①"Humans throw rice and release doves at their weddings? How quaint."
 Bloodbond March①The Golgari support a vast army because death never ends its soldiers' service.
 Bloodbond Vampire①"Let the vampires join us. In this war, we no longer have the luxury of choosing our comrades."↵-General Tazri, allied commander
 Bloodborn Scoundrels①The ring plays host to some combatants that the spectators love to hate.
@@ -1802,6 +1828,7 @@ Bloom Tender①Beauty is a seed, waiting to blossom under her capable hands.
 Blooming Marsh①A retreat to nature can inspire even the most jaded inventor.
 Blorbian Buddy①When Captain Nebula tragically destroyed the planet Blorb-12 in a parking accident, Myra compensated the survivors with lifetime passes.
 Blossom Dryad①The only force on Ixalan not interested in finding the golden city is Ixalan itself.
+Blossom-Clad Werewolf①. . . does not always mean living in peace.
 Blossoming Bogbeast①As subtle as a bogbeast↵-Witherbloom expression meaning↵"crude and clumsy"
 Blossoming Calm①Mood: A spell that protects her from her enemies.
 Blossoming Defense①Those who move harmoniously with the flow of aether can channel the power of the natural world.
@@ -1989,7 +2016,7 @@ Boros Recruit①"Look at this goblin, once wild, untamed, and full of idiocy. Th
 Boros Signet①"Have you ever held a Boros signet? There's a weight to it that belies its size-a weight of strength and of pride."↵-Agrus Kos
 Boros Swiftblade①When the Boros Legion attacks, swiftblades enter the fray first. They pick off the archers and mages, softening the enemy front before the flame-kin and giants go in.
 Borrowed Time①Teferi stepped calmly into the fray. Suddenly the sun paused in the sky and the werewolves' snarls froze on their faces.
-Borrowing ⓪≚≚≙≙≚≙≙,⓪≙⓪≙⓪≙ Arrows①Kongming and Lu Su tricked Wei troops into shooting over 100,000 arrows at them to later use against the Wei at Red Cliffs.
+Borrowing ⓪≚≚≙≙≙≙≚≚≙≚≙≚≙≙≙≙≙ Arrows①Kongming and Lu Su tricked Wei troops into shooting over 100,000 arrows at them to later use against the Wei at Red Cliffs.
 Bosh, Iron Golem①As Glissa searches for the truth about Memnarch, Bosh searches to unearth the secrets of his past.
 Bosk Banneret①Deep in a murmuring bosk, where the trees' memories span centuries, the simple banner of green and copper signifies an elder whose rings number more than a faerie's days.
 Bosom Buddy①"Step 1: I believe in a power and toughness greater than myself . . . ."
@@ -2001,6 +2028,7 @@ Bottle Golems①Reinforcements *and* refreshments!
 Bottomless Pit①"I'm sure it came with the place. I don't think you build one on purpose."↵-Gerrard
 Boulder Salvo①"If someone claims the sky is falling, I listen."↵-Yon Basrel, Oran-Rief survivalist
 Boulderfall①"Defeating the Meletians was not so difficult. I needed only to move a mountain."↵-Eocles, oracle of Purphoros
+Boulderloft Pathway①"The path is stable. It's the gusts all around it that are a bit 'whoosh-oops-bye.'"↵-Kreq of Sunder Bay
 Bounce Chamber①Anti-gravity. Pro-fun.
 Bounce Chamber①It recreates the peaceful feeling of floating freely in space, just without all that boring peacefulness.
 Bounce Chamber①It's a raucous, ricochet-ridden romp, loosely based on the molecular movement inside exploding stars.
@@ -2058,12 +2086,14 @@ Bramblefort Fink①No matter the cruelty of Oko's jokes, he's always guaranteed 
 Bramblesnap①A bramblesnap is formed by grafting together thirteen different plants that already hunger for meat.
 Brambleweft Behemoth①Life will find a way, or it will make one.
 Bramblewood Paragon①Those who seek to escape her blades succeed only in dying on their stomachs.
+Branch of Boseiju①Though they razed the surrounding forest, the builders of Towashi left Boseiju unscathed, shaping the city around the ancient tree.
 Branching Bolt①"Lightning lives in everything, in living flesh and growing things. It must be set free."↵-Rakka Mar
 Branching Evolution①"Is it the water? The stars? Whatever it is, something incredible is happening here."↵-Eris, zoologist, journal entry
 Branchloft Pathway①"Not for the bumble-footed nor wobble-stomached."↵-Kreq of Sunder Bay
 Branchsnap Lorian①Lorians treat trees and prey the same way: by ripping them limb from limb.
 Brand of Ill Omen①"Let those who bear the brand receive no shelter, no kindness, and no comfort from our people."↵-Lovisa Coldeyes, Balduvian Chieftain
 Branded Brawlers①"The sword or the lash. Choose."↵-Akul, Keldon whip sergeant
+Branded Howler①It is said that one of the most notorious werewolf howlpacks, the Vildin, only calls those whose hands are already stained with blood.
 Brand①"By this glyph I affirm your role."↵-Urza, to Karn
 Brash Taunter①"You hit like a kobold!"
 Brass Gnat①Its buzzing is the sound of its inner mechanisms, ever winding down.
@@ -2153,11 +2183,13 @@ Brinebarrow Intruder①Locked in the ice of Karfell, the treasures of ancient no
 Brineborn Cutthroat①"I always attack from where their spyglasses can't see."
 Bring Down①"Big, wicked, and not too smart. Poor thing never stood a chance against us, dear."↵-Regna, to Krav
 Bring Low①"People are often humbled by the elements. But the elements, too, can be humbled."↵-Surrak, khan of the Temur
+Bring to Life①A true puppet master has no need for strings.
 Bring to Trial①"In you go, big guy. Watch your head."
 Brink of Disaster①"When you find yourself teetering on the edge of oblivion, mine will be the hands taking pleasure in giving you the final push."↵-Liliana Vess
 Brink of Disaster①"You always have a choice. That doesn't mean you always have a good choice."↵-Alubri, Guul Draz gatekeeper
 Brink of Madness①"The fools thought me dead. But I built an empire inside my tomb."↵-Kerrick, sleeper agent
 Brion Stoutarm①Boggarts and disturbing bits of boggarts flew through the air with alarming and untidy regularity.
+Brisela, Voice of Nightmares①Upon discovering what had become of her sisters, Sigarda could only weep.
 Bristling Boar①"I can bring down anything in Zagoth, but for some quarry the ratio of fight to meat is too high."↵-Master Hunter Chevill
 Bristling Boar①"Nicol Bolas destroyed my world. I owe it to Skalla to celebrate all life, no matter how dangerous."↵-Vivien Reid
 Bristling Boar①The spikes of bone protruding from its hide serve primarily as protection, but as they accumulate bits of foliage from the surrounding forest, they also provide camouflage.
@@ -2317,6 +2349,7 @@ Cabaretti Courtyard①So long as the Halo keeps flowing, the festivities never e
 Cabaretti Initiate①"Now there's a fellow who knows how to have a good time!"↵-Jetmir
 Cache Raiders①What the current doesn't take, they do.
 Cached Defenses①The glittering scales in the Abzan vaults represent mighty deeds of the past and protection for generations to come.
+Cackling Culprit①"Ha! They fall for it every time."
 Cackling Fiend①Its windpipe is only the first to amplify its maddening laughter.
 Cackling Flames①"I like a little entertainment with my dinner."↵-Rakdos
 Cackling Imp①Its laughter drives needles through your mind.
@@ -2513,6 +2546,7 @@ Catalog①"Without order comes errors, and errors kill on Tolaria."↵-Barrin, m
 Catalog①Though those who study are as many as the hairs on an ox, those who succeed are as rare as unicorns' horns.↵-Chinese proverb
 Catalyst Elemental①As the hyperstormic generator crept past redline, a being emerged from the arc.
 Catalyst Stone①The gems' incandescence invades the dreams of all who see them.
+Catapult Captain①And they're more than happy to share the wealth.
 Catapult Fodder①These days, ghouls are the only abundant resource in Thraben.
 Catapult Master①"There's no 'I' in 'team,' but there's a 'we' in 'weapon.'"
 Catapult Squad①Together they could hit anything between the heavens and the horizon.
@@ -2624,6 +2658,7 @@ Chainbreaker①Scarecrows deemed too malevolent to roam free are shackled to bou
 Chained Brute①A momentary lapse is all it needs to break free.
 Chainer's Edict①The pits have their own form of mercy.
 Chainwhip Cyclops①"You say this Tenth District, not Rubblebelt. But where smash happen, that Rubblebelt. Rubblebelt state of mind."↵-Urgdar, cyclops philosopher
+Chalice of Death①The bitter taste of life's only certainty.
 Chalice of Life①The sweet taste of hope's promise.
 Challenger Troll①For most, war is a calamity. For some, an opportunity. And for the very few, a pleasure.
 Chamber of Manipulation①Politics is just a subtle form of mind control-and cephalids are master politicians.
@@ -2744,6 +2779,7 @@ Chill to the Bone①"Thick hides and layered armor won't help when I freeze you 
 Chillbringer①If you can see your breath, it's too late to run.
 Chillerpillar①From its cocoon, a flurry takes flight.
 Chilling Apparition①Mortal minds shrivel at its touch.
+Chilling Chronicle①But every story ended the same way: the countryside was captured in the icy grip of winter and darkened by eternal night.
 Chilling Shade①Rimewind necromancers caught travelers in mystical blizzards then trapped their spirits in the mist of their final frozen breaths.
 Chilling Trap①"Serves you right for rushing ahead."↵-Kaliea, Sea Gate trapfinder
 Chill①"Temper, temper"↵-Ertai, wizard adept
@@ -2769,6 +2805,7 @@ Choking Sands①"The people wiped the sand from their eyes and cursed-and left t
 Choking Tethers①A wizard can be outnumbered but never outsmarted.
 Choose Your Champion①"It seems the fate of the world rests on your shoulders, feeble child."
 Choose Your Weapon①"Move it, Varis, or I'll pick one for you!"↵-Ellywick Tumblestrum
+Chop Down①"What size advantage? They never even see me coming."
 Chorus of Might①"In each of us is the strength of all of us."↵-Trostani
 Chorus of Woe①When nightstalkers sing, nothing in creation sleeps.
 Chorus of the Conclave①"We are many, yet one. We are separate in body, yet speak with a single voice. Join us in our chorus."
@@ -2816,6 +2853,7 @@ Cinderbones①Not all coals lie quietly in their beds of cold ash.
 Cinderclasm①Every inferno begins with a spark.
 Cinderhaze Wretch①Thick smoke billows and twists to form disturbing faces that cackle and click their teeth to the popping embers.
 Cinderheart Giant①What fire giants lack in arcane prowess, they make up for with reckless, explosive rage.
+Cipherbound Spirit①Rather than consort with demons, the Quietus Cult seeks wisdom from the dead.
 Circle of Despair①"Life is a resource that should belong only to the strong."↵-Shauku, Endbringer
 Circle of Dreams Druid①The realms protected by druids of the Circle of Dreams are gleaming, fruitful places, where dream and reality blur together and the weary can find rest.
 Circle of Elders①They whisper of an ancient hero who saved the dragons of their world.
@@ -2899,6 +2937,7 @@ Cleric of Life's Bond①"No gods. Only each other."
 Cleric of the Forward Order①War after war, a healer's enemy is always the same-death itself.
 Clever Combo①At Crossbreed Labs, "heads or tails" has nothing to do with coins.
 Clever Conjurer①"I'm always happy to lend a hand!"
+Clever Distraction①"Me neither."
 Clever Impersonator①"Our own selves are the greatest obstacles to enlightenment."↵-Narset, khan of the Jeskai
 Clever Lumimancer①"You're too dim to realize it, but you've already lost."
 Clickslither①The least popular goblins get the outer caves.
@@ -3135,6 +3174,7 @@ Condemn①"No doubt the arbiters would put you away, after all the documents are
 Condemn①"No doubt the arbiters would put you away, after all the documents are signed. But I will have justice now!"↵-Alovnek, Boros guildmage
 Condemn①"No doubt the arbiters would put you away, after all the documents are signed. But I will have justice now."↵-Alovnek, Boros guildmage
 Condescend①"Shame we'll never see what all the fuss was about."
+Conduit of Emrakul①As without, so within.
 Conduit of Storms①It strikes with the fury of a tempest.
 Cone of Flame①"Mine is not the warmth of compassion."↵-Ertai, wizard adept
 Confessor①"There will be gains for our losses. There will be rights for our wrongs."
@@ -3334,6 +3374,7 @@ Courtly Provocateur①"My one regret is that I have mastered an art that leaves 
 Covenant of Minds①Before signing anything on Grixis, always read the fine print.
 Covert Operative①Some spies seek clarity. Others seek transparency.
 Covetous Dragon①Gatha survived as long as he did by giving all Keld's predators exactly what they wanted.
+Covetous Geist①"It has no need of wealth in the afterlife. It steals and kills purely for its own spiteful amusement."↵-Kaya
 Cowardice①"Cowards die many times before their deaths; The valiant never taste of death but once."↵-William Shakespeare, *Julius Caesar*
 Cowardice①Gerrard was the Mercadian soldiers' greatest hero; they followed him blindly. When he left, they stumbled around blindly.
 Cower in Fear①"You will fully understand fear when you discover it is the final thing you put your faith in."↵-Nicol Bolas
@@ -3583,6 +3624,7 @@ Curiosity①Li'l Giri tracked the robotic villain with silent steps. Just as the
 Curious Herd①"If you don't break camp as you leave, you'll return to find it broken for you."↵-Jonald, mission naturalist
 Curious Killbot①"whirrrr . . . beep . . . click . . . click?"
 Curious Pair①"It's gingerbread, like Mother makes. What is there to be afraid of?"
+Curry Favor①"My quest? Why, to marry Ayara. Or die trying."
 Curse Artifact①Voska feared the artifact had come too easily.
 Curse of Bloodletting①It is the demon's mark, an infernal claim on the flesh of the guilty.
 Curse of Bounty①Flavorful aromas beckon many a salivating maw.
@@ -3790,6 +3832,7 @@ Daru Warchief①His victories speak for him.
 Dash Hopes①"Focus an enemy's mind on what's already gone, and it's easier to take away more."↵-Holux, stronghold racketeer
 Daughter of Autumn①"Those who say that Serra is dead have never met the Autumn Willow's daughters. They are as kind and as generous as Serra would wish us to be."↵-Gulsen, Abbey Matron
 Daunting Defender①"I will wield the stone of my homeland as though it were the fists of the Ancestor."
+Dauntless Avenger①"It was Sigarda who lifted me from despair and gave me the strength to fight on."
 Dauntless Aven①In the chaos brought by the new gods, swift-winged aven served as pathfinders, leading the last of the people away from the ruins of Naktamun.
 Dauntless Bodyguard①The Benalish aristocracy is hereditary, but the loyalty of its subjects is earned.
 Dauntless Cathar①"The harder they try to extinguish my faith, the brighter it burns in the darkness."
@@ -3871,6 +3914,7 @@ Deadly Insect①With his newfound sense of self-importance, Squee set his sights
 Deadly Recluse①Even dragons fear its silken strands.
 Deadly Rollick①Otrimi was disappointed at how quickly its new friend got tired and stopped playing.
 Deadly Tempest①When the winds blow out of the abyss, death is the only harvest.
+Deadly Vanity①She cast a spell to purge all weakness. When the ink cleared, she stood alone.
 Deadly Wanderings①"Seclusion is only an option for the strong."↵-Sorin Markov
 Deadshot Minotaur①"May the earth rise up to meet you."
 Deadshot①"Carrion! Keep your distance. My blade will come to you!"↵-Crovax
@@ -3918,6 +3962,7 @@ Deathbellow Raider①"The temple has been rededicated. It belongs to Mogis now."
 Deathbellow War Cry①Deathbellow Canyon echoes with the roars of minotaurs calling each other to battle.
 Deathbloom Gardener①"I can provide the Coalition with poisons that will break down Phyrexian machinery as easily as they stop the heart."
 Deathbloom Thallid①"Nature is not always gentle or kind, but all life begets life."↵-Marwyn of Llanowar
+Deathbonnet Hulk①They grow up so fast.
 Deathcap Cultivator①The old hermit would never say what he fed his mushrooms, and people learned not to ask.
 Deathcap Glade①Deadly mushrooms litter these woods, each waiting for an errant footstep to release its noxious spores.
 Deathcult Rogue①"The hussars can't catch him, and he evades our traps with ease. I fear he walks unseen even in the halls of New Prahv."↵-Arrester Lavinia, Tenth Precinct
@@ -4069,6 +4114,7 @@ Demon's Grasp①"Take what solace you can in the knowledge that you will not be 
 Demon's Herald①"May these deaths be the first of many."
 Demon's Horn①Its curve mimics the twists of life and death.
 Demon's Jester①They knock 'em dead, with or without the punch line.
+Demon-Possessed Witch①"It looks like you could use some protection of your own."
 Demonic Appetite①"Morality is just shorthand for the constraints of being powerless."↵-Ob Nixilis
 Demonic Bargain①"Do not try to negotiate with me, human. You want power? This is the price."↵-Ormendahl
 Demonic Gifts①It began as a flavor on the tongue, like a bloody morsel of roast boar-but soon the power was a conflagration in her veins.
@@ -4103,6 +4149,7 @@ Deploy the Gatewatch①Gideon and Liliana may not have seen eye to eye, but that
 Deploy to the Front①"We will descend upon you like a plague of locusts to purge you from our lands!"↵-Hirov, commander of the Thousand Swords
 Deploy to the Front①"When the door drops, give them a haste of the Emperor's fire!"↵-Commissar Yarrick
 Depopulate①No screams rang out. No blood stained the streets. In an instant, the bustling metropolis simply fell silent.
+Depraved Harvester①Once he'd tasted that dark power, there was no turning back.
 Deprive①"That would have brought shame to you as a mage. Tell you what-I'll keep your secret."↵-Noyan Dar, Tazeem lullmage
 Depths of Desire①Pockets full of gold, lungs full of brine.
 Deputized Protester①Butcher's training, warrior's heart.
@@ -4231,6 +4278,7 @@ Didgeridoo①"Play the song of he who delivered us. Play the song of Feroz."↵-
 Didn't Say Please①"If you're in our home, we expect you to mind your manners."
 Die Young①"When the time comes, let go. Nothing lasts forever."
 Diffusion Sliver①"The hive shimmered, and its walls seemed a living mirror."↵-Hastric, Thunian scout
+Dig Deep①Rip through enough dirt and you'll eventually find something edible.
 Dig Through Time①No matter how deep the treasure is buried, Hunter can always sniff it out.
 Dig Up①Things buried on Innistrad rarely seem to stay that way.
 Digsite Engineer①"Dig over there, you bolthead!"
@@ -4266,6 +4314,7 @@ Dire Mimic①Sometimes the closet *is* the monster.
 Dire Tactics①"I will preserve human life at all costs. I will stand alone against behemoths before I let them touch my city. I will hold the wall."↵-Oath of the Coppercoats
 Dire Wolf Prowler①Large as horses, dire wolves must hunt often to satisfy thier ravenous hunger. A mere human does little more than blunt their appetite.
 Dire Wolves①"It's amazing how scared a city kid can get at a dog. Now, of course, I'd cross Terisiare alone, and keep no watch if I had a pack of greys hanging on my flanks as I went."↵-Oddveig Ulfsson, caravan scout
+Dire-Strain Brawler①A few townsfolk had their suspicions, but none dared accuse him openly.
 Diregraf Captain①Though its mind has long since rotted away, it wields a sword with deadly skill.
 Diregraf Ghoul①"At least this one still has arms and legs. Well, most of its legs."↵-Enslow, ghoulcaller of Nephalia
 Diregraf Scavenger①It can barely feel the sword anymore.
@@ -4362,6 +4411,7 @@ Dissipate①"Morning light, morning light,↵Chase away the fears of night."↵-
 Dissipate①"This abomination never belonged in our world. I'm merely setting it free."↵-Dierk, geistmage
 Dissipation Field①"Strike me once, shame on you. Strike me twice . . . Well, let's just see if you can."↵-Kara Vrist, Neurok agent
 Dissolve①"You thought only the gods could stop you?"
+Dissonant Wave①Emerald dragons hate prying eyes, and they have a host of ways to deter them.
 Distant Melody①Oona's song is like a twisted dinner chime. All the faeries return home, but it is Oona who feasts-on the stolen dreams and rumors they serve her.
 Distant Memories①"The fleeting shadows of his primitive self have all but vanished."↵-Jin-Gitaxias, Core Augur
 Distorting Lens①"The Eye altering alters all."↵-William Blake, "The Mental Traveller"
@@ -4412,6 +4462,7 @@ Diviner's Lockbox①"I see it taunting me whenever I close my eyes."↵-Nayrex S
 Diving Griffin①To outrace the griffin↵-Kipamu expression meaning "to do the impossible"
 Divinity of Pride①"She spoke of mystery and portent, of such unfathomable things that my mind screamed for pity."↵-*The Seer's Parables*
 Dizzying Gaze①"When I cut down my angel I only started my fall."↵-Crovax
+Dizzying Swoop①In a castle that prizes loyalty above all, the bond between knight and griffin is unmatched.
 Djeru's Renunciation①"I was promised an afterlife, not this. Samut was right. The God-Pharaoh lied."↵-Djeru, former Tah-crop initiate
 Djeru's Resolve①"When I wish to be strong, I train. When I wish to be wise, I study. When I wish to rest, I start again."
 Djinn of Infinite Deceits①The winds of change have a mind of their own.
@@ -4648,6 +4699,7 @@ Drinker of Sorrow①It strikes at your soul, heedless of your prayers.
 Dripping Dead①It oozes death from every pore.
 Dripping-Tongue Zubera①When the Honden of Life's Web was destroyed, its attendants swarmed Kamigawa to ensure mortal defeat.
 Driver of the Dead①Some vampires resorted to corpse trading after cathars burned their estates and drove them from their ancestral feeding grounds.
+Drogskol Armaments①When he could no longer carry on, he imparted his strength to the one who took up his duty.
 Drogskol Captain①Dead or alive, true leaders can inspire an entire army.
 Drogskol Infantry①He swore to protect the Moorlands. A little thing like death was no excuse to break his oath.
 Drogskol Reaver①Wracked and warped with anguish, it obsessively seeks out other souls to hoard within its eternal prison.
@@ -4662,6 +4714,7 @@ Dromoka Warrior①Dromoka has regard for the humans who serve under her. In retu
 Dromoka's Gift①The simplest gift from a dragon can be a revered accolade for a human warrior.
 Dromoka, the Eternal①"The bane of countless shattered weapons, each a failure to slay her."↵-Daghatar the Adamant
 Dromosaur①They say dromosaurs are frightened of dogs, even little ones. There are no dogs in Shiv. Not even little ones.
+Dronepack Kindred①These new terrors will not recede with the setting of the moon.
 Droning Bureaucrats①" . . . and you must also apply for an application license, file documents 136(iv) and 22-C and -D in triplicate, pay all requisite fees, request a . . ."
 Drooling Groodion①"The Golgari expand, yes, but I refuse to call their tainted creations 'growth.'"↵-Niszka, Selesnya evangel
 Drooling Groodion①"The Golgari expand, yes, but I refuse to call their tainted creations 'growth.'"↵-Veszka, Selesnya evangel
@@ -4895,6 +4948,7 @@ Echoes of the Kin Tree①Even after Anafenza was executed, many secretly maintai
 Echoing Calm①A single light unleashes a hail of cleansing.
 Echoing Courage①A single seed unleashes a flurry of growth.
 Echoing Decay①A single fear unleashes a torrent of nightmares.
+Echoing Equation①"Any good experiment is repeatable."
 Echoing Return①A single ambition unleashes a legion of horrors.
 Echoing Ruin①A single misstep unleashes an avalanche of ruin.
 Echoing Truth①A single lie unleashes a tide of disbelief.
@@ -5109,6 +5163,7 @@ Emberwilde Djinn①A hefty price is no guarantee of quality merchandise.
 Embiggen①"Flea circus? No, flee circus!"
 Emblem of the Warmind①"It takes but one spark to ignite a parched forest. Our hearts, I fear, are too dry for this new visitor."↵-Elek Longbeard
 Embodiment of Agonies①"I feel your pain. It's exquisite."
+Embodiment of Flame①Never again would she fear the dusk.
 Embodiment of Spring①Arel dreamed of winter's end. The next morning she followed a strange trail and found a seedling in the snow.
 Embraal Bruiser①In Embraal, inventor gangs defend their turf with ingenious devices and blunt objects.
 Embraal Gear-Smasher①"A well-made wrench is a versatile, indispensable tool."
@@ -5123,6 +5178,7 @@ Emergent Growth①"By accepting my smallness I am vast."
 Emeria Angel①When the earth shudders, the sky overflows.
 Emeria Captain①"The gifts of the past must find their way into deserving hands."
 Emeria's Call①"Iona no longer guards this place. We do."↵-Kasla, Emeria shepherd
+Emeria, Shattered Skyclave①"You called it the castle of a god. It is less than that, and so much more."↵-Kasla, Emeria shepherd
 Emmara Tandris①When Selesnya needed a champion, Emmara put the ranks of her guild before herself-making her the perfect choice.
 Emmara, Soul of the Accord①"Whatever hatred destroys, a single act of trust can revive."
 Emmessi Tome①It is like life and destiny: we think we know the story, but we have read only half the tale.
@@ -5240,6 +5296,7 @@ Entrancing Lyre①Its strings are wayward threads of fate.
 Entrancing Melody①The stronger the will, the more bewitching the song.
 Entrapment Maneuver①"Greed, rage, and bloodlust all lead to death at the hands of those who keep their heads."↵-Sergeant Eyra
 Entrapment Maneuver①"Now!"
+Entropic Cloud①What its gaze doesn't wither, its breath surely will.
 Envelop①"What you made will be unmade. What you learned will be unlearned. And when you're done, you will be undone."↵-Ambassador Laquatus
 Environmental Sciences①First-years quickly learn how the Vastlands earned its name.
 Eon Hub①Its power source is time itself. It absorbs unused minutes and hours, bringing the end of existence always closer.
@@ -5289,6 +5346,7 @@ Ertai's Trickery①"Don't worry, Gerrard," said Ertai. "I'm sure the crew will c
 Ertai, Wizard Adept①"Was that *it*?"↵-Ertai, wizard adept
 Ertai, the Corrupted①Altered by Phyrexian science, corrupted by black mana, and twisted by rage, Ertai still looked in the mirror and saw only glory.
 Ertai①After serving his apprenticeship under Barrin of Tolaria, Ertai graced the *Weatherlight* crew with his presence as the ship's "resident" wizard. He realizes that few recognize his greatness-but then how could they, when they lack his insight and wisdom?
+Erupting Dreadwolf①". . . heck, I'd settle for anything that even resembled a werewolf."↵-Raf Gyel of the Quiver of Kessig
 Eruth, Tormented Prophet①"The blood is the life! The blood is the life!"
 Eruth, Tormented Prophet①She is cursed with visions of monsters and suffering . . . and all her visions come true.
 Escape Artist①"Not even my shadow knows where I am."
@@ -5341,6 +5399,7 @@ Estwald Shieldbasher①The door to her home survived the fires of the Malignus. 
 Etali, Primal Storm①The storm rages and the earth breaks.
 Etched Champion①Its predecessors were etched with the wisdom of ancients; its own etchings bear warnings of a future fraught with war.
 Etched Monstrosity①Now etched only with the scars of phyresis.
+Etching of Kumano①Many kami came to demand a secret he did not know, and every one of them fell.
 Eternal Isolation①"Well, at least it's a lovely view."
 Eternal Scourge①"It has latched onto this place like an infestation. All efforts at eradication have proved futile."↵-Yeter, Trostad villager
 Eternal Taskmaster①"They are called Eternals. They will never stop."↵-Jace Beleren
@@ -5484,6 +5543,7 @@ Explore①An explorer's reward is a view of tomorrow's possible meals.
 Explore①The Tyranids advanced inexorably across the galaxy in their living Hive Ships, with one singular goal: to consume all.
 Explosion of Riches①"You've got how much gold there?"
 Explosive Apparatus①"Souls are volatile things. When compressed and loaded into a handheld device, their destructive potential is quite impressive."↵-Dierk, geistmage
+Explosive Crystal①"At least it's a beautiful way to die."↵-Erinis, gloom stalker
 Explosive Entry①Kaito and Tamiyo charged headlong into Jin-Gitaxias's secret lab, unaware that the praetor was eagerly awaiting their arrival.
 Explosive Impact①"Such boorish noise is what passes for subtlety among the Boros."↵-Vraska
 Explosive Vegetation①Despite the flames and devastation of the dragons, Tarkir continued to thrive.
@@ -5515,6 +5575,7 @@ Extremely Slow Zombie①. . . aaaaaaiiii . . .
 Extremely Slow Zombie①. . . iiiiiiinnnn . . .
 Extremely Slow Zombie①. . . nnnnnssssss!
 Extremely Slow Zombie①Brrrrrrrrrrrr . . .
+Extricator of Flesh①After the end, a new beginning.
 Extruder①As the invasion drew closer, Urza's means began to resemble Phyrexia's end.
 Extus, Oriq Overlord①"Join me for the dawn of a new age."
 Exuberant Firestoker①The artistry of Etlan's firedancers is more spectacular when behemoths join in.
@@ -5709,6 +5770,7 @@ Fearless Liberator①"No one else had the spine for it, so I ran right between t
 Fearless Pup①"Awooo!"
 Fearsome Awakening①On Tarkir, dragons emerge from enormous tempests, phenomena tied to Ugin's very presence on the plane.
 Fearsome Temper①Purphoros is god of creation and destruction, which makes him the most creatively destructive god in the pantheon.
+Fearsome Werewolf①Come nightfall, they were the ones fleeing in terror.
 Fear①"Booga booga booga!"
 Fear①"Don't fear the darkness. Fear what it hides."↵-Remin, venerable monk
 Fear①"Even the bravest of warriors yet knows the dark clutch of fright upon his stalwart heart."↵-Lim-Dul the Necromancer
@@ -5839,6 +5901,7 @@ Fey Steed①Ride into legend.
 Feywild Caretaker①"Hello, my fluttering friends! Isn't it a beautiful day?"
 Feywild Trickster①Unlike most warlocks, those who make pacts with archfey are drawn to pranks and whimsy moreso than death and darkness.
 Feywild Visitor①Fey energy clings to you, a shimmering reminder of your otherworldly travels.
+Fibrous Entangler①". . . because to be honest, I couldn't tell you."↵-Halana, Kessig ranger
 Fickle Efreet①Flame chooses its own course.
 Fiddlehead Kami①"Like a riddle, it unwinds. Like a green wind, it reaches out. Like a sudden guilt, it seizes."↵-Snow Fur, kitsune poet
 Field Creeper①As it walks across the fallow field, its awkward, loping gait matches the rattling in its head to create a haunting rhythm that chills the bones.
@@ -6024,6 +6087,7 @@ Flames of the Firebrand①"You're in luck. I brought enough to share."↵-Chandr
 Flames of the Raze-Boar①"Fire will cure a multitude of ills."
 Flamescroll Celebrant①"Stand up and fight!"
 Flamespeaker Adept①"I see your future, mantled in ash."
+Flamethrower Sonata①He channels his heart's passion into every fiery note.
 Flametongue Kavu①"For dim-witted, thick-skulled genetic mutants, they have pretty good aim."↵-Sisay
 Flametongue Kavu①"For dim-witted, thick-skulled genetic mutants, they have pretty good aim."↵-Sisay, captain of the *Weatherlight*
 Flamewave Invoker①Inside even the humblest goblin lurks the potential for far greater things-and far worse.
@@ -6259,6 +6323,7 @@ Foriysian Brigade①"A double-edged sword lets you cut down your enemies with th
 Foriysian Interceptor①A focal point for time rifts, Foriys contends simultaneously with foes both new and old.
 Fork in the Road①"This is as far as I go."↵-Beckram, Skiltfolk escort
 Forked Bolt①"Play no favorites. Everybody dies."↵-Sparkmage saying
+Forktail Sweep①"Watch out for its teeth, tail, claws, wings, back, and front."↵-Olga, cavalier
 Forlorn Pseudamma①"More children taken. This is an evil we will track without mercy."↵-Anthousa of Setessa
 Formation①"I have been a warrior for over four hundred years, and yet each generation of Kjeldorans teaches me new tricks. There can be no better allies."↵-Taaveti of Kelsinko, Elvish Hunter
 Forsake the Worldly①"Why cling to these trappings? They are but tools and affectations. True wealth can be possessed only in the afterlife."
@@ -6266,6 +6331,7 @@ Forsaken Drifters①It is a terrible thing when the path of the Returned leads t
 Forsaken Monument①"We shall forever roam."↵-Ayli, high priest of the Eternal Pilgrims
 Forsaken Sanctuary①"Prayers will curdle on the tongue and be heard by rotting ears."↵-Minaldra, the Vizag Atum
 Forsaken Sanctuary①In the galleon's grand cathedral, conquistadors swore vows of faith. In its wreckage, they swore vows of revenge.
+Forsaken Thresher①Were it not for the cultists' fatal curiosity, the terrible machine might have lain dormant for decades more.
 Fortified Rampart①The refuge's defenses allow new recruits to see lesser Eldrazi up close, steeling their stomachs for what's to come.
 Fortifying Draught①"If a seedling can push through solid stone, there's no limit to what I could do."
 Fortifying Provisions①"To the king, to the Circle, and to the realm! And to not dying."
@@ -6321,6 +6387,7 @@ Fractured Sanity①Action: We'd like an epic, abstract illustration of a fantast
 Fractured Sanity①The body grows stronger under stress. The mind does not.
 Fracture①"Your defiance is amusing, little mage. It's time you learn how fragile you really are."↵-Extus Narr
 Fracturing Gust①Elvish dawnhands test a relic's worthiness before collecting it for the safehold. If it can't stand up to a stiff breeze, it's left behind.
+Fragment of Konda①For his transgressions against the kami, Lord Konda's immortal body was turned to stone, then shattered into a thousand still-living pieces.
 Fragmentize①"Too much friction on your bearings, your countersinking is inconsistent, and there are lines in your casting. Dispose of it, and begin again."↵-Dovin Baan
 Framed!①Who knew an 8˝ by 10˝ could feel like a 2˝ by 4˝?
 Frankie Peanuts①Don't cross him or you'll end up sleeping with the merfolk.
@@ -6613,6 +6680,7 @@ General's Regalia①A uniform fit for a goblin.
 Generator Servant①Infinite potential given finite form.
 Generous Gift①Alas, the meowtropolis was struck by a devastating catastrophe, leaving the ground littered with debris.
 Generous Gift①The best presents are impossible to regift.
+Generous Soul①As long as evil threatens his town, the Blessed Sleep can wait.
 Generous Stray①Cats place their gifts with care, so that a bare foot will step on them in the middle of the night.
 Generous Visitor①It is said that one must modestly refuse a gift three times before accepting it to show humility before the kami.
 Genesis Chamber①"As the experimental population grows, so do the number of myr. It's a perfect equilibrium."↵-Memnarch
@@ -6651,6 +6719,7 @@ Ghastlord of Fugue①"He is a ghost that has never known life."↵-*The Seer's P
 Ghastly Demise①"Anyone can snap her fingers and yank a soul. I prefer to kill creatively."↵-Braids, dementia summoner
 Ghastly Discovery①Korrigans, spirits bound to sources of water, shriek when they come upon their own drowned corpses.
 Ghastly Gloomhunter①Stinking, silent death.
+Ghastly Haunting①The body often twists and flails spasmodically as the spirit explores its new home.
 Ghazban Ogre①"We were holding our own-until the ogre guiding us suddenly grinned and turned on our commander."↵-Ivra Jursdotter, Sarpadian mercenary
 Ghen, Arcanum Weaver①"Any apprentice with a spellbook and two sticks can churn out a fireball. This is different. This is art."
 Ghirapur Aether Grid①The city of Ghirapur is a living thing, and living things defend themselves.
@@ -6775,6 +6844,7 @@ Gift of Strength①"What greater testament can there be to Rhonas's lessons?"
 Gift of Strength①"When the sky screams, when the ground groans, the End-Raze will soon begin."↵-Nikya of the Old Ways
 Gift of Strength①The Nessian Wood is never without defenders.
 Gift of Tusks①It's an experience you'll never forget.
+Gift of the Fae①No one is so lost that a faerie can't find them.
 Gifted Aetherborn①A few aetherborn have discovered a way to sustain their own existences at the cost of an insatiable hunger for the life essence of other beings.
 Gifts Given①"Thanks! You shouldn't have."
 Gigantomancer①"All life is driven by an indomitable will to survive. I simply turn that into something more . . . tangible."
@@ -6834,6 +6904,7 @@ Glass Casket①Fate will decide whether it's a bed or a tomb.
 Glass Golem①Izzet artificers have learned to steer their beautiful constructs clear of Boros warhammers-and the opera house.
 Glass of the Guildpact①"Counterbalanced forces sustain this city. No faction above others. A beautiful idea."↵-Emmara
 Glasspool Mimic①"When I touched the Glasspool, I tasted infinite possibility."↵-Ashen Wal, Akoum Expeditionary House
+Glasspool Shore①"Past and possibility come together in the vastness of infinite reflection."↵-Ashen Wal, Akoum Expeditionary House
 Glaze Fiend①Before the zealots of the Ethersworn came to power, Esper illusionists dreamed up creations to mimic a variety of substances.
 Gleam of Battle①Every soldier returns from battle changed: by hardship, by blood, by a glimpse of glory.
 Gleaming Barrier①"Gold without freedom might as well be lead."↵-Angrath
@@ -6911,6 +6982,7 @@ Glyph of Doom①"He knows he has a short span of life, that the day will come wh
 Glyph of Life①Any wall can be battered down, but at what cost?
 Gnarlback Rhino①"I think it's trying to tell us that the forest is angry."↵-Vivien Reid
 Gnarled Effigy①"Bits of fallen scarecrow, laces of elfskin leather, teeth of an axeshark merrow . . . An industrious soul can find new uses for the most mundane items."↵-Mowagh the Gwyllion
+Gnarled Grovestrider①Far from the bloodsoaked wedding, unseen by human eyes, a long-slumbering force arose to protect its home.
 Gnarled Mass①"On the fifty-seventh day of the Battle of Silk, the bell again tolled in hopes of summoning mortal aid. This time, a new breed of kami rose to answer its call."↵-*Great Battles of Kamigawa*
 Gnarled Professor①"Class is in season."
 Gnarlid Colony①Where mana flows, the gnarlids follow.
@@ -7146,6 +7218,7 @@ Godtoucher①"Gargantuans die not in moments but in moons. There is still time t
 Godtracker of Jund①"The behemoths are content to graze like cattle, while dragons rage and conquer. I know which example I'll follow."
 Gold Myr①The leonin thought of the myr as omens, never imagining the sinister fate they foretold.
 Gold Myr①The myr are like razorgrass: numberless metal figures, reflecting each other's light.
+Gold-Forge Garrison①An army of living gold for the golden city.
 Gold-Forged Sentinel①Blessed by the gods. Coveted by mortals. Beholden to neither.
 Golden Bear①The elvish scout was scrupulous about the truth. She told the traders that gold lay nearby.
 Golden Hind①"It is not yours to hunt, mortal. Be content with its beauty alone."↵-Nylea, god of the hunt
@@ -7411,9 +7484,11 @@ Grim Tutor①You see a lock, I see an invitation.
 Grim Tutor①nothing is sacred.
 Grim Wanderer①There is a stillness that walks with him, the quiet that follows great tragedy, when even the mourners are too exhausted to weep.
 Grimclaw Bats①Even on a world of metal, there are those who thirst for blood.
+Grimclimb Pathway①"My mother wanted me to take over the family dry goods business, but no. I had to come here."↵-Yavotz, Sea Gate Expeditionary House
 Grimdancer①Most monsters are more frightening when they skitter unseen in the dark. Most.
 Grime Gorger①Sometimes the trash throws you out.
 Grimlock, Dinobot Leader①"Me Grimlock no like you."
+Grimlock, Ferocious King①"Why you think Grimlock stupid? Me not stupid. Grimlock smartest Dinobot."
 Grindclock①Pray you never hear it chime.
 Grindstone①"All attempts to halt the machine failed. We must find a way to repurpose it."↵-Consulate engineer's log
 Grindstone①"Memory is a burden that wears at the soul as weather wears at stone."↵-Crovax
@@ -7429,6 +7504,7 @@ Griptide①"Beware the seagrafs just off the shore. These waters are filled with
 Griptide①When the sea god Thassa wishes to speak with a mortal, she does not issue a summons or grant a vision requesting a visit. The sea simply brings her guest before her.
 Griselbrand①"Avacyn emerged from the broken Helvault, but her freedom came at a price-him."↵-Thalia, Knight-Cathar
 Griselbrand①Power over death was Griselbrand's gift. Liliana's formidable necromancy was now unparalleled.
+Grisly Anglerfish①". . . it's that the lure of the sea is impossible to ignore."
 Grisly Ritual①"You can always tell who's new from the screaming."↵-Tinua, Skirsdag cultist
 Grisly Salvage①To the Golgari, anything buried is treasure.
 Grisly Spectacle①"Watch people flock to a murder scene. Then tell me we're not all a little sick in the head."↵-Juri, proprietor of the Juri Revue
@@ -7500,8 +7576,8 @@ Gruul War Chant①"We are the heart of the wild, the fire in its eyes, and the h
 Gruul War Plow①"Steering apparatus?! What for? Rip it out, sharpen it, and lash it to the front!"↵-Ktank, Gruul plowmaster
 Gryff Rider①"Keep your heels down and bend at the hips as your mount takes flight. She'll do the rest."↵-Anders, cathar drillmaster
 Gryff Vanguard①"Ghouls smashed the door, but I heard the call of the gryffs and knew we were saved."↵-Ekka, shopkeeper of Hanweir
-Guan Yu's ⓪≚,⓪≙⓪≙⓪≙-Li March①"He Guan Yu covered the ground on a thousand-li horse;/ With dragon blade he took each pass by force."
-Guan Yu's ⓪≚,⓪≙⓪≙⓪≙-Li March①"He [Guan Yu] covered the ground on a thousand-*li* horse; / With dragon blade he took each pass by force."
+Guan Yu's ⓪≚≚≚≚≚≙≚≙≙≙-Li March①"He Guan Yu covered the ground on a thousand-li horse;/ With dragon blade he took each pass by force."
+Guan Yu's ⓪≚≚≚≚≚≙≚≙≙≙-Li March①"He [Guan Yu] covered the ground on a thousand-*li* horse; / With dragon blade he took each pass by force."
 Guard Dogs①"A good guard is alert. A great guard is also loyal."↵-Benalish kennelmaster
 Guard Duty①"I was told these were standard issue. Do I look standard to you?"
 Guard Gomazoa①It lingers near the outposts of the Makindi Trenches, inadvertently granting another layer of defense.
@@ -7556,6 +7632,7 @@ Gustrider Exuberant①"The elves claim the canopy. The nacatl claim the mountain
 Gus①"Now I lay me down to sleep-↵What are *you* starin' at?"
 Gut Shot①"Down here, we have a more pointed version of the scriptures."↵-Urabrask's enforcer
 Gutless Ghoul①"Make sure those wretches feed only upon the plagued. The blood of the healthy is reserved for me alone."↵-Garza Zol, plague queen
+Gutter Shortcut①Some people take that as inspiration.
 Gutter Skulker①Geists have a knack for showing up wherever they're least expected.
 Gutter Skulk①Upon finding his warehouse infested, Gaven didn't know whether to get an exterminator or an exorcist.
 Gutterbones①"Down here, things don't stay dead."↵-Lavinia
@@ -7578,7 +7655,10 @@ Haberthrasher①"Brims" Barone's enforcers are always dressed to kill.
 Hackrobat①"They all want to see me fall."
 Hada Freeblade①"I toiled in Kazuul's mines when I was eight. I think I'm tough enough for a little hiking."
 Hadana's Climb①Hadana seeks power in the service of peace.
+Haggle①"Buying old, worn out junk. Selling marvels of real value."
+Haggle①"Buying old, worn-out junk. Selling marvels of real value."
 Hagi Mob①"Graarg!"
+Hagra Broodpit①"I think we somehow got turned around."↵-Doros, expedition guide
 Hagra Crocodile①The creatures of Zendikar are opportunists, eating whatever is available to them. Like goblins. Or boats.
 Hagra Diabolist①"When exploring the darkest regions, wickedness can be the best accomplice of all."
 Hagra Mauling①"Din, turn around! Now!"↵-Doros, expedition guide
@@ -7588,6 +7668,7 @@ Hail Storm①"If they can't take the hail, they'd better stay home."↵-Arna Ken
 Hail of Arrows①"Do not let a single shaft loose until my word. And when I give that word, do not leave a single shaft in Eiganjo."↵-General Takeno
 Hailstorm Valkyrie①When the path to Starnheim was opened, vengeance rained down upon the enemies of Bretagard.
 Hair-Strung Koto①"The Kami War drove many members of Konda's court insane. As their spiritual world turned against them, so too did their minds turn from reality."↵-*The History of Kamigawa*
+Hakka, Whispering Raven①Alrund's raven soars between realms; no secret is beyond his grasp.
 Haktos the Unscarred①"Many have sought my weakness. All have failed."
 Halberdier①His reputation precedes him-and so does his weapon.
 Halcyon Glaze①"Earth to aether, window to wonder, stillness to the sky."↵-Glazing incantation
@@ -7632,6 +7713,7 @@ Hand of Cruelty①"The sword is just a tool. It is the samurai's hand that deliv
 Hand of Death①Death claims all but the darkest souls.
 Hand of Death①The touch of death is never gentle.
 Hand of Emrakul①"I believed in a beautiful god. But this is the true face of the divine."↵-Ayli, Kamsa cleric
+Hand of Enlightenment①"We have endured lifetimes of war and carved our way to peace by blade and conquest. Now, united at last under Kyodai's guidance, we lay down our weapons and open our minds."↵-Aoha, general of the First Emperor
 Hand of Honor①"The sword is just a tool. It is the samurai's hand that brings it to life."
 Hand of Justice①"The Hand of Justice will come to cleanse the world if we are true."↵-Oliver Farrel
 Hand of Silumgar①Silumgar trains those whom he favors in his magic, granting them the ability to spread his disdain across the land.
@@ -7679,6 +7761,7 @@ Harmonize①"The bloody din of invasion faded↵And silent song rang through the
 Harmonize①"Words lie. People lie. The land tells the truth."
 Harness Infinity①"As I stepped into the star arch, it all became perfectly clear. Life and death are not opposites, but an endless path, twisting around and back upon itself, never ending and never beginning."↵-Zhaer, professor of biophilosophy
 Harness the Storm①"There is no place like a rooftop laboratory in a lightning storm. It's where genius strikes."↵-Renna, Selhoff alchemist
+Harnfel, Horn of Bounty①Like her well of stories, Birgi's horn never runs dry.
 Harpoon Sniper①Made from whiskergill bones, merrow spinebows can fire bolts through tree trunks.
 Harrier Griffin①Moon Market merchants sell a bottled scent to cutpurses and other criminals. Those doused in the liquid become "griffin bait."
 Harrier Naga①She trusts that the potent poisons of her darts will reach the enemy before the enemy reaches her.
@@ -7703,6 +7786,7 @@ Harvester Troll①Having no interest in the greater conflict, the trolls continu
 Harvester of Souls①"He is judge, jury, and executioner because he killed them all."↵-Bishop Cawle of Elgaud
 Harvester of Souls①"The entire parish is gone. This was no execution. This was a massacre."↵-Bishop Cawle of Elgaud
 Harvestguard Alseids①Not all shields are forged of iron or bronze.
+Harvesttide Assailant①When Tovolar's howl sounded from the woods, it was answered from the heart of the festival.
 Harvesttide Infiltrator①He was one masked stranger among many. Blending in was child's play.
 Harvesttide Sentry①She patrols the darkness so that others can forget their worries for one bright evening.
 Hat Trick①"Behold the power of my hat and the ghosts of two other hats I used to own!"
@@ -7777,6 +7861,7 @@ Heart Warden①"In Llanowar, we tend the forest's boughs and branches. In Yavima
 Heart of Light①"There is a shining in the mortal heart that even the kami cannot reach."↵-Sensei Golden-Tail
 Heart of Light①For those who reach enlightenment, violence is an unnecessary distraction.
 Heart of Ramos①Ramos bled, and there was fire.
+Heart's Desire①His mind chose solitude, but his heart disagreed.
 Heart-Piercer Bow①Designed by an ancient artificer, the finest Mardu bows are carved from dragon bone and strung with the wind itself.
 Heartbeat of Spring①"It is true that we monks hold the key to paradise, but most don't understand that the paradise we guard is the one within."↵-Diary of Azusa
 Heartbeat of Spring①"You were right, Ixalan is a paradise," said Saheeli. "Mostly because you're here."
@@ -7826,6 +7911,7 @@ Heiko Yamazaki, the General①"I prefer to let my sword do the talking."
 Heir of Falkenrath①Among vampires, there has long been the belief that the urge to feed must be balanced by the poise of nobility.
 Heir of the Ancient Fang①On the last day of a Jukai agent's training, they are bequeathed a powerful relic blessed by the kami.
 Heir of the Wilds①In the high caves of the Qal Sisma mountains, young hunters quest to hear the echoes of their fierce ancestors.
+Heir to the Night①The Falkenrath have relinquished all pretense at nobility, losing themselves completely to their all-consuming thirst.
 Heirloom Mirror①"Speak my name thrice, and be rewarded."
 Hekma Sentinels①"The God-Pharaoh created the Hekma to protect us from the horrors beyond and to surround us in his love."
 Helbrute①"No. No! Not the sarcophagus . . . Khorne damn you, you disloyal curs. JUST KILL ME!"↵-Kalos the Ravager
@@ -7862,6 +7948,8 @@ Henge Guardian①Like so many Thran relics, the wurm engine kept operating long 
 Henge Walker①Everything that inhabits Garenbrig is affected by the wild magic flowing through the Great Henge.
 Henge of Ramos①It is the hub. We are the wheel.↵-Dryad saying
 Hengegate Pathway①"I cannot read these runes, yet somehow they seem like a warning. Have we passed unknowingly into a new realm?"↵-Ekken, Omenseeker navigator
+Henrika, Infernal Seer①"Once you've tasted demon blood, you'll wonder why you ever settled for human."
+Henrika, Infernal Seer①Nothing can be more dreadful than those awful women, who were-who are-waiting to suck my blood.
 Herald of Dromoka①The trumpeters of Arashin are ever alert in their watch over the Great Aerie.
 Herald of Faith①The clerics prayed for salvation. The soldiers prayed for victory. Both prayers were answered.
 Herald of Kozilek①"Some Eldrazi, their purpose is obvious: suck the life out of the land, birth new Eldrazi. Others aren't so obvious, and those are the ones that make me really nervous."↵-Chadir the Navigator
@@ -7970,6 +8058,7 @@ Hinterland Harbor①"Our ancestors brought down a Phyrexian portal ship, then bu
 Hinterland Harbor①In places where the sea meets the trees, it's easy to forget the darkness that rules most of Innistrad.
 Hinterland Hermit①He tried to live far from those he could hurt . . .
 Hinterland Logger①"There's a forester lives up in the highlands. Tried to sell her one of my finest axes at a bargain, but she wasn't interested."↵-Old Rutstein
+Hinterland Scourge①. . . but the monster within was a tireless hunter.
 Hipparion①"Someone once said that Hipparions are to Warriors what Aesthir are to Skyknights. Don't believe it."↵-General Jarkeld, the Arctic Fox
 Hipparion①"Someone once said that hipparions are to warriors what aesthir are to skyknights. Don't believe it."↵-General Jarkeld, the Arctic Fox
 Hired Blade①"If you want them dead, buy some poison. If you want them to have the worst day of their life before dying, then let's talk price."
@@ -8028,6 +8117,7 @@ Homarid Explorer①"Homarids spread northward from Sarpadia as the climate coole
 Homarid Shaman①"The ground grew swampy; hooves and claws sank into the marshy earth. Snarls of rage and bleats of despair echoed through the trees as the waters grew higher and higher."↵-Kyliki of Havenwood, "Havenwood Remembered"
 Homestead Courage①"C'mon, fiend. I'll carve you up like a Harvesttide ham."
 Homeward Path①"Let your heels point you home."↵-Ancient blessing
+Homicidal Brute①For a moment his basest desires run free, unshackled by reason or conscience.
 Homicidal Seclusion①"Damned crows and their endless squawking . . . blocks out the voices in my head . . ."↵-Hermit of Hanne Hall
 Homing Lightning①"I see countless worlds. What makes them think I can't find them in just one?"↵-Ral Zarek
 Honden of Cleansing Fire①To the sorrow of all, its fire was turned toward those who worshipped it.
@@ -8055,6 +8145,7 @@ Hooded Horror①Insidious fear can be the undoing of the greatest of armies.
 Hooded Kavu①The spread of its hood eclipses all hope.
 Hoodwink①The youths of Rishada's marketplace are always ready for a quick footrace.
 Hoof Skulkin①It hunts with the memory of a long lost herd.
+Hook-Haunt Drifter①Even in death, he casts his lines, forever fishing for reasons long forgotten.
 Hookhand Mariner①The local gossips swore Nesmith lost his hands in a fight with a werewolf.
 Hooting Mandrills①Interlopers in Sultai territory usually end up as crocodile chow or baboon bait.
 Hope Against Hope①"I have given my life to the church, my soul to Avacyn, and my heart to the people."
@@ -8140,6 +8231,7 @@ Howling Mine①Legend has it that the mine howls out the last words of those who
 Howling Mine①The mine's riches never end, nor do the moans of the spirits doomed to haunt them.
 Howlpack Resurgence①The renewed howling of werewolves announced the end of the Cursemute-and the beginning of Avacyn's madness.
 Howlpack Wolf①Wolves and werewolves join together for the common cause of the hunt.
+Howlpack of Estwald①Estwald's citizens don't dislike outsiders-they taste just fine.
 Huang Zhong, Shu General①"Virile in war, he kept the north in fear; His prodigies subdued the western sphere."
 Huatli's Raptor①The essence of Ixalan was never far from Huatli's heart.
 Huatli's Snubhorn①Don't make the mistake of thinking blunt horns can't kill.
@@ -8387,6 +8479,7 @@ Imperial Aerosaur①Its assistance is unnervingly similar to its hunting techniq
 Imperial Ceratops①"The music of blades against its silver armor merely inspires it to bellow more full-throated melodies."↵-Huatli
 Imperial Edict①Frustrated with Cao Cao's control of the imperial court, Emperor Xian secretly issued an edict condemning him, using his own blood as ink.
 Imperial Lancer①"Together my mount and I are stronger than either of us apart."
+Imperial Moth①"The moths of Eiganjo were once no different from any other great beast of Kamigawa's wilds. It took years of patience and dedication to convince them to bear riders."↵-*History of the Empire*
 Imperial Oath①Those chosen to guard the Imperial Palace are not only unrivaled warriors but also lionhearted champions of the Imperial cause.
 Imperial Outrider①Her mount's hollow crest can produce a trumpeting warning that carries for miles, summoning more knights to her aid.
 Imperial Recruiter①A passionate recruiter will win a war before the first arrow flies.
@@ -8441,6 +8534,7 @@ Incinerate①"Yes, I think 'toast' is an appropriate description."↵-Jaya Balla
 Incite Hysteria①"The Boros say they want to bring order to Ravnica. Funny then, how well they use chaos."↵-Trigori, Azorius senator
 Incite Insight①After a hundred failed patent applications, Cornelian was stunned to find that no one had ever created a steam-powered autonomous ice cream delivery system. He immediately designed a gnome with scoops for hands.
 Incite Rebellion①Nothing breaks the monotony like a good old-fashioned riot.
+Incited Rabble①Rumors are sparks: gather enough of them and something's going to catch fire.
 Incite①The veneer of rationality peeled from the mage, revealing the spite and rage beneath.
 Incorrigible Youths①"Ah, to be young again."↵-Olivia Voldaren
 Incremental Blight①Shadowmoor's main crops are rot, slime, and despair.
@@ -8513,6 +8607,7 @@ Inferno①"Any scrap of compassion that still existed in my soul was permanently
 Inferno①"Some have said there is no subtlety to destruction. You know what? They're dead."↵-Jaya Ballard, task mage
 Inferno①"Some have said there is no subtlety to destruction. You know what? They're dead."↵-Wandering mage
 Infestation Expert①There's only so many times she can take being asked . . .
+Infested Werewolf①. . . "What's bugging you?"
 Infest①"It is from Phage that this evil springs, and to her it shall return."↵-Akroma, angelic avenger
 Infest①"This is why we don't go out in banewasp weather."↵-Rannon, Vithian holdout
 Infiltrate①Getting in was the easy part. Getting out proved to be more difficult.
@@ -8538,6 +8633,7 @@ Ingenious Skaab①Heads and shoulders above the rest.
 Ingot Chewer①Elementals are ideas given form. This one is the idea of "smashitude."
 Inheritance①"More than lessons may be gained from the past."↵-Halvor Arensson, Kjeldoran Priest
 Inheritance①"More than lessons may be gained from the past."↵-Halvor Arensson, Kjeldoran priest
+Inherited Fiend①"Well done, young fool, well done! Now for your reward."
 Inhumaniac①For the mind-minded mastermind.
 Initiate's Companion①"I'd like to say that it's our pet, but the reverse may be closer to the truth."↵-Ixor, initiate of Rhet crop
 Initiates of the Ebon Hand①"Many Initiates sacrificed a hand to become full members of the Order."↵-*Sarpadian Empires, vol. II*
@@ -8574,6 +8670,8 @@ Insatiable Appetite①He ate them out of house and home and shed and barn and fl
 Insatiable Gorgers①"Drink deeply, for there is no tomorrow!"↵-Anje Falkenrath
 Insatiable Harpy①Gold coin, battered helmet, broken wrist bone-all have the same value in the eyes of a harpy.
 Insatiable Souleater①"We thank the souleaters for culling our sick so that the strong may earn their triumphs."↵-Drones' hymn of gratitude
+Insectile Aberration①"Aha! Yes! Now I hear it, the beautiful poetry of the lights in the sky. I must reach the moon and ask what it all means!"
+Insectile Aberration①"Unfortunately, all my test animals have died or escaped, so I shall be the final subject. I feel no fear. This is a momentous night."↵-Laboratory notes, final entry
 Inside Out①Seyden's temperament didn't take well to the puca's magic. Nor did his face.
 Insidious Dreams①Chainer dreams of ultimate knowledge.
 Insidious Will①"We meet again, pyromancer."↵-Baral, Chief of Compliance
@@ -8691,6 +8789,7 @@ Ironclad Slayer①The best weapon is the one at hand.
 Ironclaw Buzzardiers①They warn the army of danger as they squawk past in swift retreat.
 Ironclaw Orcs①Generations of genetic weeding have given rise to the deviously cowardly Ironclaw clan.
 Ironclaw Orcs①Generations of genetic weeding have given rise to the deviously cowardly Ironclaw clan. To say that Orcs in general are vicious, depraved, and ignoble does not do justice to the Ironclaw.
+Ironfang①Each morning, he repairs the front door.
 Ironhoof Boar①"I'm glad she can run again, but this might have been a bit much."↵-Kenji, Sokenzan artisan
 Ironhoof Ox①The good news is it's vegetarian. The bad news is it just doesn't like you.
 Ironroot Treefolk①"'I'll show you how to handle the treefolk!' the giant bragged, and he strode off into the forest. Two days later he returned, his face masked in sap and a nest behind his ear. None dared ask who won."↵-Azeworai, "The Treeling"
@@ -8731,6 +8830,9 @@ Isshin, Two Heavens as One①Trained by the Imperials but disillusioned by their
 It Came from Planet Glurg①A sludge with a grudge.
 It That Betrays①Your pleas for death shall go unheard.
 It That Gets Left Hanging①"Give me . . . some skin."
+It That Rides as One①". . . but until this morning, I'd never seen them be of one body."↵-Ulda, Gavony Rider
+Itlimoc, Cradle of the Sun①"The true treasures of our world are found ni the wild places, where Ixalli's light shines brightest."↵-Huatli
+Itlimoc, Cradle of the Sun①Before the Sun Empire was born, humans and merfolk joined their magic to invoke a blessing of fertility on the land.
 Ivory Crane Netsuke①It is said that the feathers of a crane are clouds, plucked and sewn together by the hands of the kami.
 Ivory Cup①Blessed by a thousand prayers.
 Ivory Guardians①"But who is to guard the guards themselves?"↵-Juvenal, *Satires*
@@ -8903,6 +9005,7 @@ Jori En, Ruin Diver①"Some relic hunters have given up exploring and gone to fi
 Jorn, God of Winter①"Wherever snow falls, I am home."
 Journey for the Elixir①"As my hands touched it, I realized that I had not found it-it had been leading me here."
 Journey to Eternity①Every journey has its inevitable end . . .
+Journey to the Oracle①To find Jadzi, one need only wander.
 Journeyer's Kite①"From the clouds, you can see as far as the distant horizon. It's a reminder of the infinite possibilities of everyday life."↵-Noboru, master kitemaker
 Jousting Dummy①"Don't let it fool you. Many of us got our first scars from Syr Nobody."↵-Syr Layne, knight of Embereth
 Joust①"Life is a tournament that rewards the bold."↵-Syr Layne, knight of Embereth
@@ -8966,10 +9069,12 @@ Juzam Djinn①"Expect my visit when the darkness comes. The night I think is bes
 Juzam Djinn①"Expect my visit when the darkness comes. The night I think is best for hiding all."↵-Ouallada
 Jwar Isle Avenger①Though solitary by nature, the sphinxes did not hesitate to join in the fight against the Eldrazi.
 Jwari Disruption①"You worry too much."↵-Nys Dal, Sea Gate trapfinder
+Jwari Ruins①"The Ondu Skyclave was a center for rebellion against the capital in Makindi. Of course they built in deadly traps."↵-Nys Dal, Sea Gate trapfinder
 Jwari Scuttler①"Yeah, they've got a lot of meat. The only downside to eating 'em is that you often find human bones and body parts inside."↵-Jaby, Silundi Sea nomad
 Jwari Shapeshifter①"The best expedition would be an entire team of me."
 Kaalia of the Vast①"I'll have my revenge if I have to call on every force from above and below."
 Kabira Outrider①Ondu moas make wildly uncomfortable mounts, but for determined warriors, their speed is enough to make up for it.
+Kabira Plateau①"Wise adventurers-and clever beasties-stick to the higher ground."↵-Kreq of Sunder Bay
 Kabira Takedown①"Down below's where things go to die."↵-Kreq of Sunder Bay
 Kabuto Moth①"Many great warriors died in the first days of the war, as the spirits of their weaponry turned against them with terrifying rage."↵-*Observations of the Kami War*
 Kadena, Slinking Sorcerer①"The only constant in life is the unknown."
@@ -8985,6 +9090,7 @@ Kalamax, the Stormsire①Its mood changes with the weather, and vice versa.
 Kalastria Healer①"Time and again, I have demonstrated my skills as a healer. Why, then, are you so ill at ease?"
 Kalastria Highborn①Each of Malakir's great families boasts a contingent of nulls appropriate to its rank in society.
 Kalastria Nightwatch①"Kalitas may have returned to mindless servitude beneath the Eldrazi, but we say never again."↵-Drana, Kalastria bloodchief
+Kaldring, the Rimestaff①As the sagas tell it, Jorn collects a sliver of ice from every realm he visits.
 Kaleidostone①Once broken, who knows what worlds might grow from its shards?
 Kalonian Behemoth①"Do not fire upon it-it is bad luck. And a waste of arrows."↵-Alera Benath, Kalonian ranger
 Kalonian Hydra①Even baloths fear its feeding time.
@@ -9065,7 +9171,9 @@ Kazandu Blademaster①"If you hire a sell-sword, you'd better watch your back. H
 Kazandu Mammoth①"It doesn't obey me. It cooperates with me."↵-Triel, Kazandu tuskcaller
 Kazandu Nectarpot①"The scythe-like forelegs are crucial for its survival, because it tastes really good and every inhabitant of Murasa knows it."↵-Arhana, Kazandu trapfinder
 Kazandu Stomper①Elves revere cycles of renewal, but they prefer cycles that don't involve their homes getting smashed.
+Kazandu Valley①"The elves stick to the trees. Here, where the trees welcome the sky and leave room for grazing herds-this is our land."↵-Triel, Kazandu tuskcaller
 Kazuul Warlord①On expeditions, minotaurs are worth their weight in gold. Fortunately for their paymasters, most minotaurs don't know how much they weigh.
+Kazuul's Cliffs①"The path up the cliffs is nothing but steep switchbacks and rickety lifts, made by elves, maintained by humans, and guarded by ogres. But it's the best way into the heart of Murasa."↵-Samila, Murasa Expeditionary House
 Kazuul's Fury①"The toll is steep, but the cliffs are steeper."↵-Samila, Murasa Expeditionary House
 Kazuul's Toll Collector①Travelers are advised to bring extra swords, preferably shiny ones.
 Kazuul, Tyrant of the Cliffs①Warning to those who scale the cliffs without paying tribute: It's a long way down.
@@ -9134,6 +9242,7 @@ Keymaster Rogue①"This one opens the grate outside Zelzo Base. This one is for 
 Khalni Ambush①"The difference between life and death in Ora Ondar is about three seconds of startled screaming."↵-Raff Slugeater, goblin shortcutter
 Khalni Gem①A fragment of ancient power lost in the heart of Ora Ondar.
 Khalni Hydra①"In ages past, bargains were struck and promises were made. Now we must collect on our debt. Begin the hymns."↵-Moruul, Khalni druid
+Khalni Territory①"If you wander into the Khalni Garden without knowing the signs of a scythecat's territory, you're not going to live long enough to learn."↵-Raff Slugeater, goblin shortcutter
 Kharis & The Beholder①#sponsored
 Khenra Charioteer①"We do not swerve."↵-Tah-crop charioteer motto
 Khenra Eternal①For many years, servant mummies toiled in the mines to extract lazotep. The emergence of the Eternals revealed the sacred substance's true purpose.
@@ -9372,10 +9481,12 @@ Kraken of the Straits①Thassa felt no need to punish the sailors for their foll
 Kraken's Eye①Bright as a mirror, dark as the sea.
 Kraken's Eye①It's seen the wonders of entire worlds trapped in the depths of a bottomless ocean.
 Krakilin①"A perfect reflection of its world: brutal, fetal, and lacking truth."↵-Oracle *en*-Vec
+Krallenhorde Wantons①The boot prints became paw prints, and they led right back into town.
 Kranioceros①"A surly beast, the kranioceros will raise its defenses at the smallest threat. Stay out of sight and downwind, or you'll disrupt its natural migrations."↵-Ebrel, godtoucher mentor
 Krark's Other Thumb①Krark was the kind of goblin who'd lose his thumb in a wager and come right back with "Double or nothing!"
 Krark's Thumb①"I can think of *one* goblin it ain't so lucky for."↵-Slobad, goblin tinkerer
 Krark's Thumb①As a child, Slobad fashioned a music box out of the wayward digit. Its simple tune was his sole companion on many lonely nights.
+Krark's Thumb①The thumb is said to bring its owner good luck up until the end of their life. That duration has yet to be specified.
 Krark, the Thumbless①"Double or nothing."
 Krark-Clan Engineers①"Well, I jammed the whatsit into the whackdoodle, but I think I broke the thingamajigger."
 Krark-Clan Grunt①The more weapons a goblin breaks in battle, the more respected he becomes.
@@ -9476,6 +9587,7 @@ Lagonna-Band Trailblazer①Go forth with honor, return with glory.
 Laid to Rest①"We are not here to mourn their loss. We are here to celebrate their lives."↵-Vesna, Dawnhart witch
 Lair Delve①"The fiends have fled. Well, good riddance. Nothing I like more than an empty lair."
 Lairwatch Giant①A giant can brood over a grudge for decades, and woe to those who interrupt him.
+Lambholt Butcher①True peace can't be achieved until everyone else is dead.
 Lambholt Elder①"Be wary of the seemingly gentle souls. The weak here were slaughtered long ago."↵-Rem Karolus, Blade of the Inquisitors
 Lambholt Harrier①"This Tovolar is no brainless brute. He sends his howling minions to terrorize a village for months. Sleepless nights and fear take their toll. Only then, when morale is at its worst, does he strike."↵-Barnes, village watch
 Lammastide Weave①"A ribbon torn will ward away dark dreams."
@@ -9493,6 +9605,7 @@ Lantern Kami①"Snuffing the light of a lantern without saying a small prayer is
 Lantern Scout①Hedron lanterns fend off more than just the darkness.
 Lantern Spirit①Bound to the square where she died, she calls out to those in danger-usually scaring them straight into the peril she warns of.
 Lantern of Insight①Each eye sees a different possibility for tomorrow.
+Lanterns' Lift①. . . but she knew it would be rude to refuse.
 Lapse of Certainty①Without a connection of mind and body, magic is just an idea stuck in the head, a word on the tip of a tongue.
 Laquatus's Champion①Chainer's dark gift to a darker soul.
 Laquatus's Creativity①One never knows when inspiration will bubble up.
@@ -9549,6 +9662,7 @@ Lavabelly Sliver①Warm enough to incubate eggs or incinerate those who would ea
 Lavaborn Muse①"Her voice is disaster, painful and final."↵-Matoc, lavamancer
 Lavabrink Venturer①"Take one wrong step out here and you're dead. I take only right steps."
 Lavafume Invoker①"Then the ancient masters themselves, towers of rapacity, rose and began their calamitous feast."↵-*The Invokers' Tales*
+Lavaglide Pathway①"Don't fear the heat. Just let it lift you up."↵-Amandi, kitesail expert
 Lavakin Brawler①She swings with the ease of flowing lava and hits with the force of a meteor.
 Lavalanche①Alara's burning blood cannot be contained by mere earth and stone.
 Lavastep Raider①Goblins were first to see the potential of hedrons in the fight against the Eldrazi, for the magical stones came ready-made with pointy bits.
@@ -9597,6 +9711,7 @@ Leech Bonder①Some don't know his face, but his pets are a dead giveaway.
 Leech Fanatic①"Everyone thinks that leeches maintain a strictly sanguivorous diet, but in fact, most freshwater leeches are carnivores. Wait, where are you going?"
 Leeches①"Where our potions and powders fail, perhaps nature will succeed."↵-Reyhan, Samite Alchemist
 Leeching Bite①A substantial portion of Vorinclex's forces became fuel for the rest.
+Leeching Lurker①First darkness falls. Then it burrows in.
 Leeching Sliver①"Seeing one slowly devour one of my party begged the question-do they know what cruelty is?"↵-Hastric, Thunian scout
 Leering Emblem①The banner was not a symbol of victory, but a herald of the carnage to come.
 Leering Gargoyle①"Only a gargoyle would take such delight in a thunderstorm."↵-Qhattib, Vizier of Amiqat
@@ -9755,6 +9870,7 @@ Lightning-Core Excavator①"That's the third time this month it's exploded on si
 Lightning-Rig Crew①A pirate ship in battle is a storm of activity.
 Lightwalker①"The greatest gift Dromoka gives is the ability to fly without wings."↵-Urdnan, Dromoka warrior
 Lignify①Bulgo paused, puzzled. What was that rustling sound, and why did he feel so stiff? And how could his *feet* be so thirsty?
+Likeness of the Seeker①"I ask for nothing more than a new journey and a fresh path to greet my feet when I wake each morning."↵-Azusa
 Lila, Hospitality Hostess①As far as Lila was concerned, all courtesy should be common.
 Liliana's Caress①"This might hurt less if you don't fight so hard. But I doubt it."
 Liliana's Contract①Immortality is worth any price.
@@ -9793,6 +9909,7 @@ Lionheart Maverick①"Your signet is no symbol of power. It marks only your need
 Liquid Fire①There's no such thing as a little bit of lava.
 Liquimetal Coating①"They'll soon become accustomed to wearing skin that is not their own."↵-Elesh Norn, Grand Cenobite
 Liquimetal Torque①"Weaponized jewelry has a long and respected history."↵-Ervos Trax
+Lisette, Dean of the Root①"Life is as fleeting as it is vibrant. Embrace the brief blessing of a flower before it withers."
 Lithoform Blight①Heedless of Nissa's warnings, Nahiri repeated history.
 Lithomancer's Focus①"Even in the hands of amateurs, Nahiri's hedrons can harm the Eldrazi."↵-Ugin
 Lithophage①It's viciously territorial, destroying every creature on the mountain it has chosen to consume.
@@ -9805,6 +9922,7 @@ Livaan, Cultist of Tiamat①Her hunger for power consumes what the fire cannot.
 Live Fast①"When you have the chance, take it. Laugh, sing, dance. Don't allow the night to end."
 Living Airship①The ship has a crew of three: the pilot, the gunner, and the ship itself.
 Living Armor①Though it affords excellent protection, few don this armor. The process is uncomfortable and not easily reversed.
+Living Breakthrough①"While they squabble below, let us rise above."↵-Emire, director of the Saiba Futurists
 Living Destiny①"That our enemies are great only brings us greater hope."
 Living Hive①In its center is a single red ant, a queen that regulates the hive's movements.
 Living Lightning①Not all storms come from the sky.
@@ -9868,6 +9986,7 @@ Log Flume①"Thanks for riding, and be sure not to leaf anything behind! Just so
 Logic Knot①"Such sloppy work. Let's unravel it and try again!"
 Lone Missionary①His mission has become a grim pilgrimage, a tour of the Eldrazi-stricken outposts across Zendikar. But he marches on alone, stubborn as the daily dawn.
 Lone Rider①"Horse and rider are often of one mind."↵-Ulda, Gavony Rider
+Lone Wolf of the Natterknolls①. . . but he'll have you for lunch.
 Lone Wolf①A wolf without a pack is either a survivor or a brute.
 Long Rest①A job well done means a rest well earned.
 Long Road Home①The person who finishes a journey is rarely the same as the one who starts it.
@@ -9921,6 +10040,7 @@ Lost Order of Jarkeld①"Let us remember brave Jarkeld and his troops, who peris
 Lost Soul①Her hand gently beckons, she whispers your name-but those who go with her are never the same.
 Lost Soul①Her hand gently beckons, she whispers your name-↵But those who go with her are never the same.
 Lost Soul①She walks in the twilight, her steps make no sound,/ Her feet leave no tracks on the dew-covered ground./ Her hand gently beckons, she whispers your name-/ But those who go with her are never the same.
+Lost Vale①The pirates had ventured into the interior for treasure. They found something far greater.
 Lost in a Labyrinth①Even those who leave the labyrinth never escape it, forever dreaming of their time trapped within.
 Lost in the Mist①The secrets she carried could have saved many lives, but they quietly drowned with her.
 Lotleth Giant①"I prefer the big and looming to the small and skittering."↵-Cevraya, Golgari shaman
@@ -9977,6 +10097,7 @@ Lucent Liminid①It is a herald of the sun goddess, projected from the hallowed 
 Lucid Dreams①Never be afraid to look where others can't-or won't.
 Lucky Clover①Syr Branigan always remembered to kiss his good luck charm, having lost his foot to wolverines the last time he forgot.
 Lucky Offering①The playful kami reserved its greatest blessings for those who brought not wealth or rare delicacies, but particularly amusing trinkets.
+Ludevic's Abomination①After several frustrating experiments, the visionary Ludevic realized he needed to create a monster that fed on torch-wielding mobs.
 Ludevic, Necro-Alchemist①"How does one become a self-taught genius? Naturally, it requires brains."
 Lullmage Mentor①"Many voices are needed to quiet this land."
 Lullmage's Domination①"One spell to quiet the Roil, one to quash the will. The principle is the same."
@@ -10004,6 +10125,7 @@ Lumithread Field①Having conquered the Bastion of Suns, the Ota took its light 
 Lunar Force①"Moonlight offers sublime warmth that brings me a comfort sunlight cannot provide."
 Lunar Frenzy①In the adrenaline-fueled chaos, she hadn't even felt the bite.
 Lunar Mystic①"I'm pleased this world has learned the moon affects more than the tides."↵-Tamiyo, the Moon Sage
+Lunarch Inquisitors①"We come bearing the tools of confession and absolution."
 Lunarch Mantle①"A boon from the angels should never be cast aside."↵-Manfried Ulmach, Chief Inquisitor
 Lunarch Veteran①"Even in our darkest times, Avacyn's light still guides us."
 Lunge①Cho-Arrim righteousness was no match for Benalish combat training.
@@ -10159,6 +10281,7 @@ Makeshift Mauler①"It always amazes me what perfectly good things people throw 
 Makeshift Munitions①"Grease up a firecannon good and proper with dinosaur-liver oil, and it'll shoot just about anything."
 Makindi Aeronaut①"The Eldrazi have surprised us before. It's my job to make sure that never happens again."
 Makindi Griffin①As the hedrons began to coalesce into colossal Eldrazi superstructures, the griffins were forced to seek new territory lest their aeries be crushed between the massive stone monoliths.
+Makindi Mesas①"The ground is rumbling. Better hope it's just the Roil!"↵-Kreq of Sunder Bay
 Makindi Ox①"May bloodflies empty your veins and turn you into a dried leather sack, cow!"↵-Bruse Tarl, Goma Fada nomad
 Makindi Patrol①Working with his noble mount, he notices every form on the horizon, every scent in the air, every tremor in the earth.
 Makindi Shieldmate①The more who rely on him, the more resolute he becomes.
@@ -10169,6 +10292,7 @@ Malachite Golem①Centuries before the first branches of the Tangle gave shelter
 Malakir Blood-Priest①"From your veins to mine."
 Malakir Cullblade①Each cut stains his blade with fresh blood that he samples to increase his strength.
 Malakir Familiar①"They are deadly, and they are loyal. We can spare them a little blood."↵-Harak, Malakir bloodwitch
+Malakir Mire①"Getting into Malakir isn't difficult. It's getting out that's the hard part."↵-Doros, expedition guide
 Malakir Rebirth①"Those who fail to escape Malakir become part of the city's defense."↵-Doros, expedition guide
 Malakir Soothsayer①"Your blood whispers secrets your mind could never comprehend."
 Malevolent Awakening①The most popular pit fighters are brought back for encore performances.
@@ -10178,6 +10302,8 @@ Malfunction①"They don't make them like they used to."
 Malicious Advice①"Rule through fear, Darigaaz. Only if the dragons feel terror will they truly be your servants."↵-Tevesh Szat
 Malicious Affliction①"Such an affliction appears to seek out the pure."↵-Byro, plague doctor
 Malicious Intent①As peace returned to Thraben, some cathars made the mistake of letting down their guard.
+Malicious Invader①"Aren't you going to offer me a drink?"
+Malicious Invader①Van Helsing raised his lantern and drew the slide; by the concentrated light that fell on Lucy's face we could see that the lips were crimson with fresh blood.
 Malicious Malfunction①"That? A minor test, nothing more. Incompleat flesh is weak."↵-Jin-Gitaxias
 Malignus①It descended on Estwald like a sudden storm. Moments later, only ashes and agony remained.
 Mammoth Growth①Thus the longhall became a flathall.
@@ -10319,6 +10445,7 @@ Markov Patrician①Vampires of the Markov bloodline pride themselves on their ex
 Markov Purifier①The ceremonial "incense" was a concoction of Edgar's own design, a precise blend of blood from his favorite human lineages.
 Markov Waltzer①"I'll lead."
 Markov Warlord①"What use is a stake or holy symbol in the hands of a coward?"
+Markov's Servant①". . . and for that I shall be eternally grateful."
 Maro①No two see the same Maro.
 Marrow Bats①"No matter how far we push into Stensia, undeath will always remain in these lands."↵-Terhold, archmage of Drunau
 Marrow Shards①"We are a single entity. Dissenters must be sutured into the Orthodoxy."↵-Elesh Norn, Grand Cenobite
@@ -10485,6 +10612,7 @@ Memory Lapse①What a lonely agony, the memory of memories lost.
 Memory Leak①"By halves does youth depart. I remember halves of names, halves of years, halves of myself."↵-Ogaro, wandering sage
 Memory Plunder①"Vengeance is the echo of the victim's own crime."↵-Grensch, merrow cutthroat
 Memory Theft①In the wilds, the ravens steal far more than baubles.
+Memory of Toshiro①"Some called him the hero of the Kami War, others a selfish thief. As ever, the truth is hidden somewhere in between."↵-Reki, founder of the Living Historians
 Menagerie Liberator①"The wild are neither your thralls nor your amusement."
 Mending Hands①"I can staunch their blood, mend their flesh, and knit their bones. But I cannot restore their hope."↵-Tender-Hand, kitsune healer
 Mending Touch①"The gift of life must be freely given. Anything less would diminish us all."↵-Arin, Selesnya healer
@@ -10516,6 +10644,7 @@ Merciless Eternal①"My work here is complete. The people have done everything r
 Merciless Eviction①"I once saw the Obzedat moved to action. Since that day, I've been thankful that they're mainly lazy, and dead."↵-Aurelia, to Gideon Jura
 Merciless Executioner①He enjoys his work, for he sees only the worst Abzan criminals: those who betray their own kin.
 Merciless Javelineer①"My mind is the calm in the midst of the storm, and my javelin the lightning."
+Merciless Predator①Before she just wanted to snatch your purse; now she'll take the whole arm.
 Merciless Resolve①"You sought to anger me, Nahiri. Soon you will see how well you have succeeded."
 Mercurial Chemister①What some see as "distracted" is really "fathoming the unfathomable."
 Mercurial Geists①"Procedural misstep: provocation of geists for the purpose of yielding more energy can compromise containment units. Next action: clean up mess."↵-Laboratory notes
@@ -10813,6 +10942,7 @@ Mistform Skyreaver①Conviction, the third myth of reality: Only those who seek 
 Mistform Sliver①Taking the form of a junior researcher, the first sliver slipped out of Riptide.
 Mistform Ultimus①It may wear your face, but its mind is its own.
 Mistform Wall①Fellowship, the fourth myth of reality: As the tides of war shift, so do loyalties.
+Mistgate Pathway①"I've never seen mist so unnaturally thick as this-where does the sea end and the sky begin?"↵-Ekken, Omenseeker navigator
 Misthollow Griffin①For some creatures, existing is only a whim.
 Misthoof Kirin①It heralded Sarkhan's return to Tarkir's present.
 Mistmeadow Skulk①Doyo suspected the boggarts of brewing a plot against his crop, so he scythed away his grain to clear the sightlines.
@@ -10940,9 +11070,11 @@ Moonlace①Once a vision of constancy in the sky, the moon had long been hidden 
 Moonlight Bargain①At every fifth full moon, the Moon Market convenes to peddle Ravnica's most forbidden wares.
 Moonlight Geist①Wails and whispers are the only weapons she has left.
 Moonlight Hunt①Courage alone won't keep you alive.
+Moonlit Ambusher①Even when he strikes, the only sound is the snap of jaws through bone.
 Moonlit Scavengers①They comb the shallows of Lochmere for relics of a bygone era. And if they happen upon a lone traveler, all the better.
 Moonlit Wake①"As long as Rushwood glows, no life is ever truly lost."↵-Ta-Karnst, Cho-Arrim healer
 Moonrager's Slash①The cathars fell like leaves as Tovolar himself joined the fray.
+Moonscarred Werewolf①". . . and I will bring the fury of the wild back to my village."
 Moonsilver Key①To restore the day-night balance, the Celestus mechanism's Sungold Lock must be reunited with its long-lost key.
 Moonveil Dragon①"Their hearts beat, their lungs draw breath, and they have one true form. I count them as allies of the living."↵-Thalia, Knight-Cathar
 Moonwing Moth①"Night wings sprinkled with dust Of a thousand soldiers dead And a thousand cities fallen."↵-Snow-Fur, kitsune poet
@@ -10971,6 +11103,7 @@ Moriok Scavenger①Many go to Mephidross in search of lost riches. Most end up a
 Morkrut Banshee①"Let go your grudges, or risk wandering the bogs forever in a murderous rage."↵-Hildin, priest of Avacyn
 Morkrut Behemoth①"Let's see my brother's stitched-up little toys compete with this."↵-Ghoulcaller Gisa
 Morkrut Necropod①"There's not enough salt in all of Nephalia to wither that thing."↵-Ghoulcaller Enslow
+Morning Apparition①"You could see the spirits all along, couldn't you? Well, now I can too."
 Morningtide①"The spirits of the righteous shall rise into the sky. Even dirtwalkers will fly like aven."↵-Major Teroh
 Moroii①"Touched by moroii"↵-Undercity slang meaning "to grow old"
 Morphic Pool①Ancient magic reshapes the stage into a variety of landscapes.
@@ -11111,6 +11244,7 @@ Murder①"Pave your path to the throne with yet another body if you must, Sarevo
 Murder①Ob Nixilis decided the fastest way to seize control of New Capenna would be to usurp the networks of power already hidden there. Xander's Maestros were the first to fall.
 Murk Dwellers①When Raganorn unsealed the catacombs, he found more than the dead and their treasures.
 Murk Strider①If you can see it, it's too late.
+Murkwater Pathway①"Here, at least, the danger is usually in plain sight."↵-Zahr Gada, Halimar expedition leader
 Murmuring Mystic①Rumors float through the city like crows, alighting on citizens seemingly at random.
 Murmuring Phantasm①"The most insidious thing in the world is nonsense that sounds just plausible enough to listen to."↵-Lazav
 Murmurs from Beyond①Like pools of fog that hid treacherous rocks from sailors' eyes, so too were the hands of the kami.
@@ -11170,6 +11304,7 @@ Mystic Genesis①"The Simic can grow anything out of a puddle of sludge. I just 
 Mystic Meditation①"Still the mind and quiet the heart. Only then will you hear the Multiverse's great truths."↵-Narset
 Mystic Melting①The sun-hot glow radiated from the druids, leaving scattered metal in steaming pools as it passed.
 Mystic Monastery①When asked how many paths reach enlightenment, the monk kicked a heap of sand. "Count," he smiled, "and then find more grains."
+Mystic Monstrosity①Under the light of an unnatural moon, it walked out on legs of straw with joints of hinges ripped from the barn doors.
 Mystic Redaction①"I'm sorry, but this information is classified."
 Mystic Redaction①Action: Show GLOWING BLUE GLYPHS being TORN out of a GRIMOIRE, leaving BLANK PAGES behind.
 Mystic Remora①The bond between spellcaster and familiar allows the mage to detect even the smallest of magical ripples-and use them to their advantage.
@@ -11208,6 +11343,7 @@ Naiad of Hidden Coves①"Wave-borne, he watches over secrets of the shore."↵-P
 Nakaya Shade①Made strong by reckless magic. Made horrid by reckless strife.
 Nalathni Dragon①These small but intelligent Dragons and their Olesian allies held back the tide of Pashalik Mons's hordes of Goblin Raiders.↵*DragonCon 1994*
 Name Dropping①Gemini (May 21-June 21) This week is a good time to branch out and meet others. But don't forget your roots. Avoid commitments and open flames.
+Nameless Conqueror①"In the wake of the Kami War, Kamigawa descended into a state of constant warfare. Even with Kyodai's wisdom guiding them, it took the first Imperials decades of work and bloodshed to subdue the clans and bring peace to the land."↵-*History of the Empire*
 Nameless Inversion①Just as a changeling's influence can have dramatic effects, so too can its sudden withdrawal.
 Nameless One①"Open your mind to me."
 Nantuko Cultivator①"Every seed holds strength and teaches patience."
@@ -11299,6 +11435,7 @@ Near-Death Experience①Lands ravaged, cities in ruins, so many lives sacrificed
 Nearby Planet①"Here's a nice place we haven't hit yet."↵-Captain Rex Nebula
 Nearheath Stalker①"Do not speak of this to the elders. They look unfavorably upon my indulgences."
 Nebelgast Beguiler①A moment of distraction, an hour off course.
+Neck Breaker①He can't outrun what he is.
 Neck Snap①"We merrows need not be disadvantaged when fighting on land. We lack the vulnerability of those who breathe only through their throats."↵-Minnarin, merrow reejerey
 Necra Disciple①"The darkness merely hides the light."
 Necratog①The necratog can always dig up a meal.
@@ -11412,6 +11549,7 @@ Nezumi Bladeblesser①"It's not one or the other, kami or technology. Both offer
 Nezumi Bone-Reader①Four generations ago, old Split-Tail stole a bundle of scrolls from the Minamo School. Soon after, the first nezumi shamans were born.
 Nezumi Cutthroat①"The nezumi will do things for money no other thinking creature would consider. This, of course, makes them useful beyond words."↵-Meloku the Clouded Mirror
 Nezumi Cutthroat①"These nezumi, they disgust me. The things they will do for money no other thinking creature would consider. This, of course, makes them useful beyond words."↵-Meloku the Clouded Mirror
+Nezumi Road Captain①United by defiant pride in their outsider status, the nezumi of the Okiba Reckoners boast the most advanced cyberbikes and the best riders of all the Reckoner gangs.
 Nezumi Ronin①"Some nezumi became as skilled in the samurai arts as the humans and kitsune. Yet no lord would have them, so they sold their swords to the highest bidder."↵-*The History of Kamigawa*
 Nezumi Shadow-Watcher①"The Okiba Gang! Night-cursed thieves and assassins! I've had enough of their meddling! Triple the guard!"↵-Marrow-Gnawer
 Niall Silvain①This is his domain, and while you remain here you must value all life as you value your own.
@@ -11624,6 +11762,7 @@ Nyxborn Shieldmate①In Meletis, the walls have ears. In Akros, they have blades
 Nyxborn Triton①"He is Thassa's. I could not sway him."↵-Kiora
 O-Kagachi, Vengeful Kami①At his behest the Kami War began to regain That Which Was Taken.
 Oak Street Innkeeper①The city is vast and perilous, but there are places where a weary traveler can feel very much at home.
+Oaken Boon①"Right now you are a feeble stick, but I will help you grow some rings."
 Oakenform①"When the beast cloaks itself in the mighty oak, what good is a bow? When the oak wraps itself around the snarling beast, what good is a hatchet?"↵-Dionus, elvish archdruid
 Oakgnarl Warrior①"Roam as you will, your roots remain in the strong earth of your Rising."
 Oakhame Adversary①The elves remember every secret path from the days when they ruled the realm.
@@ -11687,6 +11826,7 @@ Ocular Halo①While the soldier dreams, the eyes stand watch.
 Oculus①"In its gaze I saw no mercy, no recognition that I was worthy to exist."↵-Kara Vrist, Neurok agent
 Oddly Uneven①The odds are good, but the goods are odd.
 Odious Trow①Trows are the vile trolls that lurk in the bogs of Shadowmoor. They reappear each night to frighten the living and gnaw the dead.
+Odious Witch①Her cauldron refilled, she settled in to wait for the next unsuspecting traveler to knock at her door.
 Odric's Outrider①Terms like "safe route" and "cleared district" are a source of dark humor to the cathars who patrol the ruins of Thraben.
 Odric, Master Tactician①"Fear holds no place in faith's battle plan."
 Odylic Wraith①By the time you've seen it, you won't remember that you did.
@@ -11763,6 +11903,7 @@ Omnibian①"This creature has hyperevolved chameleonic abilities. It no longer m
 Omniscience①"In the arrogance of my youth, I believed I knew all there was to know. Now, my greatest wisdom is a humble awareness of all I have yet to learn."↵-Teferi
 Omniscience①"The things I once imagined would be my greatest achievements were only the first steps toward a future I can only begin to fathom."↵-Jace Beleren
 Omnispell Adept①She memorized every arcane text in the Ismeri Library by the time she was sixteen. Now she quizzes sphinxes in her spare time.
+On Alert①Beacons along the borderlands are lit at any incursion from the wilds.
 On Serra's Wings①"The spirit of Serra raised Brindri high and commanded her to keep the balance."↵-*Song of All*, canto 524
 On Thin Ice①He cursed the wind. He cursed the cold. But by stepping on the ice, he cursed himself.
 Onakke Ogre①The ogres you know are nothing like the Onakke. Possessing both intellect and industry, they had brute strength without being brutish.
@@ -11772,8 +11913,10 @@ Ondu Cleric①A cleric's true balm is the confidence he inspires in his compatri
 Ondu Giant①Some druids nurture gardens. Others nurture continents.
 Ondu Greathorn①"May your horns get lodged in an Eldrazi's bony face, ornery brute!"↵-Bruse Tarl, Goma Fada nomad
 Ondu Inversion①"At first rumble you'd best hold on tight and pray to any gods you still hold dear."↵-Nys Dal, Sea Gate trapfinder
+Ondu Skyruins①"It always seems so quiet in the aftermath of wrenching violence."↵-Nys Dal, Sea Gate trapfinder
 Ondu War Cleric①"I will follow the light of Iona into battle, and I will know no fear."
 One With the Wind①"River and sea, jungle and sky. Water flows freely between the two halves of the world. We are creatures of the water."↵-Shaper Tuvasa
+One of the Pack①When the howl beckons, he cannot resist the urge to join the others.
 One with Nothing①When nothing remains, everything is equally possible.
 One with the Machine①"When I grafted the Planar Bridge into myself, I felt my Planeswalker spark flare beyond my body. The Multiverse was my plaything. It felt . . . incredible."↵-Tezzeret
 One with the Stars①"Take your place among the stars."↵-Kruphix, god of horizons
@@ -11911,6 +12054,9 @@ Orim's Prayer①"As usual, there will be time for prayer only *after* the worst 
 Orim, Samite Healer①"The silkworm spins itself a new existence. So the healer weaves the threads of life."↵-Orim, Samite healer
 Orim①Trained in the Samite arts, Orim serves as the healer aboard the *Weatherlight*. She is quick with languages and was educated at the same Argivian university as Hanna. A student by nature, Orim keeps a diary of all her new discoveries-both physical and spiritual-during her travels.
 Oriq Loremage①Nothing can quell the Oriq's thirst for the forbidden secrets of the past.
+Ormendahl, Profane Prince①With Griselbrand gone, the Skirsdag eagerly awaited another demon to claim their devotion. Ormendahl did not make them wait long.
+Ormendahl, the Corrupter①"Ah, Jerren. You've been such a faithful, useful insect."
+Ormendahl, the Corrupter①"Ah. Jerren. You've been such a faithful, useful insect."
 Ornamental Courage①Inspired by the thorns and brambles of the untamed wilds, elvish armor is both beautiful and formidable.
 Ornate Kanzashi①Masako was privy to a great many of Konda's deepest secrets, and her hair was always perfect.
 Ornery Goblin①"Nobody ever listens to my complaints! Not even when I use the listening stick."
@@ -12201,6 +12347,7 @@ Peerless Samurai①"I fear I have run out of worthy opponents."
 Pegasus Charger①"The clouds came alive and dove to the earth! Hooves flashed among the dark army, who fled before the spectacle of fury."↵-*Song of All*, canto 211
 Pegasus Courser①A pegasus chooses its rider, bearing the worthy into the clouds and tossing all others to the ground.
 Pegasus Refuge①The first Rath-born pegasus was so offended by the sky that it hid its eyes in the earth.↵-Vec lore
+Pelakka Caverns①"As a child, I was afraid of the dark. Now, I'm afraid of the things I know are lurking in the dark, waiting to bite my head off."↵-Sneeflebrix, expedition rogue
 Pelakka Predation①"I knew we shouldn't have come this way."↵-Sneeflebrix, expedition rogue
 Pelakka Wurm①It eats what it wants to eat-which is anything that moves.
 Pendelhaven Elder①The elder who carries the ancestral mantle of Jacques le Vert is tasked with his ancient mission: to protect the creatures of Pendelhaven.
@@ -12226,6 +12373,7 @@ Peregrine Drake①"Always a welcome sight breaking through the clouds."↵-Talra
 Peregrine Drake①That the Tolarian mists parted for the drakes was warning enough to stay away.
 Peregrine Griffin①A griffin is not just an eagle's wings and a lion's claws. It is also the fiercest of hearts.
 Peregrine Mask①The mask confers both the prowess of a falcon and its loyalty.
+Perfected Form①The final pages of the experiment log were blank. Investigators found it abandoned on a desk in the researcher's lab, open, the pages flipping in the wind from a shattered window.
 Perhaps You've Met My Cohort①"I'm calling in a favor from an old friend. Once you're all dead, I'll consider the matter settled."
 Perilous Forays①"*This* is the place? This map has got to be wrong . . . ."↵-Svania Trul, wayfinder novice, last words
 Perilous Myr①To Mirrodin, an explosive. To Phyrexia, a missionary.
@@ -12248,6 +12396,7 @@ Persecute Artist①The torches and pitchforks were no match for Rebecca's fans.
 Persecute①"I want every last one of these tree-hugging, earth-loving, pointy-eared weaklings out of here. Now!"
 Persecute①"My finest warrior was lost to the Phyrexians. I pray that Lady Selenia died honorably."↵-Radiant, archangel
 Persecute①"Of all the tyrannies on humane kind The worst is that which persecutes the mind."↵-John Dryden, "The Hind and the Panther"
+Persistent Nightmare①"It seemed so real!"
 Persistent Petitioners①". . . a decreased duration of synodic months would be most welcome. Also . . ."
 Persistent Petitioners①". . . the king's burning heart must be laid to rest at last. And furthermore . . ."
 Persistent Petitioners①". . . we demand a repeal of those ridiculous sumptuary laws. Additionally . . ."
@@ -12415,6 +12564,7 @@ Pillardrop Warden①A giant statue of a dwarf is still a giant statue.
 Pillarfield Ox①"May starving fleas birth a thousand generations on your stubborn hide, cow!"↵-Bruse Tarl, Goma Fada nomad
 Pillarfield Ox①"You old, immobile clod! If I could stuff your doltish head with knowledge, I'd do it just so someone else could fully comprehend what your stubbornness has cost me!"↵-Bruse Tarl, Goma Fada nomad
 Pillarfield Ox①These stubborn and unpredictable oxen inspire the plains nomads' most colorful curses.
+Pillarverge Pathway①"The oxen here take an almost feline delight in pushing things over the edge."↵-Akiri, kor line-slinger
 Pillory of the Sleepless①Which is worse-the sleep which never ends or that which never comes?
 Pin to the Earth①"Mortal strength, like mortal hope, is so easily crushed."↵-Thassa, god of the sea
 Pincher Beetles①"No fair Since when does a bug get ta munch on *me*?"↵-Squee, goblin cabin hand
@@ -12506,6 +12656,7 @@ Planar Void①"Planeswalking isn't about walking. It's about falling and screami
 Planebound Accomplice①"Told you I had friends."
 Planeswalker's Favor①Freyalise strengthens her faithful.
 Planeswalker's Mirth①"I enjoy a good joke as much as the next guy."↵-Commodore Guff
+Plant Tadpoles①"Your mind belongs to the Emperor now."
 Plasm Capture①"Everything serves a purpose. Even you."↵-Vorel of the Hull Clade
 Plasma Elemental①"I watched a ship sail right through it. I thought it was harmless . . . until I saw what it had done to the crew."↵-Bruenna, Neurok leader
 Plasmancer①Masters of dimensional dissonance, singularity manipulation, and countless other technologies, plasmancers are terrifying to behold.
@@ -12575,6 +12726,7 @@ Pongify①Some spellcrafting mistakes go on to become spells of their own.
 Pooling Venom①The land can only hold so much poison before it begins to bite back.
 Poor House①Give, and ye shall receive
 Pop Quiz①"Today is hydromancy? I thought it was amplimancy! I studied for amplimancy!"
+Poppet Factory①It may have been a mistake to give them minds of their own.
 Popular Entertainer①The last thing anyone would describe you as is shy. You love the spotlight, and it loves you back.
 Porcelain Legionnaire①"My new design has lightweight plating specially cultivated from heretics' spare tissues."↵-Izathel, priest of the Annex
 Pore Over the Pages①"'I'm certain that the fate of Markov Manor is connected to these cryptoliths . . .' This Tamiyo was on to something."
@@ -12586,6 +12738,7 @@ Portable Hole①"They fall for it every time."
 Portal of Sanctuary①"If you need to disappear for a while, I know a place."↵-Bilivus, master archivist
 Portcullis Vine①Nature's way of saying "take the long way home."
 Portent of Betrayal①Mogis can fan a small flame of resentment into an inferno of madness.
+Portrait of Michiko①Long ago, as the first mortal to bond with Kyodai, Michiko Konda brought an end to the Kami War and guided Kamigawa into an age of truth and harmony.
 Possessed Skaab①A stitcher's attempt at a skaab with a soul.
 Potion of Healing①Magic can knit the body back together, but the courage to fight on comes only from within.
 Poultice Sliver①"Its broad claw suggests a chitinous shield, but in fact it conceals glands that secrete a remarkably swift healing agent."↵-Rukarumel, field journal
@@ -12754,6 +12907,7 @@ Promise of Tomorrow①Death can wait.
 Promising Duskmage①"Your technique is sloppy, but there is talent there. Do it again, and keep your right arm in position this time."
 Propaganda①"Obedience is the true path to happiness."↵-Dolorus, magister equitum
 Propaganda①"The cost of your opposition will be extracted from your wits."↵-Nekusar, the Mindrazer
+Propaganda①"Why rebel? The system can be changed from within."↵-Dolorus, magister equitum
 Propaganda①"You've failed Gerrard. You've failed the Legacy. You've failed yourself. I can do no more."↵-Volrath, to Karn
 Propeller Pioneer①"The sky isn't the limit. It's the starting point."
 Proper Burial①Properly honored dead gain the peace of the grave and freedom from the call of the Ghost Quarter.
@@ -13000,6 +13154,7 @@ Radiant Fountain①"All peoples treasure a place where the weary traveler may dr
 Radiant Grove①Yavimaya's inhabitants are dedicated to protecting its unspoiled jungle from the scourge of artifice.
 Radiant Kavu①When angered or frightened, it protects itself with a burst of blinding light.
 Radiant Purge①The Shifting Wastes are Dromoka's domain. She will not tolerate intruders.
+Radiant Restraints①"Even in times of brutal darkness, never mistake beauty and delicacy for weakness."↵-Thalia, Guardian of Thraben
 Radiating Lightning①As the Cabal legions pushed into Shiv, they learned not to stand so close together.
 Radical Idea①Genius is finding the edge of what's possible, then jumping over it.
 Radjan Spirit①"Crawing, crawing, For my crowse crawing, I lost the best feather i' my wing For my crowse crawing."↵-Anonymous Scottish ballad
@@ -13133,6 +13288,7 @@ Rampaging Ferocidon①All raptors are aggressive, but ferocidons seem to enjoy t
 Rampaging Hippo①"Respect is earned through deeds-or the capacity to bite someone in half."↵-Sana, former Ahn-crop initiate
 Rampaging Monument①"Be advised: suspect is nine stories tall, marble hair, answers to Saint Gusztav."
 Rampaging Rendhorn①Tumult is its natural habitat.
+Rampaging Werewolf①"Just look at him, groveling on all fours! What a pathetic-uh-oh."
 Rampant Elephant①No matter how righteous the cause, it helps to bring along some muscle.
 Rampant Growth①"I've never *heard* growth before."↵-Gowon, Femeref herder
 Rampant Growth①Lord Windgrace dedicated his life to restoring Urborg to its former glory.
@@ -13372,6 +13528,7 @@ Reflect Damage①From you to me, so me to you.↵-Femeref children's taunt
 Reflecting Pool①"The reflection of land interests me far more than its reality."↵-Volrath
 Reflecting Pool①Does it reflect the future that once was or the past that can never be?
 Reflecting Pool①Gale stared into the pool and saw a stranger. The similarities were uncanny, but it was not him.
+Reflection of Kiki-Jiki①Blessed by Keiga, the Tide Star, Kiki-Jiki would one day master the art of duplication.
 Reflections of Littjara①The masks float downstream toward the Mirrorlake, where faces arise to wear them.
 Reflective Golem①"We don't cut through Sedgemoor anymore. Can't get five steps without a groff trying to fight its own reflection."
 Reflex Sliver①"This sliver comes into the world a perfect predator. It's ready to hunt and devour its first meal within seconds of hatching."↵-Rukarumel, field journal
@@ -13551,6 +13708,7 @@ Restock①"We hid such stockpiles all over Rath. We should continue that practic
 Restock①What looked like a retreat was actually a replenishing.
 Restoration Gearsmith①All she touches turns to well-oiled, delicately calibrated, perfectly balanced gold.
 Restoration Specialist①Dwarves' tools are priceless heirlooms handed down through generations.
+Restorative Burst①"Death? Everyone does death. Let me show you something actually impressive."
 Restore the Peace①"You can always count on the Azorius to ruin a party."↵-Massacre Girl
 Restore①"See, the land itself raises an altar to the ascendancy of nature."↵-Mayael the Anima
 Restrain①"Hanna would give up her own life before she'd abandon the *Weatherlight*."↵-Sisay
@@ -13590,6 +13748,7 @@ Returned Reveler①The flesh is dead and the life forgotten, but old habits pers
 Revealing Wind①"The sands obscure the vision of others, but clarify ours."↵-Faiso, Dromoka commander
 Reveille Squad①"To arms! To arms! The Lion roars!"
 Reveka, Wizard Savant①"It's nice to see a sister Dwarf in a position of such power, but why'd it have to be one of those seafaring muleheads?"↵-Halina, Dwarven Trader
+Revel in Silence①"Sit down and listen."
 Revel of the Fallen God①"Xenagos has fallen, and the world grows dark without him. What can ever fill that darkness but our rage?"↵-Guruthes, disciple of Xenagos
 Revelation of Power①As Ob Nixilis closed in, Halo swept through Giada like an electrical current, and inside her, something long dormant unfurled its wings.
 Revelation①"Many are in high place, and of renown: but mysteries are revealed unto the meek." -Ecclesiastes 3:19
@@ -13669,6 +13828,7 @@ Rib Cage Spider①Everything it sees it considers food-and with that many eyes, 
 Ribbon Snake①All snakes slither. Only this one soars.
 Ribbons of Night①"My favorite meal is angel's flesh, slain in agony and iced with black vinegar."↵-Aszala of House Dimir
 Ribbons of the Reikai①"If wisdom is a river, then we cup our hands, reach in, and drink from it in sips. The kami, however, are like fish, swimming, breathing, surrounded in its presence."↵-Dosan the Falling Leaf
+Ribbons①Better To Reign In Hell Than Serve In Heaven
 Richard Garfield, Ph.D.①And yea he doth spake: "Let there be Magic."
 Ricochet Trap①In his last seconds, Remhas regretted using his most powerful spell.
 Riddlekeeper①Fools surrender their sanity to his riddles. Even greater fools try to solve them.
@@ -13726,6 +13886,7 @@ Riot Ringleader①"So the vampires like hot blood, do they? Let's see how they h
 Riot Spikes①Most auramancers would have let the spikes hover just above the skin. Having the spikes rip through the skin from beneath was a touch added by Rakdos himself.
 Rip Apart①Torn from history. Torn from memory. Torn from reality.
 Rip-Clan Crasher①If you breathe, she will fight you. If you breathe fire, she must fight you.
+Riphook Raider①They weren't entirely wrong.
 Ripjaw Raptor①Raptors are clever enough to tear away a hard metal shell to get at the tasty morsel inside.
 Ripscale Predator①As Ravnica's wilds expanded, even advocates for nature had to confront fiercer natural threats.
 Ripscale Predator①Dinosaurs rarely understand the idea of boundaries between the wild and the urban landscape.
@@ -13821,6 +13982,7 @@ Roaring Slagwurm①Wurms compete for nesting grounds near the Radix. The young w
 Roast①"Intruders in the lands of Atarka have but two choices: be consumed by fire, or be consumed by maw."↵-Ulnok, Atarka shaman
 Roast①The wave of lava seared cloth from skin, skin from flesh, and flesh from bone.
 Rob the Archives①"Well, I guess stealth's out of the question."
+Rob the Hoard①"Wait, it was just guarding a bunch of eggs! Where is the treasure?"↵-Xalcorin the bard
 Robaran Mercenaries①"We learned from the best. And the worst. Pretty much whoever was available."
 Robber Fly①In pursuit of the juicy fly, Squee stumbled on the hidden hangar.
 Robe of Mirrors①"Does this make me look fat?"
@@ -14199,6 +14361,8 @@ Sanctum of Fruitful Harvest①Beneath bright blossoms↵Verdant with spring's ri
 Sanctum of Shattered Heights①Rage smolders within,↵An all-consuming wildfire↵Burning fear to ash
 Sanctum of Stone Fangs①Renounce all limits,↵False chains binding potential.↵Power knows no bounds.
 Sanctum of Tranquil Light①An untroubled mind↵Dwells in perfect harmony↵With a peaceful heart.
+Sanctum of the Sun①As soon as Jace laid eyes on the great sphinx's chamber, the shards of memory began sliding into place.
+Sand Augury①"I see the far side of tomorrow and the lost memories of queens. What do you wish to learn?"
 Sand Strangler①The bombardment of sand disorients, chokes, and ultimately tenderizes its prey.
 Sandbar Crocodile①"We've run aground sandbars before, but today, a sandbar ran aground us."↵-Kipkemboi, Kukemssa pirate
 Sandbar Merfolk①You are not prey until a predator knows of your existence.
@@ -14267,6 +14431,7 @@ Savage Conception①Some beasts are born not of a mother, but of magic.
 Savage Gorger①"I have no patience for sipping blood from crystal goblets. I want to bite and tear."
 Savage Gorilla①These omnivorous gorillas have no qualms about a diet composed of equal parts fruit and Phyrexians.
 Savage Lands①Jund is a world as cruel as those who call it home. Their brutal struggles scar the land even as it carves them in its image, a vicious circle spiraling out of control.
+Savage Packmate①Her claws are another matter.
 Savage Silhouette①Some elves believe that their survival instincts are born of many cycles of reincarnation.
 Savage Smash①A Gruul berserker is never unarmed.
 Savage Surge①"I thought its back was turned!"↵"A centaur has two backs!"
@@ -14302,6 +14467,7 @@ Scalding Tongs①"This has nothing to do with what you know and everything to do
 Scaldkin①The Temur believe that scaldkin are born when eruptions melt the frozen whispers of sleeping ancestors.
 Scald①"Shiv may be surrounded by water, but the mountains go far deeper."↵-Fire Eye, viashino bey
 Scale Blessing①"Your bravery honors us all."↵-Dromoka, translated from Draconic
+Scale Deflection①A serpent's cruelty, a dragon's appetite.
 Scale the Heights①"Ever onward, ever skyward."
 Scalebane's Elite①"With Rashida's blades, my guiding vision and the luck of the blessed, today we will free Mangara!"↵-Asmira, Holy Avenger
 Scaled Behemoth①Surviving an encounter with it is proof enough that an initiate is ready for the Trial of Strength.
@@ -14477,6 +14643,7 @@ Sea Gate Loremaster①"He's a living library. He remembers everything our band o
 Sea Gate Oracle①"The secret entrance should be near."
 Sea Gate Restoration①"We have much to remember ... and much we can never forget."↵-Tazri
 Sea Gate Wreckage①Once a center for knowledge, Sea Gate now serves as a reminder of what was lost.
+Sea Gate, Reborn①"We carry on the legacy of those who defended our world by continuing to unearth its secrets."↵-Tazri
 Sea Gate①An efficient route from a smuggler's ship to a patriar's manor.
 Sea God's Revenge①"What has neither mouth nor throat, yet swallows captain, crew, and boat?"↵-Sphinx's riddle
 Sea God's Scorn①Instead of performing their daily devotions, Heliod's acolytes spent the morning picking strands of kelp off the altar.
@@ -14533,13 +14700,16 @@ Searing Rays①"This is a battle of pawns, for the highest stakes imaginable."�
 Searing Spear Askari①When the other soldiers of Zhalfir fall, the askaris will yet stand.
 Searing Spear①Sometimes you die a glorious death with your sword held high. Sometimes you're just target practice.
 Searing Wind①"The first wind of ascension is Forger, burning away impurity."↵-*Keld Triumphant*
+Searstep Pathway①"Our brave Tuskeri brethren blaze new trails, and we follow, mapping the routes of those who survive."↵-Solrun, Beskir warrior
 Seascape Aerialist①"The sky is like another sea. It teems with currents, life, and endless possibility."
 Seashell Cameo①"Today a seashell fell from the empty sky here in Kinymu, a hundred leagues from the sea. I'm torn-shall I carve a woman or a bird?"↵-Isel, master carver
 Seaside Citadel①For wisdom's sake, it was built high to gaze on all things. For glory's sake, it was built high as a testament of power. For strength's sake, it was built high to repel all attacks.
 Season of Growth①"Awake, and lift your faces to the sun."
 Season of Renewal①Pavement ripped like paper as the ancient kami awoke from her long slumber beneath the city.
 Season's Beatings①Arriving home, he suddenly longed for the bloodsoaked battlefields behind him.
+Seasonal Ritual①"Old battlefields make great gardens. So rich from the blood of the fallen."
 Seasoned Buttoneer①Everyone comments on the buttons, but few appreciate the pedals.
+Seasoned Cathar①"The cathars have taught me many things, but I will never forget the hard, honest work that first callused my hands."
 Seasoned Hallowblade①"I don't know that I'll win every fight. But I have faith, and that's carried me this far."
 Seasoned Marshal①"We are not interested in the possibilities of defeat."↵-Queen Victoria
 Seasoned Marshal①He reads the battlefield like a map, always seeking the shortest route to victory.
@@ -14631,6 +14801,7 @@ Seize the Day①"I wish I could say it gets easier, kiddo, but I'd be lying."↵
 Seize the Initiative①The time between spotting a leonin shikari and feeling its claws is just time enough to draw your last breath.
 Seize the Spoils①"Grab what you want and burn the rest. Leave nothing behind."
 Seizures①"Sheathe your sword, warrior, lest ye fall on it when stricken."↵-Lim-Dul, the Necromancer
+Sejiri Glacier①"This place offers nothing and takes everything."↵-Enwor, Sea Gate Expeditionary House
 Sejiri Shelter①"It blocks the windswept salt and frigid air, but the loneliness of Sejiri remains."↵-Enwor, Sea Gate Expeditionary House
 Sek'Kuar, Deathkeeper①Karplusan legend told of an orc so cruel that he burned his own followers in rage-yet so revered that they rose from their pyres to serve him.
 Sek'Kuar, Deathkeeper①The orcs believe Sek'Kuar still lives in the Karplusan Mountains, gathering his dead army, intent on revenge.
@@ -14757,6 +14928,7 @@ Servo Exhibition①"The judges really put them through their paces, but they pre
 Servo Exhibition①Impressing a judge is one thing. Delighting a child is another.
 Servo Schematic①The Consulate prizes innovation when it is dependable and replicable.
 Seshiro the Anointed①His family was the first to reach out to the human monks. He soon knew as many koans as he did blade strikes.
+Seshiro's Living Legacy①"In times of strife, the foolish make a fist while the wise make a friend."↵-*First Address of Seshiro the Anointed as Broodmaster of the Orochi Colonies*
 Set Adrift①The envoy spoke, and Sidisi replied.
 Setessan Battle Priest①"Your god teaches you only how to kill. Karametra teaches me to defend what I hold dear. That is why I will prevail."
 Setessan Champion①"A blessing is not a gift. It is a duty."
@@ -14866,6 +15038,7 @@ Shattering Blow①"Aurelia seems too eager to solve her problems by delivering t
 Shatterskull Giant①"Now I know why they call it Shatterskull Pass. Rocks fell all night like hammers smashing an anvil. It's no wonder the giants are angry all the time."↵-Mitra, Bala Ged missionary
 Shatterskull Minotaur①"We just pay him and point him at problems."↵-Aro, Sea Gate adventurer
 Shatterskull Recruit①Saved from certain death by the kor, he considers himself bound to them by an unbreakable blood oath.
+Shatterskull, the Hammer Pass①"The safest way across the Skyfangs is to fly. Shatterskull Pass is a pretty distant second."↵-Samila, Murasa Expeditionary House
 Shatterstorm①Chains of leaping fire and sizzling lightning laid waste the artificers' handiwork, sparing not a single device.
 Shatterstorm①From a marvel of magical mechanization to a smoking stack of scrap in one easy step.
 Shatter①"I am an artist, a builder, a creator . . . I create the biggest explosions around."↵-Krol, goblin furnace-priest
@@ -14904,6 +15077,7 @@ Shield of the Ages①"This shield is a true rarity: an artifact whose purpose is
 Shield of the Ages①"This shield is a true rarity: an artifact whose purpose is obvious."↵-Arcum Dagsson, Soldevi machinist
 Shield of the Avatar①We are made stronger by those we fight for. Designed by Richard Garriott
 Shield of the Realm①Benalish glazeplate is stained with salts from the Rift Era and enchanted to deflect blows.
+Shield's Might①Countless knights of Garenbrig owe their lives to his peerless craftsmanship.
 Shield-Wall Sentinel①"Unit alpha-6 locking into position!"
 Shielded Aether Thief①Conflict breeds opportunity.
 Shielded Passage①Izzet delved into the depths of Ravnica's past, and Selesnya followed without fear.
@@ -15120,6 +15294,7 @@ Silt Crawler①If they could replenish the land instead of draining it, Jamuraa 
 Silumgar Butcher①Silumgar takes pride in the diversity of his sibsig.
 Silumgar Monument①Silumgar dominates his clan from a fortress on the Marang River, where he rests upon piles of treasure.
 Silumgar, the Drifting Death①"No machinations, no puppet strings, no plots. Just pure, sweeping death."↵-Tasigur, the Golden Fang
+Silundi Isle①"From the hedron fields of Agadeem to the Faduun of Jwar Isle, the islands of the Silundi Sea offer one mystery after another."↵-Jori En, expedition leader
 Silundi Vision①"Feel the current? Rough waters lie ahead."↵-Jori En, expedition leader
 Silvanus's Invoker①"Arise, friend, and seize the horizon in the name of the Oak Father."
 Silver Bolt①"When a werewolf charges, you'll only have time for one shot. Best make it count."↵-Captain Eberheart
@@ -15188,6 +15363,7 @@ Sinister Strength①"I bless the living with a song of death."↵-Lord Dralnu
 Sinister Waltz①For one evening, the dueling bloodlines channeled their feuds into elaborate footwork.
 Sinkhole①High walls, a sturdy keep, a strong garrison . . . they made no difference. In a matter of moments, the city was lost.
 Sinstriker's Will①"Steel rusts. Arrows break. But righteousness is always strong, always sharp."
+Sinuous Predator①A different kind of transformation has taken place.
 Sip of Hemlock①Conspirators poisoned the oracle not because her visions were wrong, but because they were right.
 Sir Shandlar of Eberyn①"Remember Sir Shandlar! Remember and stand firm!" -rallying cry of the Eberyn militia
 Sir Shandlar of Eberyn①"Remember Sir Shandlar! Remember and stand firm!"↵-rallying cry of the Eberyn militia
@@ -15234,6 +15410,7 @@ Skeletonize①Fire burns away both flesh and freedom.
 Skemfar Avenger①Stripped of their divinity, the elves of Skemfar channeled their rage and sorrow into bloody brutality.
 Skewer the Critics①Going to a Rakdos show is dangerous. Trying to leave early can be fatal.
 Skillful Lunge①"Valor is a currency of the living that serves us well."↵-Cosper Lowe of the Silbern Guard
+Skin Shedder①"Patient complained of burning sensation in upper back and at base of neck. Bed rest recommended. In a couple days, he should feel like a new man."↵-Lagra, hamlet physician
 Skinbrand Goblin①"These Gruul skin-runes-discern whether their patterns evoke streets, leylines, or both. You have four days."↵-Niv-Mizzet, to his assistant
 Skinrender①"Your creations are effective, Sheoldred, but we must unite the flesh, not merely flay it."↵-Elesh Norn, Grand Cenobite
 Skirge Familiar①"The skirges screech along with the bone saw. It makes a terrible racket, but they seem to enjoy it."↵-Keskit, the Flesh Sculptor
@@ -15306,6 +15483,7 @@ Skyblade of the Legion①Vampires call the gift of flight "exultation." For thei
 Skyblinder Staff①"If bats are the only thing between me and a mountain of Orzhov coins, then I'm about to be a very rich thief."
 Skybridge Towers①New Capenna's districts are a series of tiers; wealth and power always rise to the top.
 Skycat Sovereign①The bounty on its head is as old as Skysail, but no one has ever tried to collect.
+Skyclave Basilica①"As points of no return go, it is quite epic."↵-Aelah, expedition cleric
 Skyclave Cleric①"Well, she can jump farther than I can."↵-Aelah, expedition cleric
 Skyclave Geopede①Wrenched from the ground like a dirt-caked rock, the ancient Skyclave wriggled with life.
 Skyclave Pick-Axe①For use on cliffs and other faces.
@@ -15435,6 +15613,7 @@ Slith Predator①Born amid the molten metal of the Great Furnace, the slith have
 Slith Strider①A slith's form and function are determined by the color of the sun under which it's born.
 Slither Blade①Some naga initiates move as silently as the suns' reflections on the water.
 Slither Blade①Some naga initiates move as silently the suns' reflections on the water.
+Slitherbore Pathway①"The Cosmos Serpent carved these tunnels, and his echo remains, a twisting aura of ferocity and boundless growth."↵-Haugar, Kannah wayfinder
 Slitherhead①"It makes better use of Uncle Dragi's head than he ever did."↵-Pesha, retired blacksmith
 Slitherwisp①Fear is its habitat, sanity its prey.
 Sliv-Mizzet, Hivemind①(^17S)180° = (Z->)90°
@@ -15621,6 +15800,7 @@ Song of Creation①She wept, not from perfect understanding, but from serene gra
 Song of Serenity①Heartwood brings peace in great symphonies where dryads conduct the trees through every note.
 Song of the Dryads①Few who encounter the strange, human-like grove leave once the lilting chorus of the dryads reaches their ears.
 Song of the Worldsoul①"Mat'Selesnya sings out, and life flourishes in answer."
+Song-Mad Ruins①"They call it the Singing City, but those eerie sounds aren't music. They worm their way into your brain until rational thought is impossible."↵-Yavotz, Sea Gate Expeditionary House
 Song-Mad Treachery①"I'm not proud of the things I did. But all I could think about at the time was how to make the noise stop."↵-Yavotz, Sea Gate Expeditionary House
 Songs of the Damned①Not wind, but the breath of the dead.
 Songstitcher①The true names of birds are songs woven into their souls.
@@ -15855,6 +16035,7 @@ Spike Jester①For the Rakdos, "suicidal charge" and "good showmanship" are one 
 Spike, Tournament Grinder①"Just wait-I have a response."
 Spike-Tailed Ceratops①The conquistadors surrounded the dinosaur only to find that it had outflanked them.
 Spiked Baloth①If a baloth isn't hungry, it's dead.
+Spikefield Cave①"Silence until we're through. Even a whisper's echo can dislodge death from above."↵-Raff Slugeater, goblin shortcutter
 Spikefield Hazard①"Stop screaming! You'll only bring down more spikes."↵-Raff Slugeater, goblin shortcutter
 Spikeshot Elder①Now that he knows a thousand ways of hurting people, his next shamanic quest is to discover a thousand more.
 Spikeshot Goblin①"Proximity discouraged. Do not approach."↵-Vulshok field guide
@@ -15906,6 +16087,8 @@ Spire Serpent①A mirror to draw its eye, a rod to rouse its rage, and a sword t
 Spire Tracer①Cartographers on Ravnica chart not just the horizontal, but also the vertical.
 Spire of Industry①A beacon of prosperity to some, a shadow of oppression to others.
 Spirebluff Canal①There's so much more to Ghirapur than can be accessed by traditional roads.
+Spires of Orazca①". . . a cryptic objective."↵-Jace Beleren
+Spires of Orazca①"… a cryptic objective."↵-Jace Beleren
 Spireside Infiltrator①"The Consulate promised that we would all have access to aether. I'm just keeping them honest."
 Spirit Away①The fear of slipping from the geist's tenuous grip overwhelmed Tolo's joy at his first flight.
 Spirit Bonds①Designed by Justin Gary
@@ -15943,6 +16126,7 @@ Spiteful Sliver①Victories against the hive are tragedies.
 Spiteful Squad①"Don't you know first-years pay a toll to walk through here?"
 Spiteful Visions①Knowledge brings the sting of disillusionment, but the pain teaches perspective.
 Spitemare①"I knew a creature carved from a dream of wild freedom. Any attempt to leash or exploit it failed, and at terrible cost."↵-Ashling
+Spitfire Bastion①Now instead of a ship, Ripley Vance commands a fortress.
 Spitfire Handler①"Wait 'til Toggo sees this!"
 Spitfire Lagac①"If you hear a choking sort of cough, it's about to get really hot."↵-Raff Slugeater, goblin shortcutter
 Spitting Drake①It prefers its meals cooked.
@@ -16068,9 +16252,11 @@ Staggering Insight①"Only cowards flee from the truth."↵-Perisophia the philo
 Stalker Hag①Her hunt is silent until a bone snaps or flesh tears. Her victims never know to scream.
 Stalking Bloodsucker①The pits feed both its thirst for combat and its thirst for blood.
 Stalking Drone①As the Eldrazi adapted to the jungles of Zendikar, some took on the tactics of more familiar predators.
+Stalking Predator①Tomorrow a new village, and new victims.
 Stalking Tiger①In the Jamuraan jungles, there is often no separating beauty from danger.
 Stalking Tiger①No one is happy when they notice a tiger.
 Stalking Tiger①Throughout Chinese history, generals have often been referred to as tigers for their fierceness, strength, and bravery.
+Stalking Vampire①Each form she takes is an exploration of the senses.
 Stalking Vengeance①Something roams the killing places, sniffing the guilt of the slayers, stalking them on iron paws.
 Stallion of Ashmouth①Echoing hoofbeats can no longer be assumed to be help from the Gavony Riders.
 Stalwart Pathlighter①"Festival's just ahead. You're almost there!"
@@ -16225,6 +16411,7 @@ Stir the Grave①"Your lungs may not draw breath, but while your hands can grip 
 Stirge①"I will never complain about mosquitos again."↵-Imoen
 Stirring Address①"For glory! For justice! For our queen!"
 Stirring Bard①At the first sign of danger, she breaks out the power chords.
+Stitch in Time①"According to the strange journal I found, the spell succeeds half the time. Why, if I cast it twice, that's a guaranteed success!"↵-Rantings of Sigbar the Wild
 Stitch in Time①"I believe the spell to have a 50% failure rate. I must be careful, lest I lose my sanity to the unbending force of pure, untempered time."↵-Journal of Sigbar the Cautious
 Stitch in Time①Quyzl was told by his mentor to "make more time" for his studies.
 Stitched Drake①"The best skaab are more powerful and more beautiful than the sum of their parts."↵-Stitcher Geralf
@@ -16247,6 +16434,7 @@ Stomper Cub①"This one is only a yearling, but it would be wise to move away be
 Stomping Ground①"Atarka and her subjects congregate in Ayagor, the Dragon's Bowl. It is my duty to keep that bowl full."↵-Surrak, the Hunt Caller
 Stomping Ground①"Roots, ruins, and room to fight. All the comforts of home."↵-Domri Rade
 Stomping Ground①"What we begin, the End-Raze will finish. Then we will dance in Ravnica's rubble."↵-Nikya of the Old Ways
+Stomp①Not every tale ends in glory.
 Stone Calendar①The Pretender Mairsil ordered a great Calendar drawn up to show when the paths to the Dark Lands were strongest.
 Stone Calendar①The Pretender Mairsil ordered a great calendar drawn up to show when the paths to the Dark Lands were strongest.
 Stone Giant①A typical day for a giant. A momentous event for a goat.
@@ -16293,6 +16481,7 @@ Stonerise Spirit①The carved cliffs of Pillardrop thrum with the sounds of anci
 Stoneshaker Shaman①There is no place in Ravnica for stagnation, no room for lands unfilled and untilled.
 Stoneskin①"Ooh, nice shot! I almost felt that one."
 Stonespeaker Crystal①It whispers words spoken centuries ago, coaxing wisdom from the ghosts of civilizations past.
+Stonewing Antagonizer①Nahiri twisted them in shape and bent them to her will.
 Stonewise Fortifier①Ephara taught some mortals to feel every vein in marble as though it flows with their own blood.
 Stonewood Invocation①"Might of ancient wood and stone, Into spirit, flesh, and bone."
 Stonewood Invoker①The Mirari pulses in his veins.
@@ -16364,6 +16553,7 @@ Stranglehold①"Control the Halo and you control the whole city."↵-Jetmir
 Stranglehold①The correct answer to a barbarian's riddle is to choke on your cleverness and die.
 Strangleroot Geist①Geists of the hanged often haunt the tree on which they died.
 Strangle①They'd warned him greed would be the death of him. He never thought to take it literally.
+Strangling Grasp①The next day, the executioner was found with ashen handprints on his throat.
 Strangling Soot①"What good is your blade without your breath?"↵-Greht, Gathan warlord
 Strangling Spores①Imagine a thousand tiny mushrooms cropping up within your lungs.
 Stratadon①Designed like the gargadons of Keld-big and brutal.
@@ -16686,6 +16876,7 @@ Sword of Truth and Justice①"'The name of it,' said the lady, 'is Excalibur.'"�
 Sword of Vengeance①When wielded by a true believer, it matters little whether the sword is a relic or a replica.
 Sword of the Animist①The blade glows only for Zendikar's chosen.
 Sword of the Chosen①One shard of Selenia yet remained.
+Sword of the Realms①It cuts through the Cosmos itself, carving new Omenpaths between the realms.
 Sword-Point Diplomacy①"Take my blood if you want. Just don't take my gold!"
 Swords to Plowshares①"Hunger is no different from any other foe; defeat it in the Emperor's name, and save Humanity."↵-Motto of the Argi-World Viridia IV
 Swords to Plowshares①"Peace hath her victories / No less renownd than war."↵-John Milton, "To the Lord General Cromwell"
@@ -16852,6 +17043,7 @@ Tanglebloom①The bloom contains no seeds. It's meant only to nourish the forest
 Tangleclaw Werewolf①"What has long, flesh-rending claws and enormous, bone-crushing teeth?"↵-Halana, Kessig ranger
 Tangled Florahedron①"As Bala Ged regrows, new forms of life blossom with unfettered wonder."↵-Doral, Bala Ged guide
 Tangled Islet①Many of Terisiare's islands are merely extensions of the root system of the Yavimaya magnigoth forests.
+Tangled Vale①"We would do well to open our eyes and remember what it is to wonder."↵-Doral, Bala Ged guide
 Tanglepool Bridge①The path to change is forged in insight.
 Tangleroot①As if there's glitch in the system, the Tangle sometimes folds in on itself, throwing off sparks of mana in a mystifying display.
 Tanglesap①"The blood of the forest is beholden to no one."↵-Nissa Revane
@@ -16900,6 +17092,7 @@ Taurean Mauler①The power of a waterfall. The fury of an avalanche. The intelle
 Tavern Brawler①The only thing you love more than a good drink is a good fight. Luckily, one usually follows the other.
 Tavern Ruffian①She dispatched every challenger with a sickening snap of bone.
 Tavern Scoundrel①"No refunds. I cheated you fair and square."
+Tavern Smasher①With every arm in sight broken, she turned her attention to the furniture.
 Tavern Swindler①"Only a chump stops after one unlucky loss. You're not a chump, are you?"
 Tavern Swindler①Rakdos cultists are her best customers. They never flinch at pain and are seldom good at math.
 Tawnos's Weaponry①When Urza's war machines became too costly, Tawnos's weaponry replaced them.
@@ -16987,6 +17180,8 @@ Temple Garden①In the gardens of the Conclave, order and beauty are the roots o
 Temple Garden①Karametra's worshippers know that one must plant countless seeds to ensure a bountiful harvest.
 Temple Thief①"I don't know if the gods watch over their temples, but I figure it's best to be stealthy just in case."
 Temple of Abandon①Places of worship become frenzies of violence as the psychic call of the Hive Mind stirs Genestealer Cults to action.
+Temple of Aclazotz①. . . to the lost temple of a bat-god of night, eternal enemy to the Threefold Sun.
+Temple of Aclazotz①… to the lost temple of a bat-god of night, eternal enemy to the Threefold Sun.
 Temple of Epiphany①"Hail the Children of the Stars!"↵-Magus Lucea Kane
 Temple of Mystery①Genestealer Cults bide their time on Imperial worlds, spreading tendrils of corruption through the native population.
 Temple of the False God①"When gods become apathetic, the people will worship anyone who answers their pleas."↵-Kiora
@@ -17026,6 +17221,7 @@ Terashi's Cry①"The sun kami is terrible to behold. When its temper flares, bes
 Terashi's Grasp①"The jeweler, the potter, the smith . . . They all imbue a bit of their souls into their creations. The kami destroy that crafted mortal shell and absorb the soul within."↵-Noboru, master kitemaker
 Terashi's Verdict①It was as though the sky opened its eyes and found what it saw displeasing.
 Teremko Griffin①"When we're aloft, I love to lean over the *Weatherlight*'s railing and watch the patterns the griffins' shadows make on the clouds below."↵-Sisay, Captain of the *Weatherlight*
+Tergrid's Lantern①When Tergrid was a child, her shadow tried to kill her. Only her lantern keeps it at bay.
 Tergrid's Shadow①Tergrid, god of fright, never acknowledges her own shadow . . . or its murderous deeds.
 Tergrid, God of Fright①Fear is her one true companion.
 Terminal Agony①His mouth melted to slag, yet somehow he kept screaming.
@@ -17123,9 +17319,11 @@ The Mighty Will Fall①"Cry out for your comrades so that they may join you in m
 The Ozolith①As it twists, so does all life around it.
 The Peregrine Dynamo①Jhoira stumbled upon an ally, not just a good source of spare parts.
 The Pieces Are Coming Together①"Cretins build machines. I construct destiny."
+The Prismatic Bridge①Starnheim awaits.
 The Prismatic Piper①It is everything and nothing.
 The Rack①Invented in Mishra's earlier days, the Rack was once his most feared creation.
 The Rack①Invented in Mishra's earlier days, the rack was once his most feared creation.
+The Ringhart Crest①Kolvori's love for her family knows no bounds.
 The Space Family Goblinson①The goblin word for "vacation" translates roughly to "a battered landscape of noise and violence."
 The Tarrasque①When it rises, nations fall.
 The Ultimate Nightmare of Wizards of the Coastr Customer Service①The number printed on the card is no longer in service. For help, go to wizards.custhelp.com or find us on Twitter @Wizards_Help.
@@ -17241,6 +17439,7 @@ Thraben Foulbloods①The famed hunting hounds of House Cecani continue to prove 
 Thraben Gargoyle①Runechanters engrave their strongest wards on those that protect the church.
 Thraben Heretic①"Let them decry me for burning the dead. I'm not giving those ghoulcallers any more fuel for their madness."
 Thraben Inspector①"If you've been at this as long as I have, nothing can surprise you. That's the hope, at least."
+Thraben Militia①"The time for grief is over. The time for retribution has begun."
 Thraben Purebloods①"I've learned to trust my dogs' instincts. When they're calm, I'm calm. And when they get nervous, I get my crossbow."↵-Hinrik of House Cecani
 Thraben Sentry①"Looks like it's going to be a quiet night."
 Thraben Standard Bearer①The uncorrupted rallied under Thalia's leadership and Sigarda's banner.
@@ -17300,6 +17499,7 @@ Thriving Turtle①Aether shapes everything on Kaladesh, from the sky to the sea.
 Throatseeker①"I just felt a drip. It must be about to rain."↵-Stoneway Market vendor, last words
 Throne Warden①"Rulers come and go, but my allegiance belongs to the throne."
 Throne of Bone①Tainted by a thousand fears.
+Throne of Death①It offers all the warmth and comfort of the grave.
 Throne of Empires①"With this throne, unite your nation."↵-Throne inscription
 Throne of Geth①At the heart of Ish Sah, Geth stokes the dark fires of Phyrexia.
 Throne of the God-Pharaoh①"When the Second Sun rests between the horns on the horizon, so begins the Hour of Revelation. Then the Hour of Glory, the Hour of Promise, and finally the Hour of Eternity."↵-*The Accounting of Hours*
@@ -17370,6 +17570,7 @@ Tidal Wave①"The floor of the sea is paved with the shattered remnants of vesse
 Tidal Wave①When mountains ride the sea, waves live upon the fields.
 Tide Drifter①It didn't do much, but the residents of Sea Gate gave it a wide berth all the same.
 Tide Skimmer①Fishing boats often follow hunting drakes to find the largest schools of fish.
+Tidechannel Pathway①"Trust in the path, and it will bear you to safety."↵-Inga Rune-Eyes
 Tideforce Elemental①Ebb and flow, high tide and low, quick as sand and just as slow.
 Tidehollow Strix①The scullers beneath Esper keep strixes as trained pets, and set them loose when a fare refuses to pay.
 Tidepool Turtle①Prized by wizards as a mobile scrying pool, it bears visions drawn from the depths of the sea.
@@ -17389,7 +17590,9 @@ Timber Gorge①Glaciers, torrential floods, and temporal disturbances came and w
 Timber Gorge①Near the Western Seas lies Mount Zhaoyao-a forest of stones that reaches the clouds, a bountiful land of wondrous treasures and strange animals.
 Timber Gorge①Tazeem's embrace is harsh, but for those that call it home, nothing else will do.
 Timber Protector①In his presence, an ordinary grove becomes a bastion to turn spells and break armies.
+Timber Shredder①"She even had the audacity to criticize my wares as inferior."↵-Old Rutstein
 Timber Wolves①Though many think of Wolves as solitary predators, they are actually extremely social animals. During a hunt they often call to each other, which can be quite unsettling for their prey.
+Timbercrown Pathway①"Walk quickly and ignore any roars from the undergrowth."↵-Enwor, Sea Gate Expeditionary House
 Timberland Guide①"Can you build a fire? Track a deer? Identify killer trees? Then you'll never survive Kessig without me."
 Timberland Guide①Hiring an experienced wilderness guide isn't cheap, but it costs less than a search party. Or a funeral.
 Timbermare①Only nature wreaks such lovely havoc.
@@ -17481,6 +17684,7 @@ Tolarian Terror①Afterward, a number of treatises on sea serpent morphology wer
 Tolarian Winds①Afterward, Tolaria's winds were like the whispers of lost wizards, calling for life.
 Tolarian Winds①Why not ask the winds?↵-Tolarian expression meaning "Who knows?"
 Tolaria①"Fairest Isle, all isles excelling,/ Seat of Pleasures, and of loves . . ." -John Dryden
+Tomb of the Dusk Rose①. . . resting in the splendor of the dead.
 Tomb of the Spirit Dragon①"The voice calls me here, yet I see only bones. Is this more dragon trickery?"↵-Sarkhan Vol
 Tombfire①The fondest memories burn brightest. As they're lost forever, the flames grow hotter still.
 Tombstalker①When it ran out of bodies, it broke down the crypt door and sought new sustenance.
@@ -17677,6 +17881,7 @@ Treacherous Link①"You cannot possibly know the toll your alliances will exact 
 Treachery①"The academy educates; I employ. It's a perfect arrangement."↵-Gatha, Tolarian renegade
 Tread Upon①"Boasting impenetrable defenses only draws the most tenacious of attackers."↵-Yikaro, Atarka warrior
 Treasonous Ogre①"Everything comes with a price. Especially revolution."↵-Grenzo, dungeon warden
+Treasure Cove①Half the treasure is the glory of finding it.
 Treasure Cruise①Countless delights drift on the surface while dark schemes run below.
 Treasure Hunter①"The treasures of the ancients belong in museums, not in the grubby hands of grave robbers."
 Treasure Hunter①"What separates junk from treasure is imagination."↵-Hanna, *Weatherlight* navigator
@@ -17688,6 +17893,7 @@ Treasure Trove①"Wealth means power; the power to subdue, to crush, to exploit,
 Treasure Trove①Karn and Hanna stood over the recovered Legacy artifacts like loving parents over sleeping children.
 Treasure Vault①There is wealth enough inside to cause the rise and the ruin of dynasties.
 Treasured Find①Gorgons crave beautiful things: gems, exquisite amulets, the alabaster corpses of the petrified dead . . .
+Treats to Share①"It's gingerbread, like Mother makes. What is there to be afraid of?"
 Tree Monkey①"They serve the world best on a platter with shallots and onions."↵-Talas sailor
 Tree Monkey①The vines and branches of the jungle canopy are all the wings it needs.
 Tree of Perdition①There will be no absolution.
@@ -17822,6 +18028,7 @@ Turnabout①The best cure for a big ego is a little failure.
 Turntimber Ascetic①"For so long, this land cried out in pain. Now, as the flow returns to its balance point, a new harmony echoes in the trees."
 Turntimber Ranger①The lone wolf dies alone.
 Turntimber Sower①"Zendikar's wounds can be healed."
+Turntimber, Serpentine Wood①"The trees here twist around spikes of mana, feeding off the flowing power."↵-Jori En, expedition leader
 Turret Ogre①Common Gruul career aspirations: berserker, shaman, catapult.
 Turtleshell Changeling①A changeling involuntarily mimics the nearest being at hand, sometimes trading a borrowed shell for borrowed claws.
 Tusk and Whiskers①Weighing in at a combined thirteen thousand pounds and two ounces.
@@ -17838,6 +18045,7 @@ Twin Bolt①Kolaghan archers are trained in Dakla, the way of the bow. They util
 Twin-Silk Spider①A forest-wide network of webs brings a hungry couple to captured prey.
 Twinblade Assassins①Rumors swirl of a pair of deadly Golgari assassins known only as the Left and Right Hands of the Ochran.
 Twinblade Geist①She faced down a howlpack alone, saving her town at the cost of her life.
+Twinblade Invocation①Since her passing, many more travelers have made it home alive.
 Twinblade Slasher①Righteous anger hones a humble soul.
 Twincast①Imitation is the most dangerous form of flattery.
 Twincast①Sometimes you have to search for inspiration, and sometimes it's right there in front of you.
@@ -17888,15 +18096,19 @@ Ulrich's Kindred①"I am not its master. We are of the same pack."↵-Ulrich, Kr
 Ultimate Price①"He's paid his price. Now you pay mine."
 Ultimate Price①"Let him be an example to others who would default on their debts to us."↵-"The Cozen," Orzhov assassin
 Ultimate Price①"The realization that one is dying is far more terrifying than death itself."↵-Sidisi, Silumgar vizier
+Ulvenwald Abomination①"The Eldrazi are all too practiced at twisting natural into unnatural."↵-Nissa Revane
 Ulvenwald Bear①Out chasing bears↵-Kessig expression meaning "died in the woods"
+Ulvenwald Behemoth①"We've learned enough! I say we run."↵-Alena, Kessig trapper
 Ulvenwald Captive①"Even on a plane as dark as this one, nature will organize a defense against the unnatural."↵-Nissa Revane
 Ulvenwald Mystics①"With this ritual, we cast aside our fragile humanity . . ."
 Ulvenwald Observer①"I tell you, the trees were closing in! It's by the grace of the Heron alone that I made it out of the Ulvenwald!"↵-Ricton, traveling merchant
 Ulvenwald Oddity①"Obviously it's dangerous, but I've never seen anything like it. This could be an entirely new species! I say we follow it."↵-Halana, Kessig ranger
+Ulvenwald Primordials①". . . and embrace the ancient ferocity of the undying Wild."
 Ulvenwald Tracker①"Peace will come to Innistrad, but only after all abominations have been dealt with, one by one."
 Umara Entangler①"Sea Gate is gone, the Halimar basin empty. But rebuild the seawall and give these waters time, and they will fill the basin anew."
 Umara Mystic①"We tolerate the North Hada thieves' den, but cutthroats who wander downriver earn a skymanta ride out to sea."
 Umara Raptor①Messenger, weapon, friend.
+Umara Skyfalls①"The source of the Umara River sits high above Oran-Rief, ever weeping on the jungle below."↵-Ko Dari, expedition wizard
 Umara Wizard①"You see a waterfall. I see a way up."↵-Ko Dari, expedition wizard
 Umbilicus①It was the explorers' only tether to reality.
 Umbra Mystic①"I have found the courage to face death-twice, if I must."
@@ -17978,9 +18190,11 @@ Unflinching Courage①As Trostani's influence grew, vitality spread through the 
 Unforge①Compared to the fire of the forge, the strength of steel is nothing.
 Unfriendly Fire①Disputes within the Brazen Coalition can escalate from insult to broadside in the blink of an eye.
 Unfulfilled Desires①"Like Day from Night, / I'll live my life apart from you, just glimpsing you across the sky, / because you cannot change, my dear, and nor can I."↵-"Love Song of Night and Day"
+Unhallowed Cathar①"Just fight without fear. Your soul is protected by the hand of Avacyn and will never submit to evil."↵-Thalia, to Constable Visil
 Unhallowed Pact①Agreements with demons seldom end at the grave.
 Unhallowed Phalanx①"In case any of you new recruits were wondering, this is why we don't use mass graves anymore."↵-Kerren of the Mausoleum Guards
 Unhinge①"Don't let your mind wander-it might not come back."↵-Braids, dementia summoner
+Unholy Fiend①The fiend tormented them by recounting the girl's memories, as if some part of her remained inside that twisted shell.
 Unholy Heat①"The devils use fire. Why shouldn't we?"
 Unholy Hunger①Liliana viewed the attention of the angels as a testament to her power. Even so, they were an annoyance.
 Unholy Indenture①"Don't think of it as selling your soul. It's more like you're bequeathing it to me."↵-Vilis, Broker of Blood
@@ -17992,6 +18206,7 @@ Unified Front①The kor's pride in their independence has given way to a strong 
 Unified Strike①The tall, reedy grass of the Daru Plains rustles loudly in the winds, a perfect cover for any ambush.
 Unified Will①"We're glad to be of service-to be an audience to your failure."↵-Maizah Shere, Tazeem lullmage
 Unifying Theory①Scribbles of a lunatic and formulas of a genius are often indistinguishable.
+Unimpeded Trespasser①Knocking was simply a formality.
 Uninvited Geist①A slow knock at midnight is best left unanswered.
 Unity of Purpose①Faced with the novel problem of inspiring an army, Jace asked himself: "What would Gideon say?"
 Universal Automaton①"Within minutes, the strange device was indistinguishable from the other on my workbench."↵-Tocasia, journal entry
@@ -18121,6 +18336,7 @@ Urza's Tower①Urza always put Tocasia's lessons on resource-gathering to effect
 Urza's Tower①Urza studied the creations of the Thran not simply to learn from them, but to surpass them.
 Urza①An artificer of unparalleled renown, Urza was a powerful cipher even before he was able to planeswalk. Seeing the world as a large, integrated machine is his greatest strength and weakness, enabling him to solve almost any problem but blinding him to his solutions' effects on others.
 Usher of the Fallen①"I have led ten thousand through these mists and never lost the way."
+Usher to Safety①Not all heroes carry swords.
 Uthden Troll①"Oi oi oi, me gotta hurt in 'ere Oi oi oi, me smell a ting is near, Gonna bosh 'n gonna nosh 'n da hurt'll disappear." -Traditional
 Uthden Troll①"Oi oi oi, me gotta hurt in 'ere, Oi oi oi, me smell a ting is near, Gonna bosh 'n gonna nosh 'n da hurt'll disappear." -Traditional
 Uthden Troll①"Oi oi oi, me gotta hurt in 'ere, Oi oi oi, me smell a ting is near, Gonna bosh 'n gonna nosh 'n da hurt'll disappear."↵-Troll chant
@@ -18137,6 +18353,7 @@ Valakut Awakening①"My ancestors reshaped the world to their vision. I have a f
 Valakut Fireboar①"Just move very slowly, and for the love of Ula, do not get it mad."↵-Chadir the Navigator
 Valakut Invoker①"As long as we have walked this world, we have known it as a harsh and unforgiving place."↵-*The Invokers' Tales*
 Valakut Predator①"Whatever volcanoes dream of, it seems like they always wake up grumpy."↵-Raff Slugeater, goblin shortcutter
+Valakut Stoneforge①"I can hear the echo of their hammers, long stilled."↵-Tars Olan, stoneforge mystic
 Valduk, Keeper of the Flame①The hammer strikes. The Flame awakens.
 Valeron Outlander①After years of honing her philosophy in debate with stubborn rhoxes, Niella was ready to convert any heathen.
 Valiant Endeavor①"Only victory shall stop our charge!"
@@ -18225,9 +18442,11 @@ Vastwood Fortification①"When you understand nature's ways, you're never unarme
 Vastwood Gorger①"A long and difficult incision revealed that all vital organs are housed in the head, save for a long chain of stomachs, forty in all, leading from its throat to the end of the tail."↵-Mulak Ffar, *Vastwood Biodiversity*
 Vastwood Gorger①"I've known true ferocity and power. Those brazen 'planar-walkers' have no idea what wild really means."↵-Chadir the Navigator
 Vastwood Gorger①The gorger's insect-like eyes pick up the slightest movement in any direction. Its body then whips toward its prey with startling speed, swallowing it in one engulfing gulp.
+Vastwood Thicket①"Never underestimate the ferocity of the imperative to thrive."↵-Eyza, Joraga guide
 Vault Robber①The dwarves believe works of art should be passed down the generations, not buried with the dead.
 Vault Skirge①From the remnants of the dead, Geth forged a swarm to safeguard his throne.
 Vault Skyward①"The edges of the Quicksilver Sea run dark with the spread of the Mephidross. Two more aerial passes before I can be sure what I'm seeing . . ."↵-Lafarius, Neurok sky agent
+Vault of Catlacan①Swimming in coins proved harder than they'd hoped, but dancing was a jingling delight.
 Vault of Champions①Where victors are commemorated and moments of glory immortalized.
 Vault of Whispers①Heretic cultures came to planet Sovereign in search of resources and precious artifacts. They found something else.
 Vault of Whispers①Ish Sah, den of the warlord Geth, commander of countless nim.
@@ -18237,6 +18456,7 @@ Vectis Dominator①"I appreciate the artistry of the telemins, but the creatures
 Vectis Gloves①Thieves love technological innovations almost as much as artificers do.
 Vectis Silencers①Even on Esper, there are those who eschew the use of magic in favor of simpler methods.
 Vector Asp①Phyrexia's machines take inspiration from nature. Twisted, disturbing inspiration.
+Vector Glider①It drifted from the spirit realm into a neon world full of new possibilities . . . and decided to stay.
 Vedalken Anatomist①"Specimen 211 examination report. Observation: graft sublimation incomplete. Result: death. Prepare specimen 212."
 Vedalken Archmage①"The Knowledge Pool knows. Memnarch understands."↵-Janus, speaker of the synod
 Vedalken Blademaster①Vedalken have six thin, agile fingers on each hand, giving them unparalleled dexterity.
@@ -18308,6 +18528,7 @@ Venser's Journal①A Planeswalker's chronicle spans worlds and civilizations, ea
 Venser's Sliver①Venser admired his handiwork and smiled. His first prototype had joined with the hive mind all too well, running with the brood and becoming a predator itself. This one, he thought, would be accepted into the hive but still obey his commands.
 Venser, Shaper Savant①His marvels of artifice pale in comparison to the developing machinery of his mind.
 Vent Sentinel①"Zendikar fortifies itself against the Great Threat, making sentries of sky, sea, and stone."↵-*The War Diaries*
+Venture Deeper①Merfolk curiosity usually has dire consequences, but rarely for the merfolk.
 Verdant Automaton①"A perfect fusion of nature and artifice."↵-Irsi, Kujar gardener
 Verdant Field①Jolrael tends the land so that the land will tend the beasts.
 Verdant Force①Burl, scurf, and bower↵Birth fern and flower.
@@ -18425,6 +18646,7 @@ Village Cannibals①Some have endured the horrors of Innistrad by becoming the w
 Village Elder①"Enchant me with your tale-telling. Tell about Tree, Grass, River, and Wind. / Tell why Truth must fight with Falsehood, and why Truth will always win."↵-"Love Song of Night and Day"
 Village Ironsmith①Each night, he abandons the trappings of civilization.
 Village Messenger①"I'm afraid it's bad news."
+Village Reavers①With no guards to be seen, the cobbled streets of Gatstaf echoed with howls.
 Village Rites①"My colleagues revile the barbarity of the Blood Age, but I believe we have much to learn from the magics of endless war."↵-Embrose, Silverquill dean
 Village Rites①"You were so eager to take and consume. Yet when asked to give, you refuse?"
 Village Rites①The Skelle raise scorn poles in conquered villages-cursed totems of wood and bone that sap survivors of physical strength and the will to fight back.
@@ -18484,6 +18706,7 @@ Viscerid Drone①Not all of Terisiare's flooding was natural . . . .
 Viscid Lemures①"Lemurs? Is that all? Finally, something harmless . . ."↵-Norin the Wary
 Viseling①"This may hurt a lot."
 Vision Skeins①"I could see in the other mage's eyes that he'd thought of it too. Then it became a race to exploit the knowledge first."
+Vision of the Unspeakable①Even as her students' minds succumbed to madness, Azami's obsession with the kami of forbidden knowledge only grew.
 Visionary Augmenter①"It's a multifunctional radial extension system with superlateral, force-amplifying rigging. Of course it will win."
 Visions of Beyond①"The past is the foundation for all that exists in the present. We merely reconstruct what our ancestors have already discovered."↵-Sachimir, Sage of Memories
 Visions①"Visions of glory, spare my aching sight,/ Ye unborn ages, crowd not on my soul!"↵-Thomas Gray, *The Bard*
@@ -18586,6 +18809,7 @@ Volrath's Gardens①"Watch yourself," warned Starke. "These plants aren't nice w
 Volrath's Stronghold①The seed of a world's evil.
 Volrath①The son of Gerrard's surrogate father, Sidar Kondo, Volrath stole Gerrard's Legacy and rose to power selling it off piece by piece. Now, he is an evincar, or agent, of the Lord of the Wastes. Armed with exceptional magical powers, he plots to conquer the entire multiverse.
 Volshe Tideturner①Ships suspected of carrying Sheoldred's agents have a tendency to drift far off course as they sail through the Voda Sea.
+Volt-Charged Berserker①She finally realized that chaos was meant to run rampant, as was she.
 Voltaic Construct①The undead may outlast the living, but those who have never lived outlast them both.
 Voltaic Key①The key did not work on a single lock, yet it opened many doors.
 Voltaic Key①The missing piece to every puzzle.
@@ -18598,6 +18822,7 @@ Vona, Butcher of Magan①"For four hundred years, I have led armies of conquest.
 Voracious Cobra①There's no known antidote for the cobra's venom . . . or its appetite.
 Voracious Greatshark①There is no boat big enough.
 Voracious Null①"These days, there's no shortage of food for the nulls of Guul Draz."↵-Drana, Kalastria bloodchief
+Voracious Reader①Good books make you savor each word.
 Voracious Typhon①A typhon's escape from the Underworld makes armies flee and kingdoms fall.
 Voracious Vampire①The purest devotion isn't the Blood Fast itself, but the craving that follows.
 Voracious Wurm①Shepherds in Kalonia know it's better to let sheep roam than have them be trapped when the wurms are feeding.
@@ -18634,6 +18859,7 @@ Vulshok Replica①All the fury of the Vulshok with only a trace of their reckles
 Vulshok Sorcerer①Vulshok sorcerers train by leaping into electrified storm clouds. Dead or alive, they come back down with smiles on their faces.
 Vulshok War Boar①It must eat its weight in metal daily, or its furnacelike belly will consume itself for lack of fuel.
 Vulturous Zombie①"When something dies, all things benefit. Well okay, just our things."↵-Ezoc, Golgari rot farmer
+Waildrifter①"Wait! That's no gryff-at least not anymore."↵-Geor, Havengul fisher
 Wailing Ghoul①"Don't worry, sweet brother. Help is on the way."↵-Ghoulcaller Gisa
 Waiting in the Weeds①The trees have ears, eyes, and teeth.
 Wake Thrasher①Anyone who thinks merrows have more brains than brawn has never been run over by one.
@@ -18914,6 +19140,7 @@ Wayfarer's Bauble①It is the forest beyond the horizon, the mountain waiting to
 Wayfarer's Bauble①When Chaos makes a tool that isn't specifically for destroying things, it's usually for finding new things to destroy.
 Wayfaring Giant①Its stature and stride increase with each step it takes.
 Waylay①"You reek of corruption," spat the knight. "Why are you even here?"
+Wayward Disciple①". . . and I will prove my devotion."
 Wayward Giant①"The giants follow the flow of aether, and twice a year it leads them through here. Lesson learned. More clearance is needed."↵-Sram, senior edificer
 Wayward Guide-Beast①Goblin cavalry tactics consist of pointing a beast in a direction and hanging on for as long as possible.
 Wayward Servant①If one of the anointed fails to serve with perfect obedience, the desert is always ready to receive it.
@@ -18936,8 +19163,11 @@ Weave Fate①Temur shamans speak of three destinies: the now, the echo of the pa
 Weaver of Blossoms①Living in harmony with nature . . .
 Weaver of Currents①"Your waters sustain the living and carry the dead. Mighty Luxa, let your power flow through me!"
 Weaver of Lightning①"Lightning in a bottle? That's not where I need it."
+Web Shot①"Filthy, sticky, vile, noxious-and I haven't even started describing the webs."↵-Erinis, gloom stalker
 Web of Inertia①Cephalids specialize in lose-lose situations.
 Webweaver Changeling①Eight legs carrying endless phobias.
+Wedding Crasher①He raged not just against vampires, but against civilization itself.
+Wedding Festivity①Vampires from every bloodline mingled together, all swelling with pride to be seen at the event of the century.
 Wedding Invitation①RSVP at your own risk.
 Wedding Security①In lieu of payment, he was granted permission to devour any unauthorized visitors.
 Wee Champion①Nobody had ever won the bear, but then again, nobody had ever wanted it quite as much.
@@ -18959,6 +19189,7 @@ Weight of the Underworld①Proud Alkmenos, who would not bow to Erebos in death,
 Weird Harvest①Krosa's distorted groves bear strange fruit.
 Weirded Vampire①"Emrakul makes apparent those whom she has favored."↵-Runo Stromkirk
 Weirding Shaman①All boggarts have an auntie, but they don't all have a mum.
+Welcome Home①The middle blade was just right.
 Welcoming Vampire①From the moment they arrived, wedding guests were met with a pageant of wealth and excess.
 Welder Automaton①Most of the constructs the renegades used against the Consulate weren't originally intended for combat. But some didn't require much modification.
 Weldfast Engineer①"Let's err on the side of glorious mayhem."
@@ -19178,6 +19409,7 @@ Windwright Mage①She knows the names and secrets of each of Esper's twenty-thre
 Wine of Blood and Iron①Godo never revealed what went into his special brew, but he always had more of it after great victories.
 Wing Puncture①"If I were the air, I wouldn't taunt the ground. It has the weight advantage."↵-Konnos, Sylvok sage
 Wing Shards①Her feathers cut the air, as sharp as they are silent.
+Wing Shredder①Her hunger won't be sated until she's tasted every bird on Innistrad.
 Wing Snare①"Argoth's doom rained from a clear sky. Yavimaya will not share that fate."↵-Multani, maro-sorcerer
 Wing Snare①"We are the hands of the great trees, reaching out to ensnare what threatens their branches."↵-Elvish hunter
 Wing Snare①The elves long ago mastered the art of hunting with nets. They call it "fishing the sky."
@@ -19246,6 +19478,7 @@ Witch-Maw Nephilim①When it awoke, it shattered the hillsides to make way for i
 Witches' Eye①The price of prophecy is a vacant eye socket.
 Witching Well①It was built by the Witch of Lochmere. Most of the wishes it grants are its own.
 Withdraw①"We outnumber them! Charge! Charge! Hey, where'd you guys go? Retreat! Retreat!"
+Withengar Unbound①There are not enough lives on Innistrad to satisfy his thirst for retribution.
 Witherbloom Apprentice①"All we are-every feeling, every action-powered by a single, delicate little organ. Life is so terrifyingly, beautifully fragile."
 Witherbloom Campus①Mage-students fascinated by the energies of life and death choose Witherbloom, the college of essence studies.
 Witherbloom Pledgemage①"Death is just a transfer of energy. Those pests I harvested have the honor of becoming pure magic. What could be more beautiful?"
@@ -19372,6 +19605,7 @@ Wrath of God①Legend speaks of the lost coastal polis of Olantin, whose inhabit
 Wrath of God①Watch the skies.
 Wrath of Marit Lage①"Marit Lage lies frozen in a glacier's heart. Still her dreams take form in our world, stealing the heat from our souls."↵-Halvor Arenson, Kjeldoran priest
 Wrath of Marit Lage①Dread Marit Lage lies dreaming, not dead.
+Wrathful Jailbreaker①"And now I'm coming for you!"
 Wrathful Red Dragon①"We'll put it all back! The gems, the gold, the chalice that would've looked great on my mantle; we'll put everythi-"
 Wreak Havoc①"Crush them!"↵-Borborygmos
 Wreath of Geists①Before you travel the woods of Kessig, first get permission from those who died trying.
@@ -19572,6 +19806,7 @@ Zodiac Rooster①". . . But the time of Han had run-could he [Kongming] not tell
 Zodiac Snake①"Thrice Xuande's ardent quest led to Nanyang, / Where Sleeping Dragon unveiled Han's partition: . . ."
 Zodiac Tiger①". . . Three kings no more-Chenliu, Guiming, Anle. / The fiefs and posts must now be filled anew. . . ."
 Zoetic Cavern①Nothing lives within it, yet there is life.
+Zof Bloodbog①"Look at this place. What more evidence do you require that existence is bleak and meaningless?"↵-Voshk, oblivion priest
 Zof Consumption①"Annihilation surrounds us. Our call is to embrace its ceaseless hunger."↵-Voshk, oblivion priest
 Zof Shade①It haunts the remnants of the Helix of Zof, leeching strength from the vast Eldrazi ruin.
 Zof Shade①Shades are drawn to places of power, often rooting themselves in a single area to feed.
@@ -19593,6 +19828,7 @@ Zombie Outlander①The ripe smell of life drifted into Grixis. The dead caught t
 Zombie Scavengers①"Pick a shell upon my shore and put it to your ear. That sound isn't the sea, but the whispers of the fallen."↵-Crovax
 Zombie Trailblazer①Some zombies are natural-reborn leaders.
 Zombify①"The first birth celebrates life. The second birth mocks it."↵-Mystic elder
+Zoological Study①The detail really makes the monsters jump off the page.
 Zoologist①"With friends like these, who needs people?"
 Zuberi, Golden Feather①"If the griffins tell of their gods, perhaps they speak of feathers bright as the Sun."↵-Afari, *Tales*
 Zulaport Chainmage①The chains obey her. Everything else would do best to get out of her way.
