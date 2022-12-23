@@ -79,6 +79,9 @@
     * render legendary frame?
     * decrease save file resolution to limit file size?
 * ```encode.py```
+    * fix large numbers encoded in unary
+        * either encode large numbers in decimal/binary, or convert all numbers to binary. Unary might be easier for the AI to understand and replicate, but binary is much more managable for the number range it needs to access. So we use a slightly syntactically more complex number system everywhere in order to reduce the number of syntaxes the AI needs to understand. This seems like a win.
+        * switch field names to unique characters (not numbers)
     * implement ```error_correct_AI``` if needed
     * implement ```validate```
         * Try to implement a parser that checks for a definition for ```X```

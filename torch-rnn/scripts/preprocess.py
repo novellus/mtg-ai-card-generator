@@ -65,6 +65,7 @@ if __name__ == '__main__':
     data = f.read().strip()
   chunks = [chunk.strip() for chunk in data.split(args.chunk_delimiter) if chunk.strip()]
   n_chunks = len(chunks)
+  max_len = max([len(x) for x in chunks])
 
   # randomize data order, before assigning chunks
   stabilize_shuffle()
@@ -95,6 +96,7 @@ if __name__ == '__main__':
     print('  Training n_chunks: %d' % train_n_chunks)
     print('  Val n_chunks: %d' % val_n_chunks)
     print('  Test n_chunks: %d' % test_n_chunks)
+    print('  Longest chunk: %d' % max_len)
     print('Using dtype ', dtype)
 
   # Just load data into memory ... we'll have to do something more clever

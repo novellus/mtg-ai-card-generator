@@ -16,6 +16,10 @@ from collections import defaultdict
 from collections import namedtuple
 
 
+# Constants
+MAX_UNARY = 25  # numbers larger than this will be encoded in binary
+
+
 # internally formatted cards have the following fields. Fields are always present except those indicated as optional
 # {
 #     'a_side'          : internal format, optional, links to parent, present only on b-, c-, d-, and e- side cards
@@ -253,6 +257,38 @@ def unary_to_decimal(s):
     return str(len(s))
 
 
+def decimal_to_binary(s, mana=False):
+    # s is string of decimal encoded integer
+    # returns string of binary encoded integer, suitable for embedding in the AI format datastream
+
+    # use a prefix to indicate an encoded number and type (mana or not)
+    if mana:
+        prefix = '⓿'
+    else:
+        prefix = '⓪'
+
+    # handle leading zeros
+    if s[0] == '0' and len(s) > 1:
+        return prefix + '≙' + decimal_to_binary(s[1:], mana=mana)
+
+    # replace characters with unique ones so we don't overload number characters in the AI format
+    base = f'{int(s):b}'
+    base = base.replace('0', '≙')
+    base = base.replace('1', '≚')
+
+    return prefix + base
+
+
+def binary_to_decimal(s):
+    # s is string of binary encoded integer
+    # returns string of decimal encoded integer
+
+    s = s.replace('≙', '0')
+    s = s.replace('≚', '1')
+
+    return str(int(s, 2))
+
+
 class Number_Word_Converter():
     # converts number words to / from integers
     # eg '37' <-> 'thirty seven'
@@ -408,23 +444,23 @@ def internal_format_to_AI_format(card, spec='main_text'):
     # encode numbers (including numerical mana) in every field to unary
     # mana
     if cost is not None:
-        cost = re.sub(r'\{(\d+)\}', lambda x: decimal_to_unary(x.group(1), mana=True), cost)
+        cost = re.sub(r'\{(\d+)\}', lambda x: decimal_to_binary(x.group(1), mana=True), cost)
 
     if main_text is not None:
-        main_text = re.sub(r'\{(\d+)\}', lambda x: decimal_to_unary(x.group(1), mana=True), main_text)
+        main_text = re.sub(r'\{(\d+)\}', lambda x: decimal_to_binary(x.group(1), mana=True), main_text)
 
     # all remaining numbers
     if name is not None:
-        name = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), name)
+        name = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), name)
 
     if loyalty is not None:
-        loyalty = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), loyalty)
+        loyalty = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), loyalty)
 
     if main_text is not None:
-        main_text = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), main_text)
+        main_text = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), main_text)
 
     if power_toughness is not None:
-        power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_unary(x.group(1)), power_toughness)
+        power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), power_toughness)
 
     # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
     # for each new counter type, encode it as 'type%'
@@ -460,9 +496,9 @@ def internal_format_to_AI_format(card, spec='main_text'):
     # label fields for the AI
     #   this increases syntax, but regularizes AI output, so is a net win
     if spec == 'main_text':
-        AI_string = f'{name}∥1{cost}∥2{type_string}∥3{loyalty}∥4{power_toughness}∥5{rarity}∥6{main_text}'
+        AI_string = f'{name}①{cost}②{type_string}③{loyalty}④{power_toughness}⑤{rarity}⑥{main_text}'
     elif spec == 'flavor':
-        AI_string = f'{name}∥{flavor}'
+        AI_string = f'{name}①{flavor}'
     elif spec == 'names':
         AI_string = name
 
@@ -496,10 +532,10 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     card = {}
 
     if spec == 'main_text':
-        fields = re.split(r'(∥\d)', sides[0])
+        fields = re.split(r'([①②③④⑤⑥])', sides[0])
         card['name'] = fields[0]
 
-        field_names = {'∥1': 'cost', '∥2': 'type', '∥3': 'loyalty', '∥4': 'power_toughness', '∥5': 'rarity', '∥6': 'main_text'}
+        field_names = {'①': 'cost', '②': 'type', '③': 'loyalty', '④': 'power_toughness', '⑤': 'rarity', '⑥': 'main_text'}
         for field_id, field in pairs(fields[1:]):
             field_name = field_names[field_id]
             card[field_name] = field
@@ -509,11 +545,10 @@ def AI_to_internal_format(AI_string, spec='main_text'):
 
     elif spec == 'flavor':
         assert len(sides) == 1
-        card['name'], card['flavor'] = re.split(r'∥', sides[0])
+        card['name'], card['flavor'] = re.split(r'①', sides[0])
 
     elif spec == 'names':
         assert len(sides) == 1
-        assert '∥' not in sides[0]
         card['name'] = sides[0]
 
     # decode newlines
@@ -552,26 +587,26 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
             card['cost'] = card['cost'].replace(a, b)
 
-    # decode numbers (including numerical mana) in every field from unary
+    # decode numbers (including numerical mana)
     # mana
     if 'cost' in card:
-        card['cost'] = re.sub(r'⓿(\^*)', lambda x: '{' + unary_to_decimal(x.group(1)) + '}', card['cost'])
+        card['cost'] = re.sub(r'⓿([≙≚]*)', lambda x: '{' + binary_to_decimal(x.group(1)) + '}', card['cost'])
 
     if 'main_text' in card:
-        card['main_text'] = re.sub(r'⓿(\^*)', lambda x: '{' + unary_to_decimal(x.group(1)) + '}', card['main_text'])
+        card['main_text'] = re.sub(r'⓿([≙≚]*)', lambda x: '{' + binary_to_decimal(x.group(1)) + '}', card['main_text'])
 
     # all remaining numbers
     if 'name' in card:
-        card['name'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['name'])
+        card['name'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['name'])
 
     if 'loyalty' in card:
-        card['loyalty'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['loyalty'])
+        card['loyalty'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['loyalty'])
 
     if 'main_text' in card:
-        card['main_text'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['main_text'])
+        card['main_text'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['main_text'])
 
     if 'power_toughness' in card:
-        card['power_toughness'] = re.sub(r'⓪(\^*)', lambda x: unary_to_decimal(x.group(1)), card['power_toughness'])
+        card['power_toughness'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['power_toughness'])
 
     # decode dashes
     if 'main_text' in card:
@@ -665,24 +700,23 @@ def unreversable_modifications(card):
     # fix alchemy symbol prepended to card names
     card['name'] = re.sub(r'^A-', '', card['name'])
 
-    # convert one-off large nubmers to strings, since numbers are reserved characters
-    # normal (smaller) numbers will be converted to unary, but that doesn't make sense for these
-    # there also aren't very many number above 20 actually used
-    def sub_large_numbers(s):
-        s = re.sub(r'100,?000(?![^\{]*\})', 'one-hundred-thousand', s)
-        s = re.sub(r'1,?996(?![^\{]*\})', 'nineteen-ninety-six', s)  # date instead of amount?
-        s = re.sub(r'1,?000(?![^\{]*\})', 'one-thousand', s)
-        s = re.sub(r'200(?![^\{]*\})', 'two-hundred', s)
-        s = re.sub(r'100(?![^\{]*\})', 'one-hundred', s)
-        s = re.sub(r'50(?![^\{]*\})', 'fifty', s)
-        s = re.sub(r'40(?![^\{]*\})', 'forty', s)
-        s = re.sub(r'30(?![^\{]*\})', 'thirty', s)
-        s = re.sub(r'25(?![^\{]*\})', 'twenty-five', s)
-        return s
+    # remove commas from decimal numbers (eg 100,000)
+    # this simplifies syntax for the AI
+    # if 'name' in card and card['name'] is not None:
+    #     card['name'] = re.sub(r'(?<=\d),(?=\d)', '', card['name'])
 
-    card['name'] = sub_large_numbers(card['name'])
+    # if 'main_text' in card and card['main_text'] is not None:
+    #     card['main_text'] = re.sub(r'(?<=\d),(?=\d)', '', card['main_text'])
+
+    # transform text encoded numbers into decimal
+    #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
+    #   doing the decimal conversion step here instead of in that function provides a consistent encoder -> decoder loop target
+    # eg "choose one " -> "choose 1 "
+    num_regex = "|".join(nwc.NUMBER_WORDS)
+    regex = fr'(?:(?<=^)|(?<=\W))((?:{num_regex})(?:[ \-](?:{num_regex}|and))*(?:[ \-](?:{num_regex}))?)(?=$|\W)'
+    card['name'] = re.sub(regex, lambda x: nwc.str_to_int(x.group(1)), card['name'])
     if 'main_text' in card and card['main_text'] is not None:
-        card['main_text'] = sub_large_numbers(card['main_text'])
+        card['main_text'] = re.sub(regex, lambda x: nwc.str_to_int(x.group(1)), card['main_text'])
 
     # convert common unicode characters to ascii, both for standardization for the AI, and to reduce vocab size
     # a few of these characters are intentionally commented out, we specifically want those unicode characters to remain
@@ -737,25 +771,6 @@ def unreversable_modifications(card):
         #   One card uses 'Shield counter' at the beginning of a sentence
         #   The other card uses the 'CLANK!' counter
         card['main_text'] = re.sub(rf'(?:{"|".join(MTG_COUNTERS)}) counter', lambda x: x.group(0).lower(), card['main_text'])
-
-        # transform small (<= 20) text encoded numbers into decimal
-        #   decimal numbers will be encoded to unary during internal_format_to_AI_format, which is more consistent and extensible for the AI
-        #   doing the decimal conversion step here instead of in that function provides a consistent encoder -> decoder loop target
-        # eg "choose one " -> "choose 1 "
-        # remove the card name temporarily, as a precaution against modifying that
-        #   Don't need to worry about modifying any reserved words, since none contain delimited number words
-        card['main_text'] = card['main_text'].replace(card['name'], '@')
-        num_regex = "|".join(nwc.NUMBER_WORDS)
-        regex = fr'(?:(?<=^)|(?<=\W))((?:{num_regex})(?:[ \-](?:{num_regex}|and))*(?:[ \-](?:{num_regex}))?)(?=$|\W)'
-        def convert(s):
-            s = s.group(1)
-            ns = nwc.str_to_int(s)
-            if int(ns) <= 20:
-                return ns
-            else:
-                return s  # don't convert large nubmers back to decimal (See above step which converts them to words)
-        card['main_text'] = re.sub(regex, convert, card['main_text'])
-        card['main_text'] = card['main_text'].replace('@', card['name'])  # replace card name
 
         # remove reminder text (eg keyword explanations)
         card['main_text'] = re.sub(REMINDER_REGEX, '', card['main_text'], flags=re.IGNORECASE)

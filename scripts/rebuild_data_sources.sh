@@ -16,7 +16,7 @@ conda run -n mtg-ai-main python -Wignore encode.py --json_path ../raw_data_sourc
 
 cd ../torch-rnn
 echo "main_text:"
-conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --val_frac 0.005 --test_frac 0 --chunk_delimiter $'\n\n'
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/main_text.txt --output_h5 ../encoded_data_sources/main_text.h5 --output_json ../encoded_data_sources/main_text.json --val_frac 0.005 --test_frac 0
 echo "names:"
 conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --val_frac 0.005 --test_frac 0
 echo "flavor:"
