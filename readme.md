@@ -94,6 +94,7 @@
     * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
     * add info text for git hash at time of creation. Encode in Base58 (8 characters?) https://en.wikipedia.org/wiki/Binary-to-text_encoding#Base58
     * update renderer and image templates with corrected mana character order file names
+    * update renderer to make flavor text for b-e sides
 * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
 * render legendary frame
 * decrease save file resolution to limit file size
@@ -127,6 +128,9 @@
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
 * rewrite metgencode
+    * move artist stats to scripts folder
+    * delete mtgencode folder
+    * update ```rebuild_data_sources.sh```
     * from readme
         * Clean all the unicode junk like accents and unicode minus signs out of the text so there are fewer characters
         * Remove all reminder text

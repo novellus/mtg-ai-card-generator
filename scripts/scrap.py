@@ -70,6 +70,22 @@
     # text_val = transforms.text_pass_11_linetrans(text_val)  # standardize order of keywords
 
 
+# From internal_format_to_AI_format
+    # convert all fields to lowercase
+    #   except mana costs
+    #   and except variable usage of X, Y, and Z
+    # Actually, getting correct capitalization in the reverse function is very difficult
+    #   we can capitalize instances of the card name just fine, and characters beginning a sentence, after colons, etc
+    #   but the hard part is made up proper names, partial name matches, types (usually), keywords (sometimes)
+    #   the linguistical parsing is actually a fairly tough problem
+    #   so we should let the AI handle capitialization entirely. It'll probably do better than we can
+    # main_text = main_text.lower()
+    # main_text = XYZ_variable_capitalize(main_text)
+    # type_string = type_string.lower()
+    # name = name.lower()
+    # power_toughness = power_toughness.lower()
+
+
 # From encode_json_to_AI_main
     # prints out parenthisized text reamining in cards after the reminder text stripping step
     # keep = [
