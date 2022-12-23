@@ -7,7 +7,7 @@
     * ```stable-diffusion``` is a stable diffusion model trained by the CompVis open source project to create images from text-based descriptions. This model is adapted from the CompVis open source project, and would be much too resource intensive to train from scratch on a hobbyist rig. This model uses the card name, along with some static descriptors to generate the images for the cards.
 * The AI's are trained independently, and sampling is wrapped by ```generate_cards.py```, which pulls all the ingredients together to create new cards.
 * data structure
-    * ```raw_data_sources``` include user inputs for AI training data. These are processed into ```encoded_data_sources``` via ```rebuild_data_sources.sh```, which utilizes ```mtgencode``` and ```torch-rnn```.
+    * ```raw_data_sources``` include user inputs for AI training data. These are processed into ```encoded_data_sources``` via ```rebuild_data_sources.sh```, which utilizes ```scripts/encode.py``` and ```torch-rnn```.
     * ```nns``` contains trained text-based neural networks
     * ```torch-rnn``` contains code for training and sampling the text neural networks
     * ```stable-diffusion``` contains self-contained trained imaging neural networks and associated code
@@ -46,28 +46,6 @@
     * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
     * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
     * Added seed input option to sampler for repeatable sampling
-* [mtgencode](https://github.com/Parrotapocalypse/mtgencode)
-    * Created environment.yaml for conda management
-    * Fixed reserved word ```set``` inappropriately used
-    * Added printline stats during parsing wehen verbose is specified
-    * Fixed rarity parsing error
-    * Added sticker type cards and planechase type sets to exclude by default list
-    * Added support for energy costs
-    * Fixed recognition and encoding of double sided cards: stripped reverse card name from card title and used newer json fields for proper card name and side
-    * Fixed card name for alchemy cards: removed the extra text 'A-' prepended to the name
-    * Added 2nd encoder for separate data outputs focused on names, flavor text, and artists
-    * Modified decoder to accept input string on cli instead of file
-    * added decoder ```out_encoding``` argument to fix bug when writing to stdout
-    * Uncommented decoding steps so that it actually decodes all the encoded properties...
-    * added ```to_json``` output option to decoder, and ```to_serializable``` functions for cards
-    * fixed decoder decodes integer values as floats
-    * fixed encoder didn't encode the ```mythic``` rarity properly
-    * &#x1F534; TODO update decoder ```text_unpass_1_choice``` to decode into human readable format
-    * &#x1F534; TODO fix ```icingdeath, frost tyrant``` card is encoded incorrectly
-        * out of order maintext
-        * quotes end in ```\"```, inserting an incorrect newline
-    * &#x1F534; TODO assertion for rarity encoding found in dict (ie no fallback)
-        * either throw an error
 * [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
     * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
@@ -85,20 +63,27 @@
 
 
 # &#x1F534; TODOs
-* implement ```rerender``` function to render hand-modified cards
-    * ```rerender``` consumes the yaml file ```all_cards.yaml``` (with hand modifications) and produces (nearly) identical ```png``` files as output
-    * make sure all data needed to ```rerender``` the card is recorded in this file
-        * create card ID in main and write to card output
-    * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
-    * and then just call render with the prioritized set of fields
-    * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
-    * add info text for git hash at time of creation. Encode in Base58 (8 characters?) https://en.wikipedia.org/wiki/Binary-to-text_encoding#Base58
-    * update renderer and image templates with corrected mana character order file names
-    * update renderer to make flavor text for b-e sides
-* Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
-* render legendary frame
-* decrease save file resolution to limit file size
-* statistics
+* ```generate_cards.py```
+    * implement statistics for colin to puruse when making the cube, and to evaluate the generality of the trained AIs
+    * implement ```rerender``` function to render hand-modified cards
+        * ```rerender``` consumes the yaml file ```all_cards.yaml``` (with hand modifications) and produces (nearly) identical ```png``` files as output
+        * make sure all data needed to ```rerender``` the card is recorded in this file
+            * create card ID in main and write to card output
+        * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
+        * and then just call render with the prioritized set of fields
+        * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
+        * add info text for git hash at time of creation. Encode in Base58 (8 characters?) https://en.wikipedia.org/wiki/Binary-to-text_encoding#Base58
+        * update renderer and image templates with corrected mana character order file names
+        * update renderer to make flavor text for b-e sides
+    * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
+    * render legendary frame?
+    * decrease save file resolution to limit file size?
+* ```encode.py```
+    * implement ```error_correct_AI``` if needed
+    * implement ```validate```
+        * Try to implement a parser that checks for a definition for ```X```
+    * implement ```limit_to_AI_training_cards```?
+    * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order ?
 * configure txt2img args
     * consider adjusting the prompt to specify a specific style
     * find a way to not render actual magic card elements, like borders, titles, mana, etc
@@ -117,7 +102,6 @@
         * face restoration
         * png info
         * need to start /stop a local server to query for image data
-* Add extra names and flavor
 * finish training the AIs
     * update plot utility to optionally accept a folder instead of path to checkpoint
     * use 50% dropout, and increase the network sizes substantially  <!-- https://old.reddit.com/r/MachineLearning/comments/3oztvk/why_50_when_using_dropout/ -->
@@ -127,88 +111,6 @@
         * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
-* rewrite metgencode
-    * move artist stats to scripts folder
-    * delete mtgencode folder
-    * update ```rebuild_data_sources.sh```
-    * from readme
-        * Clean all the unicode junk like accents and unicode minus signs out of the text so there are fewer characters
-        * Remove all reminder text
-        * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order
-        * Put @ in for the name of the card
-        * Make all text lowercase, to make room for unique encoded characters, to simplify symtax at the cost of increasing vocab
-            * Except the variable X. Also make sure that where X is the variable X, it's coerced to uppercase
-
-        * Aggregate double sided cards
-        * Encode the following as unique symbols
-            * mana costs
-            * tap and untap symbols
-        * Convert numbers to unary format
-        * Simplify the syntax of dashes, so that - is only used as a minus sign, and ~ is used elsewhere
-        * Encode counters at %counterType, and make future references in each card use only % to simplify related parts syntax
-            * cards referencing multiple types of counters will define the type each time it changes in encoded character order
-        * Move the equip cost of equipment to the beginning of the text so that it's closer to the type
-        * Rename 'counter' in the context of 'counter target spell' to 'uncast'
-        * Put choices into [&^ = effect x = effect y] format
-            * TODO simplify this syntax
-        * Replace acutal newline characters with \ so that we can use newlines those to separate cards
-            * use carriage returns to separate card sides, and use newlines to separate cards
-        * Remove ability words from rules text
-            * TODO what is this????
-    * from cardlib
-        * names
-            * ```transforms.name_pass_0_strip_reverse_side_names(name, faceName)```
-            * ```name.lower()```
-            * ```transforms.name_pass_0_strip_alchemy_version_prefix(name)```
-            * ```transforms.name_pass_1_sanitize(name)```
-            * ```utils.to_ascii(name)```
-        * manacost
-            * ```Manacost(src_json['manaCost'], fmt = 'json')```
-            * ```=> utils.mana_translate(self.json.upper())```
-        * types
-            * ```fields[field_supertypes] = [(-1, [utils.to_ascii(s.lower()) for s in src_json['supertypes']])]```
-            * ```fields[field_types] = [(-1, [utils.to_ascii(s.lower()) for s in src_json['types']])]```
-            * ```fields[field_subtypes] = [(-1, [utils.to_ascii(s.lower()) .replace('"', "'").replace('-', utils.dash_marker) for s in src_json['subtypes']])]  # urza's lands...```
-        * rarity
-            * ```fields[field_rarity] = [(-1, utils.json_rarity_map[src_json['rarity']])]```
-        * loyalty
-            * ```fields[field_loyalty] = [(-1, utils.to_unary(str(src_json['loyalty'])))]```
-        * power toughness
-            * ```p_t = [utils.to_ascii(utils.to_unary(src_json['power'])), utils.to_ascii(utils.to_unary(src_json['toughness']))```
-        * maintext
-            * ```text_val = src_json['text'].lower()```
-            * ```text_val = transforms.text_pass_1_strip_rt(text_val)```
-            * ```text_val = transforms.text_pass_2_cardname(text_val, name_orig)```
-            * ```text_val = transforms.text_pass_3_unary(text_val)```
-            * ```text_val = transforms.text_pass_4a_dashes(text_val)```
-            * ```text_val = transforms.text_pass_4b_x(text_val)```
-            * ```text_val = transforms.text_pass_4c_abilitywords(text_val)```
-            * ```text_val = transforms.text_pass_5_counters(text_val)```
-            * ```text_val = transforms.text_pass_6_uncast(text_val)```
-            * ```text_val = transforms.text_pass_7_choice(text_val)```
-            * ```text_val = transforms.text_pass_8_equip(text_val)```
-            * ```text_val = transforms.text_pass_9_newlines(text_val)```
-            * ```text_val = transforms.text_pass_10_symbols(text_val)```
-            * ```text_val = transforms.text_pass_11_linetrans(text_val)```
-            * ```text_val = utils.to_ascii(text_val)```
-            * ```text_val = text_val.strip()```
-            * ```mtext = Manatext(text_val, fmt = 'json', verbose = verbose)```
-            * ```=> Manacost()```
-            * ```=> utils.mana_translate()```
-    * from jdecode
-        * ```if (o_set['type'] not in ['funny', 'memorabilia', 'alchemy', 'planechase']):```
-        * ```def default_exclude_sets(cardset): return cardset == 'Unglued' or cardset == 'Unhinged' or cardset == 'Celebration'```
-        * ```def default_exclude_types(cardtype): return cardtype in ['conspiracy', 'contraption', 'sticker']```
-        * ```def default_exclude_layouts(layout): return layout in ['token', 'plane', 'scheme', 'phenomenon', 'vanguard']```
-    * new stuff
-        * implement a validator after intake and before output.
-            * Raises an error on validation failure
-            * this can be tested on json data after parsing, and should not fail here
-            * and will be used to validate the AI generated text
-            * Try to implement a parser that checks for a definition for ```X```
-        * implement a correction / coersion function after intake of generated data, and before validation
-        * fix decoding of counters allows undefined counters
-
 
 
 # Environment Setup
@@ -218,10 +120,6 @@
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
     * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
     * If you want to later delete your environment for reinstallation, run ```conda env remove -n ldo```
-* mtgencode
-    * ```conda env create -f environment.yaml``` and then ```conda activate mtgencode```
-    * Finish setting up ntlk ```python -m nltk.downloader all```
-    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
     * install ```libhdf5-dev```
@@ -253,6 +151,7 @@
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
 * main repo
+    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
 

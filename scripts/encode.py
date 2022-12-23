@@ -72,11 +72,14 @@ def deduplicate_cards(cards):
 def limit_to_AI_training_cards(cards):
     # consumes list of internal formats, returns list of internal formats
     # drops those cards which are not suitable for the AI to train with
-
     # TODO
-    limited_cards = cards
 
-    return limited_cards
+    # * ```if (o_set['type'] not in ['funny', 'memorabilia', 'alchemy', 'planechase']):```
+    # * ```def default_exclude_sets(cardset): return cardset == 'Unglued' or cardset == 'Unhinged' or cardset == 'Celebration'```
+    # * ```def default_exclude_types(cardtype): return cardtype in ['conspiracy', 'contraption', 'sticker']```
+    # * ```def default_exclude_layouts(layout): return layout in ['token', 'plane', 'scheme', 'phenomenon', 'vanguard']```
+
+    return cards
 
 
 def json_to_internal_format(json_path):
@@ -603,10 +606,11 @@ def AI_to_internal_format(AI_string, spec='main_text'):
 def validate(card):
     # consumes internal format, raises error on validation fail
     # should not raise error for all canonical cards, but may raise errors for AI generated cards
-    
+    # TODO
+
     # check that X has a definition if it is present anywhere
 
-    pass  # TODO
+    pass
 
 
 def error_correct_AI(AI_string):
@@ -618,8 +622,7 @@ def error_correct_AI(AI_string):
     #   and in this case, there is no valid generic target to coerce an unspecified counter type to, so it's just going to be a parsing error
     # TODO
 
-    # TODO strip string
-
+    # strip string
 
     return AI_string
 
@@ -865,7 +868,6 @@ def encode_json_to_AI_main(cards, out_path):
 
 def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
     # generates encoded data file for the flavor AI training
-    # TODO add extra yaml files (see encode2.py from mtgencode)
 
     # limit fields
     cards = [limit_fields(card, whitelist=['name', 'flavor']) for card in cards if card['flavor'] is not None]
@@ -898,7 +900,6 @@ def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
 
 def encode_json_to_AI_names(cards, out_path, extra_names=None):
     # generates encoded data file for the names AI training
-    # TODO add extra yaml files (see encode2.py from mtgencode)
 
     # limit fields
     cards = [limit_fields(card, whitelist=['name']) for card in cards]
