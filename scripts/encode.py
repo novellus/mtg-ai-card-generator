@@ -35,6 +35,7 @@ MAX_UNARY = 25  # numbers larger than this will be encoded in binary
 #     'name'            : str
 #     'power_toughness' : str or None
 #     'rarity'          : str
+#     'side'            : str, one of ['a', 'b', 'c', 'd', 'e']
 # }
 
 
@@ -205,9 +206,18 @@ def json_to_internal_format(json_path):
 
         # verify b-e sides don't skip letters (always in order)
         for card in primary_sides:
-            if 'c_side' in card: assert 'b_side' in card 
-            if 'd_side' in card: assert 'c_side' in card 
-            if 'e_side' in card: assert 'd_side' in card 
+            if 'c_side' in card: assert 'b_side' in card
+            if 'd_side' in card: assert 'c_side' in card
+            if 'e_side' in card: assert 'd_side' in card
+
+        # add side identifier to each card face, so we don't have to back this out in higher level functions
+        for card in primary_sides:
+            card['side'] = 'a'
+            if 'b_side' in card: card['b_side']['side'] = 'b'
+            if 'c_side' in card: card['c_side']['side'] = 'c'
+            if 'd_side' in card: card['d_side']['side'] = 'd'
+            if 'e_side' in card: card['e_side']['side'] = 'e'
+
 
         # finally, remove the json_fields temporary key
         for card in primary_sides:
@@ -551,6 +561,10 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         assert len(sides) == 1
         card['name'] = sides[0]
 
+    # store the unparsed name field so that it can be whispered by the higher level generator to other AIs
+    #   which are trained only to operate in their limited character space
+    card['unparsed_name'] = card['name']
+
     # decode newlines
     if 'main_text' in card:
         card['main_text'] = card['main_text'].replace('↵', '\n')
@@ -643,6 +657,14 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     if len(sides) >= 5: card['e_side'] = AI_to_internal_format(sides[4])
     if len(sides) > 5:
         raise NotImplementedError('Too many sides, only implemented a-e sides')
+
+    # add side identifier to each card face
+    if spec == 'main_text':
+        if 'a_side' not in card: card['side'] = 'a'
+        if 'b_side' in card: card['b_side']['side'] = 'b'
+        if 'c_side' in card: card['c_side']['side'] = 'c'
+        if 'd_side' in card: card['d_side']['side'] = 'd'
+        if 'e_side' in card: card['e_side']['side'] = 'e'
     
     validate(card)
     return card
@@ -651,13 +673,27 @@ def AI_to_internal_format(AI_string, spec='main_text'):
 def validate(card):
     # consumes internal format, raises error on validation fail
     # should not raise error for all canonical cards, but may raise errors for AI generated cards
-    # TODO
+    # TODO ?
 
     # check that all mana costs are recognized
+    for field in ['cost', 'main_text']:
+        if field in card and card[field] is not None:
+            for s in re.findall(r'\{[^\}\{]*\}', card[field]):
+                assert mtg_mana_symbol_valid(s), f'invalid mana cost "{s}"'
 
-    # check that X has a definition if it is present anywhere
+    # assert we have no nested b-e sides
+    #   ie max depth 2, including root node
+    if 'a_side' in card:
+        assert 'b_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
+        assert 'c_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
+        assert 'd_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
+        assert 'e_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
 
-    pass
+    # recurse on b-e sides
+    if 'b_side' in card: validate(card['b_side'])
+    if 'c_side' in card: validate(card['c_side'])
+    if 'd_side' in card: validate(card['d_side'])
+    if 'e_side' in card: validate(card['e_side'])
 
 
 def error_correct_AI(AI_string):
@@ -667,9 +703,10 @@ def error_correct_AI(AI_string):
     #   such as checking that counters have a type definition
     #   because these will cause errors in the subsequent parser, which is fine
     #   and in this case, there is no valid generic target to coerce an unspecified counter type to, so it's just going to be a parsing error
-    # TODO
+    # TODO ?
 
     # strip string
+    AI_string = AI_string.strip()
 
     return AI_string
 
@@ -888,8 +925,11 @@ def encode_json_to_AI_main(cards, out_path):
     f.write('\n'.join(sorted(cards_AI)))
     f.close()
 
-    # decode AI format back to internal format, and then compare to the original dataset from above
+    # decode AI format back to internal format
+    #   trim extra field 'unparsed_name'
+    #   then compare to the original dataset from above
     cards_dual_processed = [AI_to_internal_format(card) for card in cards_AI]
+    cards_dual_processed = [limit_fields(card, blacklist=['unparsed_name']) for card in cards_dual_processed]
     verify_decoder_reverses_encoder(cards, cards_dual_processed, label='main_text')
 
 
@@ -900,8 +940,7 @@ def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
     cards = flatten_sides(cards)
 
     # limit fields
-    whitelist = ['name', 'flavor', 'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
-    cards = [limit_fields(card, whitelist=whitelist) for card in cards if card['flavor'] is not None]
+    cards = [limit_fields(card, whitelist=['name', 'flavor']) for card in cards if card['flavor'] is not None]
 
     # import additional data files
     if extra_flavor is not None:
@@ -922,8 +961,11 @@ def encode_json_to_AI_flavor(cards, out_path, extra_flavor=None):
     f.write('\n'.join(sorted(cards_AI)))
     f.close()
 
-    # decode AI format back to internal format, and then compare to the original dataset from above
+    # decode AI format back to internal format
+    #   trim extra field 'unparsed_name'
+    #   then compare to the original dataset from above
     cards_dual_processed = [AI_to_internal_format(card, spec='flavor') for card in cards_AI]
+    cards_dual_processed = [limit_fields(card, blacklist=['unparsed_name']) for card in cards_dual_processed]
     verify_decoder_reverses_encoder(cards, cards_dual_processed, label='flavor')
 
 
@@ -934,8 +976,7 @@ def encode_json_to_AI_names(cards, out_path, extra_names=None):
     cards = flatten_sides(cards)
 
     # limit fields
-    whitelist = ['name', 'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
-    cards = [limit_fields(card, whitelist=whitelist) for card in cards]
+    cards = [limit_fields(card, whitelist=['name']) for card in cards]
 
     # import additional data files
     if extra_names is not None:
@@ -956,8 +997,11 @@ def encode_json_to_AI_names(cards, out_path, extra_names=None):
     f.write('\n'.join(sorted(cards_AI)))
     f.close()
 
-    # decode AI format back to internal format, and then compare to the original dataset from above
+    # decode AI format back to internal format
+    #   trim extra field 'unparsed_name'
+    #   then compare to the original dataset from above
     cards_dual_processed = [AI_to_internal_format(card, spec='names') for card in cards_AI]
+    cards_dual_processed = [limit_fields(card, blacklist=['unparsed_name']) for card in cards_dual_processed]
     verify_decoder_reverses_encoder(cards, cards_dual_processed, label='names')
 
 

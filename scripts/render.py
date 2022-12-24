@@ -1,3 +1,4 @@
+import base58
 import copy
 import math
 import os
@@ -155,8 +156,6 @@ def render_text_largest_fit(text, max_width, max_height, font_path, target_font_
 
 
 def render_mana_cost(mana_string, symbol_size, symbol_spacing):
-    # TODO support non-square symbols for energy?
-
     subdir = '../image_templates/modular_elements'
 
     symbols = parse_mana_symbols(mana_string)
@@ -555,8 +554,7 @@ def render_main_text_box(card):
     width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
     max_height = bottom_main_text_box - TOP_MAIN_TEXT_BOX
     sep_bar = Image.open('../image_templates/modular_elements/whitebar.png')
-    # TODO Refine this cropping / sizing
-    sep_bar = sep_bar.resize((math.ceil(width * 1.05), 6))  # auto-crop some of the more faded edges
+    sep_bar = sep_bar.resize((math.ceil(width * 0.95), 3))
 
     # prefer smaller fonts to broken tokens, unless font needs to be lowered below criterion
     largest_rendered_with_broken_token = None
@@ -664,34 +662,36 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_diff, timestamp, nns_names, base_count=None):
+def render_card(card, outdir, no_art, verbosity):
     # image sizes and positions are all hard coded magic numbers
 
-    # used for rendering b-sides at the same base_count
-    base_count = base_count or len(os.listdir(outdir))
-
-    # art is the lowest layer of the card, but we need a full size image to paste it into
-    card = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
+    # art is the lowest layer of the card, but we need a full size image to paste it into, since art is not quite full sized
+    im_card = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
 
     # resize and crop the art to fit in the frame
-    if art is not None:
+    if not no_art:
+        if verbosity > 2:
+            print(f'sampling txt2img')
+
+        art = sample_txt2img(card, outdir, card['seed'] + card['seed_diff'], verbosity)
+
         art = art.resize((1550, 1937))
         art = art.crop((25, 0, 1525, 1937))
-        card.paste(art, box=(0, 0))
+        im_card.paste(art, box=(0, 0))
 
     # add the frame over the art
-    frame = load_frame(card_data)
-    card.alpha_composite(frame, dest=(0, 0))
+    frame = load_frame(card)
+    im_card.alpha_composite(frame, dest=(0, 0))
 
     # TODO add legendary frame overlay
 
     # main mana cost
-    if card_data['cost'] is not None:
+    if card['cost'] is not None:
         max_width = (RIGHT_TITLE_BOX_MANA - LEFT_TITLE_BOX) // 2
-        im_mana = render_text_largest_fit(card_data['cost'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, 120)
+        im_mana = render_text_largest_fit(card['cost'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, 120)
         left_main_cost = RIGHT_TITLE_BOX_MANA - im_mana.width
         top_main_cost = HEIGHT_MID_TITLE - im_mana.height // 2
-        card.alpha_composite(im_mana, dest=(left_main_cost, top_main_cost))
+        im_card.alpha_composite(im_mana, dest=(left_main_cost, top_main_cost))
     else:
         left_main_cost = RIGHT_TITLE_BOX_TEXT  # zero width, adjusted for text spacing constraints
 
@@ -700,99 +700,104 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
     #   ie the text doesn't shift around depending on whether it contains tall characters dropping below the baseline
     #   which would cause it to appear off center
     max_width = left_main_cost - LEFT_TITLE_BOX - 5
-    im_text = render_text_largest_fit(card_data['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
+    im_text = render_text_largest_fit(card['name'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TITLE_TEXT - im_text.height // 2
-    card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
+    im_card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
 
     # set symbol
-    im_set = load_set_symbol(card_data)
+    im_set = load_set_symbol(card)
     im_set = im_set.resize((97, 97))
     pos = (RIGHT_TITLE_BOX_MANA - im_set.width,
            HEIGHT_MID_TYPE - im_set.height // 2)
-    card.alpha_composite(im_set, dest=pos)
+    im_card.alpha_composite(im_set, dest=pos)
     left_set = pos[0]
 
     # type - width constraints are almost the same as card title
-    type_string = ' '.join(card_data['supertypes'] + card_data['maintypes'])
-    if card_data['subtypes']:
-        type_string += ' - ' + ' '.join(card_data['subtypes'])
+    type_string = ' '.join(card['supertypes'] + card['maintypes'])
+    if card['subtypes']:
+        type_string += ' - ' + ' '.join(card['subtypes'])
     max_width = left_set - LEFT_TITLE_BOX - 5  # 5 is arbitrary spacing
     im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
-    card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
+    im_card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
 
     # power toughness
     #   first render the infobox overlay
     #   then render text on top of that
-    if card_data['power_toughness'] is not None:
-        im_pt = load_power_toughness_overlay(card_data)
-        card.alpha_composite(im_pt, dest=(1137, 1858))  # magic numbers, image has assymetric partial alpha around the edges
+    if card['power_toughness'] is not None:
+        im_pt = load_power_toughness_overlay(card)
+        im_card.alpha_composite(im_pt, dest=(1137, 1858))  # magic numbers, image has assymetric partial alpha around the edges
 
-        im_text = render_text_largest_fit(card_data['power_toughness'], 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
+        im_text = render_text_largest_fit(card['power_toughness'], 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
         top = 1928 - im_text.height // 2
         left = 1292 - im_text.width // 2
-        card.alpha_composite(im_text, dest=(left, top))
+        im_card.alpha_composite(im_text, dest=(left, top))
 
     # loyalty
-    if card_data['loyalty'] is not None:
+    if card['loyalty'] is not None:
         im_loyalty = Image.open('../image_templates/modular_elements/loyalty.png')
-        card.alpha_composite(im_loyalty, dest=(1200, 1847))
+        im_card.alpha_composite(im_loyalty, dest=(1200, 1847))
 
-        im_text = render_text_largest_fit(str(card_data['loyalty']), 154, 60, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
+        im_text = render_text_largest_fit(str(card['loyalty']), 154, 60, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
         top = 1915 - im_text.height // 2
         left = 1314 - im_text.width // 2
-        card.alpha_composite(im_text, dest=(left, top))
+        im_card.alpha_composite(im_text, dest=(left, top))
 
     # main text box
-    im_main_text_box = render_main_text_box(card_data)
-    card.alpha_composite(im_main_text_box, dest=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX))
+    im_main_text_box = render_main_text_box(card)
+    im_card.alpha_composite(im_main_text_box, dest=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX))
 
     # info text
-    side_id = None
-    if 'b_side' in card_data:
-        side_id = '-A'
-    elif 'a_side' in card_data:
-        side_id = '-B'
+    if ('a_side' in card or
+        'b_side' in card or
+        'c_side' in card or
+        'd_side' in card or
+        'e_side' in card):
+        side_id = f'-{card["side"].upper()}'
+    else:
+        side_id = ''
 
-    _nns_names = []
-    for nn_path in nns_names:
-        head, tail_1 = os.path.split(nn_path)
-        _, tail_2 = os.path.split(head)
-        tail = os.path.join(tail_2, tail_1)
-        name = re.sub(r'checkpoint_|\.t7', '', tail)
-        _nns_names.append(name)
-    nn_names = ', '.join(_nns_names)
-
-    d = ImageDraw.Draw(card)
+    d = ImageDraw.Draw(im_card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
-    card_id = f'ID: {set_count:05}_{seed}+{art_seed_diff}_{base_count:05}{side_id or ""}'
-    author = 'Novellus Cato'
-    repo_link = 'https://github.com/novellus/mtg-ai-card-generator'
+    card_id = f'ID: {card["set_number"]:05}_{card["seed"]}+{card["seed_diff"]}_{card["card_number"]:05}{side_id}'
     d.text((100, 1971), text=card_id, font=font, anchor='lt', fill=(255,255,255,255))
 
     right = 1399
-    if card_data['power_toughness'] is not None:
+    if card['power_toughness'] is not None:
         right = 1166
-    elif card_data['loyalty'] is not None:
+    elif card['loyalty'] is not None:
         right = 1219
-    d.text((right, 1971), text=timestamp, font=font, anchor='rt', fill=(255,255,255,255))
+    d.text((right, 1971), text=card['timestamp'], font=font, anchor='rt', fill=(255,255,255,255))
 
-    im_nn_names = render_text_largest_fit(nn_names, 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
-    card.alpha_composite(im_nn_names, dest=(100, 2020 - im_nn_names.height // 2))
+    im_nn_names = render_text_largest_fit(', '.join(card['nns_names']), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
+    im_card.alpha_composite(im_nn_names, dest=(100, 2022 - im_nn_names.height // 2))
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
     im_brush = im_brush.resize((40, 25))
-    card.alpha_composite(im_brush, dest=(100, 2043 + 2))
-    d.text((145, 2043), text=author, font=font, anchor='lt', fill=(255,255,255,255))
-    d.text((1399, 2043), text=repo_link, font=font, anchor='rt', fill=(255,255,255,255))
+    im_card.alpha_composite(im_brush, dest=(100, 2043 + 2))
+    im_author = render_text_largest_fit(card['author'], 433, 35, FONT_TITLE, 35, fill=(255,255,255,255))
+    right_author = 145 + im_author.width
+    im_card.alpha_composite(im_author, dest=(145, 2059 - im_author.height // 2))
+
+    repo_hash = base58.b58encode_int(int(card['repo_hash'], 16))
+    repo_hash = repo_hash[:8]
+    repo_hash = repo_hash.decode('utf-8')
+    repo_info = f"{card['repo_link']} @{repo_hash}"
+    width = 1399 - right_author - 35  # 35 is arbitrary spacing
+    im_repo_info = render_text_largest_fit(repo_info, width, 35, FONT_TITLE, 35, fill=(255,255,255,255))
+    im_card.alpha_composite(im_repo_info, dest=(1399 - im_repo_info.width, 2059 - im_repo_info.height // 2))
 
     # save image
     # the space in f_name is important for parsability
     #   because the name is guaranteed to not start with a space
     #   while it could (legally) start with "-A"
-    f_name = f"{base_count:05}{side_id or ''} {card_data['name']}"
+    f_name = f"{card['card_number']:05}{side_id} {card['name']}"
     out_path = os.path.join(outdir, f"{f_name}.png")
-    card.save(out_path)
+    im_card.save(out_path)
 
-    return base_count
+    # recurse on sides b-e
+    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity)
+    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity)
+    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity)
+    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity)
 

@@ -64,25 +64,22 @@
 
 # &#x1F534; TODOs
 * ```generate_cards.py```
+    * Already changed the seed for each lstm sampler, previous assumptions on independance appearing incorrect
+        * check if this provides sufficient uniqueness from the AIs, if not, we amy need to implement change one of
+            * AI seeding method (```start_text``` CLI arg to ```sample.lua```)
+            * implement batch sampling / whispering instead of doing them one at a time, so that each AI stabalizes its own outputs. This would require major rework of the error catching / sampling algorithm to get robust results for each whispered card...
+    * render legendary frame?
     * implement statistics for colin to puruse when making the cube, and to evaluate the generality of the trained AIs
+* ```render.py```
     * implement ```rerender``` function to render hand-modified cards
         * ```rerender``` consumes the yaml file ```all_cards.yaml``` (with hand modifications) and produces (nearly) identical ```png``` files as output
-        * make sure all data needed to ```rerender``` the card is recorded in this file
-            * create card ID in main and write to card output
         * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
         * and then just call render with the prioritized set of fields
-        * move the ```txt2img``` call into the ```render``` function so that it is repeatable during ```rerender```
-        * add info text for git hash at time of creation. Encode in Base58 (8 characters?) https://en.wikipedia.org/wiki/Binary-to-text_encoding#Base58
-        * update renderer and image templates with corrected mana character order file names
-        * update renderer to make flavor text for b-e sides
-    * Change the seed for each lstm sampler too, previous assumptions on independance appear to be incorrect
-    * render legendary frame?
+    * check standard order of mana with colin, I currently sort to a stable but arbitrary order
     * decrease save file resolution to limit file size?
 * ```encode.py```
     * implement ```error_correct_AI``` if needed
-    * implement ```validate```
-        * check that all mana costs are recognized
-        * Try to implement a parser that checks for a definition for ```X```
+    * add to ```validate``` as needed ? for catching errors in the AI cards, both to improve card quality and to catch errors in the parser instead of the renderer
     * implement ```limit_to_AI_training_cards```?
     * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order ?
 * configure txt2img args
@@ -107,6 +104,10 @@
     * use 50% dropout, and increase the network sizes substantially  <!-- https://old.reddit.com/r/MachineLearning/comments/3oztvk/why_50_when_using_dropout/ -->
     * update plot utility to optionally accept a folder instead of path to checkpoint
 * generate a small-medium batch of cards for Colin to review
+    * determine how we transfer these large datasets so he can view them
+* create ```card_sheets.py``` to format cards into sheets for upload to TTS
+    * limit file size to something appropriate for TTS assets (40MB??)
+    * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
 * generate additional basic lands with custom / unique art
     * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
         * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss

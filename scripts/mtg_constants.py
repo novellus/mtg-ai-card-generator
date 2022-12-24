@@ -259,6 +259,14 @@ MTG_SYMBOL_JSON_TO_AI_FORMAT = {
 }
 MTG_SYMBOL_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_SYMBOL_JSON_TO_AI_FORMAT.items()}
 
+def mtg_mana_symbol_valid(s):
+    if s in MTG_SYMBOL_JSON_TO_AI_FORMAT:
+        return True
+    elif re.search(r'\{\d+\}', s):
+        return True
+    return False
+
+
 MTG_RARITY_JSON_TO_AI_FORMAT = {
     'Common'     : '∫',
     'Uncommon'   : '∬',
