@@ -9,7 +9,9 @@ import shlex
 import subprocess
 import yaml
 
-from render import *
+# local imports
+import encode
+import render
 
 
 # Constants

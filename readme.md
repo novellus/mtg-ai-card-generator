@@ -79,11 +79,9 @@
     * render legendary frame?
     * decrease save file resolution to limit file size?
 * ```encode.py```
-    * fix large numbers encoded in unary
-        * either encode large numbers in decimal/binary, or convert all numbers to binary. Unary might be easier for the AI to understand and replicate, but binary is much more managable for the number range it needs to access. So we use a slightly syntactically more complex number system everywhere in order to reduce the number of syntaxes the AI needs to understand. This seems like a win.
-        * switch field names to unique characters (not numbers)
     * implement ```error_correct_AI``` if needed
     * implement ```validate```
+        * check that all mana costs are recognized
         * Try to implement a parser that checks for a definition for ```X```
     * implement ```limit_to_AI_training_cards```?
     * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order ?
@@ -106,8 +104,8 @@
         * png info
         * need to start /stop a local server to query for image data
 * finish training the AIs
-    * update plot utility to optionally accept a folder instead of path to checkpoint
     * use 50% dropout, and increase the network sizes substantially  <!-- https://old.reddit.com/r/MachineLearning/comments/3oztvk/why_50_when_using_dropout/ -->
+    * update plot utility to optionally accept a folder instead of path to checkpoint
 * generate a small-medium batch of cards for Colin to review
 * generate additional basic lands with custom / unique art
     * use unique type identifer (```Basic Land```?) to indicate usage of textless frames

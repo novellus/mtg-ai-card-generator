@@ -1,5 +1,6 @@
 import copy
 import math
+import os
 import pprint
 import re
 import subprocess
@@ -188,7 +189,6 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
         else:
             # standardize file name lookup
             symbol = re.sub('/', '', symbol)  # remove the '/'
-            symbol = ''.join(sorted(symbol))  # sort subsymbols, if there are multiple
 
             # acquire and resize the symbol image
             im_symbol = Image.open(os.path.join(subdir, symbol.lower() + '.png'))
@@ -728,8 +728,7 @@ def render_card(card_data, art, outdir, verbosity, set_count, seed, art_seed_dif
         im_pt = load_power_toughness_overlay(card_data)
         card.alpha_composite(im_pt, dest=(1137, 1858))  # magic numbers, image has assymetric partial alpha around the edges
 
-        pt_string = '/'.join([str(x) for x in card_data['power_toughness']])
-        im_text = render_text_largest_fit(pt_string, 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
+        im_text = render_text_largest_fit(card_data['power_toughness'], 194, 82, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(0,0,0,255))
         top = 1928 - im_text.height // 2
         left = 1292 - im_text.width // 2
         card.alpha_composite(im_text, dest=(left, top))

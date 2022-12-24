@@ -653,6 +653,8 @@ def validate(card):
     # should not raise error for all canonical cards, but may raise errors for AI generated cards
     # TODO
 
+    # check that all mana costs are recognized
+
     # check that X has a definition if it is present anywhere
 
     pass
