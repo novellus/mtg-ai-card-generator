@@ -122,6 +122,7 @@ local opt_clone = torch.deserialize(torch.serialize(opt))
 opt_clone.idx_to_token = idx_to_token
 local model = nil
 local start_i = 0
+local start_epoch = 1
 if opt.init_from ~= '' then
   print('Initializing from ', opt.init_from)
   local checkpoint = torch.load(opt.init_from)
@@ -134,6 +135,7 @@ if opt.init_from ~= '' then
   learning_rate_history_val = checkpoint.learning_rate_history_val
   forward_backward_times = checkpoint.forward_backward_times
   memory_usage = checkpoint.memory_usage
+  start_epoch = checkpoint.epoch
   if opt.reset_iterations == 0 then
     start_i = checkpoint.i
   end
@@ -146,7 +148,6 @@ end
 local params, grad_params = model:getParameters()
 local crit = nn.CrossEntropyCriterion():type(dtype)
 
-local start_epoch = start_i / num_train + 1
 table.insert(learning_rate_history_key, start_epoch)
 table.insert(learning_rate_history_val, optim_config.learningRate)
 print('Learning rate = ' .. tostring(optim_config.learningRate))
@@ -218,11 +219,11 @@ end
 -- Train the model!
 model:training()
 for i = start_i + 1, num_iterations do
-  local epoch = math.floor(i / num_train) + 1
-  local float_epoch = i / num_train + 1
+  local epoch = start_epoch + math.floor((i - start_i) / num_train)
+  local float_epoch = start_epoch + (i - start_i) / num_train
 
   -- Check if we are at the end of an epoch
-  if i % num_train == 0 then
+  if (i - start_i) % num_train == 0 then
     model:resetStates() -- Reset hidden states
   end
 
@@ -231,7 +232,7 @@ for i = start_i + 1, num_iterations do
   local _, loss = optim.adam(f, params, optim_config)
   table.insert(train_loss_history_key, float_epoch)
   table.insert(train_loss_history_val, loss[1])
-  if opt.print_every > 0 and i % opt.print_every == 0 then
+  if opt.print_every > 0 and (i - start_i) % opt.print_every == 0 then
     local msg = 'Epoch %.2f / %d, i = %d / %d, loss = %f'
     local args = {msg, float_epoch, opt.max_epochs, i, num_iterations, loss[1]}
     print(string.format(unpack(args)))
@@ -239,7 +240,7 @@ for i = start_i + 1, num_iterations do
 
   -- Maybe run validation
   local validate_every = opt.validate_every
-  if (validate_every > 0 and i % validate_every == 0) or i == num_iterations then
+  if (validate_every > 0 and (i - start_i) % validate_every == 0) or i == num_iterations then
     -- Evaluate loss on the validation set. Note that we reset the state of
     -- the model; this might happen in the middle of an epoch, but that
     -- shouldn't cause too much trouble.
@@ -265,7 +266,7 @@ for i = start_i + 1, num_iterations do
 
   -- Maybe save a checkpoint
   local check_every = opt.checkpoint_every
-  if (check_every > 0 and i % check_every == 0) or i == num_iterations then
+  if (check_every > 0 and (i - start_i) % check_every == 0) or i == num_iterations then
     print('Saving a checkpoint')
     -- First save a JSON checkpoint, excluding the model
     -- TODO save more stats to json file
@@ -280,7 +281,8 @@ for i = start_i + 1, num_iterations do
       forward_backward_times = forward_backward_times,
       memory_usage = memory_usage,
       learning_rate = optim_config.learningRate,
-      i = i
+      i = i,
+      epoch = epoch
     }
     local filename = string.format('%s_%f.json', opt.checkpoint_name, float_epoch)
     -- Make sure the output directory exists before we try to write it
@@ -302,7 +304,7 @@ for i = start_i + 1, num_iterations do
 
   -- Maybe decay learning rate
   local lr_decay_every = opt.lr_decay_every
-  if lr_decay_every > 0 and i % lr_decay_every == 0 then
+  if lr_decay_every > 0 and (i - start_i) % lr_decay_every == 0 then
     local old_lr = optim_config.learningRate
 
     -- is it ok to not clear the rest of the state when setting a new lr?
