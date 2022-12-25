@@ -119,7 +119,7 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
     raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length} length, exceeded {max_resamples} resamples')
 
 
-def resolve_folder_to_checkpoint_path(path):
+def resolve_folder_to_checkpoint_path(path, ext='t7'):
     # return immediately if its a file
     if os.path.isfile(path):
         return path
@@ -132,7 +132,7 @@ def resolve_folder_to_checkpoint_path(path):
     latest_checkpoint = None
     for root, dirs, files in os.walk(path):
         for f_name in files:
-            s = re.search(r'checkpoint_([\d\.]+)\.t7', f_name)
+            s = re.search(rf'checkpoint_([\d\.]+)\.{ext}', f_name)
             if s is not None:
                 epoch = float(s.group(1))
                 if epoch > latest_epoch:
@@ -223,7 +223,7 @@ def main(args):
                                 approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
                                 num_chunks = 1,
                                 parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
-                                whisper_text = f'|1{card['unparsed_name']}|',
+                                whisper_text = f"|1{card['unparsed_name']}|",
                                 whisper_every_newline = 1,
                                 verbosity = args.verbosity)
         )

@@ -82,6 +82,7 @@
     * add to ```validate``` as needed ? for catching errors in the AI cards, both to improve card quality and to catch errors in the parser instead of the renderer
     * implement ```limit_to_AI_training_cards```?
     * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order ?
+* update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py```
 * configure txt2img args
     * consider adjusting the prompt to specify a specific style
     * find a way to not render actual magic card elements, like borders, titles, mana, etc
@@ -101,8 +102,6 @@
         * png info
         * need to start /stop a local server to query for image data
 * finish training the AIs
-    * use 50% dropout, and increase the network sizes substantially  <!-- https://old.reddit.com/r/MachineLearning/comments/3oztvk/why_50_when_using_dropout/ -->
-    * update plot utility to optionally accept a folder instead of path to checkpoint
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```card_sheets.py``` to format cards into sheets for upload to TTS
@@ -181,10 +180,10 @@
     * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
-    * ```mkdir -p ../nns/names && th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 500 -seq_length 150 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.98 |& tee -a ../nns/names/log.txt```
-    * ```mkdir -p ../nns/flavor && th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 200 -seq_length 500 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 5 -lr_decay_factor 0.9 |& tee -a ../nns/flavor/log.txt```
-    * ```mkdir -p ../nns/main_text && th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_chunks 1 -rand_mtg_fields 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 400 -max_epochs 1000 -batch_size 100 -seq_length 900 -dropout 0.1 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.99 |& tee -a ../nns/main_text/log.txt```
-    * ```th sample.lua -checkpoint ../nns/names/checkpoint_1000.t7 -length 50```
+    * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_0/checkpoint -rand_chunks 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_size 100 -max_epochs 100000000 -batch_size 2000 -seq_length 150 -dropout 0.5 -learning_rate 0.003 -lr_decay_n_epochs 30 -lr_decay_factor 0.98```
+    * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 1000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 5 -lr_decay_factor 0.9```
+    * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 400 -max_epochs 1000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
+    * ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```
 
 
 # Util
