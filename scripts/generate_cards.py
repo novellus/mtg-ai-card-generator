@@ -8,6 +8,7 @@ import random
 import re
 import shlex
 import subprocess
+import traceback
 import yaml
 
 # local imports
@@ -95,10 +96,16 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
             new_chunks = []
             for chunk in chunks:
                 try:
-                    new_chunk = parser(chunk, verbosity)
+                    new_chunk = parser(chunk)
                     new_chunks.append(new_chunk)
-                except:
-                    pass
+                except Exception as e:
+                    if verbosity > 2:
+                        print('Exception in LSTM parser')
+                        print(f'\tchunk = "{chunk}"')
+                        tb = traceback.format_exc()
+                        tb = tb.strip()
+                        tb = '\t' + '\n\t'.join(tb.split('\n'))
+                        print(tb)
             chunks = new_chunks
 
         # check criterion
@@ -223,7 +230,7 @@ def main(args):
                                 approx_length_per_chunk = LSTM_LEN_PER_MAIN_TEXT,
                                 num_chunks = 1,
                                 parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
-                                whisper_text = f"|1{card['unparsed_name']}|",
+                                whisper_text = f"{card['unparsed_name']}①",
                                 whisper_every_newline = 1,
                                 verbosity = args.verbosity)
         )
@@ -241,7 +248,7 @@ def main(args):
                                     approx_length_per_chunk = LSTM_LEN_PER_FLAVOR,
                                     num_chunks = 1,
                                     parser = functools.partial(encode.AI_to_internal_format, spec='flavor'),
-                                    whisper_text = f"{side['unparsed_name']}|",
+                                    whisper_text = f"{side['unparsed_name']}①",
                                     whisper_every_newline = 1,
                                     verbosity = args.verbosity)
             )
@@ -271,7 +278,7 @@ def main(args):
         if args.verbosity > 2:
             print(f'rendering card')
 
-        render_card(card, args.outdir, args.no_art, args.verbosity)
+        render.render_card(card, args.outdir, args.no_art, args.verbosity)
 
     # save parsed card data for searchable/parsable reference, search, debugging, etc
     f = open(os.path.join(args.outdir, 'card_data.yaml'), 'w')

@@ -104,7 +104,7 @@ def load_frame(card):
 
     subdir = '../image_templates/frames/borderless'
 
-    if card['maintypes'] == ['Land']:  # only has the land main-type
+    if card['type'] == 'Land':  # only has the land main-type
         return Image.open(os.path.join(subdir, 'land.png'))
 
     if card['cost'] is None:
@@ -223,9 +223,9 @@ def load_power_toughness_overlay(card):
             mana_colors_used.remove(symbol)
 
     if len(mana_colors_used) == 0:
-        if 'Artifact' in card['maintypes']:
+        if 'Artifact' in card['type']:
             return Image.open(os.path.join(subdir, 'pt_artifact.png'))
-        elif 'Vehicle' in card['subtypes']:
+        elif 'Vehicle' in card['type']:
             return Image.open(os.path.join(subdir, 'pt_vehicle.png'))
         else:
             return Image.open(os.path.join(subdir, 'pt_colorless.png'))
@@ -241,7 +241,7 @@ def load_set_symbol(card):
 
     subdir = '../image_templates/set_symbols'
 
-    f_name = re.sub(' ', '_', card['rarity'])
+    f_name = re.sub(' ', '_', card['rarity']).lower()
     return Image.open(os.path.join(subdir, f'{f_name}.png'))
 
 
@@ -713,11 +713,8 @@ def render_card(card, outdir, no_art, verbosity):
     left_set = pos[0]
 
     # type - width constraints are almost the same as card title
-    type_string = ' '.join(card['supertypes'] + card['maintypes'])
-    if card['subtypes']:
-        type_string += ' - ' + ' '.join(card['subtypes'])
     max_width = left_set - LEFT_TITLE_BOX - 5  # 5 is arbitrary spacing
-    im_text = render_text_largest_fit(type_string, max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
+    im_text = render_text_largest_fit(card['type'], max_width, TITLE_MAX_HEIGHT, FONT_TITLE, DEFAULT_FONT_SIZE, crop_final=False, fill=(255,255,255,255))
     top = HEIGHT_MID_TYPE_TEXT - im_text.height // 2
     im_card.alpha_composite(im_text, dest=(LEFT_TITLE_BOX, top))
 
