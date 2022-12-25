@@ -122,12 +122,18 @@ end
 
 
 function LM:encode_string(s)
-  local encoded = torch.LongTensor(#s)
-  for i = 1, #s do
-    local token = s:sub(i, i)
+  local l = 0
+  for uchar in string.gmatch(s, "([%z\1-\127\194-\244][\128-\191]*)") do
+    l = l + 1
+  end
+  local encoded = torch.LongTensor(l)
+
+  local i = 1
+  for token in string.gmatch(s, "([%z\1-\127\194-\244][\128-\191]*)") do
     local idx = self.token_to_idx[token]
     assert(idx ~= nil, 'Got invalid idx')
     encoded[i] = idx
+    i = i + 1
   end
   return encoded
 end
