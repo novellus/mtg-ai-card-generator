@@ -71,6 +71,7 @@
     * render legendary frame?
     * implement statistics for colin to puruse when making the cube, and to evaluate the generality of the trained AIs
 * ```render.py```
+    * fix comma rendered in middle of line when between two symbols, eg ```508751932``` card two
     * implement ```rerender``` function to render hand-modified cards
         * ```rerender``` consumes the yaml file ```all_cards.yaml``` (with hand modifications) and produces (nearly) identical ```png``` files as output
         * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.

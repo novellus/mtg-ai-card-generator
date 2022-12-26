@@ -66,7 +66,7 @@ def deduplicate_cards(cards):
     for name, group in groups.items():
         unique_group = []
         for card in group:
-            card_restricted = limit_fields(card, blacklist=['rarity'])
+            card_restricted = limit_fields(card, blacklist=['rarity', 'a_side'])  # remove 'a_side' to prevent recursion in comparisons
             if card_restricted not in unique_group:
                 unique_group.append(card_restricted)
                 unique_cards.append(card)
@@ -211,12 +211,21 @@ def json_to_internal_format(json_path):
             if 'e_side' in card: assert 'd_side' in card
 
         # add side identifier to each card face, so we don't have to back this out in higher level functions
+        # also add backlinks to the a_side
         for card in primary_sides:
             card['side'] = 'a'
-            if 'b_side' in card: card['b_side']['side'] = 'b'
-            if 'c_side' in card: card['c_side']['side'] = 'c'
-            if 'd_side' in card: card['d_side']['side'] = 'd'
-            if 'e_side' in card: card['e_side']['side'] = 'e'
+            if 'b_side' in card:
+                card['b_side']['side'] = 'b'
+                card['b_side']['a_side'] = card
+            if 'c_side' in card:
+                card['c_side']['side'] = 'c'
+                card['c_side']['a_side'] = card
+            if 'd_side' in card:
+                card['d_side']['side'] = 'd'
+                card['d_side']['a_side'] = card
+            if 'e_side' in card:
+                card['e_side']['side'] = 'e'
+                card['e_side']['a_side'] = card
 
 
         # finally, remove the json_fields temporary key
@@ -658,13 +667,21 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     if len(sides) > 5:
         raise NotImplementedError('Too many sides, only implemented a-e sides')
 
-    # add side identifier to each card face
+    # add side identifier and backlinks to each card face
     if spec == 'main_text':
-        if 'a_side' not in card: card['side'] = 'a'
-        if 'b_side' in card: card['b_side']['side'] = 'b'
-        if 'c_side' in card: card['c_side']['side'] = 'c'
-        if 'd_side' in card: card['d_side']['side'] = 'd'
-        if 'e_side' in card: card['e_side']['side'] = 'e'
+        card['side'] = 'a'
+        if 'b_side' in card:
+            card['b_side']['side'] = 'b'
+            card['b_side']['a_side'] = card
+        if 'c_side' in card:
+            card['c_side']['side'] = 'c'
+            card['c_side']['a_side'] = card
+        if 'd_side' in card:
+            card['d_side']['side'] = 'd'
+            card['d_side']['a_side'] = card
+        if 'e_side' in card:
+            card['e_side']['side'] = 'e'
+            card['e_side']['a_side'] = card
     
     validate(card)
     return card
@@ -842,11 +859,16 @@ def verify_decoder_reverses_encoder(cards, cards_dual_processed, label):
     #   and is a test of the program design over the space of the cards from AllPrintings.json
     #   this does not process any AI generated data
 
+    # remove 'a_side' backlinks to prevent recursion in comparison
+    cards                = [limit_fields(card, blacklist=['a_side']) for card in cards]
+    cards_dual_processed = [limit_fields(card, blacklist=['a_side']) for card in cards_dual_processed]
+
     if cards == cards_dual_processed:
         print(f'Encoder -> Decoder loop passed verification over {label}!')
     else:
         for i_card, card in enumerate(cards):
             card_dp = cards_dual_processed[i_card]
+
             if card != card_dp:
                 print(f'Encoder -> Decoder loop Failed over {label}, printing one card diff for context.')
                 print(card['name'])
