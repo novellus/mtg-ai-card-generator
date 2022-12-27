@@ -357,14 +357,24 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
     d_test = ImageDraw.Draw(im_test)
     font = ImageFont.truetype(font_path, size=font_size)
 
+    # Handle comma's rendered by themselves
+    # most text renders along the same baseline by default
+    #   however commas need a little special attention when rendered by themselves
+    #   in order to render along the same baseline
+    (left, top, right, bottom) = d_test.textbbox((0,0), ',1', font=font, anchor='lt')
+    comma_height_override = bottom - top
+
     def render_text(t):
         # check size, and then render on a minimally sized image
         (left, top, right, bottom) = d_test.textbbox((0,0), t, font=font, anchor='lt')
         rendered_width = right - left
         rendered_height = bottom - top
+        if re.search(r'^\s*(,\s*)+$', t):  # Handle comma's rendered by themselves
+            rendered_height = comma_height_override
         im = Image.new(mode='RGBA', size=(rendered_width, rendered_height))
         d = ImageDraw.Draw(im)
-        d.text((0,0), text=t, font=font, anchor='lt', **kwargs)
+        # its important here that we use the bottom anchor so that the comma ends up in the correct location with the comma_height_override
+        d.text((0,rendered_height), text=t, font=font, anchor='lb', **kwargs)
         return im
 
     def render_line(l):
@@ -631,6 +641,7 @@ def render_main_text_box(card):
         # render the flavor text
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
         im_flavor = im_flavor.crop(im_flavor.getbbox())
+        im_flavor.save('tmp.png')
         broken_token = broken_token or _broken_token
 
         height_sep_bar = math.floor(font_size *2/3)
