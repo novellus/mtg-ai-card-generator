@@ -641,7 +641,6 @@ def render_main_text_box(card):
         # render the flavor text
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
         im_flavor = im_flavor.crop(im_flavor.getbbox())
-        im_flavor.save('tmp.png')
         broken_token = broken_token or _broken_token
 
         height_sep_bar = math.floor(font_size *2/3)
