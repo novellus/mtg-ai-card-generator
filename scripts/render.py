@@ -6,6 +6,8 @@ import pprint
 import re
 import subprocess
 
+import mtg_constants
+
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -99,6 +101,32 @@ def parse_mana_symbols(mana_string, None_acceptable=False):
     return symbols
 
 
+def colors_used(s):
+    # returns set of colors used in mana cost string s
+    # returns one of
+    #   set of str of color names (eg {'Red', 'Blue'})
+    #   'Colorless', if there are symbols in s, but none of them are colored
+    #   None, if there are no symbols in s, or s is None
+
+    if s is None:
+        return None
+
+    colors = set()
+    found_colorless = False
+    for sym in parse_mana_symbols(s):
+        new_colors = mtg_constants.mtg_symbol_color(sym)
+        if new_colors == 'Colorless':
+            found_colorless = True
+        else:
+            colors.update(new_colors)
+
+    colors = colors or None
+    if found_colorless:
+        colors = colors or 'Colorless'
+
+    return colors
+
+
 def load_frame(card):
     # returns image object for frame
 
@@ -112,22 +140,13 @@ def load_frame(card):
             return load_frame_main(card['a_side'])
         return Image.open(os.path.join(subdir, 'artifact.png'))  # artifact frame is default colorless
 
-    mana_colors_used = set(parse_mana_symbols(card['cost']))
+    mana_colors_used = colors_used(card['cost'])
 
-    # these symbols don't contribute to frame selection
-    for symbol in ['C', 'E', 'P', 'S', 'X']:
-        if symbol in mana_colors_used:
-            mana_colors_used.remove(symbol)
-
-    # colorless mana does not contribute to frame selection (its the backup if no colors are present)
-    for symbol in copy.deepcopy(mana_colors_used):
-        if re.search(r'^\d+$', symbol):
-            mana_colors_used.remove(symbol)
-
-    if len(mana_colors_used) == 0:
+    if mana_colors_used == 'Colorless':
         return Image.open(os.path.join(subdir, 'artifact.png'))  # artifact frame is default colorless
     elif len(mana_colors_used) == 1:
-        return Image.open(os.path.join(subdir, mana_colors_used.pop() + '.png'))  # single colored mana
+        f_name = {'Black':'B', 'Green':'G', 'Red':'R', 'Blue':'U', 'White':'W'}[mana_colors_used.pop()]
+        return Image.open(os.path.join(subdir, f_name + '.png'))  # single colored mana
     else:
         return Image.open(os.path.join(subdir, 'multicolored.png'))
 
@@ -210,19 +229,9 @@ def load_power_toughness_overlay(card):
             return load_power_toughness_overlay(card['a_side'])
         return Image.open(os.path.join(subdir, 'pt_colorless.png'))
 
-    mana_colors_used = set(parse_mana_symbols(card['cost']))
+    mana_colors_used = colors_used(card['cost'])
 
-    # these symbols don't contribute to selection
-    for symbol in ['C', 'E', 'P', 'S', 'X']:
-        if symbol in mana_colors_used:
-            mana_colors_used.remove(symbol)
-
-    # colorless mana does not contribute to selection (its the backup if no colors are present)
-    for symbol in copy.deepcopy(mana_colors_used):
-        if re.search(r'^\d+$', symbol):
-            mana_colors_used.remove(symbol)
-
-    if len(mana_colors_used) == 0:
+    if mana_colors_used == 'Colorless':
         if 'Artifact' in card['type']:
             return Image.open(os.path.join(subdir, 'pt_artifact.png'))
         elif 'Vehicle' in card['type']:
@@ -230,7 +239,8 @@ def load_power_toughness_overlay(card):
         else:
             return Image.open(os.path.join(subdir, 'pt_colorless.png'))
     elif len(mana_colors_used) == 1:
-        return Image.open(os.path.join(subdir, 'pt_' + mana_colors_used.pop() + '.png'))  # single colored mana
+        f_name = {'Black':'B', 'Green':'G', 'Red':'R', 'Blue':'U', 'White':'W'}[mana_colors_used.pop()]
+        return Image.open(os.path.join(subdir, 'pt_' + f_name + '.png'))  # single colored mana
     else:
         return Image.open(os.path.join(subdir, 'pt_multicolored.png'))
 

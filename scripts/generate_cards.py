@@ -15,6 +15,8 @@ import yaml
 import encode
 import render
 
+from collections import defaultdict
+
 
 # Constants
 PATH_TORCH_RNN = '../torch-rnn'
@@ -150,6 +152,144 @@ def resolve_folder_to_checkpoint_path(path, ext='t7'):
     return latest_checkpoint
 
 
+def compute_stats(cards, outdir):
+    # organize cards into bins, which will be used to compute stats
+    # each card may be present in more than one bin
+
+    costless = []  # this list is probably largely invalid cards...
+    colorless = []
+    colorless_artifacts = []
+    mono_colored = defaultdict(list)  # {color: []}
+    multicolored = defaultdict(list)  # {'colorA, colorB': []}, including 'three_or_more' as a key
+    lands = []
+    multisided = defaultdict(list)  # {num_sides: []}
+    mana_value = defaultdict(list)  # {value: []}  # AKA converted mana cost
+    num_cards = len(cards)
+    num_sides = 0
+
+    # main types only, including an 'Other' key for cards not in any included category
+    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Other':[]}
+
+    for card in cards:
+        # aggregate sides for iteration
+        sides = [card]
+        if 'b_side' in card: sides.append(card['b_side'])
+        if 'c_side' in card: sides.append(card['c_side'])
+        if 'd_side' in card: sides.append(card['d_side'])
+        if 'e_side' in card: sides.append(card['e_side'])
+        num_sides += len(sides)
+
+        # determine colors used in card, including each side
+        colors = set()
+        found_colorless = False
+        for side in sides:
+            side_colors = render.colors_used(side['cost'])
+            if side_colors is None:
+                continue
+            elif side_colors == 'Colorless':
+                found_colorless = True
+            else:
+                colors.update(side_colors)
+
+        colors = colors or None
+        if found_colorless:
+            colors = colors or 'Colorless'
+
+        # simplify colors sytax for human readability
+        #   set of one str -> str
+        #   set of 2 str -> 'str1, str2', since a list isn't hashable, and a tuple makes the yaml parser put extra ugly junk in the output file
+        #   set of 3 or more -> 'three_or_more' to consolidate rare combinations into one key
+        if type(colors) == set:
+            if len(colors) == 1:
+                colors = colors.pop()
+            elif len(colors) == 2:
+                colors = ', '.join(sorted(colors))
+            else:
+                colors = 'three_or_more'
+
+        # finally, catagorize card by color
+        if colors is None:
+            costless.append(card)
+        elif colors == 'Colorless':
+            colorless.append(card)
+        elif ',' not in colors and colors != 'three_or_more':
+            mono_colored[colors].append(card)
+        else:
+            multicolored[colors].append(card)
+
+        # catagorize by mana value
+        # only the front face of the card is considered, per https://mtg.fandom.com/wiki/Mana_value
+        #   unless its a split card, which we're just gonna ignore here
+        value = 0
+        if card['cost'] is not None:
+            for sym in render.parse_mana_symbols(card['cost']):
+                s = re.search(r'^\d+$', sym)
+                if s is not None:
+                    value += int(sym)
+                else:
+                    value += 1
+        mana_value[value].append(card)
+
+        # catagorize by main type
+        # this only considers the type field of the card, while the other card attributes may not be consistent with this
+        #   eg a card may have a 'Planeswalker' type listed, but not actually have a loyalty counter
+        # this also only parses for exact matches, misspellings will catagorize as "Other"
+        types = set()
+        for side in sides:
+            for type_string in main_type:
+                if type_string != 'Other' and type_string in card['type']:
+                    types.add(type_string)
+        if not types:
+            main_type['Other'].append(card)
+        else:
+            for type_string in types:
+                main_type[type_string].append(card)
+
+        # catagorize colorless artifacts
+        if colors == 'Colorless' and 'Artifact' in card['type']:
+            colorless_artifacts.append(card)
+
+        # catagorize lands
+        if 'Land' in card['type']:
+            lands.append(card)
+
+        # catagorize multisided cards
+        if len(sides) > 1:
+            multisided[len(sides)].append(card)
+
+    avg_sides = num_sides / num_cards
+
+    # ID function, which is enough info to efficiently lookup the rendered file by hand, or lookup the card in the yaml
+    card_id = lambda card: f"{card['card_number']:05}, {card['name']}"
+
+    stats = {
+        '_avg_sides_per_card'      : avg_sides,
+        '_num_cards'               : num_cards,
+        '_num_colorless'           : len(colorless),
+        '_num_colorless_artifacts' : len(colorless_artifacts),
+        '_num_costless'            : len(costless),
+        '_num_lands'               : len(lands),
+        '_num_main_type'           : {k:len(v) for k,v in main_type.items()},
+        '_num_mana_value'          : {k:len(v) for k,v in mana_value.items()},
+        '_num_mono_colored'        : {k:len(v) for k,v in mono_colored.items()},
+        '_num_multicolored'        : {k:len(v) for k,v in multicolored.items()},
+        '_num_multisided'          : {k:len(v) for k,v in multisided.items()},
+        'colorless'                : sorted([card_id(card) for card in colorless]),
+        'colorless_artifacts'      : sorted([card_id(card) for card in colorless_artifacts]),
+        'costless'                 : sorted([card_id(card) for card in costless]),
+        'lands'                    : sorted([card_id(card) for card in lands]),
+        'main_type'                : {k: [card_id(card) for card in v] for k,v in main_type.items()},
+        'mana_value'               : {k: [card_id(card) for card in v] for k,v in mana_value.items()},
+        'mono_colored'             : {k: [card_id(card) for card in v] for k,v in mono_colored.items()},
+        'multicolored'             : {k: [card_id(card) for card in v] for k,v in multicolored.items()},
+        'multisided'               : {k: [card_id(card) for card in v] for k,v in multisided.items()},
+    }
+
+    f = open(os.path.join(outdir, 'stats.yaml'), 'w')
+    f.write(yaml.dump(stats))
+    f.close()
+
+
 def main(args):
     # assign seed
     if args.seed < 0:
@@ -185,7 +325,7 @@ def main(args):
         head, tail_1 = os.path.split(nn_path)
         _, tail_2 = os.path.split(head)
         tail = os.path.join(tail_2, tail_1)
-        name = re.sub(r'checkpoint_|\.t7', '', tail)
+        name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
         nns_names.append(name)
 
     # resolve and create outdir
@@ -278,14 +418,21 @@ def main(args):
         if args.verbosity > 2:
             print(f'rendering card')
 
-        render.render_card(card, args.outdir, args.no_art, args.verbosity)
+        if not args.no_render:
+            render.render_card(card, args.outdir, args.no_art, args.verbosity)
 
     # save parsed card data for searchable/parsable reference, search, debugging, etc
+    # remove the 'a_side' back references because the yaml dump doesn't handle recursion very well
+    #   the recursion is handled, but not at the highest available location, creating redundant data which is difficult to read + hand-modify
+    #   in addition I'm a bit worried that the deeper-than-intended recursion level saved in the yaml file will result in an incorrect data structure on reload
+    #   and finally, its easy enough to add the backlink back in at reload time.
     f = open(os.path.join(args.outdir, 'card_data.yaml'), 'w')
-    f.write(yaml.dump(cards))
+    f.write(yaml.dump([encode.limit_fields(card, blacklist=['a_side']) for card in cards]))
     f.close()
 
-    # TODO statistics over cards
+    # statistics over cards
+    if not args.no_stats:
+        compute_stats(cards, args.outdir)
 
 
 if __name__ == '__main__':
@@ -297,8 +444,9 @@ if __name__ == '__main__':
     parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
     parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the generation time. Useful for debugging/testing.")
+    parser.add_argument("--no_render", action='store_true', help="disables rendering altogether. Superscedes --no_art. Still generates yaml and other optional output files.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
-    parser.add_argument("--generate_statistics", action='store_true', help="compute and store statistics over generated cards as yaml file in outdir")
+    parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 

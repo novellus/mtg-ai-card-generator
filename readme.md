@@ -64,12 +64,7 @@
 
 # &#x1F534; TODOs
 * ```generate_cards.py```
-    * Already changed the seed for each lstm sampler, previous assumptions on independance appearing incorrect
-        * check if this provides sufficient uniqueness from the AIs, if not, we amy need to implement change one of
-            * AI seeding method (```start_text``` CLI arg to ```sample.lua```)
-            * implement batch sampling / whispering instead of doing them one at a time, so that each AI stabalizes its own outputs. This would require major rework of the error catching / sampling algorithm to get robust results for each whispered card...
     * render legendary frame?
-    * implement statistics for colin to puruse when making the cube, and to evaluate the generality of the trained AIs
 * ```render.py```
     * fix comma rendered in middle of line when between two symbols, eg ```508751932``` card two
     * implement ```rerender``` function to render hand-modified cards
@@ -105,6 +100,13 @@
 * finish training the AIs
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
+* for the cube, colin wants 
+    * 50 cards of each individual color
+    * 60 multicolor cards
+        * roughly even between color combinations
+        * mostly 2-color (not 3+ color)
+    * 25 colorless artifacts
+    * 25 lands
 * create ```card_sheets.py``` to format cards into sheets for upload to TTS
     * limit file size to something appropriate for TTS assets (40MB??)
     * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?

@@ -131,7 +131,7 @@ MTG_UNIQUE_KEYWORD_ABILITIES = extend_all_cases(MTG_UNIQUE_KEYWORD_ABILITIES)
 
 MTG_KEYWORDS = MTG_KEYWORD_ACTIONS + MTG_KEYWORD_ABILITIES + MTG_UNIQUE_KEYWORD_ABILITIES
 
-# every word used in a type field
+# every non-trivial word used in a type field
 MTG_TYPE_WORDS = ["C'tan", 'Abian', 'Adventure', 'Advisor', 'Aetherborn', 'Ajani', 'Alara', 'Alicorn', 'Alien', 'Ally', 'Aminatou', 'Angel', 'Angrath',
                   'Antelope', 'Ape', 'Arcane', 'Archer', 'Archon', 'Arkhos', 'Arlinn', 'Art', 'Artifact', 'Artificer', 'Ashiok', 'Assassin', 'Assembly-Worker',
                   'Astartes', 'Atog','Attraction', 'Aura', 'Aurochs', 'Autobot', 'Avatar', 'Azgol', 'Azra', 'B.O.B.', 'Background', 'Baddest,', 'Badger', 'Bahamut',
@@ -265,6 +265,17 @@ def mtg_mana_symbol_valid(s):
     elif re.search(r'\{\d+\}', s):
         return True
     return False
+
+def mtg_symbol_color(s):
+    # color map for all colored symbols
+    # uncolored symbols return 'colorless'
+    colors = []
+    if 'B' in s: colors.append('Black')
+    if 'G' in s: colors.append('Green')
+    if 'R' in s: colors.append('Red')
+    if 'U' in s: colors.append('Blue')
+    if 'W' in s: colors.append('White')
+    return colors or 'Colorless'
 
 
 MTG_RARITY_JSON_TO_AI_FORMAT = {
