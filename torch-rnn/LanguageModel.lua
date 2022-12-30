@@ -42,7 +42,7 @@ function LM:__init(kwargs)
 
     -- Optionally initialize from another supplied model
     local rnn
-    if other == nil then
+    if other == nil or i > other.num_layers then
       if self.model_type == 'rnn' then
         rnn = nn.VanillaRNN(prev_dim, H)
       elseif self.model_type == 'lstm' then
@@ -50,7 +50,7 @@ function LM:__init(kwargs)
       end
       rnn.remember_states = true
     else
-      rnn = other.net.get(i + 1)
+      rnn = other.net:get(i + 1)
     end
     table.insert(self.rnns, rnn)
     self.net:add(rnn)
@@ -85,11 +85,11 @@ function LM:__init(kwargs)
     self.net:add(nn.Linear(H, V))
     self.net:add(self.view2)
   else
-    s = other.net.size()
-    self.view1 = other.net.get(s - 2)
-    self.view2 = other.net.get(s)
+    s = other.net:size()
+    self.view1 = other.net:get(s - 2)
+    self.view2 = other.net:get(s)
     self.net:add(self.view1)
-    self.net:add(other.net.get(s - 1))
+    self.net:add(other.net:get(s - 1))
     self.net:add(self.view2)
   end
 end
