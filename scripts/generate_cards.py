@@ -72,6 +72,7 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
         if whisper_text is not None:
             cmd += (f' -whisper_text "{whisper_text}"'
                     f' -whisper_every_newline {whisper_every_newline}'
+                    f' -start_text "{whisper_text}"'
                    )
 
         p = subprocess.run(cmd,
@@ -122,10 +123,15 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
                 return chunks
 
         else:
+            if verbosity > 2:
+                print(f'LSTM did not return enough chunks, looking for {num_chunks} but only got {len(chunks)}')
+                print(f'\tcmd = "{cmd}"')
+                print(f'\tchunks = "{chunks}"')
+
             # try again with a longer sample
             length *= length_growth
 
-    raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length} length, exceeded {max_resamples} resamples')
+    raise ValueError(f'LSTM {nn_path} sample did not meet delimiter criterion at {length/length_growth} length, exceeded {max_resamples} resamples')
 
 
 def resolve_folder_to_checkpoint_path(path, ext='t7'):
