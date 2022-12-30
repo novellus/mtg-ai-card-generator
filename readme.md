@@ -63,21 +63,21 @@
 
 
 # &#x1F534; TODOs
+* explore using other modules instead, like pytorch
+    * check list of features required, like whispering
+* ```LanguageModel.lua```
+    * add ability to add a layer to an existing model. Probably create a new model incorporating existing layers plus new ones?
 * ```generate_cards.py```
     * render legendary frame?
 * ```render.py```
-    * implement ```rerender``` function to render hand-modified cards
-        * ```rerender``` consumes the yaml file ```all_cards.yaml``` (with hand modifications) and produces (nearly) identical ```png``` files as output
-        * allow fields named ```*_hand-modified``` to take precidence over normal fields when rerendering. This allows us to preserve both the original and modified versions in one yaml file for future reference.
-        * and then just call render with the prioritized set of fields
-    * check standard order of mana with colin, I currently sort to a stable but arbitrary order
+    * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
     * decrease save file resolution to limit file size?
 * ```encode.py```
-    * implement ```error_correct_AI``` if needed
-    * add to ```validate``` as needed ? for catching errors in the AI cards, both to improve card quality and to catch errors in the parser instead of the renderer
+    * implement ```error_correct_AI``` if needed?
+    * add to ```validate``` if needed?
     * implement ```limit_to_AI_training_cards```?
-    * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order ?
-* update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py```
+    * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
+* update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
 * configure txt2img args
     * consider adjusting the prompt to specify a specific style
     * find a way to not render actual magic card elements, like borders, titles, mana, etc
@@ -152,7 +152,7 @@
         * ```cd CMake```
         * ```./bootstrap; make; sudo make install```
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
-        <!-- * &#x1F534; TODO (pick one) ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive``` -->
+        <!-- ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```? -->
 * main repo
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
@@ -160,6 +160,7 @@
     * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
         * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
         * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
+        * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
 
 
 # AI Training and Sampling
@@ -183,7 +184,7 @@
     * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
     * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_0/checkpoint -rand_chunks 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_size 100 -max_epochs 100000000 -batch_size 1000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.98```
-    * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.98```
+    * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
     * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text_0/checkpoint -rand_chunks 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 416 -max_epochs 100000000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
     * ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```
 
