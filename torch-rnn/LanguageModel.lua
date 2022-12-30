@@ -50,11 +50,14 @@ function LM:__init(kwargs)
       end
       rnn.remember_states = true
     else
-      rnn = other.net:get(i + 1)
+      local other_index = i + 1
+      if self.dropout > 0 then other_index = 2 * i end
+      rnn = other.net:get(other_index)
     end
     table.insert(self.rnns, rnn)
     self.net:add(rnn)
 
+    -- TODO support self.other in this section?
     if self.batchnorm == 1 then
       local view_in = nn.View(1, 1, -1):setNumInputDims(3)
       table.insert(self.bn_view_in, view_in)
