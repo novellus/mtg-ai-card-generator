@@ -15,7 +15,7 @@ cmd:option('-input_h5', 'data/tiny-shakespeare.h5')
 cmd:option('-input_json', 'data/tiny-shakespeare.json')
 cmd:option('-batch_size', 50)
 cmd:option('-seq_length', 50)
-cmd:option('-rand_chunks', 0)
+cmd:option('-rand_chunks_n_epochs', 0)
 cmd:option('-rand_mtg_fields', 0)
 
 -- Model options

@@ -11,7 +11,7 @@ function DataLoader:__init(kwargs)
   local json_file = utils.get_kwarg(kwargs, 'input_json')
   self.batch_size = utils.get_kwarg(kwargs, 'batch_size')
   self.seq_length = utils.get_kwarg(kwargs, 'seq_length')
-  self.rand_chunks = utils.get_kwarg(kwargs, 'rand_chunks')
+  self.rand_chunks_n_epochs = utils.get_kwarg(kwargs, 'rand_chunks_n_epochs')
   self.rand_mtg_fields = utils.get_kwarg(kwargs, 'rand_mtg_fields')
 
   self:init_random()
@@ -24,7 +24,9 @@ function DataLoader:__init(kwargs)
   -- self.chunks.test = f:read('/test'):all()
   self.chunk_delimiter = f:read('/chunk_delimiter'):all()
 
-  if self.rand_mtg_fields == 1 then
+  self.epochs_since_randomization = 1
+
+  if self.rand_mtg_fields >= 1 then
     local vocab = utils.read_json(json_file)
     local token_to_idx = {}
     for k, v in pairs(vocab.token_to_idx) do
@@ -219,7 +221,7 @@ function DataLoader:process_chunks(split)
   --     * order of unordered fields in a card (eg when the fields are specified by label rather than by order)
 
   -- randomize chunk order
-  if self.rand_chunks == 1 then
+  if self.rand_chunks_n_epochs >= 1 then
     self:shuffle_list(self.chunks[split])
   end
 
@@ -314,7 +316,15 @@ function DataLoader:nextBatch(split)
 
     -- reprocess data each epoch
     -- randomizing unordered elements to minimize overtraining
-    self:setXYSplits(split)
+    if self.rand_chunks_n_epochs >= 1 then
+      if self.epochs_since_randomization == self.rand_chunks_n_epochs then
+        print('Randomizing Chunks')
+        self:setXYSplits(split)
+        self.epochs_since_randomization = 1
+      else
+        self.epochs_since_randomization = self.epochs_since_randomization + 1
+      end
+    end
   else
     self.split_idxs[split] = idx + 1
   end
