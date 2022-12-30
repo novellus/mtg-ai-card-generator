@@ -339,7 +339,7 @@ def main(args):
     args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
     os.makedirs(args.outdir)
 
-    if args.verbosity > 2:
+    if args.verbosity > 1:
         print(f'operating in {args.outdir}')
 
     # sample names AI, as a batch
