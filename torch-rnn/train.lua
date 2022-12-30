@@ -144,7 +144,7 @@ if opt.init_from ~= '' then
   end
   if opt.num_layers > model.num_layers then
     -- update model with more layers
-    print('Adding  ' .. opt.num_layers - model.num_layers .. ' layers to the model')
+    print('Adding ' .. opt.num_layers - model.num_layers .. ' layers to the model')
     opt_clone.other = model
     model = nn.LanguageModel(opt_clone):type(dtype)
   end
@@ -245,8 +245,12 @@ for i = start_i + 1, num_iterations do
   end
 
   -- Maybe run validation
+  -- Validation must run everytime there is a checkpoint... for some reason
+  --  We probably missed something, but I don't care enough, so just add extra validations
   local validate_every = opt.validate_every
-  if (validate_every > 0 and (i - start_i) % validate_every == 0) or i == num_iterations then
+  local check_every = opt.checkpoint_every
+  local do_checkpoint = (check_every > 0 and (i - start_i) % check_every == 0) or i == num_iterations
+  if (validate_every > 0 and (i - start_i) % validate_every == 0) or i == num_iterations or do_checkpoint then
     -- Evaluate loss on the validation set. Note that we reset the state of
     -- the model; this might happen in the middle of an epoch, but that
     -- shouldn't cause too much trouble.
@@ -271,8 +275,7 @@ for i = start_i + 1, num_iterations do
   end
 
   -- Maybe save a checkpoint
-  local check_every = opt.checkpoint_every
-  if (check_every > 0 and (i - start_i) % check_every == 0) or i == num_iterations then
+  if do_checkpoint then
     print('Saving a checkpoint')
     -- First save a JSON checkpoint, excluding the model
     -- TODO save more stats to json file
