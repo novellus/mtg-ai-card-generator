@@ -43,17 +43,21 @@ LEFT_MAIN_TEXT_BOX = 128
 RIGHT_MAIN_TEXT_BOX = 1375
 
 
-def sample_txt2img(card, outdir, seed, verbosity):
+def sample_txt2img(card, outdir, file_name, seed, verbosity):
+    os.makedirs(outdir)
+
     # get outdir directory relative to command execution, rather than this script
     outdir_rel = os.path.relpath(outdir, start=PATH_SD)
 
-    # remove temp file if it already exists, we only need one at a time
-    temp_file_path = os.path.join(outdir, 'tmp.png')
-    if os.path.exists(temp_file_path):
-        os.remove(temp_file_path)
-
-    if verbosity > 2:
-        print(f'saving temp image file to {outdir_rel} = {temp_file_path}')
+    # remove target file if it already exists
+    img_path = os.path.join(outdir, f'{file_name}.png')
+    if os.path.exists(img_path):
+        os.remove(img_path)
+        if verbosity > 2:
+            print(f'overwriting image file at {outdir_rel} = {img_path}')
+    else:
+        if verbosity > 2:
+            print(f'caching image file to {outdir_rel} = {img_path}')
 
     # execute txt2img
     prompt = card['name']
@@ -61,7 +65,7 @@ def sample_txt2img(card, outdir, seed, verbosity):
     cmd = (f'python optimizedSD/optimized_txt2img.py'
            f' --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt'
            f' --outdir "{outdir_rel}"'
-           f' --out_filename "tmp.png"'
+           f' --out_filename "{file_name}.png"'
            f' --n_samples 1'
            f' --n_iter 1'
            f' --H 960'
@@ -85,9 +89,9 @@ def sample_txt2img(card, outdir, seed, verbosity):
             print(f'\te.stderr: "{e.stderr}"')
         raise
 
-    # open temp file, delete it, and return the image object
-    im = Image.open(temp_file_path)
-    os.remove(temp_file_path)
+    # open image file and return the image object
+    # but leave the file in place, cached for later
+    im = Image.open(img_path)
     return im
 
 
@@ -179,8 +183,11 @@ def render_mana_cost(mana_string, symbol_size, symbol_spacing):
 
     symbols = parse_mana_symbols(mana_string)
 
-    # stabalize / standardize order
-    symbols.sort()  # TODO check sort order for standerdness with colin
+    # stabalize / standardize symbol order
+    # proper mana order is outlined here https://cardboardkeeper.com/mtg-color-order/
+    # but the system outlined is complicated and difficult to implement, for trivial gains
+    # so we're gonna ignore that and just sort the damn list for stability
+    symbols.sort()
 
     # base image
     width = (symbol_size * len(symbols)) + (symbol_spacing * (len(symbols) - 1))
@@ -682,10 +689,32 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card, outdir, no_art, verbosity):
+def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None):
     # image sizes and positions are all hard coded magic numbers
+    # trash_art_cache causes the renderer to ignore and overwrite any cached art files, making fresh calls to txt2img
+    # art_dir may be specified if the renderer is to use a non-default location for the art cache
+    #   this is useful during render_yaml, when the source directory may already have an art cache we don't want to copy
+    #   and when the destination directory is different from the source directory (ie preserve source renders, and create new ones to compare)
 
-    # art is the lowest layer of the card, but we need a full size image to paste it into, since art is not quite full sized
+    # determine side ID for cards with multiple sides
+    if ('a_side' in card or
+        'b_side' in card or
+        'c_side' in card or
+        'd_side' in card or
+        'e_side' in card):
+        side_id = f'-{card["side"].upper()}'
+    else:
+        # single sided cards omit this field
+        side_id = ''
+
+    # determine card_file_name
+    # the space in card_file_name is important for parsability
+    #   because the name is guaranteed to not start with a space
+    #   while it could (legally) start with "-A"
+    card_file_name = f"{card['card_number']:05}{side_id} {card['name']}"
+
+    # create a base image onto which everything else is composited
+    # art is the lowest layer of the card, but we need a full size image to paste it into, since the art is not quite full sized
     im_card = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
 
     # resize and crop the art to fit in the frame
@@ -693,10 +722,17 @@ def render_card(card, outdir, no_art, verbosity):
         if verbosity > 2:
             print(f'sampling txt2img')
 
-        art = sample_txt2img(card, outdir, card['seed'] + card['seed_diff'], verbosity)
+        # either load a cached image, or create one
+        art_dir = art_dir or os.path.join(outdir, 'art_cache')
+        image_file = os.path.join(art_dir, card_file_name)
 
-        art = art.resize((1550, 1937))
-        art = art.crop((25, 0, 1525, 1937))
+        if not trash_art_cache and os.path.exists(image_file):
+            art = Image.open(img_path)
+        else:
+            art = sample_txt2img(card, art_dir, card_file_name, card['seed'] + card['seed_diff'], verbosity)
+
+        art = art.resize((1550, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
+        art = art.crop((25, 0, 1525, 1937))  # but then crop the left and right equally to fit the frame
         im_card.paste(art, box=(0, 0))
 
     # add the frame over the art
@@ -765,15 +801,6 @@ def render_card(card, outdir, no_art, verbosity):
     im_card.alpha_composite(im_main_text_box, dest=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX))
 
     # info text
-    if ('a_side' in card or
-        'b_side' in card or
-        'c_side' in card or
-        'd_side' in card or
-        'e_side' in card):
-        side_id = f'-{card["side"].upper()}'
-    else:
-        side_id = ''
-
     d = ImageDraw.Draw(im_card)
     font = ImageFont.truetype(FONT_TITLE, size=35)
     card_id = f'ID: {card["set_number"]:05}_{card["seed"]}+{card["seed_diff"]}_{card["card_number"]:05}{side_id}'
@@ -805,16 +832,71 @@ def render_card(card, outdir, no_art, verbosity):
     im_card.alpha_composite(im_repo_info, dest=(1399 - im_repo_info.width, 2059 - im_repo_info.height // 2))
 
     # save image
-    # the space in f_name is important for parsability
-    #   because the name is guaranteed to not start with a space
-    #   while it could (legally) start with "-A"
-    f_name = f"{card['card_number']:05}{side_id} {card['name']}"
-    out_path = os.path.join(outdir, f"{f_name}.png")
+    out_path = os.path.join(outdir, f"{card_file_name}.png")
     im_card.save(out_path)
 
     # recurse on sides b-e
-    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity)
-    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity)
-    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity)
-    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity)
+    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
+    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
+    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
+    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
+
+
+def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_render_all):
+    # renders cards stored in yaml file
+
+    # default outdir to yaml location (ie overwrite existing renders)
+    if outdir is None:
+        outdir = os.path.dirname(yaml_path)
+
+    # tell the renderer to use the art cache at the source if the destination doesn't have one
+    dest_art_dir = os.path.join(outdir, 'art_cache')
+    source_art_dir = os.path.join(os.path.dirname(yaml_path), 'art_cache')
+    if os.path.exists(source_art_dir) and not os.path.exists(dest_art_dir):
+        art_dir = source_art_dir
+    else:
+        art_dir = None
+
+    # acquire cards from yaml
+    f = open(yaml_path)
+    cards = yaml.load(f.read())
+    f.close()
+
+    for card in cards:
+        # replace 'a_side' backlinks, which are omitted from save file
+        if 'b_side' in card: card['b_side']['a_side'] = card
+        if 'c_side' in card: card['c_side']['a_side'] = card
+        if 'd_side' in card: card['d_side']['a_side'] = card
+        if 'e_side' in card: card['e_side']['a_side'] = card
+
+        # decide whether this card will be rendered
+        # this may be overriden below
+        render = force_render_all
+
+        # Handle manual override fields
+        for field in cards:
+            s = re.search(r'(.*)_override', field)
+            if s is not None:
+                card[s.group(1)] = card[field]
+                render = True
+
+        if render:
+            render_card(card, outdir, no_art, verbosity, trash_art_cache, art_dir)
+
+
+if __name__ =='__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--yaml_path", default=None, type=str, help="path to input yaml file, the same file output by generate_cards.py."
+                                                                    " Resolves '*_override' keys in cards as overrides for default fields."
+                                                                    " These are probably written by hand, if they exist,"
+                                                                    " allowing you to retain both the original text and the hand-modified versions side-by-side.")
+    parser.add_argument("--outdir", default=None, type=str, help="path to outdir. Files are saved directly in this folder. Defaults to same directory as yaml_path.")
+    parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the render time. Useful for debugging/testing.")
+    parser.add_argument("--trash_art_cache", action='store_true', help="forces renderer to ignore and overwrite any cached art files, making fresh calls to txt2img."
+                                                                       " Normally, the renderer will try to use cached art files, if they exist, to save tremendous amounts of time.")
+    parser.add_argument("--force_render_all", action='store_true', help="Renders all cards in the input file. Default state is to only render cards which have '*_override' keys, likely saving tremendous amounts of time.")
+    parser.add_argument("--verbosity", type=int, default=1)
+    args = parser.parse_args()
+
+    render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all)
 
