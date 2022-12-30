@@ -142,6 +142,12 @@ if opt.init_from ~= '' then
   if opt.reset_learning_rate == 0 then
     optim_config = {learningRate = checkpoint.learning_rate}
   end
+  if opt.num_layers > model.num_layers then
+    -- update model with more layers
+    print('Adding  ' .. opt.num_layers - model.num_layers .. ' layers to the model')
+    opt_clone.other = model
+    model = nn.LanguageModel(opt_clone):type(dtype)
+  end
 else
   model = nn.LanguageModel(opt_clone):type(dtype)
 end

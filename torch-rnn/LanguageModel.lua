@@ -25,6 +25,8 @@ function LM:__init(kwargs)
   self.num_layers = utils.get_kwarg(kwargs, 'num_layers')
   self.dropout = utils.get_kwarg(kwargs, 'dropout')
   self.batchnorm = utils.get_kwarg(kwargs, 'batchnorm')
+  local other = utils.get_kwarg(kwargs, 'other', '')
+  if other == '' then other = nil end
 
   local V, D, H = self.vocab_size, self.wordvec_dim, self.rnn_size
 
@@ -37,15 +39,22 @@ function LM:__init(kwargs)
   for i = 1, self.num_layers do
     local prev_dim = H
     if i == 1 then prev_dim = D end
+
+    -- Optionally initialize from another supplied model
     local rnn
-    if self.model_type == 'rnn' then
-      rnn = nn.VanillaRNN(prev_dim, H)
-    elseif self.model_type == 'lstm' then
-      rnn = nn.LSTM(prev_dim, H)
+    if other == nil then
+      if self.model_type == 'rnn' then
+        rnn = nn.VanillaRNN(prev_dim, H)
+      elseif self.model_type == 'lstm' then
+        rnn = nn.LSTM(prev_dim, H)
+      end
+      rnn.remember_states = true
+    else
+      rnn = other.net.get(i + 1)
     end
-    rnn.remember_states = true
     table.insert(self.rnns, rnn)
     self.net:add(rnn)
+
     if self.batchnorm == 1 then
       local view_in = nn.View(1, 1, -1):setNumInputDims(3)
       table.insert(self.bn_view_in, view_in)
@@ -67,12 +76,22 @@ function LM:__init(kwargs)
   -- views (N, T, H) -> (NT, H) and (NT, V) -> (N, T, V) with a nn.Linear in
   -- between. Unfortunately N and T can change on every minibatch, so we need
   -- to set them in the forward pass.
-  self.view1 = nn.View(1, 1, -1):setNumInputDims(3)
-  self.view2 = nn.View(1, -1):setNumInputDims(2)
 
-  self.net:add(self.view1)
-  self.net:add(nn.Linear(H, V))
-  self.net:add(self.view2)
+  -- Optionally initialize from another supplied model
+  if other == nil then
+    self.view1 = nn.View(1, 1, -1):setNumInputDims(3)
+    self.view2 = nn.View(1, -1):setNumInputDims(2)
+    self.net:add(self.view1)
+    self.net:add(nn.Linear(H, V))
+    self.net:add(self.view2)
+  else
+    s = other.net.size()
+    self.view1 = other.net.get(s - 2)
+    self.view2 = other.net.get(s)
+    self.net:add(self.view1)
+    self.net:add(other.net.get(s - 1))
+    self.net:add(self.view2)
+  end
 end
 
 
