@@ -24,7 +24,7 @@ function DataLoader:__init(kwargs)
   -- self.chunks.test = f:read('/test'):all()
   self.chunk_delimiter = f:read('/chunk_delimiter'):all()
 
-  self.epochs_since_randomization = 1
+  self.epochs_since_randomization = 0
 
   if self.rand_mtg_fields >= 1 then
     local vocab = utils.read_json(json_file)
@@ -320,7 +320,7 @@ function DataLoader:nextBatch(split)
       if self.epochs_since_randomization == self.rand_chunks_n_epochs then
         print('Randomizing Chunks')
         self:setXYSplits(split)
-        self.epochs_since_randomization = 1
+        self.epochs_since_randomization = 0
       else
         self.epochs_since_randomization = self.epochs_since_randomization + 1
       end
