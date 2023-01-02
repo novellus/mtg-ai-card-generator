@@ -75,11 +75,18 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
                     f' -start_text "{whisper_text}"'
                    )
 
-        p = subprocess.run(cmd,
-                           shell=True,
-                           capture_output=True,
-                           check=True,
-                           cwd=os.path.join(os.getcwd(), PATH_TORCH_RNN))
+        try:
+            p = subprocess.run(cmd,
+                               shell=True,
+                               capture_output=True,
+                               check=True,
+                               cwd=os.path.join(os.getcwd(), PATH_TORCH_RNN))
+        except Exception as e:
+            print('LSTM sampler threw an error')
+            print(cmd)
+            if e.stdout: print(e.stdout.decode('utf-8'))
+            if e.stderr: print(e.stderr.decode('utf-8'))
+            raise
         sampled_text = p.stdout.decode('utf-8')
 
         # delimit and trim
