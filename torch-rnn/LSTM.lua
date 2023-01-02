@@ -23,6 +23,8 @@ function layer:__init(input_dim, hidden_dim)
   self.input_dim, self.hidden_dim = D, H
 
   self.weight = torch.Tensor(D + H, 4 * H)
+  -- print('--A--')
+  -- print(self.weight)
   self.gradWeight = torch.Tensor(D + H, 4 * H):zero()
   self.bias = torch.Tensor(4 * H)
   self.gradBias = torch.Tensor(4 * H):zero()

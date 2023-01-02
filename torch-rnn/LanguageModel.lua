@@ -21,14 +21,14 @@ function LM:__init(kwargs)
 
   self.model_type = utils.get_kwarg(kwargs, 'model_type')
   self.wordvec_dim = utils.get_kwarg(kwargs, 'wordvec_size')
-  self.rnn_size = utils.get_kwarg(kwargs, 'rnn_size')
+  local rnn_size = utils.get_kwarg(kwargs, 'rnn_size')
   self.num_layers = utils.get_kwarg(kwargs, 'num_layers')
   self.dropout = utils.get_kwarg(kwargs, 'dropout')
   self.batchnorm = utils.get_kwarg(kwargs, 'batchnorm')
   local other = utils.get_kwarg(kwargs, 'other', '')
   if other == '' then other = nil end
 
-  local V, D, H = self.vocab_size, self.wordvec_dim, self.rnn_size
+  local V, D, H = self.vocab_size, self.wordvec_dim, rnn_size
 
   self.net = nn.Sequential()
   self.rnns = {}
@@ -37,8 +37,24 @@ function LM:__init(kwargs)
 
   self.net:add(nn.LookupTable(V, D))
   for i = 1, self.num_layers do
+    local other_index
+    local other_prev_index
+    if other ~= nil then
+      other_index = i + 1
+      other_prev_index = other_index - 1
+      if self.dropout > 0 then
+        other_index = 2 * i
+        other_prev_index = other_index - 2
+      end
+    end
+
     local prev_dim = H
-    if i == 1 then prev_dim = D end
+    if i == 1 then
+      prev_dim = D
+    elseif other ~= nil and i - 1 <= other.num_layers then
+       local prev_net = other.net:get(other_prev_index)
+       prev_dim = prev_net.hidden_dim
+    end
 
     -- Optionally initialize from another supplied model
     local rnn
@@ -50,14 +66,13 @@ function LM:__init(kwargs)
       end
       rnn.remember_states = true
     else
-      local other_index = i + 1
-      if self.dropout > 0 then other_index = 2 * i end
       rnn = other.net:get(other_index)
     end
     table.insert(self.rnns, rnn)
     self.net:add(rnn)
 
     -- TODO support self.other in this section?
+    -- TODO support varying lstm size as well
     if self.batchnorm == 1 then
       local view_in = nn.View(1, 1, -1):setNumInputDims(3)
       table.insert(self.bn_view_in, view_in)
