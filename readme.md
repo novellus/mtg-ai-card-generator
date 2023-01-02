@@ -154,13 +154,15 @@
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```? -->
 * main repo
-    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
-    * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
-    * ```bash rebuild_data_sources.sh |& tee log-data-build.txt```
-        * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
-        * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
-        * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
+    * Download ```unique-artwork-*.json``` from [scryfall](https://scryfall.com/docs/api/bulk-data) to ```raw_data_sources/unique-artwork.json```
+        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire (???? GB) of data, and take about 1.5 hours when respecting their rate limit.
+    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
+        * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
+        * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
+            * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
+            * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
+            * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
 
 
 # AI Training and Sampling
