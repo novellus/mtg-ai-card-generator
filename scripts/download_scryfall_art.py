@@ -57,10 +57,9 @@ def extract_art(j):
     # extract card/face name into a caption file for the embedding preprocessor
     caption = j['name']
     dest_path = os.path.join(dest, f'{uid}.txt')
-    if not os.path.exists(dest_path):
-        f = open(dest_path, 'w')
-        f.write(caption)
-        f.close()
+    f = open(dest_path, 'w')
+    f.write(caption)
+    f.close()
 
 
 # process input dataset
