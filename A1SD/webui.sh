@@ -23,7 +23,7 @@ fi
 # Install directory without trailing slash
 if [[ -z "${install_dir}" ]]
 then
-    install_dir="/home/$(whoami)/mtg-ai-generator"
+    install_dir="/home/$(whoami)/mtg-ai-card-generator"
 fi
 
 # Name of the subdirectory (defaults to stable-diffusion-webui)

@@ -157,10 +157,10 @@
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```? -->
 * main repo
-    * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
+    * Download [miniconda](https://docs.conda.io/en/latest/miniconda.html). Enable install for all users , disable Register Miniconda as the system Python.
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * Download ```unique-artwork-*.json``` from [scryfall](https://scryfall.com/docs/api/bulk-data) to ```raw_data_sources/unique-artwork.json```
-        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire (???? GB) of data, and take about 1.5 hours when respecting their rate limit.
+        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire ~3GB of data, and take about 1.5 hours while respecting their rate limit.
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
