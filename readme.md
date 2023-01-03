@@ -56,6 +56,8 @@
             * and added flag to slightly break negative weighting in interesting ways ```force_combined_prompt_weighting```
     * Safety filter disabled
     * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
+* [A1SD](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (aka AUTOMATIC1111 webui for stable diffusion)
+    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -117,12 +119,13 @@
 
 
 # Environment Setup
-* stable diffusion
-    * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
-    * ```conda env create -f environment.yaml``` and then ```conda activate ldm```
-    * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```stable-diffusion/models/ldm/stable-diffusion-v1/```
-    * Run the samplers once manually to finish setup. The first time the samplers are used, conda will download a bunch more dependancies (several GB).
-    * If you want to later delete your environment for reinstallation, run ```conda env remove -n ldo```
+* A1SD (stable diffusion)
+    * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```A1SD/models/ldm/stable-diffusion-v1/```
+    * set ```install_dir``` in ```webui.sh```
+    * update ```COMMANDLINE_ARGS``` in ```webui-user.sh``` based on your amount of ram, see [docs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings)
+    * launch ```bash webui.sh``` to finish setup
+        * the first time it runs, it will download a bunch of dependancies (several GB)
+        * it's ready once it launches the webserver (eg it prints ```Running on local URL:  http://127.0.0.1:7860```), and you can then ```ctrl+c``` it to close the process for now
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
     * install ```libhdf5-dev```
@@ -154,6 +157,7 @@
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```? -->
 * main repo
+    * Download miniconda https://docs.conda.io/en/latest/miniconda.html. Enable install for all users , disable Register Miniconda as the system Python 3.9.
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * Download ```unique-artwork-*.json``` from [scryfall](https://scryfall.com/docs/api/bulk-data) to ```raw_data_sources/unique-artwork.json```
         * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire (???? GB) of data, and take about 1.5 hours when respecting their rate limit.
