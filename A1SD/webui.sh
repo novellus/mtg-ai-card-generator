@@ -23,13 +23,13 @@ fi
 # Install directory without trailing slash
 if [[ -z "${install_dir}" ]]
 then
-    install_dir="/home/$(whoami)"
+    install_dir="/home/$(whoami)/mtg-ai-generator"
 fi
 
 # Name of the subdirectory (defaults to stable-diffusion-webui)
 if [[ -z "${clone_dir}" ]]
 then
-    clone_dir="stable-diffusion-webui"
+    clone_dir="A1SD"
 fi
 
 # python3 executable
