@@ -23,9 +23,6 @@ uids = set()
 def extract_art(j):
     # extract uri for art-cropped image, and download that image
 
-    # mind scryfall's API usage rate limit: https://scryfall.com/docs/api
-    time.sleep(0.15)
-
     assert 'image_uris' in j, pprint.pformat(j)
     assert 'art_crop' in j['image_uris'], pprint.pformat(j)
     assert 'name' in j, pprint.pformat(j)
@@ -50,6 +47,8 @@ def extract_art(j):
     # download image from scryfall
     dest_path = os.path.join(dest, f'{uid}.{ext}')
     if not os.path.exists(dest_path):
+        # mind scryfall's API usage rate limit: https://scryfall.com/docs/api
+        time.sleep(0.15)
         img = requests.get(uri).content
         f = open(dest_path, 'wb')
         f.write(img)
