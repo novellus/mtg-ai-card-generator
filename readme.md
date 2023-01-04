@@ -166,7 +166,7 @@
             * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_art```, ```Destination directory = ../encoded_data_sources/mtg_art```, ```width, height = 512```, ```Existing Caption txt Action = prepend```, check ```Split oversized images```, ```Use BLIP for caption```,
 and ```Use deepbooru for caption```, ```Split image threshold = 1``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
             * ```Create embedding``` tab -> ```Name = mtgart```, ```Number of vectors per token = 35``` -> ```Create Embedding``` button
-            * ```Train``` tab -> ```Embedding = mtgart```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Max steps = 10000000```, ```Prompt template file = ```
+            * ```Train``` tab -> ```Embedding = mtgart```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Max steps = 10000000```, ```Prompt template file = ../encoded_data_sources/mtg_art_texual_inversion.txt```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
