@@ -6,6 +6,7 @@ stable-diffusion/logs/*
 raw_data_sources/AllPrintings.json
 raw_data_sources/unique-artwork.json
 raw_data_sources/mtg_art/*
+encoded_data_sources/mtg_art/*
 encoded_data_sources/*.h5
 encoded_data_sources/*.json
 nns/*

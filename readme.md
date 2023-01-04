@@ -160,7 +160,13 @@
     * Download [miniconda](https://docs.conda.io/en/latest/miniconda.html). Enable install for all users , disable Register Miniconda as the system Python.
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
     * Download ```unique-artwork-*.json``` from [scryfall](https://scryfall.com/docs/api/bulk-data) to ```raw_data_sources/unique-artwork.json```
-        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire ~3GB of data, and take about 1.5 hours while respecting their rate limit.
+        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire \~3GB of data, and take about 1.5 hours while respecting their rate limit.
+            * scrub these images manually, deleting those insuitable for card art (card backs, placeholders, rules text, symbols, etc). A few images may need to be cropped instead. Due to size, I can't commit the reduced dataset to the git repo, but the vast majority of the images are fine, just a few clusters of placeholder images and what-not.
+        * launch ```bash webui.sh``` from ```A1SD```, open the web UI (IP/port printed to console) in a browser, go to ```Train``` tab
+            * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_art```, ```Destination directory = ../encoded_data_sources/mtg_art```, ```width, height = 512```, ```Existing Caption txt Action = prepend```, check ```Split oversized images```, ```Use BLIP for caption```,
+and ```Use deepbooru for caption```, ```Split image threshold = 1``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
+            * ```Create embedding``` tab -> ```Name = mtgart```, ```Number of vectors per token = 35``` -> ```Create Embedding``` button
+            * ```Train``` tab -> ```Embedding = mtgart```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Max steps = 10000000```, ```Prompt template file = ```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
