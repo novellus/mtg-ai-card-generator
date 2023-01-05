@@ -12,6 +12,8 @@
 # Commandline arguments for webui.py, for example: export COMMANDLINE_ARGS="--medvram --opt-split-attention"
 export COMMANDLINE_ARGS="--api --medvram --theme dark"
 
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+
 # python3 executable
 #python_cmd="python3"
 

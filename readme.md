@@ -123,9 +123,12 @@
     * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```A1SD/models/ldm/stable-diffusion-v1/```
     * set ```install_dir``` in ```webui.sh```
     * update ```COMMANDLINE_ARGS``` in ```webui-user.sh``` based on your amount of ram, see [docs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings)
+    * Comment out ```max_split_size_mb``` in ```webui-user.sh```. This is for borderline VRAM usage cases, and should be disabled by default. Reenable/adjust if instructed by the program.
     * launch ```bash webui.sh``` to finish setup
         * the first time it runs, it will download a bunch of dependancies (several GB)
-        * it's ready once it launches the webserver (eg it prints ```Running on local URL:  http://127.0.0.1:7860```), and you can then ```ctrl+c``` it to close the process for now
+        * it's ready once it launches the webserver (eg it prints ```Running on local URL:  http://127.0.0.1:7860```)
+        * Optionally, if you plan to create your own embedding: Open that IP address in a browser -> ```Extensions``` tab -> ```Available``` sub tab -> install ```embedding-inspector```
+        * and you can then ```ctrl+c``` it to close the process for now
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
     * install ```libhdf5-dev```
@@ -155,7 +158,7 @@
         * ```cd CMake```
         * ```./bootstrap; make; sudo make install```
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
-        <!-- ```git clone https://github.com/nagadomi/distro.git ~/torch --recursive```? -->
+        <!-- reference https://github.com/nagadomi/distro.git ~/torch --recursive -->
 * main repo
     * Download [miniconda](https://docs.conda.io/en/latest/miniconda.html). Enable install for all users , disable Register Miniconda as the system Python.
     * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
@@ -166,7 +169,8 @@
             * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_art```, ```Destination directory = ../encoded_data_sources/mtg_art```, ```width, height = 512```, ```Existing Caption txt Action = prepend```, check ```Split oversized images```, ```Use BLIP for caption```,
 and ```Use deepbooru for caption```, ```Split image threshold = 1``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
             * ```Create embedding``` tab -> ```Name = mtgart```, ```Number of vectors per token = 35``` -> ```Create Embedding``` button
-            * ```Train``` tab -> ```Embedding = mtgart```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Max steps = 10000000```, ```Prompt template file = ../encoded_data_sources/mtg_art_texual_inversion.txt```
+            * ```Train``` tab -> ```Embedding = mtgart```, ```Batch size = ???```, ```Gradient accumulation steps = ???```, ```Embedding Learning rate = 0.005```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Prompt template file = ../encoded_data_sources/mtg_art_textual_inversion.txt```, ```Width, Height = 512```, ```Max steps = 10000000``` -> ```Train Embedding``` button
+                * possibly set ```export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128``` in ```webui-user.sh``` if the vram usage is borderline
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
