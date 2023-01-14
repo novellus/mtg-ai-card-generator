@@ -10,7 +10,7 @@
     * ```raw_data_sources``` include user inputs for AI training data. These are processed into ```encoded_data_sources``` via ```rebuild_data_sources.sh```, which utilizes ```scripts/encode.py``` and ```torch-rnn```.
     * ```nns``` contains trained text-based neural networks
     * ```torch-rnn``` contains code for training and sampling the text neural networks
-    * ```stable-diffusion``` contains self-contained trained imaging neural networks and associated code
+    * ```A1SD``` contains image generating neural networks and associated code
     * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
     * ```outputs``` contains final cards, card sheets, and intermediate outputs from each AI and processing stage
     * ```image_templates``` contains template images for rendering the generated cards
@@ -46,18 +46,9 @@
     * Updated trainer to decouple checkpoint, validation, and learning rate decay frequencies from epochs / each other, and have CLI params for all
     * Updated trainer to not clear optim state each time the learning rate is changed, for smoother loss curves
     * Added seed input option to sampler for repeatable sampling
-* [stable-diffusion](https://github.com/CompVis/stable-diffusion.git)
-    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
-    * [stable-diffusion/optimizedSD from basujindal](https://github.com/basujindal/stable-diffusion.git). Modified ```optimized_txt2img.py``` and ```optimized_img2img.py```
-        * Added watermarker
-        * cleaned up interfaces
-        * Added fully specifiable output dir and filename options to samplers
-        * Added negative prompt feature, per [AUTOMATIC1111's wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Negative-prompt)
-            * and added flag to slightly break negative weighting in interesting ways ```force_combined_prompt_weighting```
-    * Safety filter disabled
-    * Watermarker disabled for very small images instead of crashing (only works for images at least ```256x256```)
 * [A1SD](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (aka AUTOMATIC1111 webui for stable diffusion)
-    * [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original). Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
+    * customized install dir, API, and vram usage
+    * forced unbuffering to python call for reading server state when called as a subprocess
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
@@ -65,7 +56,8 @@
 
 
 # &#x1F534; TODOs
-* explore using other modules instead, like pytorch
+* figure out how to get rectangular images to not heavily artifact...
+* explore using pytorch instead
     * check list of features required, like whispering
 * ```LanguageModel.lua```
     * add ability to add a layer to an existing model. Probably create a new model incorporating existing layers plus new ones?
@@ -80,24 +72,7 @@
     * implement ```limit_to_AI_training_cards```?
     * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
 * update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
-* configure txt2img args
-    * consider adjusting the prompt to specify a specific style
-    * find a way to not render actual magic card elements, like borders, titles, mana, etc
-    * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:-1 magic the gathering:-1" --force_combined_prompt_weighting```
-        * uses slightly broken negative weighting
-        * seems to produce card-like art instead of actual cards
-        * seems to only work at higher resolution (512x512 produces images of cards). I think the higher resolution is slightly broken in the base repo, which when combined with the slightly broken negative weighting, somehow comes out on top, statistically
-        * try to come up with args that eliminate cards while still enabling card-like art
-    * ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --outdir outputs/mtg_test --n_samples 1 --n_iter 5 --H 960 --W 768 --turbo --prompt "wall of the geist:1 mtg:1 magic the gathering:1 text:-1 card frame:-1" --force_combined_prompt_weighting```
-    * consider switching to [AUTOMATIC1111's fork](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API), which has several feature advantages over the base repo
-        * textual inversion: train the neural network on mtg art, and encode a keyword
-            * could gather mtg art images from skryfall: [bulk card data](https://scryfall.com/docs/api/bulk-data) and [imagery api](https://scryfall.com/docs/api/images)
-        * high res fix or outpainting
-        * proper negative prompts
-        * prompt editing, if that proves useful for the odd style / name combinations
-        * face restoration
-        * png info
-        * need to start /stop a local server to query for image data
+* refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
 * finish training the AIs
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
@@ -120,7 +95,7 @@
 
 # Environment Setup
 * A1SD (stable diffusion)
-    * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```A1SD/models/ldm/stable-diffusion-v1/```
+    * download the [models from huggingface](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) to ```A1SD/models/ldm/stable-diffusion-v1/```. Git does not support large files (5GB and 8GB), so these files are not committed to the repo.
     * set ```install_dir``` in ```webui.sh```
     * update ```COMMANDLINE_ARGS``` in ```webui-user.sh``` based on your amount of ram, see [docs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings)
     * Comment out ```max_split_size_mb``` in ```webui-user.sh```. This is for borderline VRAM usage cases, and should be disabled by default. Reenable/adjust if instructed by the program.
@@ -160,23 +135,9 @@
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- reference https://github.com/nagadomi/distro.git ~/torch --recursive -->
 * main repo
-    * Download [miniconda](https://docs.conda.io/en/latest/miniconda.html). Enable install for all users , disable Register Miniconda as the system Python.
-    * ```conda env create -f environment.yaml``` and then ```conda activate mtg-ai-main```
-<!--     * If you would like to train an embedding on mtg art: Download ```unique-artwork-*.json``` from [scryfall](https://scryfall.com/docs/api/bulk-data) to ```raw_data_sources/unique-artwork.json```
-        * run ```download_scryfall_art.py``` in ```scripts/```. This will acquire \~3GB of data, and take about 1.5 hours while respecting their rate limit.
-            * scrub these images manually, deleting those insuitable for card art (card backs, placeholders, rules text, symbols, etc). A few images may need to be cropped instead. Due to size, I can't commit the reduced dataset to the git repo, but the vast majority of the images are fine, just a few clusters of placeholder images and what-not.
-        * launch ```bash webui.sh``` from ```A1SD```, open the web UI (IP/port printed to console) in a browser, go to ```Train``` tab
-            * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_art```, ```Destination directory = ../encoded_data_sources/mtg_art```, ```width, height = 512```, ```Existing Caption txt Action = prepend```, check ```Split oversized images```, ```Use BLIP for caption```,
-and ```Use deepbooru for caption```, ```Split image threshold = 1``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
-            * ```Create embedding``` tab -> ```Name = mtgart```, ```Number of vectors per token = 35``` -> ```Create Embedding``` button
-            * ```Train``` tab -> ```Embedding = mtgart```, ```Batch size = ???```, ```Gradient accumulation steps = ???```, ```Embedding Learning rate = 0.005```, ```Dataset directory = ../encoded_data_sources/mtg_art```, ```Prompt template file = ../encoded_data_sources/mtg_art_textual_inversion.txt```, ```Width, Height = 512```, ```Max steps = 10000000``` -> ```Train Embedding``` button
-                * possibly set ```export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128``` in ```webui-user.sh``` if the vram usage is borderline -->
-    * If you would like to train an embedding on mtg frames/borders: download a small dataset of full card images -> delete (to black) the art portions manually, so we just have frames, text, symbols, etc. -> save to ```raw_data_sources/mtg_frame```
-        * launch ```bash webui.sh``` from ```A1SD```, open the web UI (IP/port printed to console) in a browser, go to ```Train``` tab
-            * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_frame```, ```Destination directory = ../encoded_data_sources/mtg_frame```, ```width, height = 512```, ```Existing Caption txt Action = ignore```, ```Split oversized images```, ```Split image threshold = 1```, ```Split image overlap ratio = 0.5``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
-            * ```Create embedding``` tab -> ```Name = mtgframe```, ```Number of vectors per token = 30``` -> ```Create Embedding``` button
-            * ```Train``` tab -> ```Embedding = mtgframe```, ```Batch size = 1```, ```Gradient accumulation steps = 1```, ```Embedding Learning rate = 0.005:1, 0.00475:580, 0.00451:1160, 0.00429:1740, 0.00407:2320, 0.00387:2900, 0.00368:3480, 0.00349:4060, 0.00332:4640, 0.00315:5220, 0.00299:5800, 0.00284:6380, 0.0027:6960, 0.00257:7540, 0.00244:8120, 0.00232:8700, 0.0022:9280, 0.00209:9860, 0.00199:10440, 0.00189:11020, 0.00179:11600, 0.0017:12180, 0.00162:12760, 0.00154:13340, 0.00146:13920, 0.00139:14500, 0.00132:15080, 0.00125:15660, 0.00119:16240, 0.00113:16820, 0.00107:17400, 0.00102:17980, 0.000969:18560, 0.00092:19140, 0.000874:19720, 0.00083:20300, 0.000789:20880, 0.000749:21460, 0.000712:22040, 0.000676:22620, 0.000643:23200, 0.00061:23780, 0.00058:24360, 0.000551:24940, 0.000523:25520, 0.000497:26100, 0.000472:26680, 0.000449:27260, 0.000426:27840, 0.000405:28420, 0.000385:29000, 0.000365:29580, 0.000347:30160, 0.00033:30740, 0.000313:31320, 0.000298:31900, 0.000283:32480, 0.000269:33060, 0.000255:33640, 0.000242:34220, 0.00023:34800, 0.000219:35380, 0.000208:35960, 0.000197:36540, 0.000188:37120, 0.000178:37700, 0.000169:38280, 0.000161:38860, 0.000153:39440, 0.000145:40020, 0.000138:40600, 0.000131:41180, 0.000124:41760, 0.000118:42340, 0.000112:42920, 0.000107:43500, 0.000101:44080, 9.63e-05:44660, 9.15e-05:45240, 8.69e-05:45820, 8.26e-05:46400, 7.84e-05:46980, 7.45e-05:47560, 7.08e-05:48140, 6.73e-05:48720, 6.39e-05:49300, 6.07e-05:49880, 5.77e-05:50460, 5.48e-05:51040, 5.2e-05:51620, 4.94e-05:52200, 4.7e-05:52780, 4.46e-05:53360, 4.24e-05:53940, 4.03e-05:54520, 3.83e-05:55100, 3.63e-05:55680, 3.45e-05:56260, 3.28e-05:56840, 3.12e-05:57420, 2.96e-05:58000, 2.81e-05:58580, 2.67e-05:59160, 2.54e-05:59740, 2.41e-05:60320, 2.29e-05:60900, 2.18e-05:61480, 2.07e-05:62060, 1.96e-05:62640, 1.87e-05:63220, 1.77e-05:63800, 1.68e-05:64380, 1.6e-05:64960, 1.52e-05:65540, 1.44e-05:66120, 1.37e-05:66700, 1.3e-05:67280, 1.24e-05:67860, 1.18e-05:68440, 1.12e-05:69020, 1.06e-05:69600, 1.01e-05:70180, 9.58e-06:70760, 9.1e-06:71340, 8.64e-06:71920, 8.21e-06:72500, 7.8e-06:73080, 7.41e-06:73660, 7.04e-06:74240, 6.69e-06:74820, 6.35e-06:75400, 6.04e-06:75980, 5.73e-06:76560, 5.45e-06:77140, 5.18e-06:77720, 4.92e-06:78300, 4.67e-06:78880, 4.44e-06:79460, 4.22e-06:80040, 4e-06:80620, 3.8e-06:81200, 3.61e-06:81780, 3.43e-06:82360, 3.26e-06:82940, 3.1e-06:83520, 2.94e-06:84100, 2.8e-06:84680, 2.66e-06:85260, 2.52e-06:85840, 2.4e-06:86420, 2.28e-06:87000, 2.16e-06:87580, 2.06e-06:88160, 1.95e-06:88740, 1.86e-06:89320, 1.76e-06:89900, 1.67e-06:90480, 1.59e-06:91060, 1.51e-06:91640, 1.44e-06:92220, 1.36e-06:92800, 1.3e-06:93380, 1.23e-06:93960, 1.17e-06:94540, 1.11e-06:95120, 1.06e-06:95700, 1e-06:96280, 9.52e-07:96860, 9.05e-07:97440, 8.6e-07:98020, 8.17e-07:98600, 7.76e-07:99180, 7.37e-07:99760```, ```Dataset directory = ../encoded_data_sources/mtg_frame```, ```Prompt template file = ../encoded_data_sources/frame_surrounds.txt```, ```Width, Height = 512```, ```Max steps = 100000```, ```Save an image... = 2* dataset size, and Save a copy... = dataset size```, uncheck ```Save images with embedding in PNG chunks``` -> ```Train Embedding``` button
-                * possibly set ```export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128``` or to another number, in ```webui-user.sh``` if the vram usage is borderline
+    * ```sudo apt install expect``` to get unbuffer command
+    * Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+    * ```conda env create -f environment.yaml```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
@@ -186,29 +147,17 @@ and ```Use deepbooru for caption```, ```Split image threshold = 1``` -> ```Prepr
 
 
 # AI Training and Sampling
-* stable diffusion
-    * execute ```conda activate ldm``` at the berginning of each bash session
-    * text to image sampling: ```python scripts/txt2img.py --seed -1 --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --plms --n_samples 1 --n_iter 1 --skip_grid --H 64 --W 64 --prompt <text>```
-        * Height and width must be multiples of ```64```.
-        * The watermarker only works if image size is at least ```256x256```
-        * If your output is a jumbled rainbow mess your image resolution is set TOO LOW
-        * Having too high of a CFG level will also introduce rainbow distortion, your CFG shouldn't be set above 20
-        * It's recommended to have your prompts be at least 512 pixels in one dimension, or a 384x384 square at the smallest. Anything smaller will have heavy artifacting.
-        * reducing ram utilization:
-            * generate smaller images: ```--H 64``` and ```--W 64```
-            * generate fewer images at once (smaller batches): ```--n_samples 1```, ```--n_iter 1```. If generating only one image, can also do ```--skip_grid```
-                * ```--n_iter``` generates images in series, with relatively low impact to vram utilization
-                * ```--n_samples``` generates images in parallel, with relatively high impact to vram utilization
-                * ```--n_rows``` is actually the number of columns in the grid image and does not affect batching or number of images generated
-            * use the vram-optimized scripts instead
-* stable diffusion - vram-optimized
-    * text to image sampling: ```python optimizedSD/optimized_txt2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --H 1152 --W 1152 --prompt <text>```
-    * image to image sampling: ```python optimizedSD/optimized_img2img.py --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt --n_samples 1 --n_iter 1 --turbo --H 1024 --W 1024 --init-img <path> --prompt <text>```
 * torch-rnn
     * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_size 100 -max_epochs 100000000 -batch_size 1000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.98```
     * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
     * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 416 -max_epochs 100000000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
     * ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```
+    * Embedding of mtg frames/borders for stable diffusion: download a small dataset of full card images -> delete (to black) the art portions manually, so we just have frames, text, symbols, etc. -> save to ```raw_data_sources/mtg_frame```
+    * launch ```bash webui.sh``` from ```A1SD```, open the web UI (IP/port printed to console) in a browser, go to ```Train``` tab
+        * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_frame```, ```Destination directory = ../encoded_data_sources/mtg_frame```, ```width, height = 512```, ```Existing Caption txt Action = ignore```, ```Split oversized images```, ```Split image threshold = 1```, ```Split image overlap ratio = 0.5``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.
+        * ```Create embedding``` tab -> ```Name = mtgframe```, ```Number of vectors per token = 30``` -> ```Create Embedding``` button
+        * ```Train``` tab -> ```Embedding = mtgframe```, ```Batch size = 1```, ```Gradient accumulation steps = 1```, ```Embedding Learning rate = 0.005:1, 0.00475:580, 0.00451:1160, 0.00429:1740, 0.00407:2320, 0.00387:2900, 0.00368:3480, 0.00349:4060, 0.00332:4640, 0.00315:5220, 0.00299:5800, 0.00284:6380, 0.0027:6960, 0.00257:7540, 0.00244:8120, 0.00232:8700, 0.0022:9280, 0.00209:9860, 0.00199:10440, 0.00189:11020, 0.00179:11600, 0.0017:12180, 0.00162:12760, 0.00154:13340, 0.00146:13920, 0.00139:14500, 0.00132:15080, 0.00125:15660, 0.00119:16240, 0.00113:16820, 0.00107:17400, 0.00102:17980, 0.000969:18560, 0.00092:19140, 0.000874:19720, 0.00083:20300, 0.000789:20880, 0.000749:21460, 0.000712:22040, 0.000676:22620, 0.000643:23200, 0.00061:23780, 0.00058:24360, 0.000551:24940, 0.000523:25520, 0.000497:26100, 0.000472:26680, 0.000449:27260, 0.000426:27840, 0.000405:28420, 0.000385:29000, 0.000365:29580, 0.000347:30160, 0.00033:30740, 0.000313:31320, 0.000298:31900, 0.000283:32480, 0.000269:33060, 0.000255:33640, 0.000242:34220, 0.00023:34800, 0.000219:35380, 0.000208:35960, 0.000197:36540, 0.000188:37120, 0.000178:37700, 0.000169:38280, 0.000161:38860, 0.000153:39440, 0.000145:40020, 0.000138:40600, 0.000131:41180, 0.000124:41760, 0.000118:42340, 0.000112:42920, 0.000107:43500, 0.000101:44080, 9.63e-05:44660, 9.15e-05:45240, 8.69e-05:45820, 8.26e-05:46400, 7.84e-05:46980, 7.45e-05:47560, 7.08e-05:48140, 6.73e-05:48720, 6.39e-05:49300, 6.07e-05:49880, 5.77e-05:50460, 5.48e-05:51040, 5.2e-05:51620, 4.94e-05:52200, 4.7e-05:52780, 4.46e-05:53360, 4.24e-05:53940, 4.03e-05:54520, 3.83e-05:55100, 3.63e-05:55680, 3.45e-05:56260, 3.28e-05:56840, 3.12e-05:57420, 2.96e-05:58000, 2.81e-05:58580, 2.67e-05:59160, 2.54e-05:59740, 2.41e-05:60320, 2.29e-05:60900, 2.18e-05:61480, 2.07e-05:62060, 1.96e-05:62640, 1.87e-05:63220, 1.77e-05:63800, 1.68e-05:64380, 1.6e-05:64960, 1.52e-05:65540, 1.44e-05:66120, 1.37e-05:66700, 1.3e-05:67280, 1.24e-05:67860, 1.18e-05:68440, 1.12e-05:69020, 1.06e-05:69600, 1.01e-05:70180, 9.58e-06:70760, 9.1e-06:71340, 8.64e-06:71920, 8.21e-06:72500, 7.8e-06:73080, 7.41e-06:73660, 7.04e-06:74240, 6.69e-06:74820, 6.35e-06:75400, 6.04e-06:75980, 5.73e-06:76560, 5.45e-06:77140, 5.18e-06:77720, 4.92e-06:78300, 4.67e-06:78880, 4.44e-06:79460, 4.22e-06:80040, 4e-06:80620, 3.8e-06:81200, 3.61e-06:81780, 3.43e-06:82360, 3.26e-06:82940, 3.1e-06:83520, 2.94e-06:84100, 2.8e-06:84680, 2.66e-06:85260, 2.52e-06:85840, 2.4e-06:86420, 2.28e-06:87000, 2.16e-06:87580, 2.06e-06:88160, 1.95e-06:88740, 1.86e-06:89320, 1.76e-06:89900, 1.67e-06:90480, 1.59e-06:91060, 1.51e-06:91640, 1.44e-06:92220, 1.36e-06:92800, 1.3e-06:93380, 1.23e-06:93960, 1.17e-06:94540, 1.11e-06:95120, 1.06e-06:95700, 1e-06:96280, 9.52e-07:96860, 9.05e-07:97440, 8.6e-07:98020, 8.17e-07:98600, 7.76e-07:99180, 7.37e-07:99760```, ```Dataset directory = ../encoded_data_sources/mtg_frame```, ```Prompt template file = ../encoded_data_sources/frame_surrounds.txt```, ```Width, Height = 512```, ```Max steps = 100000```, ```Save an image... = 2* dataset size, and Save a copy... = dataset size```, uncheck ```Save images with embedding in PNG chunks``` -> ```Train Embedding``` button
+            * possibly set ```export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128``` or to another number, in ```webui-user.sh``` if the vram usage is borderline
 
 
 # Util
