@@ -1,7 +1,6 @@
 import base58
 import base64
 import copy
-import fcntl
 import io
 import math
 import os
