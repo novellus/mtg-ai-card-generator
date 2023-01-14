@@ -1,20 +1,29 @@
 import base58
+import base64
 import copy
+import fcntl
+import io
 import math
 import os
 import pprint
 import re
+import requests
+import signal
 import subprocess
+import sys
+import time
 
 import mtg_constants
 
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from PIL import PngImagePlugin
 
 
 # Constants
-CONDA_ENV_SD = 'ldm'
+ADDRESS_A1SD = 'http://127.0.0.1:7860'
+PATH_A1SD = '../A1SD'
 
 
 # fonts assignments are hard to remember
@@ -43,56 +52,145 @@ LEFT_MAIN_TEXT_BOX = 128
 RIGHT_MAIN_TEXT_BOX = 1375
 
 
-def sample_txt2img(card, outdir, file_name, seed, verbosity):
-    os.makedirs(outdir)
+def handle_sigint(signum, frame):
+    # gracefull kill the A1SD server before exiting
+    terminate_A1SD_server(float('inf'))  # use infinite verbosity, since user ctrl+c'd
+    sys.exit(0)
+signal.signal(signal.SIGINT, handle_sigint)
 
-    # get outdir directory relative to command execution, rather than this script
-    outdir_rel = os.path.relpath(outdir, start=PATH_SD)
 
-    # remove target file if it already exists
-    img_path = os.path.join(outdir, f'{file_name}.png')
-    if os.path.exists(img_path):
-        os.remove(img_path)
-        if verbosity > 2:
-            print(f'overwriting image file at {outdir_rel} = {img_path}')
-    else:
-        if verbosity > 2:
-            print(f'caching image file to {outdir_rel} = {img_path}')
-
-    # execute txt2img
-    prompt = card['name']
-
-    cmd = (f'python optimizedSD/optimized_txt2img.py'
-           f' --ckpt models/ldm/stable-diffusion-v1/sd-v1-4.ckpt'
-           f' --outdir "{outdir_rel}"'
-           f' --out_filename "{file_name}.png"'
-           f' --n_samples 1'
-           f' --n_iter 1'
-           f' --H 960'
-           f' --W 768'
-           f' --seed {seed}'
-           # f' --turbo'  # encourages cinnamon crashes...
-           f' --prompt "{prompt}"'
-          )
+def A1SD_server_up(verbosity):
+    # make an arbitrary API call toe check if the server is up
+    # we make this check instead of checking PROCESS_A1SD object incase
+    #   the server has failed, started with incorrect arguments, code error, server was started outside of this program, etc
 
     try:
-        p = subprocess.run(f'conda run -n {CONDA_ENV_SD} {cmd}',
-                           shell=True,
-                           capture_output=True,
-                           check=True,
-                           cwd=os.path.join(os.getcwd(), PATH_SD))
-    except subprocess.CalledProcessError as e:
-        if verbosity > -1:  # always report this, since it is not caught at a higher level
-            print('CalledProcessError in sample_txt2img')
-            print(f'\tprompt: "{prompt}"')
-            print(f'\te.stdout: "{e.stdout}"')
-            print(f'\te.stderr: "{e.stderr}"')
-        raise
+        requests.get(f'{ADDRESS_A1SD}/sdapi/v1/embeddings')
+        if verbosity > 2:
+            print('A1SD server is up')
+        return True
+    except requests.exceptions.ConnectionError:
+        if verbosity > 2:
+            print('A1SD server is not up')
+        return False
 
-    # open image file and return the image object
-    # but leave the file in place, cached for later
-    im = Image.open(img_path)
-    return im
+
+PROCESS_A1SD = None  # keep this around so the process can be killed on exit
+def start_A1SD_server(verbosity):
+    # starts server and waits for it to be ready before returning
+
+    global PROCESS_A1SD
+    if PROCESS_A1SD is not None:
+        raise RuntimeError(f'A1SD server should already be running?\n\tPID: {PROCESS_A1SD.pid}\n\tpoll: {PROCESS_A1SD.poll()}')
+
+    if verbosity > 1:
+        print('Starting A1SD server')
+
+    PROCESS_A1SD = subprocess.Popen('bash webui.sh',
+                                    shell=True,
+                                    bufsize=1,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT,
+                                    encoding='utf-8',
+                                    start_new_session=True,  # enables killing all spawned processes as a group
+                                    cwd=PATH_A1SD)
+
+    # wait for the server to startup to a ready state
+    #   check for server to print its ready state to console
+    # check server response using a non-blocking-read workaround
+    #   this would be much easier if there was a supported simple interface to communicate with ongoing processes
+    #   such as that implemented by threading - use a pipe, poll the pipe for data, read pipe data
+    # however, the subprocess module doesn't provide anything so nice for ongoing processes
+    #   docs suggest using Popen.communicate, but this doesn't support our use case since it waits for the process to finish, or raises a TimeoutExpired exception
+    #   blindly calling Popen.stdout.read() or .readline() will cause hangs, since these both wait for a certain code to be written to stream before returning
+    # so instead, we're gonna modify the file stream provided by Popen to implement a non-blocking read mechanism
+    #   this causes the read() calls to always return, or throw an unhelpful TypeError if the stream is empty
+    #   while readline() will just return an empty string when the stream is empty
+    #   empty stream behavior plus line buffering makes readline the obvious preference here
+    # Finally, the stream has no way to tell if it has data, so just read one line at a time at fixed frequency
+    os.set_blocking(PROCESS_A1SD.stdout.fileno(), False)
+
+    startup_timeout = 60  # seconds
+    poll_frequency = 10  # Hz
+    for i in range(startup_timeout * poll_frequency):
+        time.sleep(1 / poll_frequency)
+        line = PROCESS_A1SD.stdout.readline()
+        if re.search('Running on local URL', line):
+            break
+    else:
+        raise RuntimeError(f'A1SD server startup timed-out\n\tPID: {PROCESS_A1SD.pid}\n\tpoll: {PROCESS_A1SD.poll()}')
+
+    assert A1SD_server_up(verbosity)
+
+
+def terminate_A1SD_server(verbosity):
+    if PROCESS_A1SD is not None:
+        if verbosity > 1:
+            print('Terminating A1SD server')
+
+        # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
+        os.killpg(os.getpgid(PROCESS_A1SD.pid), signal.SIGTERM)
+        PROCESS_A1SD.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
+
+
+def sample_txt2img(card, cache_path, seed, verbosity):
+    # start stable-diffusion web server if its not already up
+    if not A1SD_server_up(verbosity):
+        start_A1SD_server(verbosity)
+
+    # remove cached file if it already exists
+    if os.path.exists(cache_path):
+        os.remove(cache_path)
+        if verbosity > 2:
+            print(f'overwriting image file at {cache_path}')
+    else:
+        if verbosity > 2:
+            print(f'caching image file to {cache_path}')
+
+    # execute txt2img
+    # see f'{ADDRESS_A1SD}/docs' for API description
+    #   its outdated, and not all the listed APIs work, but still the best reference I have
+
+    payload = {
+        'prompt': f"{card['name']}, high fantasy",
+
+        # try to dissuade the AI from generating images of MTG cards, which adds confusing and undesired text/symbols/frame elements
+        #   its not foolproof, and in practice ~10% make it through anyway, but that's better than 100% without this dissuasion
+        #   There's probably several better ways to approach this?
+        #   the mtgframe* keywords are embeddings, see https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#textual-inversion
+        'negative_prompt': 'mtgframe5, mtgframe6, mtgframe7, mtgframe8, mtgframe10, mtgframe11, blurry, text',
+
+        'steps': 20,
+        'batch_size': 1,
+        'n_iter': 1,
+        'width': 768,
+        'height': 960,
+        'sampler_index': 'Euler',  # also available: 'sampler_name'... ?
+        'seed': seed,
+    }
+
+    # decode the response
+    #   we asked a batch processor for a single sample
+    #   image data is base64 ascii-encoded
+    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/txt2img', json=payload)
+    response = response.json()
+    image_data = response['images'][0]
+    im = Image.open(io.BytesIO(base64.b64decode(image_data)))
+
+    # request png info blob from the server
+    #   which gives us enough information about the generated image to regenerate it
+    #   ie: all txt2img input parameters, including those which have default values and are not specified here
+    # This info blob will be saved as part of the image data
+    #   and is in a format which the AUTOMATIC1111 web server understands, so we're not gonna add random whatevers to it
+    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/png-info', json={"image": "data:image/png;base64," + image_data})
+    png_info = response.json()['info']
+
+    # cache image
+    encoded_info = PngImagePlugin.PngInfo()
+    encoded_info.add_text("parameters", png_info)  # 'parameters' key is looked for by AUTOMATIC1111 web server
+    im.save(cache_path, pnginfo=encoded_info)
+
+    return im, png_info
 
 
 def parse_mana_symbols(mana_string, None_acceptable=False):
@@ -711,26 +809,32 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
     # the space in card_file_name is important for parsability
     #   because the name is guaranteed to not start with a space
     #   while it could (legally) start with "-A"
-    card_file_name = f"{card['card_number']:05}{side_id} {card['name']}"
+    card_file_name = f"{card['card_number']:05}{side_id} {card['name']}.png"
 
     # create a base image onto which everything else is composited
     # art is the lowest layer of the card, but we need a full size image to paste it into, since the art is not quite full sized
     im_card = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
 
-    # resize and crop the art to fit in the frame
+    # either load a cached art image, or create one
     if not no_art:
-        if verbosity > 2:
-            print(f'sampling txt2img')
-
-        # either load a cached image, or create one
         art_dir = art_dir or os.path.join(outdir, 'art_cache')
-        image_file = os.path.join(art_dir, card_file_name)
+        os.makedirs(art_dir, exist_ok=True)
+        cache_path = os.path.join(art_dir, card_file_name)
 
-        if not trash_art_cache and os.path.exists(image_file):
-            art = Image.open(img_path)
+        if not trash_art_cache and os.path.exists(cache_path):
+            if verbosity > 2:
+                print(f'using cached image')
+
+            art = Image.open(cache_path)
+            png_info = art.info
+
         else:
-            art = sample_txt2img(card, art_dir, card_file_name, card['seed'] + card['seed_diff'], verbosity)
+            if verbosity > 2:
+                print(f'sampling txt2img')
 
+            art, png_info = sample_txt2img(card, cache_path, card['seed'] + card['seed_diff'], verbosity)
+
+        # resize and crop the art to fit in the frame
         art = art.resize((1550, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
         art = art.crop((25, 0, 1525, 1937))  # but then crop the left and right equally to fit the frame
         im_card.paste(art, box=(0, 0))
@@ -832,8 +936,13 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
     im_card.alpha_composite(im_repo_info, dest=(1399 - im_repo_info.width, 2059 - im_repo_info.height // 2))
 
     # save image
-    out_path = os.path.join(outdir, f"{card_file_name}.png")
-    im_card.save(out_path)
+    out_path = os.path.join(outdir, card_file_name)
+    if not no_art:
+        encoded_info = PngImagePlugin.PngInfo()
+        encoded_info.add_text("parameters", png_info)
+        im_card.save(out_path, pnginfo=encoded_info)
+    else:
+        im_card.save(out_path)
 
     # recurse on sides b-e
     if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
@@ -898,5 +1007,10 @@ if __name__ =='__main__':
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
-    render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all)
+    try:
+        render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all)
+        terminate_A1SD_server(args.verbosity)
+    except:
+        terminate_A1SD_server(args.verbosity)
+        raise
 

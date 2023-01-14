@@ -463,5 +463,10 @@ if __name__ == '__main__':
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
-    main(args)
+    try:
+        main(args)
+        render.terminate_A1SD_server(args.verbosity)
+    except:
+        render.terminate_A1SD_server(args.verbosity)
+        raise
 

@@ -165,5 +165,5 @@ else
     printf "\n%s\n" "${delimiter}"
     printf "Launching launch.py..."
     printf "\n%s\n" "${delimiter}"
-    "${python_cmd}" "${LAUNCH_SCRIPT}" "$@"
+    "expect" "/usr/bin/unbuffer" "${python_cmd}" "${LAUNCH_SCRIPT}" "$@"
 fi
