@@ -304,8 +304,24 @@ def compute_stats(cards, outdir):
 
 
 def main(args):
+    # handle resuming after interuption
+    if args.resume is not None:
+        assert os.path.exists(args.resume)
+        head, tail = os.path.split(args.resume)
+        if tail == '':  # handle path ending in '/'
+            head, tail = os.path.split(head)
+
+        s = re.search(r'^(\d+)_(\d+)$', tail)
+        assert s is not None, (head, tail)
+        base_count = int(s.group(1))
+        args.seed = int(s.group(2))
+        args.outdir = args.resume
+
+        if args.verbosity > 1:
+            print(f'resuming into {args.resume}')
+
     # assign seed
-    if args.seed < 0:
+    if args.seed < 0 and not args.resume:
         args.seed = random.randint(0, 1000000000)
         if args.verbosity > 1:
             print(f'setting seed to {args.seed}')
@@ -342,9 +358,10 @@ def main(args):
         nns_names.append(name)
 
     # resolve and create outdir
-    base_count = len(os.listdir(args.outdir))
-    args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
-    os.makedirs(args.outdir)
+    if not args.resume:
+        base_count = len(os.listdir(args.outdir))
+        args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
+        os.makedirs(args.outdir)
 
     if args.verbosity > 1:
         print(f'operating in {args.outdir}')
@@ -460,6 +477,7 @@ if __name__ == '__main__':
     parser.add_argument("--no_render", action='store_true', help="disables rendering altogether. Superscedes --no_art. Still generates yaml and other optional output files.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
+    parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips rendering existing card files. Note LSTMs are still sampled to generated output yaml files.")
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
