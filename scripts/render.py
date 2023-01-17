@@ -696,16 +696,17 @@ def render_main_text_box(card):
     # parse main text for loyalty modifier symbols
     # partition main text if these are found
     # if these are not found, partitioned_main_text will be a list with only one element
-    partitioned_main_text = []  # list of [str-encoded loyalty +/- number, text to the right of the loyalty +/- icon]
-    tokens = re.split(r'\[([+-]?\d+)\]:\s*', card['main_text'])
+    if card['main_text'] is not None:
+        partitioned_main_text = []  # list of [str-encoded loyalty +/- number, text to the right of the loyalty +/- icon]
+        tokens = re.split(r'\[([+-]?\d+)\]:\s*', card['main_text'])
 
-    if tokens[0] != '':
-        sub_tokens = [None, tokens[0]]
-        partitioned_main_text.append(sub_tokens)
+        if tokens[0] != '':
+            sub_tokens = [None, tokens[0]]
+            partitioned_main_text.append(sub_tokens)
 
-    for i in range(1, len(tokens), 2):  # re.split guarantees odd indeces are the captured group
-        sub_tokens = [tokens[i], tokens[i+1]]
-        partitioned_main_text.append(sub_tokens)
+        for i in range(1, len(tokens), 2):  # re.split guarantees odd indeces are the captured group
+            sub_tokens = [tokens[i], tokens[i+1]]
+            partitioned_main_text.append(sub_tokens)
 
     # search over the font_size space until constraints are met
     # linear search is inefficient, if this becomes a performance burden, use a bifurcation search
@@ -719,37 +720,39 @@ def render_main_text_box(card):
         loyalty_spacing_horizontal = math.ceil(3 * symbol_spacing)
         loyalty_spacing_vertical = math.ceil(0.5 * vertical_kerning)
 
-        # the first partitioned element may not have any loyalty modifier preceeding it
-        #   and indeed may be the only element in the list, if there are no encoded loyalty modifers
-        if partitioned_main_text[0][0] is None:
-            im, _broken_token = render_complex_text(partitioned_main_text[0][1], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
-            im = im.crop(im.getbbox())
-            im_main_texts.append(im)
-            broken_token = broken_token or _broken_token
-
-        # now render all loyalty icons, and render partitioned main text lines to the right of them
-        for mod_text, main_text in partitioned_main_text:
-            if mod_text is not None:
-                # render the loyalty modifer
-                im_loyalty_mod = render_loyalty_modifier(mod_text, loyalty_height)
-
-                # render the text
-                sub_width = width - im_loyalty_mod.width - loyalty_spacing_horizontal
-                im_text, _broken_token = render_complex_text(main_text, sub_width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
-                im_text = im_text.crop(im_text.getbbox())
+        # render main text
+        if card['main_text'] is not None:
+            # the first partitioned element may not have any loyalty modifier preceeding it
+            #   and indeed may be the only element in the list, if there are no encoded loyalty modifers
+            if partitioned_main_text[0][0] is None:
+                im, _broken_token = render_complex_text(partitioned_main_text[0][1], width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+                im = im.crop(im.getbbox())
+                im_main_texts.append(im)
                 broken_token = broken_token or _broken_token
 
-                # composite both images
-                size = (im_loyalty_mod.width + loyalty_spacing_horizontal + im_text.width,
-                        max(im_loyalty_mod.height, im_text.height))
-                im = Image.new(mode='RGBA', size=size, color=(0, 0, 0, 0))
-                im.alpha_composite(im_loyalty_mod, dest=(0,0))
-                height = 0
-                if im_text.height < im_loyalty_mod.height:
-                    height = math.floor(im_loyalty_mod.height / 2 - im_text.height / 2)
-                im.alpha_composite(im_text, dest=(im_loyalty_mod.width + loyalty_spacing_horizontal, height))
+            # now render all loyalty icons, and render partitioned main text lines to the right of them
+            for mod_text, main_text in partitioned_main_text:
+                if mod_text is not None:
+                    # render the loyalty modifer
+                    im_loyalty_mod = render_loyalty_modifier(mod_text, loyalty_height)
 
-                im_main_texts.append(im)
+                    # render the text
+                    sub_width = width - im_loyalty_mod.width - loyalty_spacing_horizontal
+                    im_text, _broken_token = render_complex_text(main_text, sub_width, FONT_MAIN_TEXT, font_size, fill=(255,255,255,255))
+                    im_text = im_text.crop(im_text.getbbox())
+                    broken_token = broken_token or _broken_token
+
+                    # composite both images
+                    size = (im_loyalty_mod.width + loyalty_spacing_horizontal + im_text.width,
+                            max(im_loyalty_mod.height, im_text.height))
+                    im = Image.new(mode='RGBA', size=size, color=(0, 0, 0, 0))
+                    im.alpha_composite(im_loyalty_mod, dest=(0,0))
+                    height = 0
+                    if im_text.height < im_loyalty_mod.height:
+                        height = math.floor(im_loyalty_mod.height / 2 - im_text.height / 2)
+                    im.alpha_composite(im_text, dest=(im_loyalty_mod.width + loyalty_spacing_horizontal, height))
+
+                    im_main_texts.append(im)
 
         # render the flavor text
         im_flavor, _broken_token = render_complex_text(card['flavor'], width, FONT_FLAVOR, font_size, fill=(255,255,255,255))
@@ -834,7 +837,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
                 print(f'using cached image')
 
             art = Image.open(cache_path)
-            png_info = art.info
+            png_info = art.info['parameters']
 
         else:
             if verbosity > 2:
