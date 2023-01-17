@@ -56,14 +56,15 @@
 
 
 # &#x1F534; TODOs
-* figure out how to get rectangular images to not heavily artifact...
 * explore using pytorch instead
     * check list of features required, like whispering
 * ```LanguageModel.lua```
-    * add ability to add a layer to an existing model. Probably create a new model incorporating existing layers plus new ones?
+    * add ability to specify multilayer model with different size per layer
 * ```generate_cards.py```
     * render legendary frame?
 * ```render.py```
+    * consider upsizing images to 1024x1024 instead of directly using hte 512x512 generated images. This introduces artifacting, which is kinda hard to manage well.
+    * refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
     * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
     * decrease save file resolution to limit file size?
 * ```encode.py```
@@ -72,7 +73,6 @@
     * implement ```limit_to_AI_training_cards```?
     * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
 * update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
-* refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
 * finish training the AIs
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them

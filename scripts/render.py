@@ -162,16 +162,25 @@ def sample_txt2img(card, cache_path, seed, verbosity):
         'steps': 20,
         'batch_size': 1,
         'n_iter': 1,
-        'width': 768,
-        'height': 960,
+        'width': 512,
+        'height': 512,
         'sampler_index': 'Euler',  # also available: 'sampler_name'... ?
         'seed': seed,
+
+        # render the image orignally at 512x512 since the AI artifacts heavily at any other resolution
+        # then use another AI (LDSR) to upscale to 1024x1024
+        # 'enable_hr': True,
+        # 'hr_scale': 2,
+        # 'hr_upscaler': 'LDSR',
+        # 'denoising_strength': 0.683,  # empirical, subjective, heavily affects quality
     }
 
     # decode the response
     #   we asked a batch processor for a single sample
     #   image data is base64 ascii-encoded
     response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/txt2img', json=payload)
+    assert response.status_code != 500, f'500 status code: frequently means out of memory error\n{time.sleep(1) or ""}{"".join(PROCESS_A1SD.stdout.readlines())}'
+
     response = response.json()
     image_data = response['images'][0]
     im = Image.open(io.BytesIO(base64.b64decode(image_data)))
@@ -834,8 +843,8 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
             art, png_info = sample_txt2img(card, cache_path, card['seed'] + card['seed_diff'], verbosity)
 
         # resize and crop the art to fit in the frame
-        art = art.resize((1550, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
-        art = art.crop((25, 0, 1525, 1937))  # but then crop the left and right equally to fit the frame
+        art = art.resize((1937, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
+        art = art.crop((218, 0, 1937-219, 1937))  # but then crop the left and right equally to fit the frame
         im_card.paste(art, box=(0, 0))
 
     # add the frame over the art
