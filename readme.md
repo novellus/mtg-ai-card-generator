@@ -58,8 +58,6 @@
 # &#x1F534; TODOs
 * explore using pytorch instead
     * check list of features required, like whispering
-* ```LanguageModel.lua```
-    * add ability to specify multilayer model with different size per layer
 * ```generate_cards.py```
     * render legendary frame?
 * ```render.py```
