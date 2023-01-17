@@ -1,3 +1,4 @@
+import argparse
 import base58
 import base64
 import copy
@@ -11,6 +12,7 @@ import signal
 import subprocess
 import sys
 import time
+import yaml
 
 import mtg_constants
 
@@ -982,7 +984,7 @@ def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_ren
     cards = yaml.load(f.read())
     f.close()
 
-    for card in cards:
+    for i_card, card in enumerate(cards):
         # replace 'a_side' backlinks, which are omitted from save file
         if 'b_side' in card: card['b_side']['a_side'] = card
         if 'c_side' in card: card['c_side']['a_side'] = card
@@ -994,14 +996,21 @@ def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_ren
         render = force_render_all
 
         # Handle manual override fields
-        for field in cards:
+        for field in card:
             s = re.search(r'(.*)_override', field)
             if s is not None:
                 card[s.group(1)] = card[field]
                 render = True
 
         if render:
+            if verbosity > 1:
+                print(f'Rendering {i_card + 1} / {len(cards)}')
+
             render_card(card, outdir, no_art, verbosity, trash_art_cache, art_dir)
+
+        else:
+            if verbosity > 1:
+                print(f'Skipping {i_card + 1} / {len(cards)}')
 
 
 if __name__ =='__main__':
