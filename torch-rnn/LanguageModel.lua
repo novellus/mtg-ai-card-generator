@@ -22,13 +22,43 @@ function LM:__init(kwargs)
   self.model_type = utils.get_kwarg(kwargs, 'model_type')
   self.wordvec_dim = utils.get_kwarg(kwargs, 'wordvec_size')
   local rnn_size = utils.get_kwarg(kwargs, 'rnn_size')
+  local rnn_sizes = utils.get_kwarg(kwargs, 'rnn_sizes')
   self.num_layers = utils.get_kwarg(kwargs, 'num_layers')
   self.dropout = utils.get_kwarg(kwargs, 'dropout')
   self.batchnorm = utils.get_kwarg(kwargs, 'batchnorm')
   local other = utils.get_kwarg(kwargs, 'other', '')
   if other == '' then other = nil end
 
-  local V, D, H = self.vocab_size, self.wordvec_dim, rnn_size
+  -- preprocess rnn_size per layer
+  assert(rnn_size > 0 or rnn_sizes ~= '', 'Must specify either rnn_size or rnn_sizes')
+  local _rnn_sizes = {}
+  if rnn_sizes ~= '' then
+    local i = 1
+    for n in string.gmatch(rnn_sizes, "(%d+)") do
+      _rnn_sizes[i] = tonumber(n)
+      i = i + 1
+    end
+    assert((i - 1) == self.num_layers, 'rnn_sizes has incorrect number of elements, expected number of layers elements')
+  else
+    local i = 1
+    for i=1, self.num_layers do
+      _rnn_sizes[i] = rnn_size
+      i = i + 1
+    end
+  end
+  rnn_sizes = _rnn_sizes
+
+  -- Overwrite layer sizes with other sizes if specified
+  if other ~= nil then
+    for i=1, other.num_layers do
+      local net = other.net:get(i)
+      local dim = net.hidden_dim
+      rnn_sizes[i] = dim
+    end
+  end
+
+  -- local V, D, H = self.vocab_size, self.wordvec_dim, rnn_size
+  local V, D = self.vocab_size, self.wordvec_dim
 
   self.net = nn.Sequential()
   self.rnns = {}
@@ -36,24 +66,17 @@ function LM:__init(kwargs)
   self.bn_view_out = {}
 
   self.net:add(nn.LookupTable(V, D))
+  local prev_dim = D
+  local H
   for i = 1, self.num_layers do
+    H = rnn_sizes[i]
+
     local other_index
-    local other_prev_index
     if other ~= nil then
       other_index = i + 1
-      other_prev_index = other_index - 1
       if self.dropout > 0 then
         other_index = 2 * i
-        other_prev_index = other_index - 2
       end
-    end
-
-    local prev_dim = H
-    if i == 1 then
-      prev_dim = D
-    elseif other ~= nil and i - 1 <= other.num_layers then
-       local prev_net = other.net:get(other_prev_index)
-       prev_dim = prev_net.hidden_dim
     end
 
     -- Optionally initialize from another supplied model
@@ -85,6 +108,8 @@ function LM:__init(kwargs)
     if self.dropout > 0 then
       self.net:add(nn.Dropout(self.dropout))
     end
+
+    prev_dim = H
   end
 
   -- After all the RNNs run, we will have a tensor of shape (N, T, H);
