@@ -51,7 +51,11 @@ function LM:__init(kwargs)
   -- Overwrite layer sizes with other sizes if specified
   if other ~= nil then
     for i=1, other.num_layers do
-      local net = other.net:get(i)
+      local other_index = i + 1
+      if self.dropout > 0 then
+        other_index = 2 * i
+      end
+      local net = other.net:get(other_index)
       local dim = net.hidden_dim
       rnn_sizes[i] = dim
     end
@@ -110,6 +114,10 @@ function LM:__init(kwargs)
     end
 
     prev_dim = H
+  end
+
+  for a,b in pairs(self.rnns) do
+    print('Layer ' .. a .. ' = ' .. b.input_dim .. ', ' .. b.hidden_dim)
   end
 
   -- After all the RNNs run, we will have a tensor of shape (N, T, H);
