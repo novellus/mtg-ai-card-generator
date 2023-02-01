@@ -12,7 +12,7 @@
     * ```torch-rnn``` contains code for training and sampling the text neural networks
     * ```A1SD``` contains image generating neural networks and associated code. The custom embeddings are located at ```A1SD/embeddings```
     * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
-    * ```outputs``` contains final cards, card sheets, and intermediate outputs from each AI and processing stage
+    * ```outputs``` contains final card images, card sheets, full text and stats yaml files, and some intermediate outputs
     * ```image_templates``` contains template images for rendering the generated cards
 
 
