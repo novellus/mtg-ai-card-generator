@@ -16,10 +16,6 @@ from collections import defaultdict
 from collections import namedtuple
 
 
-# Constants
-MAX_UNARY = 25  # numbers larger than this will be encoded in binary
-
-
 # internally formatted cards have the following fields. Fields are always present except those indicated as optional
 # {
 #     'a_side'          : internal format, optional, links to parent, present only on b-, c-, d-, and e- side cards
