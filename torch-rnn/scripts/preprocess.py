@@ -21,6 +21,7 @@ parser.add_argument('--val_frac', type=float, default=0.1)
 parser.add_argument('--test_frac', type=float, default=0.1)
 parser.add_argument('--quiet', action='store_true')
 parser.add_argument('--encoding', default='utf-8')
+parser.add_argument('--coerce_to', type=str, default=None)
 args = parser.parse_args()
 
 
@@ -31,11 +32,22 @@ def stabilize_shuffle():
 
 
 def str_to_idx_array(s, dtype):
-  # returns np array of encoded string
-  ret = np.zeros(len(s), dtype=dtype)
+  l = len(s)
+  if args.coerce_to is not None:
+    l = 0
+    for char in s:
+      if char in token_to_idx:
+        l += 1
 
-  for i, char in enumerate(s):
+  # returns np array of encoded string
+  ret = np.zeros(l, dtype=dtype)
+
+  i = 0
+  for char in s:
+    if char not in token_to_idx and args.coerce_to is not None:
+      continue
     ret[i] = token_to_idx[char]
+    i += 1
 
   return ret
 
@@ -52,6 +64,10 @@ if __name__ == '__main__':
       for char in line:
         if char not in token_to_idx:
           token_to_idx[char] = len(token_to_idx) + 1
+  if args.coerce_to is not None:
+    with open(args.coerce_to) as f:
+      j = json.load(f)
+      token_to_idx = {k:int(v) for k,v in j['token_to_idx'].items()}
 
   # Choose the datatype based on the vocabulary size
   dtype = np.uint8
