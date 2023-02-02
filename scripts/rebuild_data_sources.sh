@@ -21,4 +21,5 @@ echo "names:"
 conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/names.txt --output_h5 ../encoded_data_sources/names.h5 --output_json ../encoded_data_sources/names.json --val_frac 0.005 --test_frac 0
 echo "flavor:"
 conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/flavor.txt --output_h5 ../encoded_data_sources/flavor.h5 --output_json ../encoded_data_sources/flavor.json --val_frac 0.006 --test_frac 0
-
+echo "poetry:"
+conda run -n torch-rnn-python python scripts/preprocess.py --input_txt ../encoded_data_sources/PoetryFoundationData.txt --output_h5 ../encoded_data_sources/PoetryFoundationData.h5 --output_json ../encoded_data_sources/PoetryFoundationData.json --val_frac 0.01 --test_frac 0 --coerce_to ../encoded_data_sources/flavor.json
