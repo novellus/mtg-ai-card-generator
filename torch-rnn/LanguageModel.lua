@@ -49,6 +49,7 @@ function LM:__init(kwargs)
   rnn_sizes = _rnn_sizes
 
   -- Overwrite layer sizes with other sizes if specified
+  local other_last_size
   if other ~= nil then
     for i=1, other.num_layers do
       local other_index = i + 1
@@ -59,6 +60,7 @@ function LM:__init(kwargs)
       local dim = net.hidden_dim
       rnn_sizes[i] = dim
     end
+    other_last_size = rnn_sizes[other.num_layers]
   end
 
   -- local V, D, H = self.vocab_size, self.wordvec_dim, rnn_size
@@ -129,7 +131,7 @@ function LM:__init(kwargs)
   -- to set them in the forward pass.
 
   -- Optionally initialize from another supplied model
-  if other == nil then
+  if other == nil or other_last_size ~= H then
     self.view1 = nn.View(1, 1, -1):setNumInputDims(3)
     self.view2 = nn.View(1, -1):setNumInputDims(2)
     self.net:add(self.view1)
