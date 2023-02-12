@@ -291,6 +291,9 @@ for i = start_i + 1, num_iterations do
       forward_backward_times = forward_backward_times,
       memory_usage = memory_usage,
       learning_rate = optim_config.learningRate,
+      num_layers = opt.num_layers,
+      rnn_size = opt.rnn_size,
+      rnn_sizes = opt.rnn_sizes,
       i = i,
       epoch = epoch
     }
