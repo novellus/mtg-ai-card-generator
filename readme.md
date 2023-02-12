@@ -110,7 +110,7 @@
         * ```sudo apt-get install libhdf5-dev==1.8.11*```
         * ```sudo apt-mark hold libhdf5-dev``` to pin version
     * ```conda env create -f environment-python.yaml```. Use this enviropnment only for the preprocessing script
-    * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit)
+    * install the [nvidia cuda toolkit](https://developer.nvidia.com/cuda-toolkit), version 11.8
     * install ```gcc-6``` and ```g++-6```, since the older torch repo + cuda combination only works with this version
         * add ```deb [trusted=yes] http://dk.archive.ubuntu.com/ubuntu/ bionic main universe``` to ```/etc/apt/sources.list```
         * ```sudo apt update```
