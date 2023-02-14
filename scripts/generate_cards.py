@@ -43,7 +43,7 @@ LSTM_LEN_PER_FLAVOR =    105  # average and empirical, change if the dataset cha
 
 
 
-def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\n', parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1, verbosity=0):
+def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\n', parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1, verbosity=0, gpu=0):
     # samples from nn at nn_path with seed
     #   whispers whisper_text if specified, at interval whisper_every_newline
     # initially samples a length of characters targeting the number of chunks with margin
@@ -68,6 +68,7 @@ def sample_lstm(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\
                f' -checkpoint "{nn_path}"'
                f' -length {length}'
                f' -seed {seed}'
+               f' -gpu {gpu}'
               )
         if whisper_text is not None:
             cmd += (f' -whisper_text "{whisper_text}"'
@@ -375,7 +376,8 @@ def main(args):
                         approx_length_per_chunk = LSTM_LEN_PER_NAME,
                         num_chunks = args.num_cards,
                         parser = functools.partial(encode.AI_to_internal_format, spec='names'),
-                        verbosity = args.verbosity)
+                        verbosity = args.verbosity,
+                        gpu = args.lstm_gpu)
     # Note that each card in cards will only contain the 'name' field at this point
 
     # increment seed each card and side for improved uniqueness
@@ -402,7 +404,8 @@ def main(args):
                                 parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
                                 whisper_text = f"{card['unparsed_name']}①",
                                 whisper_every_newline = 1,
-                                verbosity = args.verbosity)
+                                verbosity = args.verbosity,
+                                gpu = args.lstm_gpu)
         )
 
 
@@ -420,7 +423,8 @@ def main(args):
                                     parser = functools.partial(encode.AI_to_internal_format, spec='flavor'),
                                     whisper_text = f"{side['unparsed_name']}①",
                                     whisper_every_newline = 1,
-                                    verbosity = args.verbosity)
+                                    verbosity = args.verbosity,
+                                    gpu = args.lstm_gpu)
             )
 
             # add card + generator info text as properties of the card
@@ -478,6 +482,7 @@ if __name__ == '__main__':
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips rendering existing card files. Note LSTMs are still sampled to generated output yaml files.")
+    parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
