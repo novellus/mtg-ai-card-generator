@@ -930,7 +930,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
         right = 1219
     d.text((right, 1971), text=card['timestamp'], font=font, anchor='rt', fill=(255,255,255,255))
 
-    im_nn_names = render_text_largest_fit(', '.join(card['nns_names']), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
+    im_nn_names = render_text_largest_fit('AIs: ' + ', '.join(card['nns_names']), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
     im_card.alpha_composite(im_nn_names, dest=(100, 2022 - im_nn_names.height // 2))
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
