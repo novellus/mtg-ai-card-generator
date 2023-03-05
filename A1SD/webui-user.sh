@@ -10,9 +10,12 @@
 #clone_dir="stable-diffusion-webui"
 
 # Commandline arguments for webui.py, for example: export COMMANDLINE_ARGS="--medvram --opt-split-attention"
-export COMMANDLINE_ARGS="--api --medvram --theme dark"
+# export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+# export COMMANDLINE_ARGS="--api --medvram --theme dark"
 
+export CUDA_VISIBLE_DEVICES=0
 export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+export COMMANDLINE_ARGS="--api --theme dark --device-id 0"
 
 # python3 executable
 #python_cmd="python3"
