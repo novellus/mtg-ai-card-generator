@@ -25,6 +25,7 @@ from PIL import PngImagePlugin
 # Constants
 ADDRESS_A1SD = 'http://127.0.0.1:7860'
 PATH_A1SD = '../A1SD'
+SD_MODEL = 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]'
 
 
 # fonts assignments are hard to remember
@@ -124,7 +125,7 @@ def start_A1SD_server(verbosity):
     assert A1SD_server_up(verbosity)
 
     # Load desired AI model checkpoint
-    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json={'sd_model_checkpoint': 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]'})
+    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json={'sd_model_checkpoint': SD_MODEL})
     assert response.status_code == 200, response
 
 
@@ -199,6 +200,9 @@ def sample_txt2img(card, cache_path, seed, verbosity):
     #   and is in a format which the AUTOMATIC1111 web server understands, so we're not gonna add random whatevers to it
     response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/png-info', json={"image": "data:image/png;base64," + image_data})
     png_info = response.json()['info']
+
+    # Add model name to png_info
+    png_info += f', Model name: {SD_MODEL}'
 
     # cache image
     encoded_info = PngImagePlugin.PngInfo()
@@ -935,7 +939,8 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
         right = 1219
     d.text((right, 1971), text=card['timestamp'], font=font, anchor='rt', fill=(255,255,255,255))
 
-    im_nn_names = render_text_largest_fit('AIs: ' + ', '.join(card['nns_names']), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
+    model_name = re.search(', Model name: (.+)(?:[\n,]|$)', png_info).group(1)
+    im_nn_names = render_text_largest_fit('AIs: ' + ', '.join(card['nns_names'] + [model_name]), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
     im_card.alpha_composite(im_nn_names, dest=(100, 2022 - im_nn_names.height // 2))
 
     im_brush = Image.open('../image_templates/modular_elements/artistbrush.png')
