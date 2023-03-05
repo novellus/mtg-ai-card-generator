@@ -123,6 +123,10 @@ def start_A1SD_server(verbosity):
 
     assert A1SD_server_up(verbosity)
 
+    # Load desired AI model checkpoint
+    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json={'sd_model_checkpoint': 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]'})
+    assert response.status_code == 200, response
+
 
 def terminate_A1SD_server(verbosity):
     if PROCESS_A1SD is not None:
@@ -156,18 +160,19 @@ def sample_txt2img(card, cache_path, seed, verbosity):
         'prompt': f"{card['name']}, high fantasy",
 
         # try to dissuade the AI from generating images of MTG cards, which adds confusing and undesired text/symbols/frame elements
-        #   its not foolproof, and in practice ~10% make it through anyway, but that's better than 100% without this dissuasion
-        #   There's probably several better ways to approach this?
+        #   There's probably several better ways to approach this? Also these negative embeddings don't work very well, so just don't even use them...
         #   the mtgframe* keywords are embeddings, see https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#textual-inversion
-        'negative_prompt': 'mtgframe5, mtgframe6, mtgframe7, mtgframe8, mtgframe10, mtgframe11, blurry, text',
+        # 'negative_prompt': 'mtgframe5, mtgframe6, mtgframe7, mtgframe8, mtgframe10, mtgframe11, blurry, text',
+        'negative_prompt': 'blurry, text, watermarks, logo, out of frame, extra fingers, mutated hands, monochrome, poorly drawn hands, poorly drawn face, mutation, deformed, ugly, bad anatomy, bad proportions, extra arms, extra limbs, cloned face, glitchy, bokeh',
 
         'steps': 20,
         'batch_size': 1,
         'n_iter': 1,
         'width': 512,
         'height': 512,
-        'sampler_index': 'Euler',  # also available: 'sampler_name'... ?
+        'sampler_index': 'Euler a',  # also available: 'sampler_name'... ?
         'seed': seed,
+        'restore_faces': True,
 
         # render the image orignally at 512x512 since the AI artifacts heavily at any other resolution
         # then use another AI (LDSR) to upscale to 1024x1024
