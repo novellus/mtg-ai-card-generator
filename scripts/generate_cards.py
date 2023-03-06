@@ -181,7 +181,7 @@ def compute_stats(cards, outdir):
     num_sides = 0
 
     # main types only, including an 'Other' key for cards not in any included category
-    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Other':[]}
+    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Scheme':[], 'Contraption':[], 'Other':[]}
 
     for card in cards:
         # aggregate sides for iteration
@@ -241,7 +241,8 @@ def compute_stats(cards, outdir):
                     value += int(sym)
                 else:
                     value += 1
-        mana_value[value].append(card)
+        if value > 0 or 'Land' not in card['type']:  # Don't count Lands as 0 CMC
+            mana_value[value].append(card)
 
         # catagorize by main type
         # this only considers the type field of the card, while the other card attributes may not be consistent with this
