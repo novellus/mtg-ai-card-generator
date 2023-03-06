@@ -26,7 +26,6 @@ from PIL import PngImagePlugin
 # Constants
 ADDRESS_A1SD = 'http://127.0.0.1:7860'
 PATH_A1SD = '../A1SD'
-SD_MODEL = 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]'
 
 
 # fonts assignments are hard to remember
@@ -125,8 +124,11 @@ def start_A1SD_server(verbosity):
 
     assert A1SD_server_up(verbosity)
 
-    # Load desired AI model checkpoint
-    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json={'sd_model_checkpoint': SD_MODEL})
+    # Configure server
+    payload = {'sd_model_checkpoint': 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]',
+               'add_model_name_to_info': True
+              }
+    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json=payload)
     assert response.status_code == 200, response
 
 
@@ -159,7 +161,7 @@ def sample_txt2img(card, cache_path, seed, verbosity):
     #   its outdated, and not all the listed APIs work, but still the best reference I have
 
     payload = {
-        'prompt': f"{card['name']}, high fantasy",
+        'prompt': f"{card['name']}, {card['type']}, high fantasy",
 
         # try to dissuade the AI from generating images of MTG cards, which adds confusing and undesired text/symbols/frame elements
         #   There's probably several better ways to approach this? Also these negative embeddings don't work very well, so just don't even use them...
@@ -201,9 +203,6 @@ def sample_txt2img(card, cache_path, seed, verbosity):
     #   and is in a format which the AUTOMATIC1111 web server understands, so we're not gonna add random whatevers to it
     response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/png-info', json={"image": "data:image/png;base64," + image_data})
     png_info = response.json()['info']
-
-    # Add model name to png_info
-    png_info += f', Model name: {SD_MODEL}'
 
     # cache image
     encoded_info = PngImagePlugin.PngInfo()
@@ -987,12 +986,14 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
         im_repo_info = render_text_largest_fit(repo_info, width, 35, FONT_TITLE, 35, fill=(255,255,255,255))
         im_card.alpha_composite(im_repo_info, dest=(1399 - im_repo_info.width, 2059 - im_repo_info.height // 2))
 
-        # store original card text as serialized string in the png, for easy lookup of hand-modified / original fields later
-        png_info += f'\n{serialized_card}'
 
-        # save image
+        # Configure text info stored in the PNG data fields
+        # store original card text as serialized string in the png, for easy lookup of hand-modified / original fields later        
         encoded_info = PngImagePlugin.PngInfo()
         encoded_info.add_text("parameters", png_info)
+        encoded_info.add_text("card_text", serialized_card)
+
+        # save image
         im_card.save(out_path, pnginfo=encoded_info)
 
     # recurse on sides b-e
