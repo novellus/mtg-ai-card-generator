@@ -126,7 +126,8 @@ def start_A1SD_server(verbosity):
 
     # Configure server
     payload = {'sd_model_checkpoint': 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]',
-               'add_model_name_to_info': True
+               'add_model_name_to_info': True,
+               'face_restoration_model': 'GFPGAN',
               }
     response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json=payload)
     assert response.status_code == 200, response
@@ -142,7 +143,7 @@ def terminate_A1SD_server(verbosity):
         PROCESS_A1SD.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
 
 
-def sample_txt2img(card, cache_path, seed, verbosity):
+def sample_txt2img(card, cache_path, seed, verbosity, hr_upscale=None):
     # start stable-diffusion web server if its not already up
     if not A1SD_server_up(verbosity):
         start_A1SD_server(verbosity)
@@ -167,7 +168,8 @@ def sample_txt2img(card, cache_path, seed, verbosity):
         #   There's probably several better ways to approach this? Also these negative embeddings don't work very well, so just don't even use them...
         #   the mtgframe* keywords are embeddings, see https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#textual-inversion
         # 'negative_prompt': 'mtgframe5, mtgframe6, mtgframe7, mtgframe8, mtgframe10, mtgframe11, blurry, text',
-        'negative_prompt': 'blurry, text, watermarks, logo, out of frame, extra fingers, mutated hands, monochrome, poorly drawn hands, poorly drawn face, mutation, deformed, ugly, bad anatomy, bad proportions, extra arms, extra limbs, cloned face, glitchy, bokeh',
+        # 'negative_prompt': 'blurry, text, watermarks, logo, out of frame, extra fingers, mutated hands, monochrome, poorly drawn hands, poorly drawn face, mutation, deformed, ugly, bad anatomy, bad proportions, extra arms, extra limbs, cloned face, glitchy, bokeh',
+        # With A/B testing, performance of the AI seems to be maximized when negative prompt is not used
 
         'steps': 20,
         'batch_size': 1,
@@ -176,15 +178,20 @@ def sample_txt2img(card, cache_path, seed, verbosity):
         'height': 512,
         'sampler_index': 'Euler a',  # also available: 'sampler_name'... ?
         'seed': seed,
-        'restore_faces': True,
-
-        # render the image orignally at 512x512 since the AI artifacts heavily at any other resolution
-        # then use another AI (LDSR) to upscale to 1024x1024
-        # 'enable_hr': True,
-        # 'hr_scale': 2,
-        # 'hr_upscaler': 'LDSR',
-        # 'denoising_strength': 0.683,  # empirical, subjective, heavily affects quality
+        # 'restore_faces': True,
     }
+
+    if hr_upscale is not None:
+        # render the image orignally at 512x512 since the AI artifacts heavily at any other resolution
+        # then use another AI to upscale to 1024x1024
+        assert hr_upscale > 1, f'invalid hr_upscale {hr_upscale}, must be > 1'
+        payload.update({
+            'enable_hr': True,
+            'hr_scale': hr_upscale,  # eg 2, see argparser
+            'hr_upscaler': 'ESRGAN_4x',
+            'denoising_strength': 0.2,  # empirical, subjective, heavily affects quality. High values introduce artifacts
+            'hr_second_pass_steps': 20,
+        })
 
     # decode the response
     #   we asked a batch processor for a single sample
@@ -195,6 +202,9 @@ def sample_txt2img(card, cache_path, seed, verbosity):
     response = response.json()
     image_data = response['images'][0]
     im = Image.open(io.BytesIO(base64.b64decode(image_data)))
+
+    # clear pipe buffer, OS can block on this being full
+    PROCESS_A1SD.stdout.readlines()
 
     # request png info blob from the server
     #   which gives us enough information about the generated image to regenerate it
@@ -809,7 +819,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None):
+def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None):
     # image sizes and positions are all hard coded magic numbers
     # trash_art_cache causes the renderer to ignore and overwrite any cached art files, making fresh calls to txt2img
     # art_dir may be specified if the renderer is to use a non-default location for the art cache
@@ -874,7 +884,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
                 if verbosity > 2:
                     print(f'Sampling txt2img')
 
-                art, png_info = sample_txt2img(card, cache_path, card['seed'] + card['seed_diff'], verbosity)
+                art, png_info = sample_txt2img(card, cache_path, card['seed'] + card['seed_diff'], verbosity, hr_upscale)
 
             # resize and crop the art to fit in the frame
             art = art.resize((1937, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
@@ -966,7 +976,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
 
         AIs = card['nns_names']
         if not no_art:
-            model_name = re.search(', Model name: (.+)(?:[\n,]|$)', png_info).group(1)
+            model_name = re.search('(, |\n)Model: (.+)?(?:[\n,]|$)', png_info).group(1)
             AIs = AIs + [model_name]
         im_nn_names = render_text_largest_fit('AIs: ' + ', '.join(AIs), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
         im_card.alpha_composite(im_nn_names, dest=(100, 2022 - im_nn_names.height // 2))
@@ -997,13 +1007,13 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
         im_card.save(out_path, pnginfo=encoded_info)
 
     # recurse on sides b-e
-    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
-    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
-    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
-    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity, trash_art_cache, art_dir)
+    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
 
 
-def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_render_all):
+def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_render_all, hr_upscale):
     # renders cards stored in yaml file
 
     # default outdir to yaml location (ie overwrite existing renders)
@@ -1045,7 +1055,7 @@ def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_ren
             if verbosity > 1:
                 print(f'Rendering {i_card + 1} / {len(cards)}')
 
-            render_card(card, outdir, no_art, verbosity, trash_art_cache, art_dir)
+            render_card(card, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
 
         else:
             if verbosity > 1:
@@ -1063,11 +1073,12 @@ if __name__ =='__main__':
     parser.add_argument("--trash_art_cache", action='store_true', help="forces renderer to ignore and overwrite any cached art files, making fresh calls to txt2img."
                                                                        " Normally, the renderer will try to use cached art files, if they exist, to save tremendous amounts of time.")
     parser.add_argument("--force_render_all", action='store_true', help="Renders all cards in the input file. Default state is to only render cards which have '*_override' keys, likely saving tremendous amounts of time.")
+    parser.add_argument("--hr_upscale", type=int, default=None, help="Upscale art by specified factor. Only applies to non-cached art. Seriously increases the processing time as this factor increases. Art is always rendered at 512x512px before upscaling (if any) and then scaled/cropped to fit the card frame. At a value of 2, art will be upscaled to 1024x1024px before fitting to card.")
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
     try:
-        render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all)
+        render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all, args.hr_upscale)
         terminate_A1SD_server(args.verbosity)
     except:
         terminate_A1SD_server(args.verbosity)

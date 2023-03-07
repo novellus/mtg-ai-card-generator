@@ -511,7 +511,7 @@ def main(args):
             if args.verbosity > 2:
                 print(f'Skipping render')
         else:
-            render.render_card(card, args.outdir, args.no_art, args.verbosity)
+            render.render_card(card, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
 
     # save parsed card data for searchable/parsable reference, search, debugging, etc
     # remove the 'a_side' back references because the yaml dump doesn't handle recursion very well
@@ -537,6 +537,7 @@ if __name__ == '__main__':
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
     parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the generation time. Useful for debugging/testing.")
     parser.add_argument("--no_render", action='store_true', help="disables rendering altogether. Superscedes --no_art. Still generates yaml and other optional output files.")
+    parser.add_argument("--hr_upscale", type=int, default=None, help="Upscale art by specified factor. Only applies to non-cached art. Seriously increases the processing time as this factor increases. Art is always rendered at 512x512px before upscaling (if any) and then scaled/cropped to fit the card frame. At a value of 2, art will be upscaled to 1024x1024px before fitting to card.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips rendering existing card files. Note LSTMs are still sampled to generated output yaml files.")
