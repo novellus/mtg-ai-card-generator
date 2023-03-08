@@ -976,7 +976,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
 
         AIs = card['nns_names']
         if not no_art:
-            model_name = re.search('(, |\n)Model: (.+)?(?:[\n,]|$)', png_info).group(1)
+            model_name = re.search('(?:, |\n)Model: (.+?)(?=[\n,]|$)', png_info).group(1)
             AIs = AIs + [model_name]
         im_nn_names = render_text_largest_fit('AIs: ' + ', '.join(AIs), 1299, 35, FONT_TITLE, 35, fill=(255,255,255,255))
         im_card.alpha_composite(im_nn_names, dest=(100, 2022 - im_nn_names.height // 2))
