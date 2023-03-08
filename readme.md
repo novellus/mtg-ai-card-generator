@@ -56,36 +56,45 @@
 
 
 # &#x1F534; TODOs
-* ```render.py```
-    * render legendary frame?
-    * consider upsizing images to 1024x1024 instead of directly using hte 512x512 generated images. This introduces artifacting, which is kinda hard to manage well.
-    * refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
-    * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
-    * decrease save file resolution to limit file size?
 * ```encode.py```
-    * implement ```error_correct_AI``` if needed?
-    * add to ```validate``` if needed?
-    * implement ```limit_to_AI_training_cards```?
-    * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
-* update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
+    * ```validate```
+        * assert assert power and toughness actually has two (arbitrary cause \*'s etc') text fields
+        * validate symbols in main mana cost are all valid
+        * assert stray binary number characters are not present in a field after converting valid binary numbers to decimal
+            * extend this practice to any complexly encoded characters which could be stray
 * finish training the AIs
+    * flavor
+    * names
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
-* for the cube, colin wants 
+* create ```card_sheets.py``` to format cards into sheets for upload to TTS
+    * limit file size to something appropriate for TTS assets (40MB??)
+    * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
+* for the cube, colin wants
     * 50 cards of each individual color
     * 60 multicolor cards
         * roughly even between color combinations
         * mostly 2-color (not 3+ color)
     * 25 colorless artifacts
     * 25 lands
-* create ```card_sheets.py``` to format cards into sheets for upload to TTS
-    * limit file size to something appropriate for TTS assets (40MB??)
-    * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
-* generate additional basic lands with custom / unique art
-    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
-        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
-    * add 2nd ```main_basics``` function for generating these basics
-        * probably add an argument to specify prompt? Or use a standard set?
+    * generate additional unique basic lands with custom / unique art
+        * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
+            * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
+        * add 2nd ```main_basics``` function for generating these basics
+            * probably add an argument to specify prompt? Or use a standard set?
+* low priorty (ie probably never)
+    * ```render.py```
+        * decrease save file resolution to limit file size?
+        * render legendary frame?
+        * refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
+        * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
+    * ```encode.py```
+        * implement ```error_correct_AI``` if needed?
+        * add to ```validate``` if needed?
+        * implement ```limit_to_AI_training_cards```?
+        * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
+    * update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
+
 
 
 # Environment Setup
