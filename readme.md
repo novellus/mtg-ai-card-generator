@@ -137,6 +137,12 @@
         * ```./bootstrap; make; sudo make install```
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- reference https://github.com/nagadomi/distro.git ~/torch --recursive -->
+* llm
+    * ```cd llm```
+    * ```bash setup.sh```
+        * might be able to unpin deepspeed, there was a [bug](https://github.com/huggingface/transformers/issues/24040) (and [this](https://github.com/microsoft/DeepSpeed/issues/3678)) in main branch when I installed it
+    * ```conda run -n llm python download-model.py timdettmers/guanaco-65b-merged``` (~160 GB)
+        * May need to copy tokenizer configs from [here](https://huggingface.co/huggyllama/llama-65b) ([transformers RecursionError](https://github.com/huggingface/transformers/issues/22762))
 * main repo
     * ```sudo apt install expect``` to get unbuffer command
     * Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
