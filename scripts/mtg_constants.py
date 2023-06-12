@@ -259,6 +259,20 @@ MTG_SYMBOL_JSON_TO_AI_FORMAT = {
 }
 MTG_SYMBOL_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_SYMBOL_JSON_TO_AI_FORMAT.items()}
 
+
+# mana_cost_to_human_readable = {'B': 'black',
+#                                'C': 'colorless_only',
+#                                'E': 'energy',
+#                                'G': 'green',
+#                                'P': 'phyrexian',
+#                                'R': 'red',
+#                                'S': 'snow',
+#                                'U': 'blue',
+#                                'W': 'white',
+#                                'X': 'X',
+#                                # '\d': 'colorless',  # handled programatically
+#                               }
+
 def mtg_mana_symbol_valid(s):
     if s in MTG_SYMBOL_JSON_TO_AI_FORMAT:
         return True
