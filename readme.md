@@ -49,6 +49,8 @@
 * [A1SD](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (aka AUTOMATIC1111 webui for stable diffusion)
     * customized install dir, API, and vram usage
     * forced unbuffering to python call for reading server state when called as a subprocess
+* [llm](https://github.com/oobabooga/text-generation-webui)
+    * added ```setup.py```
 * each subtree has a remote under the same name as the directory
 * create remote: ```git remote add -f <name> <url>```
 * add subtree: ```git subtree add --prefix <dir> <remote> <branch> --squash```
