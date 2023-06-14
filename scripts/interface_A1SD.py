@@ -6,6 +6,7 @@ import requests
 import signal
 import subprocess
 import sys
+import time
 
 from PIL import Image
 from PIL import PngImagePlugin
