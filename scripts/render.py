@@ -1,5 +1,4 @@
 import argparse
-import base58
 import copy
 import math
 import os
@@ -812,10 +811,7 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
         right_author = 145 + im_author.width
         im_card.alpha_composite(im_author, dest=(145, 2059 - im_author.height // 2))
 
-        repo_hash = base58.b58encode_int(int(card['repo_hash'], 16))
-        repo_hash = repo_hash[:8]
-        repo_hash = repo_hash.decode('utf-8')
-        repo_info = f"{card['repo_link']} @{repo_hash}"
+        repo_info = f"{card['repo_link']} @{card['repo_hash'][:8]}"
         width = 1399 - right_author - 35  # 35 is arbitrary spacing
         im_repo_info = render_text_largest_fit(repo_info, width, 35, FONT_TITLE, 35, fill=(255,255,255,255))
         im_card.alpha_composite(im_repo_info, dest=(1399 - im_repo_info.width, 2059 - im_repo_info.height // 2))
