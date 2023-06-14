@@ -81,8 +81,11 @@ def start_server(verbosity, model):
         line = PROCESS.stdout.readline()
         if re.search('Running on local URL', line):
             break
+
+        if PROCESS.poll() is not None:
+            raise RuntimeError(f'A1SD server terminated unexpectedly\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}')
     else:
-        raise RuntimeError(f'A1SD server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
+        raise RuntimeError(f'A1SD server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}')
 
     assert server_up(verbosity)
 
@@ -96,6 +99,8 @@ def start_server(verbosity, model):
 
 
 def terminate_server(verbosity):
+    global PROCESS
+
     if PROCESS is not None:
         if verbosity > 1:
             print('Terminating A1SD server')

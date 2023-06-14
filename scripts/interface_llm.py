@@ -47,7 +47,7 @@ def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
         print('Starting llm server (slow)')
 
     PROCESS = subprocess.Popen(f'conda run'
-                                    f' --live-stream'
+                                    f' --no-capture-output'
                                     f' -n llm'
                                     f' deepspeed'
                                          f' --num_gpus=1'
@@ -87,8 +87,11 @@ def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
         line = PROCESS.stdout.readline()
         if re.search('Running on local URL', line):
             break
+
+        if PROCESS.poll() is not None:
+            raise RuntimeError(f'llm server terminated unexpectedly\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}')
     else:
-        raise RuntimeError(f'llm server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
+        raise RuntimeError(f'llm server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}')
 
     assert server_up(verbosity)
     time.sleep(1)
@@ -102,10 +105,17 @@ def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
 
         sample('banana', model, gpu_memory, cpu_memory, -1, verbosity, max_len=2)
 
+        if verbosity > 2:
+            print('Test sample succeeded')
+
     except AssertionError as e:
+        if verbosity > 2:
+            print('Test sample threw AssertionError')
+
         if not re.search('Got empty response from llm', str(e)):
             raise
         elif max_retries <= 0:
+            print('Exceeded max retries for llm server start')
             raise
         else:
             if verbosity > 1:
@@ -117,13 +127,15 @@ def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
 
 
 def terminate_server(verbosity):
+    global PROCESS
+
     if PROCESS is not None:
         if verbosity > 1:
             print('Terminating llm server')
 
         # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
         os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
-        PROCESS.communicate(timeout=30)  # clears pipe buffers, and waits for process to close
+        PROCESS.communicate(timeout=60)  # clears pipe buffers, and waits for process to close
 
         PROCESS = None
 
@@ -154,11 +166,11 @@ def sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity, max_len=75):
 
     response = response.json()
     generated_text = response['results'][0]['text']
-    assert text, f'Got empty response from llm: {response.text}.'
-                 f' This often coincides with the common runtime error where probability tensor contains invalid values,'
-                 f' which is some kind of bug in the llm code or environment setup. '
-                 f' In that case, just kill the server and start it again: might get it to work like 15% of the time.'
-                 f'\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}'
+    assert generated_text, (f'Got empty response from llm: {response}.'
+                            f' This often coincides with the common runtime error where probability tensor contains invalid values,'
+                            f' which is some kind of bug in the llm code or environment setup. '
+                            f' In that case, just kill the server and start it again: might get it to work like 15% of the time.'
+                            f'\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}')
 
     # clear pipe buffer, OS can block on this being full
     PROCESS.stdout.readlines()
@@ -218,11 +230,11 @@ def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosi
             print(f'Caching to {cache_path}')
 
     # sample 
-    prompt = f'### Instruction:\n'
-             f'Write short flavor text for an MTG card named "{card['name']}" with type "{card['type']}".\n\n'  # note two newlines
-             f'### Response:\n'
-             f'Flavor Text:\n'
-             f'"'
+    prompt = (f'### Instruction:\n'
+              f'Write short flavor text for an MTG card named "{card["name"]}" with type "{card["type"]}".\n\n'  # note two newlines
+              f'### Response:\n'
+              f'Flavor Text:\n'
+              f'"')
 
     generated_text = sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity)
 

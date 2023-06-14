@@ -208,10 +208,9 @@ def main(args):
         if args.verbosity > 1:
             print(f'setting seed to {args.seed}')
 
-    # resolve folders to checkpoints
+    # resolve folders to checkpoints, for LSTM networks
     args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
     args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
-    args.flavor_nn = resolve_folder_to_checkpoint_path(args.flavor_nn)
 
     # create / query info text components
     timestamp = datetime.datetime.utcnow().isoformat(sep=' ', timespec='seconds')
@@ -232,12 +231,13 @@ def main(args):
         repo_hash = None
 
     nns_names = []
-    for nn_path in [args.names_nn, args.main_text_nn, args.flavor_nn]:
+    for nn_path in [args.names_nn, args.main_text_nn]:
         head, tail_1 = os.path.split(nn_path)
         _, tail_2 = os.path.split(head)
         tail = os.path.join(tail_2, tail_1)
         name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
         nns_names.append(name)
+    nns_names.append(args.flavor_nn)
 
     # resolve and create outdir
     if not args.resume:
@@ -245,7 +245,7 @@ def main(args):
         args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
         os.makedirs(args.outdir)
 
-    # create cache dir
+    # create cache dirs
     os.makedirs(os.path.join(args.outdir, 'main_text_cache'), exist_ok=True)
     os.makedirs(os.path.join(args.outdir, 'flavor_cache'), exist_ok=True)
 
@@ -253,7 +253,7 @@ def main(args):
         print(f'operating in {args.outdir}')
 
     # generate names, or load cached names file
-    cache_path = os.path.join(args.outdir, 'text_cache', 'names.yaml')
+    cache_path = os.path.join(args.outdir, 'main_text_cache', 'names.yaml')
 
     if os.path.exists(cache_path):
         if args.verbosity > 2:
@@ -463,7 +463,7 @@ if __name__ == '__main__':
     parser.add_argument("--hr_upscale", type=int, default=None, help="Upscale art by specified factor. Only applies to non-cached art. Seriously increases the processing time as this factor increases. Art is always rendered at 512x512px before upscaling (if any) and then scaled/cropped to fit the card frame. At a value of 2, art will be upscaled to 1024x1024px before fitting to card.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
-    parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips rendering existing card files. Note LSTMs are still sampled to generated output yaml files.")
+    parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
