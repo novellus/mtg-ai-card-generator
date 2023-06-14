@@ -104,6 +104,8 @@ def terminate_server(verbosity):
         os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
         PROCESS.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
 
+        PROCESS = None
+
 
 def sample_txt2img(card, model, cache_path, seed, verbosity, hr_upscale=None):
     # start web server if its not already up
