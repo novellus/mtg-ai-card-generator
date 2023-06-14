@@ -13,6 +13,7 @@ import yaml
 import encode
 import render
 import interface_lstm as lstm
+import interface_llm as llm
 
 from collections import defaultdict
 
@@ -181,8 +182,11 @@ def compute_stats(cards, outdir):
 
 
 def main(args):
+    # various AIs are processed one at a time through all cards, 
+    #   to prevent multiple AIs from being loaded in vram at the same time
+    #   since several AIs have very high load times (several minutes), and persist in memory until terminated
+
     # handle resuming after interuption
-    # TODO cache generated text...
     if args.resume is not None:
         assert os.path.exists(args.resume)
         head, tail = os.path.split(args.resume)
@@ -242,7 +246,8 @@ def main(args):
         os.makedirs(args.outdir)
 
     # create cache dir
-    os.makedirs(os.path.join(args.outdir, 'text_cache'), exist_ok=True)
+    os.makedirs(os.path.join(args.outdir, 'main_text_cache'), exist_ok=True)
+    os.makedirs(os.path.join(args.outdir, 'flavor_cache'), exist_ok=True)
 
     if args.verbosity > 1:
         print(f'operating in {args.outdir}')
@@ -285,15 +290,14 @@ def main(args):
     # the LSTM samplers are also a bit biased by the seed, despite being whispered unique names
     seed_diff = 0
 
-    # sample main text and flavor text
-    # then render the cards
+    # sample main text
     for i_card, card in enumerate(cards):
-        cache_path = os.path.join(args.outdir, 'text_cache', f"{i_card:05} {card['name']}.yaml")
+        cache_path = os.path.join(args.outdir, 'main_text_cache', f"{i_card:05} {card['name']}.yaml")
 
         # use cached text file, if any
         if os.path.exists(cache_path):
             if args.verbosity > 2:
-                print(f'Using cached card {i_card + 1} / {args.num_cards}, at {cache_path}')
+                print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
             
             f = open(cache_path)
             card = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -315,13 +319,10 @@ def main(args):
             if 'e_side' in card: seed_diff += 1
 
         else:
-            if args.verbosity > 0:
-                print(f'Generating {i_card + 1} / {args.num_cards}')
-
             # sample main_text AI
             #   which may generate several card sides
-            if args.verbosity > 2:
-                print(f'Sampling main_text')
+            if args.verbosity > 0:
+                print(f'Sampling main_text {i_card + 1} / {args.num_cards}')
 
             card.update(lstm.sample(nn_path = args.main_text_nn,
                                     seed = args.seed + seed_diff,
@@ -336,21 +337,6 @@ def main(args):
 
             def finish_side(side):
                 nonlocal seed_diff
-
-                # sample flavor AI
-                if args.verbosity > 2:
-                    print(f'Sampling flavor')
-
-                side.update(lstm.sample(nn_path = args.flavor_nn,
-                                        seed = args.seed + seed_diff,
-                                        approx_length_per_chunk = lstm.LEN_PER_FLAVOR,
-                                        num_chunks = 1,
-                                        parser = functools.partial(encode.AI_to_internal_format, spec='flavor'),
-                                        whisper_text = f"{side['unparsed_name']}①",
-                                        whisper_every_newline = 1,
-                                        verbosity = args.verbosity,
-                                        gpu = args.lstm_gpu)
-                )
 
                 # add card + generator info text as properties of the card
                 # this enables repeatable rendering from the saved card data
@@ -377,17 +363,64 @@ def main(args):
             # Cache generated card
             # remove 'a_side' back references (see below)
             if args.verbosity > 2:
-                print(f'Caching text to {cache_path}')
+                print(f'Caching main text to {cache_path}')
 
             f = open(cache_path, 'w')
             f.write(yaml.dump(encode.limit_fields(card, blacklist=['a_side'])))
             f.close()
 
-        if args.no_render:
+    # sample flavor text
+    for i_card, card in enumerate(cards):
+        cache_path = os.path.join(args.outdir, 'flavor_cache', f"{i_card:05} {card['name']}.yaml")
+
+        # use cached text file, if any
+        if os.path.exists(cache_path):
             if args.verbosity > 2:
-                print(f'Skipping render')
+                print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
+            
+            f = open(cache_path)
+            cached_flavor = yaml.load(f.read(), Loader=yaml.FullLoader)
+            f.close()
+
+            card['flavor'] = cached_flavor['flavor']
+            if 'b_side' in cached_flavor: card['b_side']['flavor'] = cached_flavor['b_side']['flavor']
+            if 'c_side' in cached_flavor: card['c_side']['flavor'] = cached_flavor['c_side']['flavor']
+            if 'd_side' in cached_flavor: card['d_side']['flavor'] = cached_flavor['d_side']['flavor']
+            if 'e_side' in cached_flavor: card['e_side']['flavor'] = cached_flavor['e_side']['flavor']
+
         else:
-            render.render_card(card, args.sd_nn, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
+            # sample flavor AI for each card side
+            if args.verbosity > 0:
+                print(f'Sampling flavor {i_card + 1} / {args.num_cards} (slow)')
+
+            def finish_side(side):
+                if args.verbosity > 2:
+                    print(f'Sampling flavor')
+
+                side['flavor'] = llm.sample_flavor(card = card,
+                                                   model = args.flavor_nn,
+                                                   gpu_memory = args.gpu_memory,
+                                                   cpu_memory = args.cpu_memory,
+                                                   cache_path = cache_path,
+                                                   seed = args.seed + side['seed_diff'],
+                                                   verbosity = args.verbosity)
+
+            finish_side(card)
+            if 'b_side' in card: finish_side(card['b_side'])
+            if 'c_side' in card: finish_side(card['c_side'])
+            if 'd_side' in card: finish_side(card['d_side'])
+            if 'e_side' in card: finish_side(card['e_side'])
+
+            # Extract and cache flavor text
+            if args.verbosity > 2:
+                print(f'Caching flavor text to {cache_path}')
+
+            f = open(cache_path, 'w')
+            f.write(yaml.dump(encode.limit_fields(card, whitelist=['flavor','b_side', 'c_side', 'd_side', 'e_side'])))
+            f.close()
+
+    # terminate flavor AI to free up vram for later steps
+    llm.terminate_server(args.verbosity)
 
     # save parsed card data for searchable/parsable reference, search, debugging, etc
     # remove the 'a_side' back references because the yaml dump doesn't handle recursion very well
@@ -397,6 +430,17 @@ def main(args):
     f = open(os.path.join(args.outdir, 'card_data.yaml'), 'w')
     f.write(yaml.dump([encode.limit_fields(card, blacklist=['a_side']) for card in cards]))
     f.close()
+
+    # render the cards
+    if args.no_render:
+        if args.verbosity > 2:
+            print(f'Skipping render')
+    else:
+        for card in cards:
+            render.render_card(card, args.sd_nn, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
+
+    # terminate stable diffusion AI to free up vram
+    render.a1sd.terminate_server(args.verbosity)
 
     # statistics over cards
     if not args.no_stats:
@@ -428,8 +472,8 @@ if __name__ == '__main__':
 
     try:
         main(args)
-        render.terminate_A1SD_server(args.verbosity)
     except:
-        render.terminate_A1SD_server(args.verbosity)
+        llm.terminate_server(args.verbosity)
+        render.a1sd.terminate_server(args.verbosity)
         raise
 

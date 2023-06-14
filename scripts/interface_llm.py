@@ -36,7 +36,7 @@ def server_up(verbosity):
 
 
 PROCESS = None  # keep this around so the process can be killed on exit
-def start_server(verbosity, model, gpu_memory, cpu_memory):
+def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
     # starts server and waits for it to be ready before returning
 
     global PROCESS
@@ -44,7 +44,7 @@ def start_server(verbosity, model, gpu_memory, cpu_memory):
         raise RuntimeError(f'llm server should already be running?\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
 
     if verbosity > 1:
-        print('Starting llm server')
+        print('Starting llm server (slow)')
 
     PROCESS = subprocess.Popen(f'conda run'
                                     f' --live-stream'
@@ -91,6 +91,29 @@ def start_server(verbosity, model, gpu_memory, cpu_memory):
         raise RuntimeError(f'llm server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
 
     assert server_up(verbosity)
+    time.sleep(1)
+
+    # check for a common runtime error (empty response) that only shows up when text is generated
+    # note that this sample call should not cause recursion to this function
+    try:
+        # try generating a very short sequence. Length does not matter since the error shows up before any tokens are generated
+        if verbosity > 2:
+            print(f'Attempting llm test sample, at max_retries = {max_retries}')
+
+        sample('banana', model, gpu_memory, cpu_memory, -1, verbosity, max_len=2)
+
+    except AssertionError as e:
+        if not re.search('Got empty response from llm', str(e)):
+            raise
+        elif max_retries <= 0:
+            raise
+        else:
+            if verbosity > 1:
+                print('llm server failed to sample, restarting it')
+            if verbosity > 2:
+                print(str(e))
+            terminate_server(verbosity)
+            start_server(verbosity, model, gpu_memory, cpu_memory, max_retries - 1)
 
 
 def terminate_server(verbosity):
@@ -102,21 +125,14 @@ def terminate_server(verbosity):
         os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
         PROCESS.communicate(timeout=30)  # clears pipe buffers, and waits for process to close
 
+        PROCESS = None
 
-def sample(prompt, model, gpu_memory, cpu_memory, cache_path, seed, verbosity, max_len=100):
+
+def sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity, max_len=75):
     # start web server if its not already up
     # Note this will not adjust the model (costly) if the server was started with a different model than currently requested
     if not server_up(verbosity):
         start_server(verbosity, model, gpu_memory, cpu_memory)
-
-    # remove cached file if it already exists
-    if os.path.exists(cache_path):
-        os.remove(cache_path)
-        if verbosity > 2:
-            print(f'Overwriting {cache_path}')
-    else:
-        if verbosity > 2:
-            print(f'Caching to {cache_path}')
 
     # execute API call
     # see these addresses for API. I couldn't find proper docs.
@@ -130,28 +146,6 @@ def sample(prompt, model, gpu_memory, cpu_memory, cache_path, seed, verbosity, m
         'do_sample': True,
         'temperature': 0.7,
         'top_p': 0.9,
-
-        # 'typical_p': 1,
-        # 'epsilon_cutoff': 0,  # In units of 1e-4
-        # 'eta_cutoff': 0,  # In units of 1e-4
-        # 'tfs': 1,
-        # 'top_a': 0,
-        # 'repetition_penalty': 1.18,
-        # 'top_k': 40,
-        # 'min_length': 0,
-        # 'no_repeat_ngram_size': 0,
-        # 'num_beams': 1,
-        # 'penalty_alpha': 0,
-        # 'length_penalty': 1,
-        # 'early_stopping': False,
-        # 'mirostat_mode': 0,
-        # 'mirostat_tau': 5,
-        # 'mirostat_eta': 0.1,
-        # 'add_bos_token': True,
-        # 'truncation_length': 2048,
-        # 'ban_eos_token': False,
-        # 'skip_special_tokens': True,
-        # 'stopping_strings': []
     }
 
     # decode the response
@@ -169,16 +163,12 @@ def sample(prompt, model, gpu_memory, cpu_memory, cache_path, seed, verbosity, m
     # clear pipe buffer, OS can block on this being full
     PROCESS.stdout.readlines()
 
-    # cache text
-    f = open(cache_path, 'w')
-    f.write(generated_text)
-    f.close()
-
     return generated_text
 
 
 def trim_unfinished_sentences(s):
     # sample len is limited, so it can cut off in the middle of a sentence
+    #   I'd rather trim those extra bits than try to finish them, since max len is due to high generatation time costs
     # can't quite use nltk tokenizer directly to determine if a trailing sentence is present
     #   because the function text_contains_sentbreak specifically ignores the last token
     #   And also because I want to preserve whitespace in sentence recombination
@@ -215,7 +205,36 @@ def trim_unfinished_sentences(s):
         return s[:trim_index]
 
 
-def parse_flavor(s):
-    # TODO
-    pass
+def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosity):
+    # handles file caching, prompting and sampling the llm based on card data, and processing the sampled data
+    
+    # remove cached file if it already exists
+    if os.path.exists(cache_path):
+        os.remove(cache_path)
+        if verbosity > 2:
+            print(f'Overwriting {cache_path}')
+    else:
+        if verbosity > 2:
+            print(f'Caching to {cache_path}')
+
+    # sample 
+    prompt = f'### Instruction:\n'
+             f'Write short flavor text for an MTG card named "{card['name']}" with type "{card['type']}".\n\n'  # note two newlines
+             f'### Response:\n'
+             f'Flavor Text:\n'
+             f'"'
+
+    generated_text = sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity)
+
+    # trim response to earliest double quote, if any, not including the quote
+    generated_text = re.sub('".*$', '', generated_text)
+
+    generated_text = trim_unfinished_sentences(generated_text)
+
+    # cache text
+    f = open(cache_path, 'w')
+    f.write(generated_text)
+    f.close()
+
+    return generated_text
 
