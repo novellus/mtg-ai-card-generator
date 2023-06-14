@@ -387,7 +387,7 @@ def main(args):
             if args.verbosity > 2:
                 print(f'Skipping render')
         else:
-            render.render_card(card, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
+            render.render_card(card, args.sd_nn, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
 
     # save parsed card data for searchable/parsable reference, search, debugging, etc
     # remove the 'a_side' back references because the yaml dump doesn't handle recursion very well
@@ -407,7 +407,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--names_nn", type=str, help="path to names nn checkpoint, or path to folder with checkpoints (uses longest trained)")
     parser.add_argument("--main_text_nn", type=str, help="path to main_text nn checkpoint, or path to folder with checkpoints (uses longest trained)")
-    parser.add_argument("--flavor_nn", type=str, help="path to flavor nn checkpoint, or path to folder with checkpoints (uses longest trained)")
+    parser.add_argument("--flavor_nn", type=str, help="name of flavor llm, in style recognized by text-generation-webui (eg \"timdettmers_guanaco-65b-merged\")")
+    parser.add_argument("--sd_nn", default=None, type=str, help="name of stable diffusion model, in style recognized by stable-diffusion-webui (eg \"nov_mtg_art_v2_3.ckpt [76fcbf0ef5]\")")
+    parser.add_argument("--gpu-memory", type=int, help="passed to text-generation-webui for llm server memory limits. Does not apply to other nns. See text-generation-webui docs for more info.")
+    parser.add_argument("--cpu-memory", type=int, help="passed to text-generation-webui for llm server memory limits. Does not apply to other nns. See text-generation-webui docs for more info.")
     parser.add_argument("--outdir", type=str, help="path to outdir. Files are saved in a subdirectory based on seed")
     parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
@@ -420,6 +423,8 @@ if __name__ == '__main__':
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
+
+    assert args.sd_nn or args.no_art, "must specify either the stable diffusion model, or --no_art flag"
 
     try:
         main(args)

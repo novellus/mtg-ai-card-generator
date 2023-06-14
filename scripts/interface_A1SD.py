@@ -12,24 +12,24 @@ from PIL import PngImagePlugin
 
 
 # Constants
-ADDRESS_A1SD = 'http://127.0.0.1:7860'
-PATH_A1SD = '../A1SD'
+ADDRESS = 'http://127.0.0.1:7860'
+PATH = '../A1SD'
 
 
 def handle_sigint(signum, frame):
-    # gracefull kill the A1SD server before exiting
+    # gracefull kill the server before exiting
     terminate_server(float('inf'))  # use infinite verbosity, since user ctrl+c'd
     sys.exit(0)
 signal.signal(signal.SIGINT, handle_sigint)
 
 
 def server_up(verbosity):
-    # make an arbitrary API call toe check if the server is up
-    # we make this check instead of checking PROCESS_A1SD object incase
+    # make an arbitrary API call to check if the server is up
+    # we make this check instead of checking PROCESS object incase
     #   the server has failed, started with incorrect arguments, code error, server was started outside of this program, etc
 
     try:
-        requests.get(f'{ADDRESS_A1SD}/sdapi/v1/embeddings')
+        requests.get(f'{ADDRESS}/sdapi/v1/embeddings')
         if verbosity > 2:
             print('A1SD server is up')
         return True
@@ -39,25 +39,25 @@ def server_up(verbosity):
         return False
 
 
-PROCESS_A1SD = None  # keep this around so the process can be killed on exit
-def start_server(verbosity):
+PROCESS = None  # keep this around so the process can be killed on exit
+def start_server(verbosity, model):
     # starts server and waits for it to be ready before returning
 
-    global PROCESS_A1SD
-    if PROCESS_A1SD is not None:
-        raise RuntimeError(f'A1SD server should already be running?\n\tPID: {PROCESS_A1SD.pid}\n\tpoll: {PROCESS_A1SD.poll()}')
+    global PROCESS
+    if PROCESS is not None:
+        raise RuntimeError(f'A1SD server should already be running?\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
 
     if verbosity > 1:
         print('Starting A1SD server')
 
-    PROCESS_A1SD = subprocess.Popen('bash webui.sh',
-                                    shell=True,
-                                    bufsize=1,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT,
-                                    encoding='utf-8',
-                                    start_new_session=True,  # enables killing all spawned processes as a group
-                                    cwd=PATH_A1SD)
+    PROCESS = subprocess.Popen('bash webui.sh',
+                                shell=True,
+                                bufsize=1,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                encoding='utf-8',
+                                start_new_session=True,  # enables killing all spawned processes as a group
+                                cwd=PATH)
 
     # wait for the server to startup to a ready state
     #   check for server to print its ready state to console
@@ -72,43 +72,44 @@ def start_server(verbosity):
     #   while readline() will just return an empty string when the stream is empty
     #   empty stream behavior plus line buffering makes readline the obvious preference here
     # Finally, the stream has no way to tell if it has data, so just read one line at a time at fixed frequency
-    os.set_blocking(PROCESS_A1SD.stdout.fileno(), False)
+    os.set_blocking(PROCESS.stdout.fileno(), False)
 
     startup_timeout = 60  # seconds
     poll_frequency = 10  # Hz
     for i in range(startup_timeout * poll_frequency):
         time.sleep(1 / poll_frequency)
-        line = PROCESS_A1SD.stdout.readline()
+        line = PROCESS.stdout.readline()
         if re.search('Running on local URL', line):
             break
     else:
-        raise RuntimeError(f'A1SD server startup timed-out\n\tPID: {PROCESS_A1SD.pid}\n\tpoll: {PROCESS_A1SD.poll()}')
+        raise RuntimeError(f'A1SD server startup timed-out\n\tPID: {PROCESS.pid}\n\tpoll: {PROCESS.poll()}')
 
     assert server_up(verbosity)
 
     # Configure server
-    payload = {'sd_model_checkpoint': 'nov_mtg_art_v2_3.ckpt [76fcbf0ef5]',
+    payload = {'sd_model_checkpoint': model,
                'add_model_name_to_info': True,
                'face_restoration_model': 'GFPGAN',
               }
-    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/options', json=payload)
+    response = requests.post(f'{ADDRESS}/sdapi/v1/options', json=payload)
     assert response.status_code == 200, response
 
 
 def terminate_server(verbosity):
-    if PROCESS_A1SD is not None:
+    if PROCESS is not None:
         if verbosity > 1:
             print('Terminating A1SD server')
 
         # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
-        os.killpg(os.getpgid(PROCESS_A1SD.pid), signal.SIGTERM)
-        PROCESS_A1SD.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
+        os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
+        PROCESS.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
 
 
-def sample_txt2img(card, cache_path, seed, verbosity, hr_upscale=None):
-    # start stable-diffusion web server if its not already up
+def sample_txt2img(card, model, cache_path, seed, verbosity, hr_upscale=None):
+    # start web server if its not already up
+    # Note this will not adjust the model (costly) if the server was started with a different model than currently requested
     if not server_up(verbosity):
-        start_server(verbosity)
+        start_server(verbosity, model)
 
     # remove cached file if it already exists
     if os.path.exists(cache_path):
@@ -120,7 +121,7 @@ def sample_txt2img(card, cache_path, seed, verbosity, hr_upscale=None):
             print(f'Caching image file to {cache_path}')
 
     # execute txt2img
-    # see f'{ADDRESS_A1SD}/docs' for API description
+    # see f'{ADDRESS}/docs' for API description
     #   its outdated, and not all the listed APIs work, but still the best reference I have
 
     payload = {
@@ -158,22 +159,22 @@ def sample_txt2img(card, cache_path, seed, verbosity, hr_upscale=None):
     # decode the response
     #   we asked a batch processor for a single sample
     #   image data is base64 ascii-encoded
-    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/txt2img', json=payload)
-    assert response.status_code != 500, f'500 status code: frequently means out of memory error\n{time.sleep(1) or ""}{"".join(PROCESS_A1SD.stdout.readlines())}'
+    response = requests.post(f'{ADDRESS}/sdapi/v1/txt2img', json=payload)
+    assert response.status_code != 500, f'500 status code: frequently means out of memory error\n{time.sleep(1) or ""}{"".join(PROCESS.stdout.readlines())}'
 
     response = response.json()
     image_data = response['images'][0]
     im = Image.open(io.BytesIO(base64.b64decode(image_data)))
 
     # clear pipe buffer, OS can block on this being full
-    PROCESS_A1SD.stdout.readlines()
+    PROCESS.stdout.readlines()
 
     # request png info blob from the server
     #   which gives us enough information about the generated image to regenerate it
     #   ie: all txt2img input parameters, including those which have default values and are not specified here
     # This info blob will be saved as part of the image data
     #   and is in a format which the AUTOMATIC1111 web server understands, so we're not gonna add random whatevers to it
-    response = requests.post(f'{ADDRESS_A1SD}/sdapi/v1/png-info', json={"image": "data:image/png;base64," + image_data})
+    response = requests.post(f'{ADDRESS}/sdapi/v1/png-info', json={"image": "data:image/png;base64," + image_data})
     png_info = response.json()['info']
 
     # cache image

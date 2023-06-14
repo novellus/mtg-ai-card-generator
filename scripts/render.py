@@ -643,7 +643,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None):
+def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None):
     # image sizes and positions are all hard coded magic numbers
     # trash_art_cache causes the renderer to ignore and overwrite any cached art files, making fresh calls to txt2img
     # art_dir may be specified if the renderer is to use a non-default location for the art cache
@@ -708,7 +708,7 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
                 if verbosity > 2:
                     print(f'Sampling txt2img')
 
-                art, png_info = a1sd.sample_txt2img(card, cache_path, card['seed'] + card['seed_diff'], verbosity, hr_upscale)
+                art, png_info = a1sd.sample_txt2img(card, sd_nn, cache_path, card['seed'] + card['seed_diff'], verbosity, hr_upscale)
 
             # resize and crop the art to fit in the frame
             art = art.resize((1937, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension
@@ -831,13 +831,13 @@ def render_card(card, outdir, no_art, verbosity, trash_art_cache=False, art_dir=
         im_card.save(out_path, pnginfo=encoded_info)
 
     # recurse on sides b-e
-    if 'b_side' in card: render_card(card['b_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'c_side' in card: render_card(card['c_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'd_side' in card: render_card(card['d_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'e_side' in card: render_card(card['e_side'], outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'b_side' in card: render_card(card['b_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'c_side' in card: render_card(card['c_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'd_side' in card: render_card(card['d_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'e_side' in card: render_card(card['e_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
 
 
-def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_render_all, hr_upscale):
+def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, force_render_all, hr_upscale):
     # renders cards stored in yaml file
 
     # default outdir to yaml location (ie overwrite existing renders)
@@ -879,7 +879,7 @@ def render_yaml(yaml_path, outdir, no_art, verbosity, trash_art_cache, force_ren
             if verbosity > 1:
                 print(f'Rendering {i_card + 1} / {len(cards)}')
 
-            render_card(card, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+            render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
 
         else:
             if verbosity > 1:
@@ -892,6 +892,7 @@ if __name__ =='__main__':
                                                                     " Resolves '*_override' keys in cards as overrides for default fields."
                                                                     " These are probably written by hand, if they exist,"
                                                                     " allowing you to retain both the original text and the hand-modified versions side-by-side.")
+    parser.add_argument("--sd_nn", default=None, type=str, help="name of stable diffusion model, in style recognized by stable-diffusion-webui (eg \"nov_mtg_art_v2_3.ckpt [76fcbf0ef5]\")")
     parser.add_argument("--outdir", default=None, type=str, help="path to outdir. Files are saved directly in this folder. Defaults to same directory as yaml_path.")
     parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the render time. Useful for debugging/testing.")
     parser.add_argument("--trash_art_cache", action='store_true', help="forces renderer to ignore and overwrite any cached art files, making fresh calls to txt2img."
@@ -901,8 +902,10 @@ if __name__ =='__main__':
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
+    assert args.sd_nn or args.no_art, "must specify either the stable diffusion model, or --no_art flag"
+
     try:
-        render_yaml(args.yaml_path, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all, args.hr_upscale)
+        render_yaml(args.yaml_path, args.sd_nn, args.outdir, args.no_art, args.verbosity, args.trash_art_cache, args.force_render_all, args.hr_upscale)
         a1sd.terminate_server(args.verbosity)
     except:
         a1sd.terminate_server(args.verbosity)
