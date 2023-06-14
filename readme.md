@@ -151,6 +151,9 @@
     * ```sudo apt install expect``` to get unbuffer command
     * Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
     * ```conda env create -f environment.yaml```
+    * download ```nltk``` language files
+        * ```cd ~/nltk_data```
+        * ```python -c "import nltk; nltk.download('punkt')"```
     * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
         * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
         * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```

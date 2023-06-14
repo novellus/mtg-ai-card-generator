@@ -12,3 +12,4 @@ dependencies:
     - tabulate==0.9.0
     - titlecase==2.4
     - requests==2.28.1
+    - nltk==3.7

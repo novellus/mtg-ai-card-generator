@@ -1,3 +1,4 @@
+import nltk
 import os
 import re
 import requests
@@ -102,7 +103,7 @@ def terminate_server(verbosity):
         PROCESS.communicate(timeout=30)  # clears pipe buffers, and waits for process to close
 
 
-def sample(prompt, model, gpu_memory, cpu_memory, max_len, cache_path, seed, verbosity):
+def sample(prompt, model, gpu_memory, cpu_memory, cache_path, seed, verbosity, max_len=100):
     # start web server if its not already up
     # Note this will not adjust the model (costly) if the server was started with a different model than currently requested
     if not server_up(verbosity):
@@ -174,4 +175,47 @@ def sample(prompt, model, gpu_memory, cpu_memory, max_len, cache_path, seed, ver
     f.close()
 
     return generated_text
+
+
+def trim_unfinished_sentences(s):
+    # sample len is limited, so it can cut off in the middle of a sentence
+    # can't quite use nltk tokenizer directly to determine if a trailing sentence is present
+    #   because the function text_contains_sentbreak specifically ignores the last token
+    #   And also because I want to preserve whitespace in sentence recombination
+    #   So we will instantiate our own tokenizer, and implement our own sentbreak search
+    # See nltk implementations here, which we largely copy until the last small modification
+    #   https://www.nltk.org/_modules/nltk/tokenize.html#sent_tokenize
+    #   https://www.nltk.org/_modules/nltk/tokenize/punkt.html#PunktSentenceTokenizer.tokenize
+    #   https://www.nltk.org/_modules/nltk/tokenize/punkt.html#PunktSentenceTokenizer.sentences_from_text
+    #   https://www.nltk.org/_modules/nltk/tokenize/punkt.html#PunktSentenceTokenizer.text_contains_sentbreak
+
+    tokenizer = nltk.data.load(f"tokenizers/punkt/english.pickle")
+    indices = list(tokenizer.span_tokenize(s))  # start/stop tuples for sentence boundaries
+
+    # don't trim the text to nothing, even if the sentence doesn't terminate
+    if len(indices) <= 1:
+        return s
+
+    # collect indices into s indicating the last and 2nd to last sentence boundaries
+    trim_index = indices[-2][1]  # end of 2nd to last sentence, which is not equal to the next line
+    last_sent_index = indices[-1][0]  # beginning of last sentence
+
+    # check if last sentence terminates
+    last_sent = s[last_sent_index:]
+    annot = list(tokenizer._annotate_tokens(tokenizer._tokenize_words(last_sent)))
+    last_token = annot[-1]
+    
+    if last_token.sentbreak:
+        # last sentence terminates, do not modify the input
+        return s
+
+    else:
+        # trailing sentence should be trimmed
+        # preserving whitespace between sentences from the input string, in case its in haiku form or something
+        return s[:trim_index]
+
+
+def parse_flavor(s):
+    # TODO
+    pass
 
