@@ -60,12 +60,6 @@
 
 # &#x1F534; TODOs
 * update raw mtg data assets from summer 2023 release, and retrain new name and main text AIs on this dataset
-* ```encode.py```
-    * ```validate```
-        * assert assert power and toughness actually has two (arbitrary cause \*'s etc') text fields
-        * validate symbols in main mana cost are all valid
-        * assert stray binary number characters are not present in a field after converting valid binary numbers to decimal
-            * extend this practice to any complexly encoded characters which could be stray
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```

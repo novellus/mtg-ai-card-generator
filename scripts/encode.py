@@ -590,11 +590,12 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
         regex = r'(\S*)%'
         subs = re.findall(regex, card['main_text'])
+        orig_main_text = card['main_text']  # only used for error reporting
         card['main_text'] = re.sub(regex, reserved_char, card['main_text'])
         counter_type = None
         for new_type in subs:
             counter_type = new_type or counter_type
-            assert counter_type is not None, card['main_text']  # don't let the AI not label the first counter
+            assert counter_type is not None, 'counter type not defined: ' + orig_main_text  # don't let the AI not label the first counter
             card['main_text'] = card['main_text'].replace(reserved_char, f'{counter_type} counter', 1)
 
     # decode symbols (including mana, excepting numerical)
@@ -688,11 +689,24 @@ def validate(card):
     # should not raise error for all canonical cards, but may raise errors for AI generated cards
     # TODO ?
 
+    # check that no lingering special characters remain after conversion from the AI format
+    # this can occur with complex tokens if say the leading encoding term is missing
+    for field in ['cost', 'loyalty', 'main_text', 'type', 'name', 'power_toughness', 'rarity']:
+        if field in card and card[field] is not None:
+            for c in '␥①②③④⑤⑥↵%⓿≙≚⓪∓⊖⊕@∫∬∭∮∯∰ⒶⒷⒸⒺⒼⒽⓀⓁⓃⓄⓅⓠⓇⓈⓉⓊⓌⓍⓎⓏ⓶\u2014':
+                assert c not in card[field], f'field not suffiently decoded, found stray special characters "{c}" from AI encoding: "{card[field]}"'
+
     # check that all mana costs are recognized
     for field in ['cost', 'main_text']:
         if field in card and card[field] is not None:
             for s in re.findall(r'\{[^\}\{]*\}', card[field]):
                 assert mtg_mana_symbol_valid(s), f'invalid mana cost "{s}"'
+
+    # check that power/toughness field has exactly two values
+    # can't validate data types of these fields, since some arbitrary text is allowed in special cases
+    if 'power_toughness' in card and card['power_toughness'] is not None:
+        c = card['power_toughness'].count('/')
+        assert c == 1, f'invalid number of "/" in power toughness field, expected exactly 1, found {c}: "{card["power_toughness"]}"'
 
     # assert we have no nested b-e sides
     #   ie max depth 2, including root node
