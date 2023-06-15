@@ -458,7 +458,7 @@ def render_complex_text(text, max_width, font_path, font_size, long_token_mode=F
 
     # finally, render all lines together
     height = vertical_kerning * len(rendered_lines)
-    width = max([x.width for x in rendered_lines if x is not None])
+    width = max([x.width for x in rendered_lines if x is not None] or [0])
     multiline = Image.new(mode='RGBA', size=(width, height))
     for i_im, im in enumerate(rendered_lines):
         if im is not None:  # None => blank line

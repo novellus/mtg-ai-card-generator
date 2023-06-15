@@ -370,54 +370,66 @@ def main(args):
             f.close()
 
     # sample flavor text
-    for i_card, card in enumerate(cards):
-        cache_path = os.path.join(args.outdir, 'flavor_cache', f"{i_card:05} {card['name']}.yaml")
+    if args.no_flavor:
+        if args.verbosity > 2:
+            print(f'Skipping flavor')
 
-        # use cached text file, if any
-        if os.path.exists(cache_path):
-            if args.verbosity > 2:
-                print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
-            
-            f = open(cache_path)
-            cached_flavor = yaml.load(f.read(), Loader=yaml.FullLoader)
-            f.close()
+        for i_card, card in enumerate(cards):
+            card['flavor'] = ''
+            if 'b_side' in card: card['b_side']['flavor'] = ''
+            if 'c_side' in card: card['c_side']['flavor'] = ''
+            if 'd_side' in card: card['d_side']['flavor'] = ''
+            if 'e_side' in card: card['e_side']['flavor'] = ''
 
-            card['flavor'] = cached_flavor['flavor']
-            if 'b_side' in cached_flavor: card['b_side']['flavor'] = cached_flavor['b_side']['flavor']
-            if 'c_side' in cached_flavor: card['c_side']['flavor'] = cached_flavor['c_side']['flavor']
-            if 'd_side' in cached_flavor: card['d_side']['flavor'] = cached_flavor['d_side']['flavor']
-            if 'e_side' in cached_flavor: card['e_side']['flavor'] = cached_flavor['e_side']['flavor']
+    else:
+        for i_card, card in enumerate(cards):
+            cache_path = os.path.join(args.outdir, 'flavor_cache', f"{i_card:05} {card['name']}.yaml")
 
-        else:
-            # sample flavor AI for each card side
-            if args.verbosity > 0:
-                print(f'Sampling flavor {i_card + 1} / {args.num_cards} (slow)')
-
-            def finish_side(side):
+            # use cached text file, if any
+            if os.path.exists(cache_path):
                 if args.verbosity > 2:
-                    print(f'Sampling flavor')
+                    print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
+                
+                f = open(cache_path)
+                cached_flavor = yaml.load(f.read(), Loader=yaml.FullLoader)
+                f.close()
 
-                side['flavor'] = llm.sample_flavor(card = card,
-                                                   model = args.flavor_nn,
-                                                   gpu_memory = args.gpu_memory,
-                                                   cpu_memory = args.cpu_memory,
-                                                   cache_path = cache_path,
-                                                   seed = args.seed + side['seed_diff'],
-                                                   verbosity = args.verbosity)
+                card['flavor'] = cached_flavor['flavor']
+                if 'b_side' in cached_flavor: card['b_side']['flavor'] = cached_flavor['b_side']['flavor']
+                if 'c_side' in cached_flavor: card['c_side']['flavor'] = cached_flavor['c_side']['flavor']
+                if 'd_side' in cached_flavor: card['d_side']['flavor'] = cached_flavor['d_side']['flavor']
+                if 'e_side' in cached_flavor: card['e_side']['flavor'] = cached_flavor['e_side']['flavor']
 
-            finish_side(card)
-            if 'b_side' in card: finish_side(card['b_side'])
-            if 'c_side' in card: finish_side(card['c_side'])
-            if 'd_side' in card: finish_side(card['d_side'])
-            if 'e_side' in card: finish_side(card['e_side'])
+            else:
+                # sample flavor AI for each card side
+                if args.verbosity > 0:
+                    print(f'Sampling flavor {i_card + 1} / {args.num_cards} (slow)')
 
-            # Extract and cache flavor text
-            if args.verbosity > 2:
-                print(f'Caching flavor text to {cache_path}')
+                def finish_side(side):
+                    if args.verbosity > 2:
+                        print(f'Sampling flavor')
 
-            f = open(cache_path, 'w')
-            f.write(yaml.dump(encode.limit_fields(card, whitelist=['flavor','b_side', 'c_side', 'd_side', 'e_side'])))
-            f.close()
+                    side['flavor'] = llm.sample_flavor(card = card,
+                                                       model = args.flavor_nn,
+                                                       gpu_memory = args.gpu_memory,
+                                                       cpu_memory = args.cpu_memory,
+                                                       cache_path = cache_path,
+                                                       seed = args.seed + side['seed_diff'],
+                                                       verbosity = args.verbosity)
+
+                finish_side(card)
+                if 'b_side' in card: finish_side(card['b_side'])
+                if 'c_side' in card: finish_side(card['c_side'])
+                if 'd_side' in card: finish_side(card['d_side'])
+                if 'e_side' in card: finish_side(card['e_side'])
+
+                # Extract and cache flavor text
+                if args.verbosity > 2:
+                    print(f'Caching flavor text to {cache_path}')
+
+                f = open(cache_path, 'w')
+                f.write(yaml.dump(encode.limit_fields(card, whitelist=['flavor','b_side', 'c_side', 'd_side', 'e_side'])))
+                f.close()
 
     # terminate flavor AI to free up vram for later steps
     llm.terminate_server(args.verbosity)
@@ -458,7 +470,8 @@ if __name__ == '__main__':
     parser.add_argument("--outdir", type=str, help="path to outdir. Files are saved in a subdirectory based on seed")
     parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
-    parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the generation time. Useful for debugging/testing.")
+    parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies a large portion of the generation time. Useful for debugging/testing.")
+    parser.add_argument("--no_flavor", action='store_true', help="disable flavor generation, which occupies most of the generation time. Useful for debugging/testing.")
     parser.add_argument("--no_render", action='store_true', help="disables rendering altogether. Superscedes --no_art. Still generates yaml and other optional output files.")
     parser.add_argument("--hr_upscale", type=int, default=None, help="Upscale art by specified factor. Only applies to non-cached art. Seriously increases the processing time as this factor increases. Art is always rendered at 512x512px before upscaling (if any) and then scaled/cropped to fit the card frame. At a value of 2, art will be upscaled to 1024x1024px before fitting to card.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
