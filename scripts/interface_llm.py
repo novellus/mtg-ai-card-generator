@@ -219,6 +219,7 @@ def trim_unfinished_sentences(s):
 
 def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosity):
     # handles file caching, prompting and sampling the llm based on card data, and processing the sampled data
+    # tries to handle corner cases in the AI outputs where it behaves unexpectedly, but probs doesn't catch them all
     
     # remove cached file if it already exists
     if os.path.exists(cache_path):
@@ -242,10 +243,14 @@ def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosi
     #   it likes to repeat the card name in double quotes, add some blank lines, and then print the flavor text
     generated_text = re.sub(rf'^{card["name"]}"\s*', '', generated_text)
 
+    # remove extra '###' commands present in AI output
+    generated_text = re.sub('[\'"]*###.*$', '', generated_text, flags = re.DOTALL)
+
     # trim response to earliest double quote, if any, not including the quote
     generated_text = re.sub('".*$', '', generated_text, flags = re.DOTALL)
 
     generated_text = trim_unfinished_sentences(generated_text)
+    generated_text = generated_text.strip()
 
     # cache text
     f = open(cache_path, 'w')
