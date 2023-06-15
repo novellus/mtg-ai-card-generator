@@ -243,9 +243,6 @@ def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosi
     #   it likes to repeat the card name in double quotes, add some blank lines, and then print the flavor text
     generated_text = re.sub(rf'^{card["name"]}"\s*', '', generated_text)
 
-    # remove extra '###' commands present in AI output
-    generated_text = re.sub('[\'"]*###.*$', '', generated_text, flags = re.DOTALL)
-
     # trim response to earliest double quote, if any, not including the quote
     generated_text = re.sub('".*$', '', generated_text, flags = re.DOTALL)
 
