@@ -133,7 +133,7 @@ def sample_txt2img(card, model, cache_path, seed, verbosity, hr_upscale=None):
     #   its outdated, and not all the listed APIs work, but still the best reference I have
 
     payload = {
-        'prompt': f"{card['name']}, {card['type']}, high fantasy",
+        'prompt': f"{card['name']}, {card['type']}, high fantasy, {card['flavor']}",
 
         # try to dissuade the AI from generating images of MTG cards, which adds confusing and undesired text/symbols/frame elements
         #   There's probably several better ways to approach this? Also these negative embeddings don't work very well, so just don't even use them...
