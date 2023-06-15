@@ -59,7 +59,7 @@
 
 
 # &#x1F534; TODOs
-* finish training the name AI
+* update raw mtg data assets from summer 2023 release, and retrain new name and main text AIs on this dataset
 * ```encode.py```
     * ```validate```
         * assert assert power and toughness actually has two (arbitrary cause \*'s etc') text fields
