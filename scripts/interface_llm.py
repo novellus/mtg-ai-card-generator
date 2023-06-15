@@ -238,8 +238,12 @@ def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosi
 
     generated_text = sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity)
 
+    # fix an occasional formatting oddity from the AI where
+    #   it likes to repeat the card name in double quotes, add some blank lines, and then print the flavor text
+    generated_text = re.sub(rf'^{card["name"]}"\s*', '', generated_text)
+
     # trim response to earliest double quote, if any, not including the quote
-    generated_text = re.sub('".*$', '', generated_text)
+    generated_text = re.sub('".*$', '', generated_text, flags = re.DOTALL)
 
     generated_text = trim_unfinished_sentences(generated_text)
 
