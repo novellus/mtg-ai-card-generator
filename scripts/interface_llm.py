@@ -106,7 +106,7 @@ def start_server(verbosity, model, gpu_memory, cpu_memory, max_retries=10):
         sample('banana', model, gpu_memory, cpu_memory, -1, verbosity, max_len=2)
 
         if verbosity > 2:
-            print('Test sample succeeded')
+            print('Test sample succeeded, server started up successfully, yielding to sampler')
 
     except AssertionError as e:
         if verbosity > 2:
