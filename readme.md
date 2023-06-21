@@ -1,5 +1,10 @@
 # Project Overview
-* Autogenerates MTG cards
+* Autogenerates MTG cards end-to-end using AIs to write fields and create art.
+* ```scripts/generate_cards.py``` is the main entry point. This will 
+    * sample AIs
+    * process + decode their raw data
+    * render the final cards as image files
+    * and finally save outputs in the specified folder
 * 4 separate AIs contribute to the card design
     * First an AI generates an arbitrary card name. Then the name is whispered to a second AI which generates the main text and all in play properties of the card. The name and type are prompted to a third AI which generates flavor text for the card. Finally, the name, type, and flavor text are prompted to a fourth AI to create visual art for the card.
     * ```nns/names*``` is an LSTM created for this project and trained to generate card names. This was trained both on all exisitng MTG card names as well as on a smattering of other words, phrases, and name-like strings. This increases the diversity of names outside of normal MTG card names.
@@ -14,15 +19,23 @@
     * ```A1SD``` contains image generating neural networks and associated code.
     * ```llm``` contains text generating neural networks and associated code.
     * ```scripts``` contains the main generator entry point ```generate_cards.py``` as well as intermediary and utility scripts
-    * ```outputs``` contains final card images, card sheets, full text and stats yaml files, and some intermediate outputs
+    * ```outputs``` contains rendered card images, card sheets, full text and stats yaml files, and cached intermediate steps
     * ```image_templates``` contains template images for rendering the generated cards
 
 
 # Workflow / Getting Started
 * Run through the environment setup section below
-* Train up some neural nets for names and main text. See the training section below.
-* Finally, use the main generator ```generate_cards.py``` to sample the AIs, process + decode the raw data, and render the final cards.
+* The main entry point for the project is ```scripts/generate_cards.py``` 
+    * example command: ```python generate_cards.py --lstm_gpu 1 --names_nn ../nns/names_0 --main_text_nn ../nns/main_text_11.3/checkpoint_10111.000000.t7 --flavor_nn timdettmers_guanaco-65b-merged --gpu-memory 23 --cpu-memory 250 --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --outdir ../outputs --num_cards 10 --hr_upscale 2 --verbosity=9```
+        * This command takes about 2 hours to execute on the dev's machine
+        * see ```python generate_cards.py --help``` for more info on arguments
+    * AI samples are cached in subdirectories (```*_cache```) under the auto-generated output folder (eg ```../outputs/00003_481992436```), so the generator can be stopped and resumed without losing much via the ```--resume ...``` argument. Also useful if it crashes for some inconsistent reason.
+    * Statistics about generated cards are output to ```stats.yaml``` in the output folder
+    * Full card text for all cards is output to ```card_data.yaml``` in the output folder
 * Optionally create card sheets for deckbuilding in Tabletop Simulator via ```to_tts_asset.py```, or PDFs for printing via ```to_pdf.py```
+    * these will compile all images in the output folder, so if you don't want to include all of them, remove the undesired files first
+* Optionally, ```card_data.yaml``` can be manually edited (eg to fix AI-generated typos) by adding fields named ```*_override``` under card definition(s), and then ```scripts/render.py``` can be executed directly (see ```--help``` for more info) to re-render the cards with the manual modifications.
+    * Similarly, the cached art under ```outputs/*/art_cache``` can be modified to change the card art before re-rendering. If this is the only change to a card, then delete the rendered card image file so the renderer will detect that it should be rendered.
 
 
 # &#x1F534; TODOs
@@ -61,6 +74,8 @@
 
 
 # Environment Setup
+* install NVidia CUDA toolkit version 11.8.
+    * Trying newer versions may require manual customization of subtrees, especially torch-rnn which is no longer developed.
 * A1SD
     * download this [custom model from civitai](https://civitai.com/models/16682/nov-mtg-art-v23) to ```A1SD/models/ldm/stable-diffusion-v1/```. Git does not support large files (several GB), so these files are not committed to the repo.
     * set ```install_dir``` in ```webui.sh```
@@ -69,6 +84,16 @@
         * the first time it runs, it will download a bunch of dependancies (several GB)
         * it's ready once it launches the webserver (eg it prints ```Running on local URL:  http://127.0.0.1:7860```)
         <!-- * Optionally, if you plan to create your own embedding: Open that IP address in a browser -> ```Extensions``` tab -> ```Available``` sub tab -> install ```embedding-inspector``` -->
+        * and you can then ```ctrl+c``` it to close the process for now
+* llm
+    * ```cd llm```
+    * ```bash setup.sh```
+        * might be able to unpin deepspeed, there was a [bug](https://github.com/huggingface/transformers/issues/24040) (and [this](https://github.com/microsoft/DeepSpeed/issues/3678)) in main branch when I installed it
+    * ```conda run -n llm python download-model.py timdettmers/guanaco-65b-merged``` (~160 GB)
+        * May need to copy tokenizer configs from [here](https://huggingface.co/huggyllama/llama-65b) ([transformers RecursionError](https://github.com/huggingface/transformers/issues/22762))
+    * launch ```server.py``` to finish setup
+        * the first time it runs, it will download a bunch of dependancies (several GB)
+        * it's ready once it launches the webserver (eg it prints ```Running on local URL: ```)
         * and you can then ```ctrl+c``` it to close the process for now
 * torch-rnn
     * Setup torch dev environment. Conda doesn't handle lua / torch very well. Lua-torch is no longer maintained, and we can't use an old cuda installation on newer cards, so just install torch globally to ```~/torch``` and fiddle until it works. The order of these steps is critical. If you screw up, its often easier to ```rm -rf ~/torch``` and start over than try to recover.
@@ -100,16 +125,6 @@
         * ```./bootstrap; make; sudo make install```
     * install torch using ```bash install_torch.sh |& tee log-torch-install.txt```. There will be several prompts.
         <!-- reference https://github.com/nagadomi/distro.git ~/torch --recursive -->
-* llm
-    * ```cd llm```
-    * ```bash setup.sh```
-        * might be able to unpin deepspeed, there was a [bug](https://github.com/huggingface/transformers/issues/24040) (and [this](https://github.com/microsoft/DeepSpeed/issues/3678)) in main branch when I installed it
-    * ```conda run -n llm python download-model.py timdettmers/guanaco-65b-merged``` (~160 GB)
-        * May need to copy tokenizer configs from [here](https://huggingface.co/huggyllama/llama-65b) ([transformers RecursionError](https://github.com/huggingface/transformers/issues/22762))
-    * launch ```server.py``` to finish setup
-        * the first time it runs, it will download a bunch of dependancies (several GB)
-        * it's ready once it launches the webserver (eg it prints ```Running on local URL: ```)
-        * and you can then ```ctrl+c``` it to close the process for now
 * main repo
     * ```sudo apt install expect``` to get unbuffer command
     * Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
@@ -117,20 +132,23 @@
     * download ```nltk``` language files
         * ```cd ~/nltk_data```
         * ```python -c "import nltk; nltk.download('punkt')"```
-    * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
-        * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
-        * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
-            * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
-            * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
-            * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
+    * Pretrained AIs are provided for names and main text, but you can optionally train your own (eg with updated data inputs). 
+        * Build a dataset to train the AIs upon
+            * Download ```AllPrintings.json``` from [mtgjson website](http://mtgjson.com/) to ```raw_data_sources/.```
+            * optionally update ```raw_data_sources/names.yaml``` and ```raw_data_sources/flavor.yaml``` manually with additional training data
+            * run ```bash rebuild_data_sources.sh |& tee log-data-build.txt``` in ```scripts/```
+                * use printed ```Average chunk length``` for each AI to update constants in ```generate_cards.py``` -> ```LSTM_LEN_PER_MAIN_TEXT```, ```LSTM_LEN_PER_NAME```, and ```LSTM_LEN_PER_FLAVOR```
+                * use printed ```Longest chunk length``` for each AI to set minimum ```-seq_length``` argument to ```train.lua```
+                * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
+            * The dataset format is considered an implementation detail, so for more information on the format see ```scripts/encode.py```
+        * Train AIs with commands similar to these.
+            * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_size 100 -max_epochs 100000000 -batch_size 1000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.98```
+            * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
+            * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 416 -max_epochs 100000000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
+            * ```CTRL+c``` to stop training when the AI is ready. Use ```scripts/plot_nn_loss.py``` to assess progress.
+            * Check that the trained AIs work with ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```. The main generator will use a similar command to sample the AIs when generating cards.
 
 
-# AI Training and Sampling
-* torch-rnn
-    * ```th train.lua -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_size 100 -max_epochs 100000000 -batch_size 1000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.98```
-    * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
-    * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 416 -max_epochs 100000000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
-    * ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```
 <!--     * Create an embedding of mtg frames/borders for stable diffusion: download a small dataset of full card images -> delete (to black) the art portions manually, so we just have frames, text, symbols, etc. -> save to ```raw_data_sources/mtg_frame```
         * launch ```bash webui.sh``` from ```A1SD```, open the web UI (IP/port printed to console) in a browser, go to ```Train``` tab
         * ```Preprocess images``` sub-tab -> ```Source directory = ../raw_data_sources/mtg_frame```, ```Destination directory = ../encoded_data_sources/mtg_frame```, ```width, height = 512```, ```Existing Caption txt Action = ignore```, ```Split oversized images```, ```Split image threshold = 1```, ```Split image overlap ratio = 0.5``` -> ```Preprocess``` button. This will download several more GB, and then take several hours.

@@ -10,7 +10,7 @@ from collections import defaultdict
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path', type=str,)
+parser.add_argument('--path', type=str, help='path to trained AI *.json, or a folder to autoselect longest trained AI therein')
 args = parser.parse_args()
 
 args.path = resolve_folder_to_checkpoint_path(args.path, ext='json')

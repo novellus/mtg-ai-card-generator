@@ -884,10 +884,10 @@ def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, fo
 
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--yaml_path", default=None, type=str, help="path to input yaml file, the same file output by generate_cards.py."
-                                                                    " Resolves '*_override' keys in cards as overrides for default fields."
-                                                                    " These are probably written by hand, if they exist,"
-                                                                    " allowing you to retain both the original text and the hand-modified versions side-by-side.")
+    parser.add_argument("--yaml_path",, type=str, help="path to input yaml file, the same file output by generate_cards.py."
+                                                       " Resolves '*_override' keys in cards as overrides for default fields."
+                                                       " These are probably written by hand, if they exist,"
+                                                       " allowing you to retain both the original text and the hand-modified versions side-by-side.")
     parser.add_argument("--sd_nn", default=None, type=str, help="name of stable diffusion model, in style recognized by stable-diffusion-webui (eg \"nov_mtg_art_v2_3.ckpt [76fcbf0ef5]\")")
     parser.add_argument("--outdir", default=None, type=str, help="path to outdir. Files are saved directly in this folder. Defaults to same directory as yaml_path.")
     parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies most of the render time. Useful for debugging/testing.")
