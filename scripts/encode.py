@@ -711,10 +711,10 @@ def validate(card):
     # assert we have no nested b-e sides
     #   ie max depth 2, including root node
     if 'a_side' in card:
-        assert 'b_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
-        assert 'c_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
-        assert 'd_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
-        assert 'e_side' not in card, f'invalid card, nested b-e sides\n{pprint.pformat(card)}'
+        assert 'b_side' not in card, f'invalid card, nested b_side\n{pprint.pformat(card)}'
+        assert 'c_side' not in card, f'invalid card, nested c_side\n{pprint.pformat(card)}'
+        assert 'd_side' not in card, f'invalid card, nested d_side\n{pprint.pformat(card)}'
+        assert 'e_side' not in card, f'invalid card, nested e_side\n{pprint.pformat(card)}'
 
     # recurse on b-e sides
     if 'b_side' in card: validate(card['b_side'])
@@ -1042,11 +1042,12 @@ def encode_all(json_path, out_path, extra_flavor=None, extra_names=None):
     # produces encoded output files in folder out_path
 
     cards = json_to_internal_format(json_path)
-    for card in cards:
-        validate(card)
 
     # perform dataset modifications / standardizations which have no reverse
     cards = [unreversable_modifications(card) for card in cards]
+
+    for card in cards:
+        validate(card)
 
     encode_json_to_AI_main(cards, os.path.join(out_path, 'main_text.txt'))
     encode_json_to_AI_flavor(cards, os.path.join(out_path, 'flavor.txt'), extra_flavor=extra_flavor)
