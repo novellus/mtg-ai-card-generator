@@ -23,15 +23,16 @@ from collections import namedtuple
 #     'c_side'          : internal format, optional, present only on a-side (top-level) cards
 #     'cost'            : str or None
 #     'd_side'          : internal format, optional, present only on a-side (top-level) cards
+#     'defense'         : str or None
 #     'e_side'          : internal format, optional, present only on a-side (top-level) cards
 #     'flavor'          : str or None
 #     'loyalty'         : str or None
 #     'main_text'       : str or None
-#     'type'            : str
 #     'name'            : str
 #     'power_toughness' : str or None
 #     'rarity'          : str
 #     'side'            : str, one of ['a', 'b', 'c', 'd', 'e']
+#     'type'            : str
 # }
 
 
@@ -106,7 +107,7 @@ def json_to_internal_format(json_path):
                          'translations', 'type',
                         ]
         optional_keys = ['block', 'booster', 'cardsphereSetId', 'codeV3', 'isForeignOnly', 'isNonFoilOnly', 'isPaperOnly', 'isPartialPreview', 'mcmId',
-                         'mcmIdExtras', 'mcmName', 'mtgoCode', 'parentCode', 'sealedProduct', 'tcgplayerGroupId',
+                         'mcmIdExtras', 'mcmName', 'mtgoCode', 'parentCode', 'sealedProduct', 'tcgplayerGroupId', 'languages', 'tokenSetCode',
                         ]
         for k in expected_keys: assert k in v_set, k
         for k in v_set: assert k in expected_keys or k in optional_keys, k
@@ -114,7 +115,7 @@ def json_to_internal_format(json_path):
         for j_card in v_set['cards']:
             # this is a big and complicated dataset, so lets make sure the list of available information matches our expectations
             expected_keys = ['availability', 'borderColor', 'colorIdentity', 'colors', 'finishes', 'foreignData', 'frameVersion', 'identifiers', 'language',
-                             'layout', 'legalities', 'manaValue', 'name', 'number', 'purchaseUrls', 'rarity', 'rulings', 'setCode', 'subtypes', 'supertypes',
+                             'layout', 'legalities', 'manaValue', 'name', 'number', 'purchaseUrls', 'rarity', 'setCode', 'subtypes', 'supertypes',
                              'type', 'types', 'uuid',
                             ]
             deprecated_keys = ['convertedManaCost', 'hasFoil', 'hasNonFoil',]
@@ -123,7 +124,8 @@ def json_to_internal_format(json_path):
                              'isAlternative', 'isFullArt', 'isFunny', 'isOnlineOnly', 'isOversized', 'isPromo', 'isRebalanced', 'isReprint', 'isReserved',
                              'isStarter', 'isStorySpotlight', 'isTextless', 'isTimeshifted', 'keywords', 'leadershipSkills', 'life', 'loyalty', 'manaCost',
                              'originalPrintings', 'originalReleaseDate', 'originalText', 'originalType', 'otherFaceIds', 'power', 'printings', 'promoTypes',
-                             'rebalancedPrintings', 'securityStamp', 'side', 'signature', 'text', 'toughness', 'variations', 'watermark',
+                             'rebalancedPrintings', 'securityStamp', 'side', 'signature', 'text', 'toughness', 'variations', 'watermark', 'rulings',
+                             'edhrecSaltiness', 'relatedCards', 'defense', 'subsets',
                             ]
             undocumented_keys = ['attractionLights', 'duelDeck', 
                                 ]
@@ -171,6 +173,12 @@ def json_to_internal_format(json_path):
                 card['loyalty'] = j_card['loyalty']
             else:
                 card['loyalty'] = None
+
+            # defense
+            if 'defense' in j_card:
+                card['defense'] = j_card['defense']
+            else:
+                card['defense'] = None
 
             # flavor
             if 'flavorText' in j_card and j_card['flavorText'] and j_card['language'].lower() == 'english':
@@ -402,12 +410,15 @@ def internal_format_to_AI_format(card, spec='main_text'):
 
     # convert fields to local variables, specifically do not edit input dict
     # add default values for AI fields when card fields are None
+    #   loyalty, power_toughness, and defense fields don't get default values
+    #   because those fields will be omitted entirely when None
     cost            = (card['cost'] or '')             if 'cost'            in card else None
-    loyalty         = (card['loyalty'] or '')          if 'loyalty'         in card else None
+    loyalty         =  card['loyalty']                 if 'loyalty'         in card else None
     main_text       = (card['main_text'] or '')        if 'main_text'       in card else None
     type_string     =  card['type']                    if 'type'            in card else None
     name            =  card['name']                    if 'name'            in card else None
-    power_toughness = (card['power_toughness'] or '')  if 'power_toughness' in card else None
+    power_toughness =  card['power_toughness']         if 'power_toughness' in card else None
+    defense         =  card['defense']                 if 'defense'         in card else None
     rarity          =  card['rarity']                  if 'rarity'          in card else None
     flavor          =  card['flavor']                  if 'flavor'          in card else None
 
@@ -477,6 +488,9 @@ def internal_format_to_AI_format(card, spec='main_text'):
     if power_toughness is not None:
         power_toughness = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), power_toughness)
 
+    if defense is not None:
+        defense = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), defense)
+
     # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
     # for each new counter type, encode it as 'type%'
     # repeated counters of the same type will be encoded simply as '%'
@@ -511,7 +525,10 @@ def internal_format_to_AI_format(card, spec='main_text'):
     # label fields for the AI
     #   this increases syntax, but regularizes AI output, so is a net win
     if spec == 'main_text':
-        AI_string = f'{name}①{cost}②{type_string}③{loyalty}④{power_toughness}⑤{rarity}⑥{main_text}'
+        s3 = '③' + loyalty         if loyalty         is not None else ''
+        s4 = '④' + power_toughness if power_toughness is not None else ''
+        s5 = '⑤' + defense         if defense         is not None else ''
+        AI_string = f'{name}①{cost}②{type_string}{s3}{s4}{s5}⑥{rarity}⑦{main_text}'
     elif spec == 'flavor':
         AI_string = f'{name}①{flavor}'
     elif spec == 'names':
@@ -547,16 +564,19 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     card = {}
 
     if spec == 'main_text':
-        fields = re.split(r'([①②③④⑤⑥])', sides[0])
+        fields = re.split(r'([①②③④⑤⑥⑦])', sides[0])
         card['name'] = fields[0]
 
-        field_names = {'①': 'cost', '②': 'type', '③': 'loyalty', '④': 'power_toughness', '⑤': 'rarity', '⑥': 'main_text'}
+        field_names = {'①': 'cost', '②': 'type', '③': 'loyalty', '④': 'power_toughness', '⑤': 'defense', '⑥': 'rarity', '⑦':'main_text'}
+        optional_fields = ['loyalty', 'power_toughness', 'defense']
         for field_id, field in pairs(fields[1:]):
             field_name = field_names[field_id]
             card[field_name] = field
 
         for k, v in field_names.items():
-            assert v in card, f'Failed to find field "{v}" in "{AI_string}" -> {fields}'
+            assert v in card or v in optional_fields, f'Failed to find field "{v}" in "{AI_string}" -> {fields}'
+            if v not in card:
+                card[v] = ''
 
     elif spec == 'flavor':
         assert len(sides) == 1
@@ -628,6 +648,9 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     if 'power_toughness' in card:
         card['power_toughness'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['power_toughness'])
 
+    if 'defense' in card:
+        card['defense'] = re.sub(r'⓪([≙≚]*)', lambda x: binary_to_decimal(x.group(1)), card['defense'])
+
     # decode dashes
     if 'main_text' in card:
         card['main_text'] = re.sub(r'[∓⊖]', '-', card['main_text'])
@@ -651,6 +674,8 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         card['loyalty'] = card['loyalty'] or None
     if 'power_toughness' in card:
         card['power_toughness'] = card['power_toughness'] or None
+    if 'defense' in card:
+        card['defense'] = card['defense'] or None
     if 'main_text' in card:
         card['main_text'] = card['main_text'] or None
     if 'flavor' in card:
@@ -691,9 +716,9 @@ def validate(card):
 
     # check that no lingering special characters remain after conversion from the AI format
     # this can occur with complex tokens if say the leading encoding term is missing
-    for field in ['cost', 'loyalty', 'main_text', 'type', 'name', 'power_toughness', 'rarity']:
+    for field in ['cost', 'loyalty', 'main_text', 'type', 'name', 'power_toughness', 'defense', 'rarity']:
         if field in card and card[field] is not None:
-            for c in '␥①②③④⑤⑥↵%⓿≙≚⓪∓⊖⊕@∫∬∭∮∯∰ⒶⒷⒸⒺⒼⒽⓀⓁⓃⓄⓅⓠⓇⓈⓉⓊⓌⓍⓎⓏ⓶\u2014':
+            for c in '␥①②③④⑤⑥⑦↵%⓿≙≚⓪∓⊖⊕@∫∬∭∮∯∰ⒶⒷⒸⒺⒼⒽⓀⓁⓃⓄⓅⓠⓇⓈⓉⓊⓌⓍⓎⓏ⓶\u2014':
                 assert c not in card[field], f'field not suffiently decoded, found stray special characters "{c}" from AI encoding: "{card[field]}"'
 
     # check that all mana costs are recognized
@@ -799,10 +824,13 @@ def unreversable_modifications(card):
         s = s.replace('á',      'a')    # a with accent
         s = s.replace('à',      'a')    # a with accent going the other way
         s = s.replace('â',      'a')    # a with caret
+        s = s.replace('ä',      'a')    # a with umlaut
         s = s.replace('é',      'e')    # e with accent
+        s = s.replace('É',      'E')    # e with accent
         s = s.replace('í',      'i')    # i with accent
         s = s.replace('ñ',      'u')    # n with tilda
         s = s.replace('ö',      'o')    # o with umlaut
+        s = s.replace('ó',      'o')    # o with accent
         s = s.replace('û',      'u')    # u with caret
         s = s.replace('ú',      'u')    # u with accent
         s = s.replace('ü',      'u')    # u with umlaut
