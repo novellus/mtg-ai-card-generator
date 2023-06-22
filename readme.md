@@ -34,7 +34,6 @@
 
 # &#x1F534; TODOs
 * update raw mtg data assets from summer 2023 release, and retrain new name and main text AIs on this dataset
-    * add and ignore most new fields from mtgjson database to parser
     * add new mtg constants ```MTG_COUNTERS```, ```MTG_ABILITY_WORDS```, ```MTG_KEYWORD_ACTIONS```, ```MTG_KEYWORD_ABILITIES```, ```MTG_UNIQUE_KEYWORD_ABILITIES```, ```MTG_TYPE_WORDS```, and ```MTG_REMINDER_TEXT```
     * check for new symbology ```MTG_SYMBOL_JSON_TO_AI_FORMAT```
 * generate a small-medium batch of cards for Colin to review
