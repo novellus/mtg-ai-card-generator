@@ -34,6 +34,14 @@
 
 # &#x1F534; TODOs
 * update raw mtg data assets from summer 2023 release, and retrain new name and main text AIs on this dataset
+    * add and ignore most new fields from mtgjson database to parser
+    * implement new ```defense``` field for siege cards
+        * mtgjsdon field name ```defense```
+        * need to rearrange AI format
+            * Probably reduce format complexity by specifying only one of power/toughness, loyalty, or defense
+            * Give each of these properties a unique ID field-spec character, and assert at validation time that at most one of these exists
+            * implement code to support a format with varying number of fields
+        * need new unique template image and rendering code
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
