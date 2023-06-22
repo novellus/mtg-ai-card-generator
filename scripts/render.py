@@ -39,9 +39,9 @@ HEIGHT_MID_TYPE = 1417
 HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 9  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1505
-# BOTTOM_MAIN_TEXT_BOX is defined dynamically based on existence of power toughness or loyalty box
+# BOTTOM_MAIN_TEXT_BOX 
 LEFT_MAIN_TEXT_BOX = 128
-RIGHT_MAIN_TEXT_BOX = 1375
+# RIGHT_MAIN_TEXT_BOX is defined dynamically based on existence of defense box1375
 
 
 def parse_mana_symbols(mana_string, None_acceptable=False):
@@ -521,14 +521,17 @@ def render_main_text_box(card):
 
     # size main text box
     # dynamically shorten main text if one of these is rendered
+    bottom_main_text_box = 1923
     if card['loyalty']:
         bottom_main_text_box = 1840
     elif card['power_toughness']:
         bottom_main_text_box = 1858
-    else:
-        bottom_main_text_box = 1923
 
-    width = RIGHT_MAIN_TEXT_BOX - LEFT_MAIN_TEXT_BOX
+    right_main_text_box = 1375
+    if card['defense']:
+        right_main_text_box = 1328
+
+    width = right_main_text_box - LEFT_MAIN_TEXT_BOX
     max_height = bottom_main_text_box - TOP_MAIN_TEXT_BOX
     sep_bar = Image.open('../image_templates/modular_elements/whitebar.png')
     sep_bar = sep_bar.resize((math.ceil(width * 0.95), 3))
@@ -642,7 +645,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None):
+def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None, overwrite=False):
     # image sizes and positions are all hard coded magic numbers
     # trash_art_cache causes the renderer to ignore and overwrite any cached art files, making fresh calls to txt2img
     # art_dir may be specified if the renderer is to use a non-default location for the art cache
@@ -667,7 +670,7 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
     card_file_name = f"{card['card_number']:05}{side_id} {card['name']}.png"
     out_path = os.path.join(outdir, card_file_name)
 
-    if os.path.exists(out_path):
+    if os.path.exists(out_path) and not overwrite:
         if verbosity > 2:
             print(f'Skipping render of {card_file_name} (already exists)')
 
@@ -778,6 +781,16 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
             left = 1314 - im_text.width // 2
             im_card.alpha_composite(im_text, dest=(left, top))
 
+        # defense
+        if card['defense'] is not None:
+            im_defense = Image.open('../image_templates/modular_elements/defense.png')
+            im_card.alpha_composite(im_defense, dest=(1335, 1826))
+
+            im_text = render_text_largest_fit(str(card['defense']), 59, 70, FONT_MODULAR, DEFAULT_FONT_SIZE, fill=(255,255,255,255))
+            top = 1896 - im_text.height // 2
+            left = 1404 - im_text.width // 2
+            im_card.alpha_composite(im_text, dest=(left, top))
+
         # main text box
         im_main_text_box = render_main_text_box(card)
         im_card.alpha_composite(im_main_text_box, dest=(LEFT_MAIN_TEXT_BOX, TOP_MAIN_TEXT_BOX))
@@ -795,6 +808,9 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
             right = 1166
         elif card['loyalty'] is not None:
             right = 1219
+        # defense icon does not overlap this field
+        # elif card['defense'] is not None:
+        #     right =
         d.text((right, 1971), text=card['timestamp'], font=font, anchor='rt', fill=(255,255,255,255))
 
         AIs = card['nns_names']
@@ -827,10 +843,10 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
         im_card.save(out_path, pnginfo=encoded_info)
 
     # recurse on sides b-e
-    if 'b_side' in card: render_card(card['b_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'c_side' in card: render_card(card['c_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'd_side' in card: render_card(card['d_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
-    if 'e_side' in card: render_card(card['e_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+    if 'b_side' in card: render_card(card['b_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'c_side' in card: render_card(card['c_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'd_side' in card: render_card(card['d_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'e_side' in card: render_card(card['e_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
 
 
 def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, force_render_all, hr_upscale):
@@ -875,7 +891,7 @@ def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, fo
             if verbosity > 1:
                 print(f'Rendering {i_card + 1} / {len(cards)}')
 
-            render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale)
+            render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite=True)
 
         else:
             if verbosity > 1:
@@ -884,7 +900,7 @@ def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, fo
 
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--yaml_path",, type=str, help="path to input yaml file, the same file output by generate_cards.py."
+    parser.add_argument("--yaml_path", type=str, help="path to input yaml file, the same file output by generate_cards.py."
                                                        " Resolves '*_override' keys in cards as overrides for default fields."
                                                        " These are probably written by hand, if they exist,"
                                                        " allowing you to retain both the original text and the hand-modified versions side-by-side.")

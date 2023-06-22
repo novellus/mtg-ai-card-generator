@@ -3,7 +3,7 @@ stable-diffusion/src/*
 stable-diffusion/outputs/*
 stable-diffusion/ideas/*
 stable-diffusion/logs/*
-raw_data_sources/AllPrintings.json
+raw_data_sources/*AllPrintings.json
 raw_data_sources/unique-artwork.json
 raw_data_sources/mtg_art/*
 encoded_data_sources/mtg_art*

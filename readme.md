@@ -35,13 +35,8 @@
 # &#x1F534; TODOs
 * update raw mtg data assets from summer 2023 release, and retrain new name and main text AIs on this dataset
     * add and ignore most new fields from mtgjson database to parser
-    * implement new ```defense``` field for siege cards
-        * mtgjsdon field name ```defense```
-        * need to rearrange AI format
-            * Probably reduce format complexity by specifying only one of power/toughness, loyalty, or defense
-            * Give each of these properties a unique ID field-spec character, and assert at validation time that at most one of these exists
-            * implement code to support a format with varying number of fields
-        * need new unique template image and rendering code
+    * add new mtg constants ```MTG_COUNTERS```, ```MTG_ABILITY_WORDS```, ```MTG_KEYWORD_ACTIONS```, ```MTG_KEYWORD_ABILITIES```, ```MTG_UNIQUE_KEYWORD_ABILITIES```, ```MTG_TYPE_WORDS```, and ```MTG_REMINDER_TEXT```
+    * check for new symbology ```MTG_SYMBOL_JSON_TO_AI_FORMAT```
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
@@ -235,5 +230,5 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
     * [Lexica](https://lexica.art/) and [OpenArt](https://openart.ai/) provide generated images and their prompts
     * [img2prompt](https://replicate.com/methexis-inc/img2prompt) and [BLIP](https://huggingface.co/spaces/Salesforce/BLIP) predict the prompts for uploaded images
     * etc: see [reddit tooling catalog](https://old.reddit.com/r/StableDiffusion/comments/xcq819/dreamers_guide_to_getting_started_w_stable/)
-<!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer -->
+<!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer and its forks-->
 
