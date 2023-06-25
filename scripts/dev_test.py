@@ -19,69 +19,69 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 
-## parse allPrintings.json
-f = open('../raw_data_sources/AllPrintings.json')
-j = json.load(f)
-f.close()
-data = defaultdict(int)
-for k_set, v_set in list(j['data'].items()):
-    for card in v_set['cards']:
-        if re.search(r'agent of the shadow thieves', card['name'].lower()):
-            del card['foreignData']
-            pprint.pprint(card)
-        # if 'text' in card and re.search(r'd20', card['text'].lower()):
-        #     del card['foreignData']
-        #     pprint.pprint(card)
-        #     sys.exit()
-        # if 'power' in card and re.search(r'²', card['power'].lower()):
-        #     del card['foreignData']
-        #     pprint.pprint(card)
-        #     sys.exit()
-        # if re.search(r'urza', card['type'].lower()):
-        #     del card['foreignData']
-        #     pprint.pprint(card)
-        # if 'manaCost' in card and re.search(r'1000000', card['manaCost'].lower()):
-        #     del card['foreignData']
-        #     pprint.pprint(card)
-        #     sys.exit()
-        # for field in card:
-        #     if type(card[field]) == str and re.search(r'blinkmoth', card[field].lower()):
-        #         # del card['foreignData']
-        #         pprint.pprint(card)
-        #         sys.exit()
-        # for field in ['name']:
-        #     if field in card:
-        #         for c in card[field]:
-        #             data.add(c)
-        # for field in ['text', 'name']:
-        #     if field in card:
-        #         if re.search(r'\|', card[field]):
-        #             del card['foreignData']
-        #             pprint.pprint(card)
-        #             sys.exit()
-        # if 'side' in card and card['side'] in ['e']:
-        #     del card['foreignData']
-        #     pprint.pprint(card)
-        #     sys.exit()
-        # if 'text' in card:
-        #     # s = re.findall(r'[^\n]*(?<!\d|[XYZ])\+(?!\d|[XYZ])[^\n]*', card['text'])
-        #     s = re.findall(r'[^\n]*(?<=\d|[XYZ])\+(?=\d|[XYZ])[^\n]*', card['text'])
-        #     for x in s:
-        #         data[x] += 1
-        # for t in card['types'] + card['subtypes'] + card['supertypes']:
-        #     data.add(t)
-        # if 'text' in card:
-        #     for x in re.findall('(?:(?<=^)|(?<=\n))[^\v—-−]+[—-−]', card['text']):
-        #         data.add(x)
-        # for subset in all_continguous_subsets(card['name'].split()):  # tokenize on whitespace
-        #     sub_name = ' '.join(subset)  # TODO assumed space...
-        #     if sub_name != card['name']:
-        #         if 'text' in card and sub_name.lower() in card['text']:
-        #             print(f'{sub_name: <50} -> {repr(card["text"])}')
-        # if 'text' in card and re.search(r'\|', card['text'].lower()):
-        #     print(card['text'])
-        # data[len(card['name'])] = card['name']
-pprint.pprint(data)
+# ## parse allPrintings.json
+# f = open('../raw_data_sources/AllPrintings.json')
+# j = json.load(f)
+# f.close()
+# data = defaultdict(int)
+# for k_set, v_set in list(j['data'].items()):
+#     for card in v_set['cards']:
+#         if re.search(r'agent of the shadow thieves', card['name'].lower()):
+#             del card['foreignData']
+#             pprint.pprint(card)
+#         # if 'text' in card and re.search(r'd20', card['text'].lower()):
+#         #     del card['foreignData']
+#         #     pprint.pprint(card)
+#         #     sys.exit()
+#         # if 'power' in card and re.search(r'²', card['power'].lower()):
+#         #     del card['foreignData']
+#         #     pprint.pprint(card)
+#         #     sys.exit()
+#         # if re.search(r'urza', card['type'].lower()):
+#         #     del card['foreignData']
+#         #     pprint.pprint(card)
+#         # if 'manaCost' in card and re.search(r'1000000', card['manaCost'].lower()):
+#         #     del card['foreignData']
+#         #     pprint.pprint(card)
+#         #     sys.exit()
+#         # for field in card:
+#         #     if type(card[field]) == str and re.search(r'blinkmoth', card[field].lower()):
+#         #         # del card['foreignData']
+#         #         pprint.pprint(card)
+#         #         sys.exit()
+#         # for field in ['name']:
+#         #     if field in card:
+#         #         for c in card[field]:
+#         #             data.add(c)
+#         # for field in ['text', 'name']:
+#         #     if field in card:
+#         #         if re.search(r'\|', card[field]):
+#         #             del card['foreignData']
+#         #             pprint.pprint(card)
+#         #             sys.exit()
+#         # if 'side' in card and card['side'] in ['e']:
+#         #     del card['foreignData']
+#         #     pprint.pprint(card)
+#         #     sys.exit()
+#         # if 'text' in card:
+#         #     # s = re.findall(r'[^\n]*(?<!\d|[XYZ])\+(?!\d|[XYZ])[^\n]*', card['text'])
+#         #     s = re.findall(r'[^\n]*(?<=\d|[XYZ])\+(?=\d|[XYZ])[^\n]*', card['text'])
+#         #     for x in s:
+#         #         data[x] += 1
+#         # for t in card['types'] + card['subtypes'] + card['supertypes']:
+#         #     data.add(t)
+#         # if 'text' in card:
+#         #     for x in re.findall('(?:(?<=^)|(?<=\n))[^\v—-−]+[—-−]', card['text']):
+#         #         data.add(x)
+#         # for subset in all_continguous_subsets(card['name'].split()):  # tokenize on whitespace
+#         #     sub_name = ' '.join(subset)  # TODO assumed space...
+#         #     if sub_name != card['name']:
+#         #         if 'text' in card and sub_name.lower() in card['text']:
+#         #             print(f'{sub_name: <50} -> {repr(card["text"])}')
+#         # if 'text' in card and re.search(r'\|', card['text'].lower()):
+#         #     print(card['text'])
+#         # data[len(card['name'])] = card['name']
+# pprint.pprint(data)
 
 
 
@@ -485,4 +485,26 @@ pprint.pprint(data)
 # for char in flavor:
 #     if char not in poems:
 #         print('--B--', char)
+
+
+
+## look for reminder text in main_text.txt
+f = open('../encoded_data_sources/main_text.txt')
+f_con = f.read()
+f.close()
+data = defaultdict(lambda: defaultdict(int))
+for line in f_con.split('\n'):
+    parenthesized = re.search(r'\([^\)]*?\)', line)
+    if parenthesized is not None:
+        data[parenthesized.group(0)][line] += 1
+data2 = []
+for k, v in data.items():
+    sub_lists = sorted([[b, a] for a, b in v.items()], reverse=True)
+    count = sum([a for a, b in sub_lists])
+    data2.append((count, k, sub_lists))
+data2.sort(reverse=True)
+for count, k, sub_lists in data2:
+    print(f'{count} -> "{k}"')
+    for sub_count, s in sub_lists:
+        print(f'\t{sub_count} -> "{s}"')
 
