@@ -8,7 +8,7 @@ import traceback
 PATH_TORCH_RNN = '../torch-rnn'
 
 # average lengths, for initial LSTM sample length target
-LEN_PER_MAIN_TEXT = 171  # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
+LEN_PER_MAIN_TEXT = 172  # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
 LEN_PER_NAME =      16   # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
 LEN_PER_FLAVOR =    105  # average and empirical, change if the dataset changes (eg rebuild_data_sources.sh)
 
