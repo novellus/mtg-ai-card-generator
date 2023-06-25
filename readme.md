@@ -34,6 +34,7 @@
 
 # &#x1F534; TODOs
 * retrain new name and main text AIs on updated dataset
+* enable expanding an output folder with ```--resume``` and a num value gfreater than initial size by checking size of names cache file and regenerating it if a larger number is specified at CLI
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
@@ -48,11 +49,11 @@
         * mostly 2-color (not 3+ color)
     * 25 colorless artifacts
     * 25 lands
-    * generate additional unique basic lands with custom / unique art
-        * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
-            * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
-        * add 2nd ```main_basics``` function for generating these basics
-            * probably add an argument to specify prompt? Or use a standard set?
+* generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
+    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
+        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
+    * add 2nd ```main_basics``` function for generating these basics
+        * probably add an argument to specify prompt? Or use a standard set?
 * low priorty (ie probably never)
     * ```render.py```
         * decrease save file resolution to limit file size?
@@ -139,9 +140,9 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
             * use printed ```Total vocabulary size``` for each AI to set ```-wordvec_size``` argument to ```train.lua```?
         * The dataset format is considered an implementation detail, so for more information on the format see ```scripts/encode.py```
     * Train AIs with commands similar to these.
-        * ```th train.lua -gpu 0 -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_1/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_sizes "600, 600, 600" -max_epochs 100000000 -batch_size 2000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.985 -wordvec_size 74```
-        * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
+        * ```th train.lua -gpu 0 -input_h5 ../encoded_data_sources/names.h5 -input_json ../encoded_data_sources/names.json -checkpoint_name ../nns/names_3/checkpoint -rand_chunks_n_epochs 5 -checkpoint_n_epochs 100 -validate_n_epochs 10 -print_every 1 -num_layers 3 -rnn_sizes "200, 200, 200" -max_epochs 100000000 -batch_size 2000 -seq_length 150 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 30 -lr_decay_factor 0.985 -wordvec_size 74```
         * ```th train.lua -input_h5 ../encoded_data_sources/main_text.h5 -input_json ../encoded_data_sources/main_text.json -checkpoint_name ../nns/main_text_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 10 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 416 -max_epochs 100000000 -batch_size 100 -seq_length 900 -dropout 0.5 -learning_rate 0.02 -lr_decay_n_epochs 3 -lr_decay_factor 0.99```
+        * ```th train.lua -input_h5 ../encoded_data_sources/flavor.h5 -input_json ../encoded_data_sources/flavor.json -checkpoint_name ../nns/flavor_0/checkpoint -rand_chunks_n_epochs 1 -checkpoint_n_epochs 100 -validate_n_epochs 1 -print_every 1 -num_layers 3 -rnn_size 256 -max_epochs 100000000 -batch_size 200 -seq_length 500 -dropout 0.5 -learning_rate 0.002 -lr_decay_n_epochs 50 -lr_decay_factor 0.99```
         * ```CTRL+c``` to stop training when the AI is ready. Use ```scripts/plot_nn_loss.py``` to assess progress.
         * Check that the trained AIs work with ```th sample.lua -checkpoint ../nns/names_0/checkpoint_1001.000000.t7 -length 50```. The main generator will use a similar command to sample the AIs when generating cards.
 
