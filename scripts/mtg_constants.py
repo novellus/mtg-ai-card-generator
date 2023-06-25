@@ -1,6 +1,7 @@
 # constants describing mtg card attributes. These may need to be updated whenever new mechanics are released.
 
 
+import itertools
 import titlecase
 import re
 
@@ -18,71 +19,79 @@ def extend_all_cases(l):
     return list(set(new + l))
 
 
-MTG_COUNTERS = ['Acorn', 'Aegis', 'Age', 'Aim', 'Arrow', 'Arrowhead', 'Awakening', 'Blaze', 'Blood', 'Bloodline', 'Book', 'Bounty', 'Bribery', 'Brick', 'Cage',
-                'Carrion', 'Charge', 'Coin', 'Collection', 'Component', 'Contested', 'Corpse', 'Corruption', 'CRANK!', 'Credit', 'Croak', 'Crystal', 'Cube',
-                'Currency', 'Death', 'Deathtouch ', 'Delay', 'Depletion', 'Descent', 'Despair', 'Devotion', 'Divinity', 'Doom', 'Double strike ', 'Dream', 'Echo',
-                'Egg', 'Elixir', 'Ember', 'Energy', 'Enlightened', 'Eon', 'Experience', 'Eyeball', 'Eyestalk', 'Fade', 'Fate', 'Feather', 'Fetch', 'Filibuster',
-                'First strike ', 'Flame', 'Flood', 'Flying', 'Foreshadow', 'Fungus', 'Fury', 'Fuse', 'Gem', 'Ghostform', 'Glyph', 'Gold', 'Growth', 'Hack',
-                'Harmony', 'Hatching', 'Hatchling', 'Healing', 'Hexproof', 'Hit', 'Hone', 'Hoofprint', 'Hour', 'Hourglass', 'Hunger', 'Ice', 'Incarnation',
-                'Indestructible', 'Infection', 'Ingenuity', 'Intel', 'Intervention', 'Invitation', 'Isolation', 'Javelin', 'Judgment', 'Keyword', 'Ki', 'Kick',
-                'Knickknack', 'Knowledge', 'Landmark', 'Level', 'Lifelink', 'Lore', 'Loyalty', 'Luck', 'Magnet', 'Manabond', 'Manifestation', 'Mannequin',
-                'Matrix', 'Menace', 'Midway', 'Mine', 'Mining', 'Mire', 'Music', 'Muster', 'Necrodermis', 'Net', 'Night', 'Omen', 'Ore', 'Page', 'Pain',
-                'Palliation', 'Paralyzation', 'Pause', 'Petal', 'Petrification', 'Phylactery', 'Phyresis', 'Pin', 'Plague', 'Plot', 'Point', 'Poison', 'Polyp',
-                'Pressure', 'Prey', 'Pupa', 'Quest', 'Reach', 'Ritual', 'Rope', 'Rust', 'Scream', 'Scroll', 'Shell', 'Shield', 'Shred', 'Silver', 'Sleep',
-                'Sleight', 'Slime', 'Slumber', 'Soot', 'Soul', 'Spark', 'Spite',  'Spore', 'Stash', 'Storage', 'Strife', 'Study', 'Stun', 'Suspect', 'Task',
-                'Theft', 'Ticket', 'Tide', 'Time', 'Tower', 'Training', 'Trample', 'Trap', 'Treasure', 'Unity', 'Valor', 'Velocity', 'Verse', 'Vigilance',
-                'Vitality', 'Void', 'Vortex', 'Vow', 'Voyage', 'Wage', 'Winch', 'Wind', 'Wish',
+MTG_COUNTERS = ['Acorn', 'Aegis', 'Age', 'Aim', 'Arrow', 'Arrowhead', 'Awakening', 'Blaze', 'Blood', 'Bloodline', 'Book', 'Bounty',
+                'Bribery', 'Brick', 'Burden', 'Cage', 'Carrion', 'Charge', 'Chip', 'Coin', 'Collection', 'Common', 'Component', 'Contested',
+                'Corpse', 'Corruption', 'Credit', 'Croak', 'Crystal', 'Cube', 'Currency', 'Cycle', 'Death', 'Defense', 'Delay', 'Depletion',
+                'Descent', 'Despair', 'Devotion', 'Divinity', 'Doom', 'Dream', 'Echo', 'Egg', 'Elixir', 'Ember', 'Energy', 'Enlightened',
+                'Eon', 'Experience', 'Eyeball', 'Eyestalk', 'Fade', 'Fate', 'Feather', 'Fetch', 'Filibuster', 'Flame', 'Flood',
+                'Foreshadow', 'Fungus', 'Fury', 'Fuse', 'Gem', 'Ghostform', 'Glyph', 'Gold', 'Growth', 'Hack', 'Harmony', 'Hatching',
+                'Hatchling', 'Healing', 'Hit', 'Hone', 'Hoofprint', 'Hope', 'Hour', 'Hourglass', 'Hunger', 'Ice', 'Incarnation',
+                'Incubation', 'Infection', 'Influence', 'Ingenuity', 'Intel', 'Intervention', 'Invitation', 'Isolation', 'Javelin',
+                'Judgment', 'Keyword', 'Ki', 'Kick', 'Knickknack', 'Knowledge', 'Landmark', 'Level', 'Lore', 'Loyalty', 'Luck', 'Magnet',
+                'Manabond', 'Manifestation', 'Mannequin', 'Mask', 'Matrix', 'Mechanic', 'Midway', 'Mine', 'Mining', 'Mire', 'Music',
+                'Muster', 'Necrodermis', 'Net', 'Night', 'Oil', 'Omen', 'Ore', 'Other', 'Page', 'Pain', 'Palliation', 'Paralyzation',
+                'Pause', 'Petal', 'Petrification', 'Phylactery', 'Phyresis', 'Pin', 'Plague', 'Plot', 'Point', 'Poison', 'Polyp',
+                'Pressure', 'Prey', 'Pupa', 'Quest', 'Rejection', 'Reprieve', 'Ribbon', 'Ritual', 'Rope', 'Rust', 'Scream', 'Scroll',
+                'Shell', 'Shield', 'Shred', 'Silver', 'Sleep', 'Sleight', 'Slime', 'Slumber', 'Soot', 'Soul', 'Spark', 'Spite', 'Spore',
+                'Stash', 'Storage', 'Story', 'Strife', 'Study', 'Stun', 'Suspect', 'Task', 'Theft', 'These', 'Ticket', 'Tide', 'Time',
+                'Tower', 'Training', 'Trap', 'Treasure', 'Unity', 'Valor', 'Velocity', 'Verse', 'Vitality', 'Void', 'Volatile', 'Vortex',
+                'Vow', 'Voyage', 'Wage', 'Winch', 'Wind', 'Wish', 'CRANK!', 'globe',
 ]
-MTG_COUNTERS = extend_all_cases(MTG_COUNTERS)
-# now add +1/+1 etc counters, after the case expansion
-# Note these all need to be fixed width for lookbehinds, so not an optimal expansion of a simple regex r'[\+\-]?\d+\/[\+\-]?\d+'
-#   stop at 3 digits, probably nothing is bigger than that...
-MTG_COUNTERS.extend([r'[\+\-]\d\/[\+\-]\d', r'\d\/[\+\-]\d', r'[\+\-]\d\/\d', r'\d\/\d',
-                     r'[\+\-]\d\d\/[\+\-]\d\d', r'\d\d\/[\+\-]\d\d', r'[\+\-]\d\d\/\d\d', r'\d\d\/\d\d',
-                     r'[\+\-]\d\d\d\/[\+\-]\d\d\d', r'\d\d\d\/[\+\-]\d\d\d', r'[\+\-]\d\d\d\/\d\d\d', r'\d\d\d\/\d\d\d',
-                   ])
+# extended below
 
-MTG_ABILITY_WORDS = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation', 'Converge',
-                     'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour', 'Ferocious', 'Formidable', 'Gear up',
-                     'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces', 'Kinship', 'Landfall', 'Lieutenant', 'Magecraft',
-                     'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance', 'Raid', 'Rally', 'Revolt', 'Spell mastery', 'Strive', 'Sweep',
-                     'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth', 'Will of the council',
+MTG_UNTYPED_COUNTER_LOOKBEHIND = [  # enable untyped references to "a counter", etc
+                'a', 'any', 'all', 'each', 'had', 'have', 'more', 'another', 'with', 'with', 'additional', 'of', 'no', 'those', 'moved', 'different',
+                'X', 'Y', 'Z', r'\d', r'\d\d', r'\d\d\d', r'\d\d\d\d',  #numbers of counters
+                'remove that', 'of that',
+]
+MTG_UNTYPED_COUNTER_LOOKBEHIND = extend_all_cases(MTG_UNTYPED_COUNTER_LOOKBEHIND)
+
+MTG_ABILITY_WORDS = ['Adamant', 'Addendum', 'Alliance', 'Battalion', 'Best in show', 'Bloodrush', 'Channel', 'Chroma', 'Cohort', 'Constellation',
+                     'Converge', 'Corrupted', 'Council\'s dilemma', 'Coven', 'Crash Land', 'Delirium', 'Domain', 'Eminence', 'Enrage', 'Fateful hour',
+                     'Ferocious', 'Formidable', 'Gear up', 'Gotcha!', 'Grandeur', 'Hellbent', 'Heroic', 'Imprint', 'Inspired', 'Join forces',
+                     'Kinship', 'Landfall', 'Lieutenant', 'Magecraft', 'Metalcraft', 'Morbid', 'Pack tactics', 'Parade!', 'Parley', 'Radiance',
+                     'Raid', 'Rally', 'Revolt', 'Spell mastery', 'Strive', 'Sweep', 'Tempting offer', 'Threshold', 'Underdog', 'Undergrowth',
+                     'Will of the council', 'Will of the Planeswalkers',
 ]
 MTG_ABILITY_WORDS = extend_all_cases(MTG_ABILITY_WORDS)
 
-MTG_KEYWORD_ACTIONS = ['Abandon', 'Activate', 'Adapt', 'Amass', 'Assemble', 'Attach', 'Bolster', 'Cast', 'Clash', 'Connive', 'Convert', 'Counter', 'Create',
-                       'Destroy', 'Detain', 'Discard', 'Double', 'Exchange', 'Exert', 'Exile', 'Explore', 'Fateseal', 'Fight', 'Goad', 'Investigate', 'Learn',
-                       'Manifest', 'Meld', 'Mill', 'Monstrosity', 'Open an Attraction', 'Planeswalk', 'Play', 'Populate', 'Proliferate', 'Regenerate', 'Reveal',
-                       'Roll to Visit Your Attractions', 'Sacrifice', 'Scry', 'Search', 'Set in Motion', 'Shuffle', 'Support', 'Surveil', 'Tap and Untap',
-                       'Transform', 'Venture into the Dungeon', 'Vote',
-                       'Return'
+MTG_KEYWORD_ACTIONS = ['Abandon', 'Activate', 'Adapt', 'Amass', 'Assemble', 'Attach', 'Bolster', 'Bury', 'Cast', 'Choose', 'Clash', 'Connive',
+                       'Convert', 'Counter', 'Create', 'Destroy', 'Detain', 'Discard', 'Double', 'Exchange', 'Exert', 'Exile', 'Explore', 'Fateseal',
+                       'Fight', 'Goad', 'Incubate', 'Investigate', 'Learn', 'Manifest', 'Meld', 'Mill', 'Monstrosity', 'Open an Attraction',
+                       'Planeswalk', 'Play', 'Populate', 'Proliferate', 'Regenerate', 'Regenerate', 'Return', 'Reveal',
+                       'Roll to Visit Your Attractions', 'Sacrifice', 'Scry', 'Search', 'Set in Motion', 'Shuffle', 'Support', 'Surveil',
+                       'Tap and Untap', 'The Ring Tempts You', 'Transform', 'Venture into the Dungeon', 'Vote',
                        # discontinued keywords, which appear in some older cards
                        'Bury', 'Regenerate', 'Choose',
 ]
-MTG_KEYWORD_ACTIONS = extend_all_cases(MTG_KEYWORD_ACTIONS)
+# extended below
 
 MTG_KEYWORD_ABILITIES = ['Absorb', 'Affinity', 'Afflict', 'Afterlife', 'Aftermath', 'Amplify', 'Annihilator', 'Ascend', 'Assist', 'Aura Swap', 'Awaken',
-                         'Banding', 'Battle Cry', 'Bestow', 'Blitz', 'Bloodthirst', 'Boast', 'Bushido', 'Buyback', 'Cascade', 'Casualty', 'Champion',
-                         'Changeling', 'Cipher', 'Cleave', 'Companion', 'Compleated', 'Conspire', 'Convoke', 'Crew', 'Cumulative Upkeep', 'Cycling', 'Dash',
-                         'Daybound and Nightbound', 'Deathtouch', 'Decayed', 'Defender', 'Delve', 'Demonstrate', 'Dethrone', 'Devoid', 'Devour', 'Disturb',
-                         'Double Strike', 'Dredge', 'Echo', 'Embalm', 'Emerge', 'Enchant', 'Encore', 'Enlist', 'Entwine', 'Epic', 'Equip', 'Escalate', 'Escape',
-                         'Eternalize', 'Evoke', 'Evolve', 'Exalted', 'Exploit', 'Extort', 'Fabricate', 'Fading', 'Fear', 'First Strike', 'Flanking', 'Flash',
-                         'Flashback', 'Flying', 'Forecast', 'Foretell', 'Fortify', 'Frenzy', 'Fuse', 'Graft', 'Gravestorm', 'Haste', 'Haunt', 'Hexproof',
-                         'Hidden Agenda', 'Hideaway', 'Horsemanship', 'Improvise', 'Indestructible', 'Infect', 'Ingest', 'Intimidate', 'Jump-Start', 'Kicker',
-                         'Landwalk', 'Level Up', 'Lifelink', 'Living Metal', 'Living Weapon', 'Madness', 'Melee', 'Menace', 'Mentor', 'Miracle', 'Modular',
-                         'More Than Meets the Eye', 'Morph', 'Mutate', 'Myriad', 'Ninjutsu', 'Offering', 'Outlast', 'Overload', 'Partner', 'Persist', 'Phasing',
-                         'Poisonous', 'Protection', 'Prototype', 'Provoke', 'Prowess', 'Prowl', 'Rampage', 'Ravenous', 'Reach', 'Read Ahead', 'Rebound',
-                         'Reconfigure', 'Recover', 'Reinforce', 'Renown', 'Replicate', 'Retrace', 'Riot', 'Ripple', 'Scavenge', 'Shadow', 'Shroud', 'Skulk',
-                         'Soulbond', 'Soulshift', 'Space Sculptor', 'Spectacle', 'Splice', 'Split Second', 'Squad', 'Storm', 'Sunburst', 'Surge', 'Suspend',
-                         'Totem Armor', 'Training', 'Trample', 'Transfigure', 'Transmute', 'Tribute', 'Undaunted', 'Undying', 'Unearth', 'Unleash', 'Vanishing',
-                         'Vigilance', 'Visit', 'Ward', 'Wither',
+                         'Banding', 'Backup', 'Banding', 'Battle Cry', 'Bestow', 'Blitz', 'Bloodthirst', 'Boast', 'Bushido', 'Buyback', 'Cascade',
+                         'Casualty', 'Champion', 'Changeling', 'Cipher', 'Cleave', 'Companion', 'Compleated', 'Conspire', 'Convoke', 'Crew',
+                         'Cumulative Upkeep', 'Cycling', 'Dash', 'Daybound and Nightbound', 'Deathtouch', 'Decayed', 'Defender', 'Delve', 'Demonstrate',
+                         'Dethrone', 'Devoid', 'Devour', 'Disturb', 'Double Strike', 'Dredge', 'Echo', 'Embalm', 'Emerge', 'Enchant', 'Encore',
+                         'Enlist', 'Entwine', 'Epic', 'Equip', 'Escalate', 'Escape', 'Eternalize', 'Evoke', 'Evolve', 'Exalted', 'Exploit', 'Extort',
+                         'Fabricate', 'Fading', 'Fear', 'Fear', 'First Strike', 'Flanking', 'Flash', 'Flashback', 'Flying', 'For Mirrodin!',
+                         'Forecast', 'Foresthome', 'Forestwalk', 'Foretell', 'Fortify', 'Frenzy', 'Fuse', 'Graft', 'Gravestorm', 'Haste', 'Haunt',
+                         'Hexproof', 'Hidden Agenda', 'Hideaway', 'Horsemanship', 'Improvise', 'Indestructible', 'Infect', 'Ingest', 'Intimidate',
+                         'Intimidate', 'Islandhome', 'Islandwalk', 'Jump-Start', 'Kicker', 'Landwalk', 'Level Up', 'Lifelink', 'Living Metal', 
+                         'Living Weapon', 'Madness', 'Melee', 'Menace', 'Mentor', 'Miracle', 'Modular', 'More Than Meets the Eye', 'Morph',
+                         'Mountainhome', 'Mountainwalk', 'Mutate', 'Myriad', 'Ninjutsu', 'Offering', 'Outlast', 'Overload', 'Partner', 'Persist',
+                         'Phase in', 'Phase out', 'Phased in', 'Phased out', 'Phasing', 'Phasing', 'Plainshome', 'Plainswalk', 'Poisonous',
+                         'Protection', 'Prototype', 'Provoke', 'Prowess', 'Prowl', 'Rampage', 'Ravenous', 'Reach', 'Read Ahead', 'Rebound',
+                         'Reconfigure', 'Recover', 'Reinforce', 'Renown', 'Replicate', 'Retrace', 'Riot', 'Ripple', 'Scavenge', 'Shadow', 'Shroud',
+                         'Shroud', 'Skulk', 'Soulbond', 'Soulshift', 'Space Sculptor', 'Spectacle', 'Splice', 'Split Second', 'Squad', 'Storm',
+                         'Substance', 'Sunburst', 'Surge', 'Suspend', 'Swamphome', 'Swampwalk', 'Totem Armor', 'Toxic', 'Training', 'Trample',
+                         'Transfigure', 'Transmute', 'Tribute', 'Undaunted', 'Undying', 'Unearth', 'Unleash', 'Vanishing', 'Vigilance', 'Visit',
+                         'Ward', 'Wither',
                           # discontinued keywords, which appear in some older cards
                          'Banding', 'Fear', 'Intimidate', 'Shroud', 'Substance',
                          'Foresthome', 'Islandhome', 'Mountainhome', 'Plainshome', 'Swamphome',
                          'Forestwalk', 'Islandwalk', 'Mountainwalk', 'Plainswalk', 'Swampwalk',
                          'Phasing', 'Phase in', 'Phase out', 'Phased in', 'Phased out',
 ]
-MTG_KEYWORD_ABILITIES = extend_all_cases(MTG_KEYWORD_ABILITIES)
+# extended below
 
 # these are not defined in the comprehensive rules, but only on the one card they appear on
 # we still need to know about them...
@@ -127,49 +136,69 @@ MTG_UNIQUE_KEYWORD_ABILITIES = ['A Thousand Souls Die Every Day', 'Aberrant Tink
                                 'Weird Insight', 'Wild Shape', 'Wind Walk', 'Wizardcycling', 'Wraith Form', 'Xenos Cunning',
                                 'Genestealer\'s Kiss', 'Bewitching Whispers',
 ]
-MTG_UNIQUE_KEYWORD_ABILITIES = extend_all_cases(MTG_UNIQUE_KEYWORD_ABILITIES)
+# extended below
 
+MTG_COUNTERS = MTG_COUNTERS + MTG_KEYWORD_ACTIONS + MTG_KEYWORD_ABILITIES  # add keywords as possible counter types
+MTG_COUNTERS = extend_all_cases(MTG_COUNTERS)
+# now add +1/+1 etc counters, after the case expansion
+# Note these all need to be fixed width for lookbehinds, so not an optimal expansion of a simple regex r'[\+\-]?\d+\/[\+\-]?\d+'
+#   stop at 3 digits, probably nothing is bigger than that...
+MTG_COUNTERS.extend([r'[\+\-]\d\/[\+\-]\d', r'\d\/[\+\-]\d', r'[\+\-]\d\/\d', r'\d\/\d',
+                     r'[\+\-]\d\d\/[\+\-]\d\d', r'\d\d\/[\+\-]\d\d', r'[\+\-]\d\d\/\d\d', r'\d\d\/\d\d',
+                     r'[\+\-]\d\d\d\/[\+\-]\d\d\d', r'\d\d\d\/[\+\-]\d\d\d', r'[\+\-]\d\d\d\/\d\d\d', r'\d\d\d\/\d\d\d',
+                   ])
+
+MTG_KEYWORD_ACTIONS = extend_all_cases(MTG_KEYWORD_ACTIONS)
+MTG_KEYWORD_ABILITIES = extend_all_cases(MTG_KEYWORD_ABILITIES)
+MTG_UNIQUE_KEYWORD_ABILITIES = extend_all_cases(MTG_UNIQUE_KEYWORD_ABILITIES)
 MTG_KEYWORDS = MTG_KEYWORD_ACTIONS + MTG_KEYWORD_ABILITIES + MTG_UNIQUE_KEYWORD_ABILITIES
 
 # every non-trivial word used in a type field
-MTG_TYPE_WORDS = ["C'tan", 'Abian', 'Adventure', 'Advisor', 'Aetherborn', 'Ajani', 'Alara', 'Alicorn', 'Alien', 'Ally', 'Aminatou', 'Angel', 'Angrath',
-                  'Antelope', 'Ape', 'Arcane', 'Archer', 'Archon', 'Arkhos', 'Arlinn', 'Art', 'Artifact', 'Artificer', 'Ashiok', 'Assassin', 'Assembly-Worker',
-                  'Astartes', 'Atog','Attraction', 'Aura', 'Aurochs', 'Autobot', 'Avatar', 'Azgol', 'Azra', 'B.O.B.', 'Background', 'Baddest,', 'Badger', 'Bahamut',
-                  'Barbarian', 'Bard', 'Basic', 'Basilisk', 'Basri', 'Bat', 'Bear', 'Beast', 'Beaver', 'Beeble', 'Beholder', 'Belenon', 'Berserker', 'Biggest,',
-                  'Bird', 'Boar', 'Bolas', 'Bolas\'s Meditation Realm', 'Brainiac', 'Bringer', 'Brushwagg', 'Bureaucrat', 'Calix', 'Camel', 'Carrier', 'Cartouche',
-                  'Cat', 'Centaur', 'Cephalid', 'Chameleon', 'Chandra', 'Chicken', 'Child', 'Chimera', 'Citizen', 'Clamfolk', 'Class', 'Cleric', 'Cloud', 'Clown',
-                  'Clue', 'Cockatrice', 'Comet', 'Conspiracy', 'Construct', 'Contraption', 'Cow', 'Coward', 'Crab', 'Creature', 'Crocodile', 'Curse', 'Custodes',
-                  'Cyborg', 'Cyclops', 'Dack', 'Dakkon', 'Daretti', 'Dauthi', 'Davriel', 'Deer', 'Demigod', 'Demon', 'Desert', 'Designer', 'Devil', 'Dihada',
-                  'Dinosaur', 'Djinn', 'Dog', 'Dominaria', 'Domri', 'Donkey', 'Dovin', 'Dragon', 'Drake', 'Dreadnought', 'Drone', 'Druid', 'Dryad', 'Duck',
-                  'Dungeon', 'Dwarf', 'Eaturecray', 'Efreet', 'Egg', 'Elder', 'Eldrazi', 'Elemental', 'Elemental?', 'Elephant', 'Elf', 'Elk', 'Ellywick',
-                  'Elminster', 'Elspeth', 'Elves', 'Employee', 'Enchantment', 'Equilor', 'Equipment', 'Ergamon', 'Estrid', 'Etiquette', 'Ever', 'Eye', 'Fabacin',
-                  'Faerie', 'Ferret', 'Fire', 'Fish', 'Flagbearer', 'Food', 'Forest', 'Fortification', 'Fox', 'Fractal', 'Freyalise', 'Frog', 'Fungus', 'Gamer',
-                  'Gargoyle', 'Garruk', 'Gate', 'Giant', 'Gideon', 'Gith', 'Gnoll', 'Gnome', 'Goat', 'Goblin', 'God', 'Golem', 'Gorgon', 'Grandchild', 'Gremlin',
-                  'Griffin', 'Grist', 'Guest', 'Gus', 'Hag', 'Halfling', 'Harpy', 'Hatificer', 'Head', 'Hellion', 'Hero', 'Hippo', 'Hippogriff', 'Homarid',
-                  'Homunculus', 'Horror', 'Horse', 'Host', 'Huatli', 'Human', 'Hydra', 'Hyena', 'Igpay', 'Illusion', 'Imp', 'Incarnation', 'Innistrad',
-                  'Inquisitor', 'Insect', 'Instant', 'instant', 'Inzerva', 'Iquatana', 'Ir', 'Island', 'Jace', 'Jackal', 'Jaguar', 'Jared', 'Jaya', 'Jellyfish',
-                  'Jeska', 'Juggernaut', 'Kaito', 'Kaldheim', 'Kamigawa', 'Kangaroo', 'Karn', 'Karsus', 'Kasmina', 'Kavu', 'Kaya', 'Kephalai', 'Key', 'Killbot',
-                  'Kinshala', 'Kiora', 'Kirin', 'Kithkin', 'Knight', 'Knights', 'Kobold', 'Kolbahan', 'Kor', 'Koth', 'Kraken', 'Kyneth', 'Lady', 'Lair', 'Lamia',
-                  'Lammasu', 'Land', 'Leech', 'Legend', 'Legendary', 'Lesson', 'Leviathan', 'Lhurgoyf', 'Licid', 'Liliana', 'Lizard', 'Lobster', 'Locus', 'Lolth',
-                  'Lorwyn', 'Lukka', 'Luvion', 'Mammoth', 'Manticore', 'Master', 'Masticore', 'Mercadia', 'Mercenary', 'Merfolk', 'Metathran', 'Mime', 'Mine',
-                  'Minion', 'Minotaur', 'Minsc', 'Mirrodin', 'Moag', 'Mole', 'Monger', 'Mongoose', 'Mongseng', 'Monk', 'Monkey', 'Moonfolk', 'Mordenkainen',
-                  'Mountain', 'Mouse', 'Mummy', 'Muraganda', 'Mutant', 'Myr', 'Mystic', 'Naga', 'Nahiri', 'Narset', 'Nastiest,', 'Nautilus', 'Necron', 'Nephilim',
-                  'New Phyrexia', 'Nightmare', 'Nightstalker', 'Niko', 'Ninja', 'Nissa', 'Nixilis', 'Noble', 'Noggle', 'Nomad', 'Nymph', 'Octopus', 'Ogre',
-                  'Oko', 'Ongoing', 'Ooze', 'Orc', 'Orgg', 'Otter', 'Ouphe', 'Ox', 'Oyster', 'Pangolin', 'Paratrooper', 'Peasant', 'Pegasus', 'Penguin',
-                  'Performer', 'Pest', 'Phelddagrif', 'Phenomenon', 'Phoenix', 'Phyrexia', 'Phyrexian', 'Pilot', 'Pirate', 'Plains', 'Plane', 'Planeswalker',
-                  'Plant', 'Porcupine', 'Power-Plant', 'Powerstone', 'Praetor', 'Primarch', 'Processor', 'Proper', 'Pyrulea', 'Rabbit', 'Rabiah', 'Raccoon',
-                  'Ral', 'Ranger', 'Rat', 'Rath', 'Ravnica', 'Rebel', 'Reflection', 'Regatha', 'Rhino', 'Rigger', 'Robot', 'Rogue', 'Rowan', 'Rune', 'Sable',
-                  'Saga', 'Saheeli', 'Salamander', 'Samurai', 'Samut', 'Sarkhan', 'Satyr', 'Scarecrow', 'Scariest', 'Scheme', 'Scientist', 'Scorpion', 'Scout',
-                  'See', 'Segovia', 'Serpent', 'Serra', 'Serra\'s Realm', 'Shade', 'Shadowmoor', 'Shaman', 'Shandalar', 'Shapeshifter', 'Shark', 'Sheep', 'Ship',
-                  'Shrine', 'Siren', 'Sivitri', 'Skeleton', 'Slith', 'Sliver', 'Slug', 'Snake', 'Snow', 'Soldier', 'Soltari', 'Sorcery', 'Sorin', 'Spawn',
-                  'Specter', 'Spellshaper', 'Sphinx', 'Spider', 'Spike', 'Spirit', 'Sponge', 'Spy', 'Squid', 'Squirrel', 'Starfish', 'Sticker', 'Summon',
-                  'Surrakar', 'Swamp', 'Szat', 'Tamiyo', 'Tasha', 'Teferi', 'Teyo', 'Tezzeret', 'Thalakos', 'Thopter', 'Thrull', 'Tibalt', 'Tiefling',
-                  'Tower', 'Townsfolk', 'Trap', 'Treasure', 'Treefolk', 'Tribal', 'Trilobite', 'Troll', 'Turtle', 'Tyranid', 'Tyvar', 'Ugin', 'Ulgrotha',
-                  'Unicorn', 'Urza', 'Urza\'s', 'Valla', 'Vampire', 'Vampyre', 'Vanguard', 'Vedalken', 'Vehicle', 'Venser', 'Viashino', 'Villain', 'Vivien',
-                  'Volver', 'Vraska', 'Vryn', 'Waiter', 'Wall', 'Walrus', 'Warlock', 'Warrior', 'Weird', 'Werewolf', 'Whale', 'Wildfire', 'Will', 'Windgrace',
-                  'Wizard', 'Wolf', 'Wolverine', 'Wombat', 'World', 'Worm', 'Wraith', 'Wrenn', 'Wrestler', 'Wurm', 'Xenagos', 'Xerex', 'Yanggu', 'Yanling',
-                  'Yeti', 'You\'ll', 'Zariel', 'Zendikar', 'Zombie', 'Zubera',
-                  'Blinkmoth', 'Rat', 'Rats', 'Servo', 'Caribou'
+MTG_TYPE_WORDS = ['Abian', 'Adventure', 'Advisor', 'Aetherborn', 'Ajani', 'Alara',  'Alicorn', 'Alien', 'Ally', 'Aminatou',  'Angel', 'Angrath', 
+                  'Antelope', 'Ape', 'Arcane', 'Archer', 'Archon', 'Arkhos', 'Arlinn', 'Army', 'Art', 'Artifact', 'Artificer', 'Ashiok', 'Assassin',
+                  'Assembly-Worker', 'Astartes', 'Atog', 'Attraction', 'Aura', 'Aurochs', 'Autobot', 'Avatar', 'Azgol', 'Azra', 'B.O.B.', 'Background',
+                  'Baddest', 'Baddest,', 'Badger', 'Bahamut', 'Balloon', 'Barbarian', 'Bard', 'Basic', 'Basilisk', 'Basri', 'Bat', 'Bear', 'Beast',
+                  'Beaver', 'Beeble', 'Beebles', 'Beholder', 'Belenon', 'Berserker', 'Biggest', 'Biggest,', 'Bird', 'Blinkmoth', 'Boar', 'Bolas',
+                  'Bolas\'s Meditation Realm', 'Brainiac', 'Bringer', 'Brushwagg', 'Bureaucrat', 'C\'tan', 'Calix', 'Camarid', 'Camel', 'Caribou',
+                  'Carrier', 'Cartouche', 'Cat',  'Centaur', 'Cephalid', 'Chameleon', 'Chandra', 'Chicken', 'Child', 'Chimera', 'Citizen', 'Clamfolk',
+                  'Class', 'Cleric', 'Cloud', 'Clown', 'Clue', 'Cockatrice', 'Comet', 'Conspiracy', 'Construct', 'Contraption', 'Cow', 'Coward',
+                  'Crab', 'Creature', 'Crocodile', 'Curse', 'Custodes', 'Cyborg', 'Cyclops', 'C’tan', 'Dack', 'Dakkon', 'Daretti', 'Dauthi', 'Davriel',
+                  'Deer', 'Demigod', 'Demon', 'Desert', 'Deserter', 'Designer', 'Devil', 'Die ', 'Dihada', 'Dinosaur', 'Djinn', 'Dog', 'Dominaria',
+                  'Domri', 'Donkey',  'Dovin', 'Dragon', 'Drake', 'Dreadnought', 'Drone', 'Druid', 'Dryad', 'Duck', 'Dungeon', 'Dwarf', 'Eaturecray',
+                  'Efreet', 'Egg', 'Elder', 'Eldrazi', 'Elemental', 'Elemental?', 'Elephant', 'Elf', 'Elk', 'Ellywick', 'Elminster', 'Elspeth',
+                  'Elves', 'Employee', 'Enchantment', 'Equilor', 'Equipment', 'Ergamon', 'Estrid', 'Etiquette', 'Ever', 'Eye', 'Fabacin', 'Faerie',
+                  'Ferret', 'Fire', 'Fish', 'Flagbearer',  'Food', 'Forest', 'Fortification', 'Fox', 'Fractal', 'Freyalise', 'Frog', 'Fungus',
+                  'Gamer', 'Gamers', 'Gargoyle', 'Garruk', 'Gate', 'Germ', 'Giant', 'Gideon', 'Gith', 'Gnoll',
+                  'Gnome', 'Goat', 'Goblin', 'God', 'Golem', 'Gorgon',  'Grandchild', 'Graveborn', 'Gremlin', 'Griffin', 'Grist', 'Guest', 'Gus',
+                  'Hag', 'Halfling', 'Hamster', 'Harpy', 'Hatificer', 'Head', 'Hellion', 'Hero', 'Hippo', 'Hippogriff',
+                  'Homarid', 'Homunculus', 'Horror', 'Horse', 'Host', 'Huatli', 'Human',  'Hydra', 'Hyena', 'Igpay', 'Illusion', 'Imp', 'Incarnation',
+                  'Inkling', 'Innistrad', 'Inquisitor', 'Insect', 'Instant', 'instant', 'Inzerva', 'Iquatana', 'Ir', 'Island', 'Jace', 'Jackal',
+                  'Jaguar', 'Jared', 'Jaya', 'Jellyfish', 'Jeska', 'Juggernaut', 'Kaito', 'Kaldheim', 'Kamigawa', 'Kangaroo', 'Karn', 'Karsus',
+                  'Kasmina', 'Kavu', 'Kaya', 'Kephalai', 'Key', 'Killbot', 'Kinshala', 'Kiora', 'Kirin', 'Kithkin', 'Knight', 'Knights', 'Kobold',
+                  'Kolbahan', 'Kor', 'Koth', 'Kraken', 'Kyneth', 'Lady', 'Lady of Proper Etiquette', 'Lair', 'Lamia', 'Lammasu', 'Land', 'Leech',
+                  'Legend', 'Legendary', 'Lesson', 'Leviathan', 'Lhurgoyf', 'Licid', 'Liliana', 'Lizard', 'Lobster', 'Locus', 'Lolth', 'Lorwyn',
+                  'Lukka', 'Luvion', 'Mammoth', 'Manticore', 'Master', 'Masticore',  'Mercadia', 'Mercenary', 'Merfolk', 'Mesa Chicken', 'Metathran',
+                  'Mime', 'Mine', 'Minion', 'Minotaur', 'Minsc', 'Mirrodin', 'Mite', 'Moag', 'Mole', 'Monger', 'Mongoose', 'Mongseng', 'Monk',
+                  'Monkey', 'Moonfolk', 'Mordenkainen', 'Mountain', 'Mouse', 'Mummy', 'Muraganda', 'Mutant', 'Myr', 'Mystic', 'Naga', 'Nahiri',
+                  'Narset', 'Nastiest', 'Nastiest,', 'Nautilus', 'Necron', 'Nephilim', 'New Phyrexia',  'Nightmare', 'Nightstalker', 'Niko', 'Ninja',
+                  'Ninjas', 'Nissa', 'Nixilis', 'Noble', 'Noggle', 'Nomad', 'Nymph', 'Octopus', 'Ogre', 'Oko', 'Ongoing', 'Ooze', 'Orb', 'Orc',
+                  'Orgg', 'Otter', 'Ouphe', 'Ox', 'Oyster', 'Pangolin', 'Paratrooper', 'Peasant', 'Pegasus', 'Penguin', 'Pentavite', 'Performer',
+                  'Pest',  'Phelddagrif', 'Phenomenon', 'Phoenix', 'Phyrexia', 'Phyrexian', 'Pilot', 'Pincher', 'Pirate', 'Plains', 'Plane',
+                  'Planeswalker', 'Plant', 'Porcupine', 'Power-Plant', 'Powerstone', 'Praetor', 'Primarch', 'Prism', 'Processor', 'Proper',
+                  'Pyrulea',  'Rabbit', 'Rabiah', 'Raccoon', 'Ral', 'Ranger', 'Rat', 'Rath', 'Rats', 'Ravnica', 'Rebel', 'Reflection', 'Regatha',
+                  'Reveler', 'Rhino', 'Rigger', 'Riggers', 'Robot', 'Rogue', 'Rowan', 'Rune', 'Sable', 'Saga', 'Saheeli', 'Salamander', 'Samurai',
+                  'Samut', 'Sand', 'Saproling', 'Sarkhan', 'Satyr', 'Scarecrow', 'Scariest', 'Scheme', 'Scientist', 'Scion', 'Scorpion', 'Scout',
+                  'Sculpture', 'See', 'Segovia', 'Serf', 'Serpent', 'Serra', 'Serra\'s Realm', 'Servo', 'Shade', 'Shadowmoor', 'Shaman', 'Shandalar',
+                  'Shapeshifter', 'Shark', 'Sheep', 'Ship', 'Shrine', 'Siren', 'Sivitri', 'Skeleton', 'Slith', 'Sliver', 'Slug', 'Snake', 'Snow',
+                  'Soldier', 'Soltari', 'Sorcery', 'Sorin', 'Spawn', 'Specter', 'Spellshaper', 'Sphinx', 'Spider', 'Spike', 'Spirit', 'Splinter',
+                  'Sponge', 'Spy', 'Squid', 'Squirrel', 'Squirrels', 'Starfish', 'Sticker', 'Summon', 'Surrakar', 'Survivor', 'Swamp', 'Szat',
+                  'Tamiyo', 'Tasha', 'Teddy', 'Teferi', 'Tentacle', 'Tetravite', 'Teyo', 'Tezzeret', 'Thalakos', 'Thopter', 'Thrull', 'Tibalt',
+                  'Tiefling',  'Tower', 'Townsfolk', 'Trap', 'Treasure', 'Treefolk', 'Tribal', 'Trilobite', 'Triskelavite', 'Troll', 'Turtle',
+                  'Tyranid', 'Tyvar', 'Ugin', 'Ulgrotha', 'Unicorn', 'Urza', 'Urza\'s', 'Valla', 'Vampire', 'Vampyre', 'Vanguard', 'Vedalken',
+                  'Vehicle', 'Venser', 'Viashino', 'Villain', 'Vivien', 'Volver', 'Vraska', 'Vryn', 'Waiter', 'Wall', 'Walrus', 'Warlock', 'Warrior',
+                  'Weird', 'Werewolf', 'Whale', 'Wildfire', 'Will', 'Windgrace', 'Wizard', 'Wolf', 'Wolverine', 'Wombat',
+                  'World', 'Worm', 'Wraith', 'Wrenn', 'Wrestler', 'Wurm', 'Xenagos', 'Xerex', 'Yanggu', 'Yanling', 'Yeti', 'You\'ll', 'Zariel',
+                  'Zendikar', 'Zombie', 'Zubera',
 ]
 MTG_TYPE_WORDS = extend_all_cases(MTG_TYPE_WORDS)
 
@@ -258,6 +287,23 @@ MTG_SYMBOL_JSON_TO_AI_FORMAT = {
     '{∞}'       : '⓿∞',    # infinity mana
 }
 MTG_SYMBOL_AI_TO_JSON_FORMAT = {v:k for k,v in MTG_SYMBOL_JSON_TO_AI_FORMAT.items()}
+
+# Enable the AI to create valid but out-of-order mana combinations
+# which will be coerced to correct encoded order via this table
+#   eg '⓿ⓌⒼ' -> '⓿ⒼⓌ'
+ENCODED_MANA_COERSION = {}
+for _, encoding in MTG_SYMBOL_JSON_TO_AI_FORMAT.items():
+    head, tail = encoding[0], encoding[1:]
+
+    for permutation in itertools.permutations(tail):
+        permutation = ''.join(permutation)
+        if permutation != tail:
+            permuted_encoding = head + permutation
+
+            assert permuted_encoding not in ENCODED_MANA_COERSION, f'permuted mana encoding is duplicated in ENCODED_MANA_COERSION, {permuted_encoding}: {ENCODED_MANA_COERSION}'
+            assert permuted_encoding not in MTG_SYMBOL_AI_TO_JSON_FORMAT, f'permuted mana encoding is duplicated in MTG_SYMBOL_AI_TO_JSON_FORMAT, {permuted_encoding}: {MTG_SYMBOL_AI_TO_JSON_FORMAT}'
+
+            ENCODED_MANA_COERSION[permuted_encoding] = encoding
 
 
 # mana_cost_to_human_readable = {'B': 'black',

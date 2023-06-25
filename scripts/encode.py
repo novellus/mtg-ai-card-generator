@@ -38,7 +38,7 @@ from collections import namedtuple
 
 def XYZ_variable_capitalize(s):
     # Capitalize all X's, Y's, and Z's, when acting as variables
-    variable_x_regex = r'((?<=^)|(?<=[\s\+\-\/\{]))([xXyYzZ])(?=$|[\s:,\.\/\}])'
+    variable_x_regex = r'((?<=^)|(?<=\W))([xXyYzZ])(?=$|\W)'
     capitalize = lambda x: x.group(2).upper()
     return re.sub(variable_x_regex, capitalize, s)
 
@@ -437,6 +437,36 @@ def internal_format_to_AI_format(card, spec='main_text'):
         if name not in MTG_KEYWORDS + MTG_TYPE_WORDS:
             main_text = main_text.replace(name, '@')
 
+    # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
+    # for each new counter type, encode it as '%type%'
+    # repeated counters of the same type will be encoded simply as '%'
+    if main_text is not None:
+        reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
+        # regex = fr'(?:(?<=^)|(?<=\W))({"|".join(MTG_COUNTERS)}) counter(?=$|\W|s\W)'
+        lookbehind_regex = ''
+        for prefix in [r'^', r'\W']:  # f-string expression part cannot include a backslash
+            lookbehind_regex += fr'(?<={prefix}{f" )|(?<={prefix}".join(MTG_UNTYPED_COUNTER_LOOKBEHIND)} )'
+        regex = fr'(?:(?:(?<=^)|(?<=\W))({"|".join(MTG_COUNTERS)}) |(?:{lookbehind_regex}))counter(?=$|\W|s$|s\W)'
+        subs = re.findall(regex, main_text)
+        main_text = re.sub(regex, reserved_char, main_text)
+        previous_counter = None
+        for counter_type in subs:
+            if counter_type == previous_counter:
+                enc = '%'
+            else:
+                enc = f'⒞{counter_type}⒞'
+            main_text = main_text.replace(reserved_char, enc, 1)
+            previous_counter = counter_type
+
+    # standardize verbiage for countering spells to "uncast"
+    #   this reduces overloading of the word "counter" for the AI
+    # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
+    if main_text is not None:
+        main_text = re.sub(rf'((?<=^)|(?<=\W))(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
+        main_text = re.sub(rf'((?<=^)|(?<=\W))(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
+
+        assert re.search(r'((?<=^)|(?<=\W))[cC]ounter', main_text) is None, f'stray "counter" found in main_text after they were all supposed to be reencoded: {main_text}'
+
     # reduce character overloading for pluses
     # convert pluses used to indicate sign (eg +5) to a unique character
     # The only other plus signs indicate ranges (eg 5+) or reference the symbol itself
@@ -490,30 +520,6 @@ def internal_format_to_AI_format(card, spec='main_text'):
 
     if defense is not None:
         defense = re.sub(r'(\d+)', lambda x: decimal_to_binary(x.group(1)), defense)
-
-    # simplify repeated counter syntax, so the AI doesn't have to remember types once it specifies one
-    # for each new counter type, encode it as 'type%'
-    # repeated counters of the same type will be encoded simply as '%'
-    if main_text is not None:
-        reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
-        regex = fr'(?:(?<=^)|(?<=\W))({"|".join(MTG_COUNTERS)}) counter(?=$|\W)'
-        subs = re.findall(regex, main_text)
-        main_text = re.sub(regex, reserved_char, main_text)
-        previous_counter = None
-        for counter_type in subs:
-            if counter_type == previous_counter:
-                enc = '%'
-            else:
-                enc = f'{counter_type}%'
-            main_text = main_text.replace(reserved_char, enc, 1)
-            previous_counter = counter_type
-
-    # standardize verbiage for countering spells to "uncast"
-    #   this reduces overloading of the word "counter" for the AI
-    # assume all uses of "counter" outside the list of MTG_COUNTERS is a verb
-    if main_text is not None:
-        main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )counter', 'uncast', main_text)
-        main_text = re.sub(rf'(?<!{" )(?<!".join(MTG_COUNTERS)} )Counter', 'Uncast', main_text)
 
     # convert newlines to a unique character
     # we're going to reserve actual newlines for making the output file a bit more human readable
@@ -600,24 +606,6 @@ def AI_to_internal_format(AI_string, spec='main_text'):
     if 'rarity' in card:
         card['rarity'] = MTG_RARITY_AI_TO_JSON_FORMAT[card['rarity']]
 
-    # revert uncast to counter
-    if 'main_text' in card:
-        card['main_text'] = card['main_text'].replace('uncast', 'counter')
-        card['main_text'] = card['main_text'].replace('Uncast', 'Counter')
-
-    # decode counter syntax to human readable format
-    if 'main_text' in card:
-        reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
-        regex = r'(\S*)%'
-        subs = re.findall(regex, card['main_text'])
-        orig_main_text = card['main_text']  # only used for error reporting
-        card['main_text'] = re.sub(regex, reserved_char, card['main_text'])
-        counter_type = None
-        for new_type in subs:
-            counter_type = new_type or counter_type
-            assert counter_type is not None, 'counter type not defined: ' + orig_main_text  # don't let the AI not label the first counter
-            card['main_text'] = card['main_text'].replace(reserved_char, f'{counter_type} counter', 1)
-
     # decode symbols (including mana, excepting numerical)
     if 'main_text' in card:
         for a, b in MTG_SYMBOL_AI_TO_JSON_FORMAT.items():
@@ -662,6 +650,25 @@ def AI_to_internal_format(AI_string, spec='main_text'):
         card['main_text'] = re.sub(r'[⊕]', '+', card['main_text'])
     if 'flavor' in card:
         card['flavor'] = re.sub(r'[⊕]', '+', card['flavor'])
+
+    # revert uncast to counter
+    if 'main_text' in card:
+        card['main_text'] = card['main_text'].replace('uncast', 'counter')
+        card['main_text'] = card['main_text'].replace('Uncast', 'Counter')
+
+    # decode counter syntax to human readable format
+    if 'main_text' in card:
+        reserved_char = '\u2014'  # we know this won't exist in the text when this function is used
+        regex = r'⒞([ \S]*?)⒞|(%)'  # eg "⒞double strike⒞", or just "%" to use previous type
+        subs = re.findall(regex, card['main_text'])
+        orig_main_text = card['main_text']  # only used for error reporting
+        card['main_text'] = re.sub(regex, reserved_char, card['main_text'])
+        counter_type = None
+        for new_type, use_last_type in subs:
+            if not use_last_type:
+                counter_type = new_type
+            assert counter_type is not None, f'counter type not defined: {subs} "{orig_main_text}"'  # don't let the AI not label the first counter
+            card['main_text'] = card['main_text'].replace(reserved_char, f'{counter_type}{" " if counter_type else ""}counter', 1)
 
     # replace backreferences to name
     if 'main_text' in card:
@@ -718,7 +725,7 @@ def validate(card):
     # this can occur with complex tokens if say the leading encoding term is missing
     for field in ['cost', 'loyalty', 'main_text', 'type', 'name', 'power_toughness', 'defense', 'rarity']:
         if field in card and card[field] is not None:
-            for c in '␥①②③④⑤⑥⑦↵%⓿≙≚⓪∓⊖⊕@∫∬∭∮∯∰ⒶⒷⒸⒺⒼⒽⓀⓁⓃⓄⓅⓠⓇⓈⓉⓊⓌⓍⓎⓏ⓶\u2014':
+            for c in '␥①②③④⑤⑥⑦↵%⓿≙≚⓪∓⊖⊕@⒞∫∬∭∮∯∰ⒶⒷⒸⒺⒼⒽⓀⓁⓃⓄⓅⓠⓇⓈⓉⓊⓌⓍⓎⓏ⓶\u2014':
                 assert c not in card[field], f'field not suffiently decoded, found stray special characters "{c}" from AI encoding: "{card[field]}"'
 
     # check that all mana costs are recognized
@@ -756,6 +763,10 @@ def error_correct_AI(AI_string):
     #   because these will cause errors in the subsequent parser, which is fine
     #   and in this case, there is no valid generic target to coerce an unspecified counter type to, so it's just going to be a parsing error
     # TODO ?
+
+    # coerce valid but out-of-order mana combinations to correct encoded order (eg ```⓿ⓌⒼ``` to ```⓿ⒼⓌ```)
+    for permuted_encoding, encoding in ENCODED_MANA_COERSION.items():
+        AI_string = re.sub(permuted_encoding, encoding, AI_string)
 
     # strip string
     AI_string = AI_string.strip()
