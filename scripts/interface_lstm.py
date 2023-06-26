@@ -28,7 +28,7 @@ LEN_PER_FLAVOR =    105  # average and empirical, change if the dataset changes 
 
 
 
-def sample(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\n', parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=2, whisper_text=None, whisper_every_newline=1, verbosity=0, gpu=0):
+def sample(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\n', parser=None, initial_length_margin=1.05, trimmed_delimiters=2, deduplicate=True, max_resamples=3, length_growth=5, whisper_text=None, whisper_every_newline=1, verbosity=0, gpu=0):
     # samples from nn at nn_path with seed
     #   whispers whisper_text if specified, at interval whisper_every_newline
     # initially samples a length of characters targeting the number of chunks with margin
