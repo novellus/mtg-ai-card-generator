@@ -253,7 +253,9 @@ def main(args):
         print(f'operating in {args.outdir}')
 
     # generate names, or load cached names file
+    # if the requested num_cards is greater than the cached number, regenerate names to the new specifide length
     cache_path = os.path.join(args.outdir, 'main_text_cache', 'names.yaml')
+    sample_new_names = True
 
     if os.path.exists(cache_path):
         if args.verbosity > 2:
@@ -263,7 +265,20 @@ def main(args):
         cards = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
 
-    else:
+        # trim or exapand the number of names to fit the current num_cards spec
+        if args.num_cards < len(cards):
+            cards = cards[:num_cards]
+            sample_new_names = False
+
+        elif args.num_cards > len(cards):
+            if args.verbosity > 2:
+                print(f'Not enough names cached, generating new ones')
+            sample_new_names = True
+
+        else:
+            sample_new_names = False
+
+    if sample_new_names:
         # sample names AI, as a batch
         if args.verbosity > 2:
             print(f'Sampling names')

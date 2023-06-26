@@ -34,7 +34,6 @@
 
 # &#x1F534; TODOs
 * retrain new name and main text AIs on updated dataset
-* enable expanding an output folder with ```--resume``` and a num value gfreater than initial size by checking size of names cache file and regenerating it if a larger number is specified at CLI
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
