@@ -20,7 +20,7 @@
 # Workflow / Getting Started
 * Run through the environment setup section below
 * The main entry point for the project is ```scripts/generate_cards.py``` 
-    * example command: ```python generate_cards.py --lstm_gpu 1 --names_nn ../nns/names_0 --main_text_nn ../nns/main_text_11.3/checkpoint_10111.000000.t7 --flavor_nn timdettmers_guanaco-65b-merged --gpu-memory 23 --cpu-memory 250 --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --outdir ../outputs --num_cards 10 --hr_upscale 2 --verbosity=9```
+    * example command: ```python generate_cards.py --lstm_gpu 1 --names_nn ../nns/names_3 --main_text_nn ../nns/main_text_13 --flavor_nn timdettmers_guanaco-65b-merged --gpu-memory 23 --cpu-memory 250 --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --outdir ../outputs --num_cards 10 --hr_upscale 2 --verbosity=9```
         * This command takes about 2 hours to execute on the dev's machine
         * see ```python generate_cards.py --help``` for more info on arguments
     * AI samples are cached in subdirectories (```*_cache```) under the auto-generated output folder (eg ```../outputs/00003_481992436```), so the generator can be stopped and resumed without losing much via the ```--resume ...``` argument. Also useful if it crashes for some inconsistent reason.
