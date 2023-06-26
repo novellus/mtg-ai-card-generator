@@ -58,7 +58,7 @@ def compute_stats(cards, outdir):
     num_sides = 0
 
     # main types only, including an 'Other' key for cards not in any included category
-    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Scheme':[], 'Contraption':[], 'Other':[]}
+    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Scheme':[], 'Contraption':[], 'Siege':[], 'Other':[]}
 
     for card in cards:
         # aggregate sides for iteration
