@@ -38,8 +38,6 @@
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
     * make sure to print both front and back of cards
-* create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
-    * limit file size to something appropriate for TTS assets (40MB??)
     * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
 * for the cube, colin wants
     * 50 cards of each individual color
@@ -54,6 +52,8 @@
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
 * low priorty (ie probably never)
+    * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
+        * limit file size to something appropriate for TTS assets (40MB??)
     * ```render.py```
         * decrease save file resolution to limit file size?
         * render legendary frame?
