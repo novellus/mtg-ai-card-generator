@@ -52,6 +52,7 @@
     * add 2nd ```main_basics``` function for generating these basics
         * probably add an argument to specify prompt? Or use a standard set?
 * low priorty (ie probably never)
+    * add bypass to lstm parser where if max resamples are exceeded, instead of raising an error, it loudly removes that card from the processing and finishes the rest
     * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
         * limit file size to something appropriate for TTS assets (40MB??)
     * ```render.py```
