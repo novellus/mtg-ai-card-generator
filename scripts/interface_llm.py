@@ -131,7 +131,7 @@ def terminate_server(verbosity):
 
     if PROCESS is not None:
         if verbosity > 1:
-            print('Terminating llm server')
+            print('Terminating llm server (may freeze OS for a few seconds during mem free)')
 
         # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
         os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
