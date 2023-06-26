@@ -51,7 +51,6 @@ def compute_stats(cards, outdir):
     colorless_artifacts = []
     mono_colored = defaultdict(list)  # {color: []}
     multicolored = defaultdict(list)  # {'colorA, colorB': []}, including 'three_or_more' as a key
-    lands = []
     multisided = defaultdict(list)  # {num_sides: []}
     mana_value = defaultdict(list)  # {value: []}  # AKA converted mana cost
     num_cards = len(cards)
@@ -140,10 +139,6 @@ def compute_stats(cards, outdir):
         if colors == 'Colorless' and 'Artifact' in card['type']:
             colorless_artifacts.append(card)
 
-        # catagorize lands
-        if 'Land' in card['type']:
-            lands.append(card)
-
         # catagorize multisided cards
         if len(sides) > 1:
             multisided[len(sides)].append(card)
@@ -159,7 +154,6 @@ def compute_stats(cards, outdir):
         '_num_colorless'           : len(colorless),
         '_num_colorless_artifacts' : len(colorless_artifacts),
         '_num_costless'            : len(costless),
-        '_num_lands'               : len(lands),
         '_num_main_type'           : {k:len(v) for k,v in main_type.items()},
         '_num_mana_value'          : {k:len(v) for k,v in mana_value.items()},
         '_num_mono_colored'        : {k:len(v) for k,v in mono_colored.items()},
@@ -168,7 +162,6 @@ def compute_stats(cards, outdir):
         'colorless'                : sorted([card_id(card) for card in colorless]),
         'colorless_artifacts'      : sorted([card_id(card) for card in colorless_artifacts]),
         'costless'                 : sorted([card_id(card) for card in costless]),
-        'lands'                    : sorted([card_id(card) for card in lands]),
         'main_type'                : {k: [card_id(card) for card in v] for k,v in main_type.items()},
         'mana_value'               : {k: [card_id(card) for card in v] for k,v in mana_value.items()},
         'mono_colored'             : {k: [card_id(card) for card in v] for k,v in mono_colored.items()},
