@@ -57,7 +57,8 @@ def compute_stats(cards, outdir):
     num_sides = 0
 
     # main types only, including an 'Other' key for cards not in any included category
-    main_type = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Scheme':[], 'Contraption':[], 'Siege':[], 'Other':[]}
+    mono_main_types = {'Land':[], 'Creature':[], 'Artifact':[], 'Enchantment':[], 'Planeswalker':[], 'Instant':[], 'Sorcery':[], 'Scheme':[], 'Contraption':[], 'Siege':[], 'Other':[]}
+    multi_main_types = defaultdict(list)
 
     for card in cards:
         # aggregate sides for iteration
@@ -121,19 +122,35 @@ def compute_stats(cards, outdir):
             mana_value[value].append(card)
 
         # catagorize by main type
+        # determine types used in card, including each side
         # this only considers the type field of the card, while the other card attributes may not be consistent with this
         #   eg a card may have a 'Planeswalker' type listed, but not actually have a loyalty counter
         # this also only parses for exact matches, misspellings will catagorize as "Other"
         types = set()
+        found_colorless = False
         for side in sides:
-            for type_string in main_type:
-                if type_string != 'Other' and type_string in card['type']:
-                    types.add(type_string)
-        if not types:
-            main_type['Other'].append(card)
+            side_types = [type_string for type_string in mono_main_types if type_string != 'Other' and type_string in side['type']]
+            if not side_types:
+                side_types = ['Other']
+            types.update(side_types)
+
+        assert len(types) > 0, f'got a typesless card, which should be impossible, since it could catagorize as "Other": {str(card)}'
+        if len(types) == 1:
+            mono_main_types[types.pop()].append(card)
         else:
-            for type_string in types:
-                main_type[type_string].append(card)
+            multi_main_types[', '.join(sorted(list(types)))].append(card)
+
+        # catagorize by main type
+        # types = set()
+        # for side in sides:
+        #     for type_string in mono_main_types:
+        #         if type_string != 'Other' and type_string in card['type']:
+        #             types.add(type_string)
+        # if not types:
+        #     mono_main_types['Other'].append(card)
+        # else:
+        #     for type_string in types:
+        #         mono_main_types[type_string].append(card)
 
         # catagorize colorless artifacts
         if colors == 'Colorless' and 'Artifact' in card['type']:
@@ -154,7 +171,8 @@ def compute_stats(cards, outdir):
         '_num_colorless'           : len(colorless),
         '_num_colorless_artifacts' : len(colorless_artifacts),
         '_num_costless'            : len(costless),
-        '_num_main_type'           : {k:len(v) for k,v in main_type.items()},
+        '_num_mono_main_types'     : {k:len(v) for k,v in mono_main_types.items()},
+        '_num_multi_main_types'    : {k:len(v) for k,v in multi_main_types.items()},
         '_num_mana_value'          : {k:len(v) for k,v in mana_value.items()},
         '_num_mono_colored'        : {k:len(v) for k,v in mono_colored.items()},
         '_num_multicolored'        : {k:len(v) for k,v in multicolored.items()},
@@ -162,7 +180,8 @@ def compute_stats(cards, outdir):
         'colorless'                : sorted([card_id(card) for card in colorless]),
         'colorless_artifacts'      : sorted([card_id(card) for card in colorless_artifacts]),
         'costless'                 : sorted([card_id(card) for card in costless]),
-        'main_type'                : {k: [card_id(card) for card in v] for k,v in main_type.items()},
+        'mono_main_types'          : {k: [card_id(card) for card in v] for k,v in mono_main_types.items()},
+        'multi_main_types'         : {k: [card_id(card) for card in v] for k,v in multi_main_types.items()},
         'mana_value'               : {k: [card_id(card) for card in v] for k,v in mana_value.items()},
         'mono_colored'             : {k: [card_id(card) for card in v] for k,v in mono_colored.items()},
         'multicolored'             : {k: [card_id(card) for card in v] for k,v in multicolored.items()},
