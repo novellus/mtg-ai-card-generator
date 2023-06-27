@@ -5,7 +5,6 @@ import os
 import pprint
 import random
 import re
-import shlex
 import subprocess
 import yaml
 

@@ -1,5 +1,6 @@
 import math
 import os
+import shlex
 import subprocess
 import traceback
 
@@ -56,9 +57,9 @@ def sample(nn_path, seed, approx_length_per_chunk, num_chunks, delimiter='\n', p
                f' -gpu {gpu}'
               )
         if whisper_text is not None:
-            cmd += (f' -whisper_text "{whisper_text}"'
+            cmd += (f' -whisper_text {shlex.quote(whisper_text)}'
                     f' -whisper_every_newline {whisper_every_newline}'
-                    f' -start_text "{whisper_text}"'
+                    f' -start_text {shlex.quote(whisper_text)}'
                    )
 
         try:
