@@ -30,11 +30,12 @@ def server_up(verbosity):
     #   the server has failed, started with incorrect arguments, code error, server was started outside of this program, etc
 
     try:
-        requests.get(f'{ADDRESS}/sdapi/v1/embeddings')
+        response = requests.get(f'{ADDRESS}/sdapi/v1/embeddings')
+        assert response.status_code == 200, response
         if verbosity > 2:
             print('A1SD server is up')
         return True
-    except requests.exceptions.ConnectionError:
+    except (requests.exceptions.ConnectionError, AssertionError):
         if verbosity > 2:
             print('A1SD server is not up')
         return False

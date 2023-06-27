@@ -26,10 +26,11 @@ def server_up(verbosity):
 
     try:
         requests.get(f'{ADDRESS}/api/v1/model')
+        assert response.status_code == 200, response
         if verbosity > 2:
             print('llm server is up')
         return True
-    except requests.exceptions.ConnectionError:
+    except (requests.exceptions.ConnectionError, AssertionError):
         if verbosity > 2:
             print('llm server is not up')
         return False
