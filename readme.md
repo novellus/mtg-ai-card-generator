@@ -35,9 +35,9 @@
 | args                                    | approx rate on the dev's machine |
 | --------------------------------------- | -------------------------------- |
 | end-to-end, all features enabled        | ~ 5-10 minutes per card          |
-| ```--no_flavor```                       | ~ ???? cards / hour              |
-| ```--no_flavor --no_art```              | ~ 600 cards / hour               |
-| ```--no_flavor --no_art --no_render```  | ~ 1200 cards / hour              |
+| ```--no_flavor```                       | ~ 6.5 cards / minute             |
+| ```--no_flavor --no_art```              | ~ 10 cards / minute              |
+| ```--no_flavor --no_art --no_render```  | ~ 20 cards / minute              |
 
 
 # &#x1F534; TODOs
