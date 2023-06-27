@@ -32,13 +32,13 @@
     * Similarly, the cached art under ```outputs/*/art_cache``` can be modified to change the card art before re-rendering. If this is the only change to a card, then delete the rendered card image file so the renderer will detect that it should be rendered.
 * Overall timing
 
-| args                                            | approx rate on the dev's machine | amount of data produced |
-| ----------------------------------------------- | -------------------------------- | ----------------------- |
-| ```--hr_upscale 2``` (all features enabled)     | ~ 5-10 minutes per card          | ~ 5 MB / card           |
-| ```--no_flavor --hr_upscale 2```                | ~ 2.5 cards / minute             | ~ 4.5 MB / card         |
-| ```--no_flavor```                               | ~ 6.5 cards / minute             | ~ 2.5 MB / card         |
-| ```--no_flavor --no_art```                      | ~ 10 cards / minute              | ~ 250 KB / card         |
-| ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute              | ~ 1.5 KB / card         |
+| args                                            | timing on the dev's machine | amount of data produced |
+| ----------------------------------------------- | --------------------------- | ----------------------- |
+| ```--hr_upscale 2``` (all features enabled)     | ~ 5-10 minutes per card     | ~ 5 MB / card           |
+| ```--no_flavor --hr_upscale 2```                | ~ 2.5 cards / minute        | ~ 4.5 MB / card         |
+| ```--no_flavor```                               | ~ 6.5 cards / minute        | ~ 2.5 MB / card         |
+| ```--no_flavor --no_art```                      | ~ 10 cards / minute         | ~ 250 KB / card         |
+| ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute         | ~ 1.5 KB / card         |
 
 
 # &#x1F534; TODOs
