@@ -140,18 +140,6 @@ def compute_stats(cards, outdir):
         else:
             multi_main_types[', '.join(sorted(list(types)))].append(card)
 
-        # catagorize by main type
-        # types = set()
-        # for side in sides:
-        #     for type_string in mono_main_types:
-        #         if type_string != 'Other' and type_string in card['type']:
-        #             types.add(type_string)
-        # if not types:
-        #     mono_main_types['Other'].append(card)
-        # else:
-        #     for type_string in types:
-        #         mono_main_types[type_string].append(card)
-
         # catagorize colorless artifacts
         if colors == 'Colorless' and 'Artifact' in card['type']:
             colorless_artifacts.append(card)
