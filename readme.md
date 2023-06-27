@@ -35,13 +35,12 @@
 | args                                    | approx rate on the dev's machine |
 | --------------------------------------- | -------------------------------- |
 | end-to-end, all features enabled        | ~ 5-10 minutes per card          |
-| ```--no_flavor --no_art --no_render```  | ~ 1200 cards / hour              |
-| ```--no_flavor --no_art```              | ~ ???? cards / hour              |
 | ```--no_flavor```                       | ~ ???? cards / hour              |
+| ```--no_flavor --no_art```              | ~ 600 cards / hour               |
+| ```--no_flavor --no_art --no_render```  | ~ 1200 cards / hour              |
 
 
 # &#x1F534; TODOs
-* retrain new name and main text AIs on updated dataset
 * generate a small-medium batch of cards for Colin to review
     * determine how we transfer these large datasets so he can view them
 * create ```to_pdf.py```
