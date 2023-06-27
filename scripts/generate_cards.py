@@ -422,7 +422,7 @@ def main(args):
 
                 def finish_side(side):
                     if args.verbosity > 2 and 'a_side' in side:
-                        print(f'Sampling flavor for side {side['side']}')
+                        print(f'Sampling flavor for side {side["side"]}')
 
                     side['flavor'] = llm.sample_flavor(card = card,
                                                        model = args.flavor_nn,
