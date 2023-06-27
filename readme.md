@@ -42,12 +42,12 @@
 
 
 # &#x1F534; TODOs
-* generate a small-medium batch of cards for Colin to review
-    * determine how we transfer these large datasets so he can view them
+* create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * create ```to_pdf.py```
     * make sure to print both front and back of cards
     * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
 * for the cube, colin wants
+    * determine how we transfer these large datasets so he can view them
     * 50 cards of each individual color
     * 60 multicolor cards
         * roughly even between color combinations
