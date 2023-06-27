@@ -866,7 +866,7 @@ def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, fo
 
     # acquire cards from yaml
     f = open(yaml_path)
-    cards = yaml.load(f.read(), Loader=yaml.FulllLoader)
+    cards = yaml.load(f.read(), Loader=yaml.FullLoader)
     f.close()
 
     for i_card, card in enumerate(cards):
