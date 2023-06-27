@@ -267,7 +267,7 @@ def main(args):
 
         # trim or exapand the number of names to fit the current num_cards spec
         if args.num_cards < len(cards):
-            cards = cards[:num_cards]
+            cards = cards[:args.num_cards]
             sample_new_names = False
 
         elif args.num_cards > len(cards):
