@@ -203,8 +203,15 @@ function LM:encode_string(s)
   local i = 1
   for token in string.gmatch(s, "([%z\1-\127\194-\244][\128-\191]*)") do
     local idx = self.token_to_idx[token]
+
+    -- drop in a replacement last token if its not a complete unicode character
+    if i == l and idx == nil then
+      idx = self.token_to_idx[' ']
+    end
+
     assert(idx ~= nil, 'Got invalid idx')
     encoded[i] = idx
+
     i = i + 1
   end
   return encoded
