@@ -453,8 +453,14 @@ def main(args):
     #   the recursion is handled, but not at the highest available location, creating redundant data which is difficult to read + hand-modify
     #   in addition I'm a bit worried that the deeper-than-intended recursion level saved in the yaml file will result in an incorrect data structure on reload
     #   and finally, its easy enough to add the backlink back in at reload time.
+    # Also order fields for human readability
+    yaml_data = [encode.limit_fields(card, blacklist=['a_side']) for card in cards]
+    field_order = ['name', 'type', 'cost', 'power_toughness', 'loyalty', 'defense', 'main_text', 'author', 'card_number', 'side',
+                   'flavor', 'nns_names', 'rarity', 'repo_hash', 'repo_link', 'seed', 'seed_diff', 'set_number', 'timestamp', 'unparsed_name',
+                   'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
+    yaml_data = [encode.order_dict_fields(card, field_order) for card in yaml_data]
     f = open(os.path.join(args.outdir, 'card_data.yaml'), 'w')
-    f.write(yaml.dump([encode.limit_fields(card, blacklist=['a_side']) for card in cards]))
+    f.write(yaml.dump(yaml_data, sort_keys=False))
     f.close()
 
     # render the cards

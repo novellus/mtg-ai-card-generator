@@ -36,6 +36,31 @@ from collections import namedtuple
 # }
 
 
+def order_dict_fields(card, field_order):
+    # consumes internal format
+    # returns the same internal format data, but with dict items
+    #   inserted in the order of field_order, for each field that exists in the card
+    # card fields are asserted to be present in field_order
+    # This function is used to specify output field order for yaml.dump
+
+    # assert all fields specified
+    for field in card:
+        assert field in field_order, f'field order not specifed for "{field}"'
+
+    # create new dict, with fields inserted in the specified order
+    new_card = {}
+    for field in field_order:
+        if field in card:
+
+            # recurse on nested formats
+            if type(card[field]) == dict:
+                new_card[field] = order_dict_fields(card[field], field_order)
+            else:
+                new_card[field] = card[field]
+
+    return new_card
+
+
 def XYZ_variable_capitalize(s):
     # Capitalize all X's, Y's, and Z's, when acting as variables
     variable_x_regex = r'((?<=^)|(?<=\W))([xXyYzZ])(?=$|\W)'
