@@ -667,7 +667,8 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
     # the space in card_file_name is important for parsability
     #   because the name is guaranteed to not start with a space
     #   while it could (legally) start with "-A"
-    card_file_name = f"{card['card_number']:05}{side_id} {card['name']}.png"
+    sanitized_name = re.sub('/', '', card['name'])
+    card_file_name = f"{card['card_number']:05}{side_id} {sanitized_name}.png"
     out_path = os.path.join(outdir, card_file_name)
 
     if os.path.exists(out_path) and not overwrite:

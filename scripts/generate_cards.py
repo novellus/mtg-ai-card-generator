@@ -306,7 +306,8 @@ def main(args):
 
     # sample main text
     for i_card, card in enumerate(cards):
-        cache_path = os.path.join(args.outdir, 'main_text_cache', f"{i_card:05} {card['name']}.yaml")
+        sanitized_name = re.sub('/', '', card['name'])
+        cache_path = os.path.join(args.outdir, 'main_text_cache', f"{i_card:05} {sanitized_name}.yaml")
 
         # use cached text file, if any
         if os.path.exists(cache_path):
@@ -397,7 +398,8 @@ def main(args):
 
     else:
         for i_card, card in enumerate(cards):
-            cache_path = os.path.join(args.outdir, 'flavor_cache', f"{i_card:05} {card['name']}.yaml")
+            sanitized_name = re.sub('/', '', card['name'])
+            cache_path = os.path.join(args.outdir, 'flavor_cache', f"{i_card:05} {sanitized_name}.yaml")
 
             # use cached text file, if any
             if os.path.exists(cache_path):
