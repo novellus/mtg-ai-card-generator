@@ -44,8 +44,16 @@
 # &#x1F534; TODOs
 * create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * create ```to_pdf.py```
-    * make sure to print both front and back of cards
+    * add ```--to_pdf``` arg to ```generate_cards.py```
     * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
+* add ```--resume_yaml``` arg / entry point from ```generate_cards.py```
+    * don't sample any names or main text, pull those and all card details from the yaml
+    * don't regenerate any basic info such as seeds
+    * do sample flavor, create art, and render only what's in the yaml
+* generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
+    * Manually construct a ```card_data.yaml``` with copied cards and unique seeds
+    * use the yaml finisher arg from ```generate_cards.py``` to make art
+    * add main text for standard land types ```Forest①②Basic Land - Forest⑥∫⑦(⓿Ⓣ: Add ⓿Ⓖ.)```
 * for the cube, colin wants
     * determine how we transfer these large datasets so he can view them
     * 50 cards of each individual color
@@ -54,11 +62,6 @@
         * mostly 2-color (not 3+ color)
     * 25 colorless artifacts
     * 25 lands
-* generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
-    * use unique type identifer (```Basic Land```?) to indicate usage of textless frames
-        * may need to include text (or use colored frames) to identify the land color, since art will be hit or miss
-    * add 2nd ```main_basics``` function for generating these basics
-        * probably add an argument to specify prompt? Or use a standard set?
 * low priorty (ie probably never)
     * add bypass to lstm parser where if max resamples are exceeded, instead of raising the error, it raises a unique error which is caught by ```generate_cards.py``` who loudly removes that card from the processing and finishes the rest of the cards
     * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
