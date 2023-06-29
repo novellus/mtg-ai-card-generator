@@ -119,9 +119,9 @@ def main(args):
 
     # 2.5 x 3.5 in = standard playing card size
     #   set total avg width to 1/32 less than 2.5, for margin to card sleeves
-    #   set space between cards for only one cut, with no extras trimming steps
-    im_width = (2.5 - 1/16) * ppi
-    im_height = (3.5 - 1/16) * ppi
+    #   set space between cards for only one cut, with no extra trimming steps
+    im_width = (2.5 - 3/32) * ppi
+    im_height = (3.5 - 3/32) * ppi
     twixt_margin = 1/16 * ppi  # space between cards
     trim_here_line_thickness = int((twixt_margin / 3) / ppi * bg_dpi)
     trim_here_len = int((im_width / 20) / ppi * bg_dpi)
