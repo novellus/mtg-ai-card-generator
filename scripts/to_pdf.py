@@ -81,7 +81,7 @@ def main(args):
     images = []
     multisided_images = defaultdict(dict)  # {'00000': {'A': '00000-A Card Name.png'}}
     for f_name in next(os.walk(args.folder))[2]:
-        if re.search(r'\.png$', f_name):
+        if re.search(r'\.png$', f_name) and not re.search(r'^(\d+_composite|pdf_background)\.png$', f_name):
             side_path = os.path.join(args.folder, f_name)
 
             # collect multi-sided cards separately, to be rendered together later
