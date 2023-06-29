@@ -106,6 +106,7 @@ def main(args):
     #   we could fit 10 cards per page if we have zero margins to edge or twixt
     #   but that also makes our life hard when cutting them apart, so we'll use margin
     ppi = 72  # base library uses 72 points per inch by default, and apparently that can't be configured
+    bg_dpi = 300
     pdf_width = 11 * ppi
     pdf_height = 8.5 * ppi
     pdf = FPDF(orientation='L', unit='pt', format=(pdf_height, pdf_width))
@@ -116,20 +117,40 @@ def main(args):
     num_rows = 2
     page_every = num_cols * num_rows
 
-    im_width = 2.5 * ppi  # standard playing card size
-    im_height = 3.5 * ppi
-    twixt_margin = 0.1 * ppi  # space between cards
-    x_margin = (pdf_width - (im_width * num_cols) - (twixt_margin * (num_cols - 1))) / 2
-    y_margin  = (pdf_height - (im_height * num_rows) - (twixt_margin * (num_rows - 1))) / 2
+    # 2.5 x 3.5 in = standard playing card size
+    #   set total avg width to 1/32 less than 2.5, for margin to card sleeves
+    #   set space between cards for only one cut, with no extras trimming steps
+    im_width = (2.5 - 1/16) * ppi
+    im_height = (3.5 - 1/16) * ppi
+    twixt_margin = 1/16 * ppi  # space between cards
+    trim_here_line_thickness = int((twixt_margin / 3) / ppi * bg_dpi)
+    trim_here_len = int((im_width / 20) / ppi * bg_dpi)
+    x_margin = (pdf_width  - (im_width  * num_cols) - (twixt_margin * (num_cols - 1))) / 2
+    y_margin = (pdf_height - (im_height * num_rows) - (twixt_margin * (num_rows - 1))) / 2
 
     # verify math makes sense. Make sure page margins are greater than zero, and also at least twixt_margin
     assert x_margin > twixt_margin, x_margin
     assert y_margin > twixt_margin, y_margin
+    assert trim_here_line_thickness > 0, trim_here_line_thickness
+    assert trim_here_len > 0, trim_here_len
 
     # construct black background image to layer behind card images, with same surrounding margins as twixt_margin
-    bg_size = (int(pdf_width  - x_margin*2 + twixt_margin*2),
-               int(pdf_height - y_margin*2 + twixt_margin*2))
+    bg_size = (int((pdf_width  - x_margin*2 + twixt_margin*2) / ppi * bg_dpi),
+               int((pdf_height - y_margin*2 + twixt_margin*2) / ppi * bg_dpi))
     im_background = Image.new(mode='RGBA', size=bg_size, color=(0, 0, 0, 255))
+
+    # add small trim-here marks to background, at card corners
+    cross = Image.new(mode='RGBA', size=(trim_here_len, trim_here_len), color=(0, 0, 0, 255))
+    cross_vertical   = Image.new(mode='RGBA', size=(trim_here_line_thickness, trim_here_len),            color=(255, 255, 255, 255))
+    cross_horizontal = Image.new(mode='RGBA', size=(trim_here_len,            trim_here_line_thickness), color=(255, 255, 255, 255))
+    cross.alpha_composite(cross_vertical  , dest=(int(trim_here_len / 2 - trim_here_line_thickness / 2), 0))
+    cross.alpha_composite(cross_horizontal, dest=(0, int(trim_here_len / 2 - trim_here_line_thickness / 2)))
+    for col in range(0, num_cols + 1):
+        for row in range(0, num_rows + 1):
+            x = int(-(cross.width  / 2) + (((twixt_margin / 2) + col * (twixt_margin + im_width )) / ppi * bg_dpi))
+            y = int(-(cross.height / 2) + (((twixt_margin / 2) + row * (twixt_margin + im_height)) / ppi * bg_dpi))
+            im_background.alpha_composite(cross, dest=(x, y))
+
     path_background = os.path.join(args.folder, 'pdf_background.png')
     im_background.save(path_background)
     garbage_collect.append(path_background)
@@ -153,8 +174,8 @@ def main(args):
             pdf.image(path_background, 
                       x = x_margin - twixt_margin,
                       y = y_margin - twixt_margin,
-                      w = im_background.width,
-                      h = im_background.height)
+                      w = im_background.width  / bg_dpi * ppi,
+                      h = im_background.height / bg_dpi * ppi)
 
         # add card images
         x = x_margin + col * (twixt_margin + im_width)
