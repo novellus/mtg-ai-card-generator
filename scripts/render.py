@@ -39,7 +39,7 @@ HEIGHT_MID_TYPE = 1417
 HEIGHT_MID_TYPE_TEXT = HEIGHT_MID_TYPE + 9  # text is rendered slightly off center for a better look
 
 TOP_MAIN_TEXT_BOX = 1505
-# BOTTOM_MAIN_TEXT_BOX 
+# BOTTOM_MAIN_TEXT_BOX
 LEFT_MAIN_TEXT_BOX = 128
 # RIGHT_MAIN_TEXT_BOX is defined dynamically based on existence of defense box1375
 
@@ -835,7 +835,7 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
 
 
         # Configure text info stored in the PNG data fields
-        # store original card text as serialized string in the png, for easy lookup of hand-modified / original fields later        
+        # store original card text as serialized string in the png, for easy lookup of hand-modified / original fields later
         encoded_info = PngImagePlugin.PngInfo()
         encoded_info.add_text("parameters", png_info)
         encoded_info.add_text("card_text", serialized_card)
