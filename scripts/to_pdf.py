@@ -81,7 +81,7 @@ def main(args):
     images = []
     multisided_images = defaultdict(dict)  # {'00000': {'A': '00000-A Card Name.png'}}
     for f_name in next(os.walk(args.folder))[2]:
-        if re.search(r'\.png$', f_name) and not re.search(r'^\d+_composite\.png$', f_name):
+        if re.search(r'\.png$', f_name):
             side_path = os.path.join(args.folder, f_name)
 
             # collect multi-sided cards separately, to be rendered together later
@@ -95,9 +95,11 @@ def main(args):
                 images.append(side_path)
 
     # render multi-sided cards into one face image
+    garbage_collect = []  # delete these when finished
     for out_path, sides in multisided_images.items():
         render_multisided_card_face(sides, out_path)
         images.append(out_path)
+        garbage_collect.append(out_path)
 
     # composite images onto pdf pages
     # in 4x2 grids, rotated 90 degrees to landscape format
@@ -116,10 +118,23 @@ def main(args):
 
     im_width = 2.5 * dpi  # standard playing card size
     im_height = 3.5 * dpi
-    twixt_margin = 0.1 * dpi
+    twixt_margin = 0.1 * dpi  # space between cards
     x_margin = (pdf_width - (im_width * num_cols) - (twixt_margin * (num_cols - 1))) / 2
     y_margin  = (pdf_height - (im_height * num_rows) - (twixt_margin * (num_rows - 1))) / 2
 
+    # verify math makes sense. Make sure page margins are greater than zero, and also at least twixt_margin
+    assert x_margin > twixt_margin, x_margin
+    assert y_margin > twixt_margin, y_margin
+
+    # construct black background image to layer behind card images, with same surrounding margins as twixt_margin
+    bg_size = (int(pdf_width  - x_margin*2 + twixt_margin*2),
+               int(pdf_height - y_margin*2 + twixt_margin*2))
+    im_background = Image.new(mode='RGBA', size=bg_size, color=(0, 0, 0, 255))
+    path_background = os.path.join(args.folder, 'pdf_background.png')
+    im_background.save(path_background)
+    garbage_collect.append(path_background)
+
+    # finally, add the images to the pdf
     row = 0
     col = 0
     for i, path in enumerate(images):
@@ -134,13 +149,24 @@ def main(args):
             row = 0
             col = 0
 
-        # add images
+            # add background
+            pdf.image(path_background, 
+                      x = x_margin - twixt_margin,
+                      y = y_margin - twixt_margin,
+                      w = im_background.width,
+                      h = im_background.height)
+
+        # add card images
         x = x_margin + col * (twixt_margin + im_width)
         y = y_margin + row * (twixt_margin + im_height)
         pdf.image(path, x=x, y=y, w=im_width, h=im_height)
         col += 1
 
     pdf.output(name = os.path.join(args.folder, 'printable_cards.pdf'))
+
+    # cleanup temp files
+    for path in garbage_collect:
+        os.remove(path)
 
 
 if __name__ == '__main__':
