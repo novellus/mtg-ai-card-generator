@@ -105,9 +105,9 @@ def main(args):
     # in 4x2 grids, rotated 90 degrees to landscape format
     #   we could fit 10 cards per page if we have zero margins to edge or twixt
     #   but that also makes our life hard when cutting them apart, so we'll use margin
-    dpi = 300  # base library uses 72 dpi by default
-    pdf_width = 11 * dpi
-    pdf_height = 8.5 * dpi
+    ppi = 72  # base library uses 72 points per inch by default, and apparently that can't be configured
+    pdf_width = 11 * ppi
+    pdf_height = 8.5 * ppi
     pdf = FPDF(orientation='L', unit='pt', format=(pdf_height, pdf_width))
     pdf.set_margins(0, 0)  # disable library margins, I'll compute my own
     pdf.set_compression(False)
@@ -116,9 +116,9 @@ def main(args):
     num_rows = 2
     page_every = num_cols * num_rows
 
-    im_width = 2.5 * dpi  # standard playing card size
-    im_height = 3.5 * dpi
-    twixt_margin = 0.1 * dpi  # space between cards
+    im_width = 2.5 * ppi  # standard playing card size
+    im_height = 3.5 * ppi
+    twixt_margin = 0.1 * ppi  # space between cards
     x_margin = (pdf_width - (im_width * num_cols) - (twixt_margin * (num_cols - 1))) / 2
     y_margin  = (pdf_height - (im_height * num_rows) - (twixt_margin * (num_rows - 1))) / 2
 
