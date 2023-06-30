@@ -155,9 +155,12 @@ def main(args):
     im_background.save(path_background)
     garbage_collect.append(path_background)
 
+    path_standard_card_back = '../image_templates/frames/back2.png'
+
     # finally, add the images to the pdf
     row = 0
     col = 0
+    back_images = defaultdict(list)  # [row: [image, image, ...]]
     for i, path in enumerate(images):
         # track row
         if not (col % num_cols):
@@ -181,6 +184,29 @@ def main(args):
         x = x_margin + col * (twixt_margin + im_width)
         y = y_margin + row * (twixt_margin + im_height)
         pdf.image(path, x=x, y=y, w=im_width, h=im_height)
+
+        # stash background images in-order for the next page
+        back_images[row].append(path_standard_card_back)
+
+        # add collated background images
+        if not ((i + 1) % page_every):
+            pdf.add_page()
+
+            pdf.image(path_background, 
+                      x = x_margin - twixt_margin,
+                      y = y_margin - twixt_margin,
+                      w = im_background.width  / bg_dpi * ppi,
+                      h = im_background.height / bg_dpi * ppi)
+
+            for back_row, backs in back_images.items():
+                for back_col, back_path in enumerate(reversed(backs)):  # reverse order to flip along short-side of the paper
+                    x = x_margin + back_col * (twixt_margin + im_width)
+                    y = y_margin + back_row * (twixt_margin + im_height)
+                    pdf.image(back_path, x=x, y=y, w=im_width, h=im_height)
+
+            back_images = defaultdict(list)
+
+        # track col
         col += 1
 
     pdf.output(name = os.path.join(args.folder, 'printable_cards.pdf'))
