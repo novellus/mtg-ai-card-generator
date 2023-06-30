@@ -480,6 +480,10 @@ def main(args):
     if not args.no_stats:
         compute_stats(cards, args.outdir)
 
+    if args.to_pdf:
+        import to_pdf
+        to_pdf.main(args.outdir, args.verbosity)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -500,6 +504,7 @@ if __name__ == '__main__':
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
+    parser.add_argument("--to_pdf", action='store_true', help='automatically execute to_pdf.py on the output folder to create a printable file.')
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 

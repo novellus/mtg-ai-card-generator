@@ -9,16 +9,19 @@ from fpdf import FPDF
 from PIL import Image
 
 
-def main(args):
-    assert os.path.isdir(args.folder)
+def main(folder, verbosity=0):
+    if verbosity > 0:
+        print(f'Assembling a pdf from front/back images at {folder}, (slow)')
+
+    assert os.path.isdir(folder)
 
     # collect image files from dest folder
     images = defaultdict(dict)  # {base_num: {'front': image, 'back': image}}
-    for f_name in next(os.walk(args.folder))[2]:
+    for f_name in next(os.walk(folder))[2]:
         s = re.search(r'^(\d+)-(front|back)\.png$', f_name)
         if s is not None:
             base_num, side = s.groups()
-            path = os.path.join(args.folder, f_name)
+            path = os.path.join(folder, f_name)
             images[base_num][side] = path
 
     # composite images onto pdf pages
@@ -70,7 +73,7 @@ def main(args):
             x = int(-(cross.width  / 2) + (((twixt_margin / 2) + col * (twixt_margin + im_width )) / ppi * bg_dpi))
             y = int(-(cross.height / 2) + (((twixt_margin / 2) + row * (twixt_margin + im_height)) / ppi * bg_dpi))
             im_background.alpha_composite(cross, dest=(x, y))
-    path_background = os.path.join(args.folder, 'pdf_background.png')
+    path_background = os.path.join(folder, 'pdf_background.png')
     im_background.save(path_background)
 
     # finally, add the images to the pdf
@@ -125,7 +128,7 @@ def main(args):
         # track col
         col += 1
 
-    pdf.output(name = os.path.join(args.folder, 'printable_cards.pdf'))
+    pdf.output(name = os.path.join(folder, 'printable_cards.pdf'))
 
     # cleanup temp files
     os.remove(path_background)
@@ -138,4 +141,4 @@ if __name__ == '__main__':
     parser.add_argument("--folder", type=str, help="path to folder containing card images in png format. Output pdf is also written to this folder.")
     args = parser.parse_args()
 
-    main(args)
+    main(args.folder)
