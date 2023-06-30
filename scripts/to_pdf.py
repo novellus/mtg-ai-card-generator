@@ -7,99 +7,19 @@ from collections import defaultdict
 from collections import namedtuple
 from fpdf import FPDF
 from PIL import Image
-from PIL import PngImagePlugin
-
-
-placement = namedtuple('placement', ['rotate', 'resize', 'dest'])  # these functions are performed in this order
-def render_multisided_card_face(sides, out_path):
-    # combines specified side files into one image file
-
-    sub_sizes = {'full'    : (1500, 2100),  # normal orientation
-                 'half'    : (1470, 1050),  # for use under 90 degrees rotation, slightly low on x axis to keep scale
-                 'quarter' : ( 750, 1050),  # for use in normal orientation
-                 'eigth'   : ( 735,  525),  # for use under 90 degrees rotation, slightly low on x axis to keep scale
-                }
-
-    # spec layout based on number of sides
-    if len(sides) == 2:
-        # side by side, 90 degrees sideways
-        layout = {'A': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
-                  'B': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
-                 }
-
-    elif len(sides) == 3:
-        # same as above, except B+C share the above's B slot, and are oriented normally
-        layout = {'A': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
-                  'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
-                  'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 1050)),
-                 }
-
-    elif len(sides) == 4:
-        # all 4 sides use a simple quarter of the card face
-        layout = {'A': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   0)),
-                  'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 0)),
-                  'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
-                  'D': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 1050)),
-                 }
-
-    elif len(sides) == 5:
-        # 3 sides use a simple quarter of the card face, and the remaining two sides share the last quarter, rotated sideways
-        layout = {'A': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   0)),
-                  'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 0)),
-                  'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
-                  'D': placement(rotate=-90, resize=sub_sizes['eigth'],   dest=(750, 1050)),
-                  'E': placement(rotate=-90, resize=sub_sizes['eigth'],   dest=(750, 1575)),
-                 }
-
-    else:
-        raise ValueError(f'Unexpected number of sides, expected 2-5, found {len(sides)}: {sides}')
-
-    # composite images together, according to hte specified layout
-    # include the png_info from the A side, since that contains nested info about the other sides
-    im_composite = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
-    encoded_info = PngImagePlugin.PngInfo()
-    for side, path in sides.items():
-        p = layout[side]
-        im = Image.open(path)
-
-        if side == 'A':
-            encoded_info.add_text("parameters", im.info['parameters'])
-            encoded_info.add_text("card_text", im.info['card_text'])
-
-        if p.rotate != 0:
-            im = im.rotate(p.rotate, expand=True)
-        im = im.resize(p.resize)
-        im_composite.alpha_composite(im, dest=p.dest)
-
-    im_composite.save(out_path, pnginfo=encoded_info)
 
 
 def main(args):
     assert os.path.isdir(args.folder)
 
     # collect image files from dest folder
-    images = []
-    multisided_images = defaultdict(dict)  # {'00000': {'A': '00000-A Card Name.png'}}
+    images = defaultdict(dict)  # {base_num: {'front': image, 'back': image}}
     for f_name in next(os.walk(args.folder))[2]:
-        if re.search(r'\.png$', f_name) and not re.search(r'^(\d+_composite|pdf_background)\.png$', f_name):
-            side_path = os.path.join(args.folder, f_name)
-
-            # collect multi-sided cards separately, to be rendered together later
-            s = re.search(r'^(\d+)-([ABCDE]) ', f_name)
-            if s is not None:
-                base_num, side = s.groups()
-                out_path = os.path.join(args.folder, f'{base_num}_composite.png')
-                multisided_images[out_path][side] = side_path
-
-            else:
-                images.append(side_path)
-
-    # render multi-sided cards into one face image
-    garbage_collect = []  # delete these when finished
-    for out_path, sides in multisided_images.items():
-        render_multisided_card_face(sides, out_path)
-        images.append(out_path)
-        garbage_collect.append(out_path)
+        s = re.search(r'^(\d+)-(front|back)\.png$', f_name)
+        if s is not None:
+            base_num, side = s.groups()
+            path = os.path.join(args.folder, f_name)
+            images[base_num][side] = path
 
     # composite images onto pdf pages
     # in 4x2 grids, rotated 90 degrees to landscape format
@@ -150,18 +70,14 @@ def main(args):
             x = int(-(cross.width  / 2) + (((twixt_margin / 2) + col * (twixt_margin + im_width )) / ppi * bg_dpi))
             y = int(-(cross.height / 2) + (((twixt_margin / 2) + row * (twixt_margin + im_height)) / ppi * bg_dpi))
             im_background.alpha_composite(cross, dest=(x, y))
-
     path_background = os.path.join(args.folder, 'pdf_background.png')
     im_background.save(path_background)
-    garbage_collect.append(path_background)
-
-    path_standard_card_back = '../image_templates/frames/back2.png'
 
     # finally, add the images to the pdf
     row = 0
     col = 0
     back_images = defaultdict(list)  # [row: [image, image, ...]]
-    for i, path in enumerate(images):
+    for i, (base_num, sides) in enumerate(images.items()):
         # track row
         if not (col % num_cols):
             row += 1
@@ -183,13 +99,13 @@ def main(args):
         # add card images
         x = x_margin + col * (twixt_margin + im_width)
         y = y_margin + row * (twixt_margin + im_height)
-        pdf.image(path, x=x, y=y, w=im_width, h=im_height)
+        pdf.image(sides['front'], x=x, y=y, w=im_width, h=im_height)
 
         # stash background images in-order for the next page
-        back_images[row].append(path_standard_card_back)
+        back_images[row].append(sides['back'])
 
-        # add collated background images
-        if not ((i + 1) % page_every):
+        # add collated background images after every page, or after the last image
+        if (not ((i + 1) % page_every)) or (i == (len(images) - 1)):
             pdf.add_page()
 
             pdf.image(path_background, 
@@ -212,16 +128,13 @@ def main(args):
     pdf.output(name = os.path.join(args.folder, 'printable_cards.pdf'))
 
     # cleanup temp files
-    for path in garbage_collect:
-        os.remove(path)
+    os.remove(path_background)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Collects all rendered card image files from the specified folder,'
                                                  ' and creates a printable pdf of them.'
-                                                 ' Card backs are included on collated pages for double sided printing.'
-                                                 ' Multi-sided cards are rendered into a single card face,'
-                                                 ' either side-by-side or arrayed as appropriate')
+                                                 ' Card backs are included on collated pages for double sided printing: flip over short edge.')
     parser.add_argument("--folder", type=str, help="path to folder containing card images in png format. Output pdf is also written to this folder.")
     args = parser.parse_args()
 

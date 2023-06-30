@@ -5,15 +5,16 @@ import os
 import re
 import yaml
 
-import encode
-import mtg_constants
-
+from collections import defaultdict
+from collections import namedtuple
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import PngImagePlugin
 
 # local imports
+import encode
+import mtg_constants
 import interface_A1SD as a1sd
 
 
@@ -670,10 +671,22 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
     sanitized_name = re.sub('/', '', card['name'])
     card_file_name = f"{card['card_number']:05}{side_id} {sanitized_name}.png"
     out_path = os.path.join(outdir, card_file_name)
+    out_path_composite_front = os.path.join(outdir, f"{card['card_number']:05}-front.png")
+    out_path_composite_back  = os.path.join(outdir, f"{card['card_number']:05}-back.png")
 
+    # determine if card is already rendered
     if os.path.exists(out_path) and not overwrite:
         if verbosity > 2:
             print(f'Skipping render of {card_file_name} (already exists)')
+
+        # load existing image file to create composite images, if they do not exist
+        if not os.path.exists(out_path_composite_front) or not os.path.exists(out_path_composite_back):
+            if verbosity > 3:
+                print(f'Loading {card_file_name} to create composite images')
+
+            im_card = Image.open(out_path)
+            if card['side'] != 'a':
+                return im_card
 
     else:
         if verbosity > 2:
@@ -724,8 +737,6 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
         # add the frame over the art
         frame = load_frame(card)
         im_card.alpha_composite(frame, dest=(0, 0))
-
-        # TODO add legendary frame overlay
 
         # main mana cost
         if card['cost'] is not None:
@@ -840,14 +851,143 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
         encoded_info.add_text("parameters", png_info)
         encoded_info.add_text("card_text", serialized_card)
 
-        # save image
+        # save image of just this side
         im_card.save(out_path, pnginfo=encoded_info)
 
+        if card['side'] != 'a':
+            return im_card
+
     # recurse on sides b-e
-    if 'b_side' in card: render_card(card['b_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
-    if 'c_side' in card: render_card(card['c_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
-    if 'd_side' in card: render_card(card['d_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
-    if 'e_side' in card: render_card(card['e_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    side_images = {}
+    if 'b_side' in card:
+        side_images['b'] = render_card(card['b_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'c_side' in card:
+        side_images['c'] = render_card(card['c_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'd_side' in card:
+        side_images['d'] = render_card(card['d_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+    if 'e_side' in card:
+        side_images['e'] = render_card(card['e_side'], sd_nn, outdir, no_art, verbosity, trash_art_cache, art_dir, hr_upscale, overwrite)
+
+    # render composite images for front and back
+    if card['side'] == 'a':
+        if not os.path.exists(out_path_composite_front) or not os.path.exists(out_path_composite_back):
+            if verbosity > 2:
+                print(f'Rendering composite images {out_path_composite_front} and {out_path_composite_back}')
+            side_images['a'] = im_card
+
+            render_composite_card_faces(side_images, {'front': out_path_composite_front, 'back': out_path_composite_back})
+
+
+placement = namedtuple('placement', ['rotate', 'resize', 'dest'])  # these functions are performed in this order
+standard_card_back = Image.open('../image_templates/frames/back2.png')
+def render_composite_card_faces(side_images, out_paths):
+    # combines specified side images into composite images, creating exactly one front and one back card image
+    # mostly useful for compositing multi-sided cards
+
+    sub_sizes = {'full'    : (1500, 2100),  # normal orientation
+                 'half'    : (1470, 1050),  # for use under 90 degrees rotation, slightly low on x axis to keep scale
+                 'quarter' : ( 750, 1050),  # for use in normal orientation
+                 'eigth'   : ( 735,  525),  # for use under 90 degrees rotation, slightly low on x axis to keep scale
+                }
+
+    # spec layout based on number of sides
+    # "cb" designation refers to standard_card_back
+    if len(side_images) == 1:
+        # one sided card, with back image
+        layout = {'front' : {'a':  placement(rotate=0,   resize=sub_sizes['full'],    dest=(0,   0))},
+                  'back'  : {'cb': placement(rotate=0,   resize=sub_sizes['full'],    dest=(0,   0))},
+                 }
+
+    elif len(side_images) == 2:
+        # back-to-back modal
+        layout = {'front' : {'a':  placement(rotate=0,   resize=sub_sizes['full'],    dest=(0,  0))},
+                  'back'  : {'b':  placement(rotate=0,   resize=sub_sizes['full'],    dest=(0,  0))},
+                 }
+
+    elif len(side_images) == 3:
+        # A+B are side by side, 90 degrees sideways on the front. C is on the back
+        # same as above, except B+C share the above's B slot, and are oriented normally
+        layout = {'front' : {'a':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+                             'b':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
+                            },
+                  'back'  : {'c':  placement(rotate=0,   resize=sub_sizes['full'],    dest=(0,   0))},
+                 }
+
+    elif len(side_images) == 4:
+        # A+B are side by side, 90 degrees sideways on the front. C+D similarly on the back
+        # all 4 sides use a simple quarter of the card face
+        layout = {'front' : {'a':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+                             'b':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
+                            },
+                  'back'  : {
+                             'c':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+                             'd':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
+                            },
+                 }
+
+    elif len(side_images) == 5:
+        # same as above, except B+C share the above's B slot, and are oriented normally
+        layout = {'front' : {'a':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+                             'b':  placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
+                             'c':  placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 1050)),
+                            },
+                  'back'  : {
+                             'd':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+                             'e':  placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
+                            },
+                 }
+
+    else:
+        raise ValueError(f'Unexpected number of sides, expected 1-5, found {len(side_images)}: {side_images}')
+
+    # Stashing an old layout scheme, where all card faces were rendered on the front,
+    # and the back was always the background
+    # In case we want to revert to that without recomputing the positions
+    #     # side by side, 90 degrees sideways
+    #     layout = {'A': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+    #               'B': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  1050)),
+    #              }
+    #     # same as above, except B+C share the above's B slot, and are oriented normally
+    #     layout = {'A': placement(rotate=-90, resize=sub_sizes['half'],    dest=(15,  0)),
+    #               'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
+    #               'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 1050)),
+    #              }
+    #     # all 4 sides use a simple quarter of the card face
+    #     layout = {'A': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   0)),
+    #               'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 0)),
+    #               'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
+    #               'D': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 1050)),
+    #              }
+    #     # 3 sides use a simple quarter of the card face, and the remaining two sides share the last quarter, rotated sideways
+    #     layout = {'A': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   0)),
+    #               'B': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(750, 0)),
+    #               'C': placement(rotate=0,   resize=sub_sizes['quarter'], dest=(0,   1050)),
+    #               'D': placement(rotate=-90, resize=sub_sizes['eigth'],   dest=(750, 1050)),
+    #               'E': placement(rotate=-90, resize=sub_sizes['eigth'],   dest=(750, 1575)),
+    #              }
+
+    # composite images together, according to the specified layout
+    # include the png_info from the A side, since that contains nested info about the other sides
+    encoded_info = PngImagePlugin.PngInfo()
+    for face, face_layout in layout.items():
+        im_composite = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
+
+        for designation, p in face_layout.items():
+            if designation == 'cb':
+                im = standard_card_back
+            else:
+                im = side_images[designation]
+
+            if designation == 'a':
+                encoded_info.add_text("parameters", im.info['parameters'])
+                encoded_info.add_text("card_text", im.info['card_text'])
+
+            if p.rotate != 0:
+                im = im.rotate(p.rotate, expand=True)
+            im = im.resize(p.resize)
+            im_composite.alpha_composite(im, dest=p.dest)
+
+        im_composite.save(out_paths[face], pnginfo=encoded_info)
 
 
 def render_yaml(yaml_path, sd_nn, outdir, no_art, verbosity, trash_art_cache, force_render_all, hr_upscale):
