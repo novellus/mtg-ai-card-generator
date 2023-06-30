@@ -43,9 +43,7 @@
 
 # &#x1F534; TODOs
 * create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
-* create ```to_pdf.py```
-    * add ```--to_pdf``` arg to ```generate_cards.py```
-    * use ```image_templates/set_symbols/common.png``` overlayed on a black rectangle as the card back? or generate art to go around that symbol?
+* finish card back art, remove or organize extra images
 * add ```--resume_yaml``` arg / entry point from ```generate_cards.py```
     * don't sample any names or main text, pull those and all card details from the yaml
     * don't regenerate any basic info such as seeds
