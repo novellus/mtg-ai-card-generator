@@ -45,9 +45,9 @@
 * create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * finish card back art, remove or organize extra images
 * generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
-    * Manually construct a ```card_data.yaml``` with copied cards and unique seeds
-    * use the yaml finisher arg from ```generate_cards.py``` to make art
-    * add main text for standard land types ```Forest①②Basic Land - Forest⑥∫⑦(⓿Ⓣ: Add ⓿Ⓖ.)```
+    * add ```--basic_lands [type]``` arg to ```generate_cards.py```
+    * overwrite names and main text samplers with appropriate details (eg ```Forest①②Basic Land - Forest⑥∫⑦(⓿Ⓣ: Add ⓿Ⓖ.)```)
+    * disable flavor sampler (it'll get too repetitive)
 * for the cube, colin wants
     * determine how we transfer these large datasets so he can view them
     * 50 cards of each individual color
