@@ -80,7 +80,7 @@ def main(folder, verbosity=0):
     row = 0
     col = 0
     back_images = defaultdict(list)  # [row: [image, image, ...]]
-    for i, (base_num, sides) in enumerate(images.items()):
+    for i, (base_num, sides) in enumerate(sorted(images.items())):
         # track row
         if not (col % num_cols):
             row += 1
