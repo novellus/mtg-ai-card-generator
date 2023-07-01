@@ -456,7 +456,6 @@ def main(args):
                                                        model = args.flavor_nn,
                                                        gpu_memory = args.gpu_memory,
                                                        cpu_memory = args.cpu_memory,
-                                                       cache_path = cache_path,
                                                        seed = side['seed'] + side['seed_diff'],
                                                        verbosity = args.verbosity)
 
