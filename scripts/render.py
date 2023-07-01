@@ -646,7 +646,7 @@ def render_main_text_box(card):
     raise RuntimeError(f'Could not render text "{text}" in given max_width {max_width} and max_height {max_height} using font {font_path} at or below size {target_font_size}')
 
 
-def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None, overwrite=False):
+def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, art_dir=None, hr_upscale=None, overwrite=False, use_type=True):
     # image sizes and positions are all hard coded magic numbers
     # trash_art_cache causes the renderer to ignore and overwrite any cached art files, making fresh calls to txt2img
     # art_dir may be specified if the renderer is to use a non-default location for the art cache
@@ -728,7 +728,7 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
                 if verbosity > 2:
                     print(f'Sampling txt2img')
 
-                art, png_info = a1sd.sample_txt2img(card, sd_nn, cache_path, card['seed'] + card['seed_diff'], verbosity, hr_upscale)
+                art, png_info = a1sd.sample_txt2img(card, sd_nn, cache_path, card['seed'] + card['seed_diff'], verbosity, hr_upscale, use_type)
 
             # resize and crop the art to fit in the frame
             art = art.resize((1937, 1937))  # make sure we resize X and Y by the same ratio, and fit the frame in the Y dimension

@@ -19,6 +19,21 @@ def extend_all_cases(l):
     return list(set(new + l))
 
 
+basic_land = namedtuple('land', ['type', 'main_text'])
+BASIC_LAND_TYPES = {'Plains'                : basic_land(type='Basic Land - Plains',        main_text='({T}: Add {W}.)'),
+                    'Island'                : basic_land(type='Basic Land - Island',        main_text='({T}: Add {U}.)'),
+                    'Swamp'                 : basic_land(type='Basic Land - Swamp',         main_text='({T}: Add {B}.)'),
+                    'Mountain'              : basic_land(type='Basic Land - Mountain',      main_text='({T}: Add {R}.)'),
+                    'Forest'                : basic_land(type='Basic Land - Forest',        main_text='({T}: Add {G}.)'),
+                    'Snow-Covered Plains'   : basic_land(type='Basic Snow Land - Plains',   main_text='({T}: Add {W}.)'),
+                    'Snow-Covered Island'   : basic_land(type='Basic Snow Land - Island',   main_text='({T}: Add {U}.)'),
+                    'Snow-Covered Swamp'    : basic_land(type='Basic Snow Land - Swamp',    main_text='({T}: Add {B}.)'),
+                    'Snow-Covered Mountain' : basic_land(type='Basic Snow Land - Mountain', main_text='({T}: Add {R}.)'),
+                    'Snow-Covered Forest'   : basic_land(type='Basic Snow Land - Forest',   main_text='({T}: Add {G}.)'),
+                    'Wastes'                : basic_land(type='Basic Land - Wastes',        main_text='({T}: Add {C}.)'),
+                   }
+
+
 MTG_COUNTERS = ['Acorn', 'Aegis', 'Age', 'Aim', 'Arrow', 'Arrowhead', 'Awakening', 'Blaze', 'Blood', 'Bloodline', 'Book', 'Bounty',
                 'Bribery', 'Brick', 'Burden', 'Cage', 'Carrion', 'Charge', 'Chip', 'Coin', 'Collection', 'Common', 'Component', 'Contested',
                 'Corpse', 'Corruption', 'Credit', 'Croak', 'Crystal', 'Cube', 'Currency', 'Cycle', 'Death', 'Defense', 'Delay', 'Depletion',

@@ -39,17 +39,15 @@
 | ```--no_flavor```                               | ~ 6.5 cards / minute        | ~ 2.5 MB / card         |
 | ```--no_flavor --no_art```                      | ~ 10 cards / minute         | ~ 250 KB / card         |
 | ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute         | ~ 1.5 KB / card         |
+| ```--to_pdf``` (ignoring other args + steps)    | ~ 6.0 cards / minute        | roughly doubles         |
 
 
 # &#x1F534; TODOs
 * create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * finish card back art, remove or organize extra images
-* generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
-    * add ```--basic_lands [type]``` arg to ```generate_cards.py```
-    * overwrite names and main text samplers with appropriate details (eg ```Forest①②Basic Land - Forest⑥∫⑦(⓿Ⓣ: Add ⓿Ⓖ.)```)
-    * disable flavor sampler (it'll get too repetitive)
+* generate additional basic lands with custom / unique art
+* finish yaml once colin down-selects
 * for the cube, colin wants
-    * determine how we transfer these large datasets so he can view them
     * 50 cards of each individual color
     * 60 multicolor cards
         * roughly even between color combinations

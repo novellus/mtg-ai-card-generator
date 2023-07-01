@@ -8,13 +8,14 @@ import re
 import subprocess
 import yaml
 
+from collections import defaultdict
+
 # local imports
 import encode
 import render
 import interface_lstm as lstm
 import interface_llm as llm
-
-from collections import defaultdict
+from mtg_constants import BASIC_LAND_TYPES
 
 
 def resolve_folder_to_checkpoint_path(path, ext='t7'):
@@ -217,8 +218,10 @@ def main(args):
 
     # resolve folders to checkpoints, for LSTM networks
     if not args.finish_yaml:
-        args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
-        args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
+        if args.names_nn is not None:
+            args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
+        if args.main_text_nn is not None:
+            args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
 
     # create / query info text components
     timestamp = datetime.datetime.utcnow().isoformat(sep=' ', timespec='seconds')
@@ -241,12 +244,14 @@ def main(args):
     if not args.finish_yaml:
         nns_names = []
         for nn_path in [args.names_nn, args.main_text_nn]:
-            head, tail_1 = os.path.split(nn_path)
-            _, tail_2 = os.path.split(head)
-            tail = os.path.join(tail_2, tail_1)
-            name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
-            nns_names.append(name)
-        nns_names.append(args.flavor_nn)
+            if nn_path is not None:
+                head, tail_1 = os.path.split(nn_path)
+                _, tail_2 = os.path.split(head)
+                tail = os.path.join(tail_2, tail_1)
+                name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
+                nns_names.append(name)
+        if args.flavor_nn is not None:
+            nns_names.append(args.flavor_nn)
 
     # resolve and create outdir
     if not (args.resume_folder or args.finish_yaml):
@@ -277,11 +282,15 @@ def main(args):
             f.close()
 
             # trim or exapand the number of names to fit the current num_cards spec
-            if args.num_cards < len(cards):
-                cards = cards[:args.num_cards]
+            num_names = args.num_cards
+            if args.basic_lands == 'all':
+                num_names = args.num_cards * len(BASIC_LAND_TYPES)
+
+            if num_names < len(cards):
+                cards = cards[:num_names]
                 sample_new_names = False
 
-            elif args.num_cards > len(cards):
+            elif num_names > len(cards):
                 if args.verbosity > 2:
                     print(f'Not enough names cached, generating new ones')
                 sample_new_names = True
@@ -289,18 +298,27 @@ def main(args):
             else:
                 sample_new_names = False
 
+        # sample names AI, as a batch
         if sample_new_names:
-            # sample names AI, as a batch
             if args.verbosity > 2:
                 print(f'Sampling names')
 
-            cards = lstm.sample(nn_path = args.names_nn,
-                                seed = args.seed,
-                                approx_length_per_chunk = lstm.LEN_PER_NAME,
-                                num_chunks = args.num_cards,
-                                parser = functools.partial(encode.AI_to_internal_format, spec='names'),
-                                verbosity = args.verbosity,
-                                gpu = args.lstm_gpu)
+            # don't sample names AI if basic_lands are reuqested
+            if args.basic_lands:
+                if args.basic_lands == 'all':
+                    cards = [{'name': land_type} for land_type in BASIC_LAND_TYPES for _ in range(args.num_cards)]
+
+                else:
+                    cards = [{'name': args.basic_lands} for _ in range(args.num_cards)]
+
+            else:
+                cards = lstm.sample(nn_path = args.names_nn,
+                                    seed = args.seed,
+                                    approx_length_per_chunk = lstm.LEN_PER_NAME,
+                                    num_chunks = args.num_cards,
+                                    parser = functools.partial(encode.AI_to_internal_format, spec='names'),
+                                    verbosity = args.verbosity,
+                                    gpu = args.lstm_gpu)
 
             if args.verbosity > 2:
                 print(f'Caching names to {cache_path}')
@@ -309,7 +327,6 @@ def main(args):
             f.write(yaml.dump(cards))
             f.close()
         # Note that each card in cards will only contain the 'name' field at this point
-
 
     # sample main text
     if not args.finish_yaml:
@@ -326,7 +343,7 @@ def main(args):
             # use cached text file, if any
             if os.path.exists(cache_path):
                 if args.verbosity > 2:
-                    print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
+                    print(f'Using cached main_text {i_card + 1} / {len(cards)}, at {cache_path}')
                 
                 f = open(cache_path)
                 card = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -351,18 +368,30 @@ def main(args):
                 # sample main_text AI
                 #   which may generate several card sides
                 if args.verbosity > 0:
-                    print(f'Sampling main_text {i_card + 1} / {args.num_cards}')
+                    print(f'Sampling main_text {i_card + 1} / {len(cards)}')
 
-                card.update(lstm.sample(nn_path = args.main_text_nn,
-                                        seed = args.seed + seed_diff,
-                                        approx_length_per_chunk = lstm.LEN_PER_MAIN_TEXT,
-                                        num_chunks = 1,
-                                        parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
-                                        whisper_text = f"{card['unparsed_name']}①",
-                                        whisper_every_newline = 1,
-                                        verbosity = args.verbosity,
-                                        gpu = args.lstm_gpu)
-                )
+                if args.basic_lands:
+                    card.update({'cost'            : None,
+                                 'type'            : BASIC_LAND_TYPES[card['name']].type,
+                                 'loyalty'         : None,
+                                 'power_toughness' : None,
+                                 'defense'         : None,
+                                 'rarity'          : 'Basic Land',
+                                 'main_text'       : BASIC_LAND_TYPES[card['name']].main_text,
+                                 'side'            : 'a',
+                                })
+
+                else:
+                    card.update(lstm.sample(nn_path = args.main_text_nn,
+                                            seed = args.seed + seed_diff,
+                                            approx_length_per_chunk = lstm.LEN_PER_MAIN_TEXT,
+                                            num_chunks = 1,
+                                            parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
+                                            whisper_text = f"{card['unparsed_name']}①",
+                                            whisper_every_newline = 1,
+                                            verbosity = args.verbosity,
+                                            gpu = args.lstm_gpu)
+                    )
 
                 def finish_side(side):
                     nonlocal seed_diff
@@ -412,7 +441,7 @@ def main(args):
             if 'e_side' in card: card['e_side']['a_side'] = card
 
     # sample flavor text
-    if args.no_flavor:
+    if args.no_flavor or args.basic_lands:
         if args.verbosity > 2:
             print(f'Skipping flavor')
 
@@ -431,7 +460,7 @@ def main(args):
             # use cached text file, if any
             if os.path.exists(cache_path):
                 if args.verbosity > 2:
-                    print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
+                    print(f'Using cached text {i_card + 1} / {len(cards)}, at {cache_path}')
                 
                 f = open(cache_path)
                 cached_flavor = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -446,7 +475,7 @@ def main(args):
             elif 'flavor' not in card or card['flavor'] == '':  # allow flavor to be defined when finishing a yaml
                 # sample flavor AI for each card side
                 if args.verbosity > 0:
-                    print(f'Sampling flavor {i_card + 1} / {args.num_cards} (slow)')
+                    print(f'Sampling flavor {i_card + 1} / {len(cards)} (slow)')
 
                 def finish_side(side):
                     if args.verbosity > 2 and 'a_side' in side:
@@ -491,20 +520,23 @@ def main(args):
     f.write(yaml.dump(yaml_data, sort_keys=False))
     f.close()
 
+    # statistics over cards
+    if not args.no_stats:
+        compute_stats(cards, args.outdir)
+
     # render the cards
     if args.no_render:
         if args.verbosity > 2:
             print(f'Skipping render')
     else:
         for card in cards:
-            render.render_card(card, args.sd_nn, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale)
+            use_type = True
+            if args.basic_lands:
+                use_type = False
+            render.render_card(card, args.sd_nn, args.outdir, args.no_art, args.verbosity, hr_upscale=args.hr_upscale, use_type=use_type)
 
     # terminate stable diffusion AI to free up vram
     render.a1sd.terminate_server(args.verbosity)
-
-    # statistics over cards
-    if not args.no_stats:
-        compute_stats(cards, args.outdir)
 
     if args.to_pdf:
         import to_pdf
@@ -530,6 +562,7 @@ if __name__ == '__main__':
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume_folder", type=str, help="Path to folder. resumes generating into specified output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
     parser.add_argument("--finish_yaml", type=str, help="Path to yaml. finishes generating cards from specified yaml. The yaml input file is usually hand constructed or modified. Will not sample new names or main_text. Will sample flavor AI, sample art AI, and render cards depending on other args.")
+    parser.add_argument("--basic_lands", type=str, nargs='?', const='all', default=None, help="Generate basic lands instead of normal cards. Overwrites names and main_text samplers with appropriate hard-coded fields, skips flavor sampling entirely, but still performs art sampling. Optional type string may be fed to this argument (eg '--basic_lands forest'), and if type is not specified, will generate all types of hard-coded lands num_cards times each. Not compatible with --finish_yaml, if you have a yaml you don't need this arg anyway.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--to_pdf", action='store_true', help='automatically execute to_pdf.py on the output folder to create a printable file.')
     parser.add_argument("--verbosity", type=int, default=1)
