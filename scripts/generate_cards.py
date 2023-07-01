@@ -186,9 +186,9 @@ def main(args):
     #   since several AIs have very high load times (several minutes), and persist in memory until terminated
 
     # handle resuming after interuption
-    if args.resume is not None:
-        assert os.path.exists(args.resume)
-        head, tail = os.path.split(args.resume)
+    if args.resume_folder is not None:
+        assert os.path.exists(args.resume_folder)
+        head, tail = os.path.split(args.resume_folder)
         if tail == '':  # handle path ending in '/'
             head, tail = os.path.split(head)
 
@@ -196,20 +196,29 @@ def main(args):
         assert s is not None, (head, tail)
         base_count = int(s.group(1))
         args.seed = int(s.group(2))
-        args.outdir = args.resume
+        args.outdir = args.resume_folder
 
         if args.verbosity > 1:
-            print(f'resuming into {args.resume}')
+            print(f'resuming into {args.resume_folder}')
+
+    # handle finishing a yaml file
+    if args.finish_yaml is not None:
+        assert os.path.exists(args.finish_yaml)
+        args.outdir, _ = os.path.split(args.finish_yaml)
+
+        if args.verbosity > 1:
+            print(f'finishing {args.finish_yaml}')
 
     # assign seed
-    if args.seed < 0 and not args.resume:
+    if args.seed < 0 and not (args.resume_folder or args.finish_yaml):
         args.seed = random.randint(0, 1000000000)
         if args.verbosity > 1:
             print(f'setting seed to {args.seed}')
 
     # resolve folders to checkpoints, for LSTM networks
-    args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
-    args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
+    if not args.finish_yaml:
+        args.names_nn = resolve_folder_to_checkpoint_path(args.names_nn)
+        args.main_text_nn = resolve_folder_to_checkpoint_path(args.main_text_nn)
 
     # create / query info text components
     timestamp = datetime.datetime.utcnow().isoformat(sep=' ', timespec='seconds')
@@ -229,23 +238,25 @@ def main(args):
     except:
         repo_hash = None
 
-    nns_names = []
-    for nn_path in [args.names_nn, args.main_text_nn]:
-        head, tail_1 = os.path.split(nn_path)
-        _, tail_2 = os.path.split(head)
-        tail = os.path.join(tail_2, tail_1)
-        name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
-        nns_names.append(name)
-    nns_names.append(args.flavor_nn)
+    if not args.finish_yaml:
+        nns_names = []
+        for nn_path in [args.names_nn, args.main_text_nn]:
+            head, tail_1 = os.path.split(nn_path)
+            _, tail_2 = os.path.split(head)
+            tail = os.path.join(tail_2, tail_1)
+            name = re.sub(r'checkpoint_|[0\.]+t7', '', tail)
+            nns_names.append(name)
+        nns_names.append(args.flavor_nn)
 
     # resolve and create outdir
-    if not args.resume:
+    if not (args.resume_folder or args.finish_yaml):
         base_count = len(os.listdir(args.outdir))
         args.outdir = os.path.join(args.outdir, f'{base_count:05}_{args.seed}')
         os.makedirs(args.outdir)
 
     # create cache dirs
-    os.makedirs(os.path.join(args.outdir, 'main_text_cache'), exist_ok=True)
+    if not args.finish_yaml:
+        os.makedirs(os.path.join(args.outdir, 'main_text_cache'), exist_ok=True)
     os.makedirs(os.path.join(args.outdir, 'flavor_cache'), exist_ok=True)
 
     if args.verbosity > 1:
@@ -253,136 +264,152 @@ def main(args):
 
     # generate names, or load cached names file
     # if the requested num_cards is greater than the cached number, regenerate names to the new specifide length
-    cache_path = os.path.join(args.outdir, 'main_text_cache', 'names.yaml')
-    sample_new_names = True
+    if not args.finish_yaml:
+        cache_path = os.path.join(args.outdir, 'main_text_cache', 'names.yaml')
+        sample_new_names = True
 
-    if os.path.exists(cache_path):
-        if args.verbosity > 2:
-            print(f'Using cached names at {cache_path}')
+        if os.path.exists(cache_path):
+            if args.verbosity > 2:
+                print(f'Using cached names at {cache_path}')
 
-        f = open(cache_path)
+            f = open(cache_path)
+            cards = yaml.load(f.read(), Loader=yaml.FullLoader)
+            f.close()
+
+            # trim or exapand the number of names to fit the current num_cards spec
+            if args.num_cards < len(cards):
+                cards = cards[:args.num_cards]
+                sample_new_names = False
+
+            elif args.num_cards > len(cards):
+                if args.verbosity > 2:
+                    print(f'Not enough names cached, generating new ones')
+                sample_new_names = True
+
+            else:
+                sample_new_names = False
+
+        if sample_new_names:
+            # sample names AI, as a batch
+            if args.verbosity > 2:
+                print(f'Sampling names')
+
+            cards = lstm.sample(nn_path = args.names_nn,
+                                seed = args.seed,
+                                approx_length_per_chunk = lstm.LEN_PER_NAME,
+                                num_chunks = args.num_cards,
+                                parser = functools.partial(encode.AI_to_internal_format, spec='names'),
+                                verbosity = args.verbosity,
+                                gpu = args.lstm_gpu)
+
+            if args.verbosity > 2:
+                print(f'Caching names to {cache_path}')
+
+            f = open(cache_path, 'w')
+            f.write(yaml.dump(cards))
+            f.close()
+        # Note that each card in cards will only contain the 'name' field at this point
+
+
+    # sample main text
+    if not args.finish_yaml:
+        # increment seed each card and side for improved uniqueness
+        # txt2img uses the seed to directly determine the base noise from which the image is generated
+        #   meaning identical seeds produce visually similar images, even given different prompts
+        # the LSTM samplers are also a bit biased by the seed, despite being whispered unique names
+        seed_diff = 0
+
+        for i_card, card in enumerate(cards):
+            sanitized_name = re.sub('/', '', card['name'])
+            cache_path = os.path.join(args.outdir, 'main_text_cache', f"{i_card:05} {sanitized_name}.yaml")
+
+            # use cached text file, if any
+            if os.path.exists(cache_path):
+                if args.verbosity > 2:
+                    print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
+                
+                f = open(cache_path)
+                card = yaml.load(f.read(), Loader=yaml.FullLoader)
+                f.close()
+
+                # replace 'a_side' backlinks, which are omitted from save file
+                if 'b_side' in card: card['b_side']['a_side'] = card
+                if 'c_side' in card: card['c_side']['a_side'] = card
+                if 'd_side' in card: card['d_side']['a_side'] = card
+                if 'e_side' in card: card['e_side']['a_side'] = card
+
+                cards[i_card] = card
+
+                # increment seed_diff for every side, to keep parity when cached files do / don't exist
+                seed_diff += 1
+                if 'b_side' in card: seed_diff += 1
+                if 'c_side' in card: seed_diff += 1
+                if 'd_side' in card: seed_diff += 1
+                if 'e_side' in card: seed_diff += 1
+
+            else:
+                # sample main_text AI
+                #   which may generate several card sides
+                if args.verbosity > 0:
+                    print(f'Sampling main_text {i_card + 1} / {args.num_cards}')
+
+                card.update(lstm.sample(nn_path = args.main_text_nn,
+                                        seed = args.seed + seed_diff,
+                                        approx_length_per_chunk = lstm.LEN_PER_MAIN_TEXT,
+                                        num_chunks = 1,
+                                        parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
+                                        whisper_text = f"{card['unparsed_name']}①",
+                                        whisper_every_newline = 1,
+                                        verbosity = args.verbosity,
+                                        gpu = args.lstm_gpu)
+                )
+
+                def finish_side(side):
+                    nonlocal seed_diff
+
+                    # add card + generator info text as properties of the card
+                    # this enables repeatable rendering from the saved card data
+                    side['set_number'] = base_count
+                    side['seed'] = args.seed
+                    side['seed_diff'] = seed_diff
+                    side['card_number'] = i_card
+
+                    side['timestamp'] = timestamp
+                    side['nns_names'] = nns_names
+                    side['author'] = args.author
+                    side['repo_link'] = repo_link
+                    side['repo_hash'] = repo_hash
+
+                    # increment seed_diff for every side
+                    seed_diff += 1
+
+                finish_side(card)
+                if 'b_side' in card: finish_side(card['b_side'])
+                if 'c_side' in card: finish_side(card['c_side'])
+                if 'd_side' in card: finish_side(card['d_side'])
+                if 'e_side' in card: finish_side(card['e_side'])
+
+                # Cache generated card
+                # remove 'a_side' back references (see below)
+                if args.verbosity > 2:
+                    print(f'Caching main text to {cache_path}')
+
+                f = open(cache_path, 'w')
+                f.write(yaml.dump(encode.limit_fields(card, blacklist=['a_side'])))
+                f.close()
+
+    # load the yaml card data
+    if args.finish_yaml:
+        f = open(args.finish_yaml)
         cards = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
 
-        # trim or exapand the number of names to fit the current num_cards spec
-        if args.num_cards < len(cards):
-            cards = cards[:args.num_cards]
-            sample_new_names = False
-
-        elif args.num_cards > len(cards):
-            if args.verbosity > 2:
-                print(f'Not enough names cached, generating new ones')
-            sample_new_names = True
-
-        else:
-            sample_new_names = False
-
-    if sample_new_names:
-        # sample names AI, as a batch
-        if args.verbosity > 2:
-            print(f'Sampling names')
-
-        cards = lstm.sample(nn_path = args.names_nn,
-                            seed = args.seed,
-                            approx_length_per_chunk = lstm.LEN_PER_NAME,
-                            num_chunks = args.num_cards,
-                            parser = functools.partial(encode.AI_to_internal_format, spec='names'),
-                            verbosity = args.verbosity,
-                            gpu = args.lstm_gpu)
-
-        if args.verbosity > 2:
-            print(f'Caching names to {cache_path}')
-
-        f = open(cache_path, 'w')
-        f.write(yaml.dump(cards))
-        f.close()
-    # Note that each card in cards will only contain the 'name' field at this point
-
-    # increment seed each card and side for improved uniqueness
-    # txt2img uses the seed to directly determine the base noise from which the image is generated
-    #   meaning identical seeds produce visually similar images, even given different prompts
-    # the LSTM samplers are also a bit biased by the seed, despite being whispered unique names
-    seed_diff = 0
-
-    # sample main text
-    for i_card, card in enumerate(cards):
-        sanitized_name = re.sub('/', '', card['name'])
-        cache_path = os.path.join(args.outdir, 'main_text_cache', f"{i_card:05} {sanitized_name}.yaml")
-
-        # use cached text file, if any
-        if os.path.exists(cache_path):
-            if args.verbosity > 2:
-                print(f'Using cached text {i_card + 1} / {args.num_cards}, at {cache_path}')
-            
-            f = open(cache_path)
-            card = yaml.load(f.read(), Loader=yaml.FullLoader)
-            f.close()
-
-            # replace 'a_side' backlinks, which are omitted from save file
+        # replace 'a_side' backlinks, which are omitted from save file
+        for i_card, card in enumerate(cards):
             if 'b_side' in card: card['b_side']['a_side'] = card
             if 'c_side' in card: card['c_side']['a_side'] = card
             if 'd_side' in card: card['d_side']['a_side'] = card
             if 'e_side' in card: card['e_side']['a_side'] = card
-
-            cards[i_card] = card
-
-            # increment seed_diff for every side, to keep parity when cached files do / don't exist
-            seed_diff += 1
-            if 'b_side' in card: seed_diff += 1
-            if 'c_side' in card: seed_diff += 1
-            if 'd_side' in card: seed_diff += 1
-            if 'e_side' in card: seed_diff += 1
-
-        else:
-            # sample main_text AI
-            #   which may generate several card sides
-            if args.verbosity > 0:
-                print(f'Sampling main_text {i_card + 1} / {args.num_cards}')
-
-            card.update(lstm.sample(nn_path = args.main_text_nn,
-                                    seed = args.seed + seed_diff,
-                                    approx_length_per_chunk = lstm.LEN_PER_MAIN_TEXT,
-                                    num_chunks = 1,
-                                    parser = functools.partial(encode.AI_to_internal_format, spec='main_text'),
-                                    whisper_text = f"{card['unparsed_name']}①",
-                                    whisper_every_newline = 1,
-                                    verbosity = args.verbosity,
-                                    gpu = args.lstm_gpu)
-            )
-
-            def finish_side(side):
-                nonlocal seed_diff
-
-                # add card + generator info text as properties of the card
-                # this enables repeatable rendering from the saved card data
-                side['set_number'] = base_count
-                side['seed'] = args.seed
-                side['seed_diff'] = seed_diff
-                side['card_number'] = i_card
-
-                side['timestamp'] = timestamp
-                side['nns_names'] = nns_names
-                side['author'] = args.author
-                side['repo_link'] = repo_link
-                side['repo_hash'] = repo_hash
-
-                # increment seed_diff for every side
-                seed_diff += 1
-
-            finish_side(card)
-            if 'b_side' in card: finish_side(card['b_side'])
-            if 'c_side' in card: finish_side(card['c_side'])
-            if 'd_side' in card: finish_side(card['d_side'])
-            if 'e_side' in card: finish_side(card['e_side'])
-
-            # Cache generated card
-            # remove 'a_side' back references (see below)
-            if args.verbosity > 2:
-                print(f'Caching main text to {cache_path}')
-
-            f = open(cache_path, 'w')
-            f.write(yaml.dump(encode.limit_fields(card, blacklist=['a_side'])))
-            f.close()
 
     # sample flavor text
     if args.no_flavor:
@@ -416,7 +443,7 @@ def main(args):
                 if 'd_side' in cached_flavor: card['d_side']['flavor'] = cached_flavor['d_side']['flavor']
                 if 'e_side' in cached_flavor: card['e_side']['flavor'] = cached_flavor['e_side']['flavor']
 
-            else:
+            elif 'flavor' not in card or card['flavor'] == '':  # allow flavor to be defined when finishing a yaml
                 # sample flavor AI for each card side
                 if args.verbosity > 0:
                     print(f'Sampling flavor {i_card + 1} / {args.num_cards} (slow)')
@@ -430,7 +457,7 @@ def main(args):
                                                        gpu_memory = args.gpu_memory,
                                                        cpu_memory = args.cpu_memory,
                                                        cache_path = cache_path,
-                                                       seed = args.seed + side['seed_diff'],
+                                                       seed = side['seed'] + side['seed_diff'],
                                                        verbosity = args.verbosity)
 
                 finish_side(card)
@@ -444,7 +471,7 @@ def main(args):
                     print(f'Caching flavor text to {cache_path}')
 
                 f = open(cache_path, 'w')
-                f.write(yaml.dump(encode.limit_fields(card, whitelist=['flavor','b_side', 'c_side', 'd_side', 'e_side'])))
+                f.write(yaml.dump(encode.limit_fields(card, whitelist=['flavor', 'b_side', 'c_side', 'd_side', 'e_side'])))
                 f.close()
 
     # terminate flavor AI to free up vram for later steps
@@ -502,13 +529,15 @@ if __name__ == '__main__':
     parser.add_argument("--hr_upscale", type=int, default=None, help="Upscale art by specified factor. Only applies to non-cached art. Seriously increases the processing time as this factor increases. Art is always rendered at 512x512px before upscaling (if any) and then scaled/cropped to fit the card frame. At a value of 2, art will be upscaled to 1024x1024px before fitting to card.")
     parser.add_argument("--author", type=str, default='Novellus Cato', help="author name, displays on card face")
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
-    parser.add_argument("--resume", type=str, help="resumes generating into specific output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
+    parser.add_argument("--resume_folder", type=str, help="Path to folder. resumes generating into specified output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
+    parser.add_argument("--finish_yaml", type=str, help="Path to yaml. finishes generating cards from specified yaml. The yaml input file is usually hand constructed or modified. Will not sample new names or main_text. Will sample flavor AI, sample art AI, and render cards depending on other args.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--to_pdf", action='store_true', help='automatically execute to_pdf.py on the output folder to create a printable file.')
     parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
     assert args.sd_nn or args.no_art, "must specify either the stable diffusion model, or --no_art flag"
+    assert not (args.resume_folder and args.finish_yaml), "must specify only one of resume_folder or finish_yaml"
 
     try:
         main(args)

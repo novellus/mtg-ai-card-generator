@@ -44,10 +44,6 @@
 # &#x1F534; TODOs
 * create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * finish card back art, remove or organize extra images
-* add ```--resume_yaml``` arg / entry point from ```generate_cards.py```
-    * don't sample any names or main text, pull those and all card details from the yaml
-    * don't regenerate any basic info such as seeds
-    * do sample flavor, create art, and render only what's in the yaml
 * generate additional basic lands with custom / unique art (maybe flavor text, if there's enough variation?)
     * Manually construct a ```card_data.yaml``` with copied cards and unique seeds
     * use the yaml finisher arg from ```generate_cards.py``` to make art

@@ -687,6 +687,10 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
             im_card = Image.open(out_path)
             if card['side'] != 'a':
                 return im_card
+            else:
+                encoded_info = PngImagePlugin.PngInfo()
+                encoded_info.add_text("parameters", im_card.info['parameters'])
+                encoded_info.add_text("card_text", im_card.info['card_text'])
 
     else:
         if verbosity > 2:
@@ -875,12 +879,12 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
                 print(f'Rendering composite images {out_path_composite_front} and {out_path_composite_back}')
             side_images['a'] = im_card
 
-            render_composite_card_faces(side_images, {'front': out_path_composite_front, 'back': out_path_composite_back})
+            render_composite_card_faces(side_images, {'front': out_path_composite_front, 'back': out_path_composite_back}, encoded_info)
 
 
 placement = namedtuple('placement', ['rotate', 'resize', 'dest'])  # these functions are performed in this order
 standard_card_back = Image.open('../image_templates/frames/back2.png')
-def render_composite_card_faces(side_images, out_paths):
+def render_composite_card_faces(side_images, out_paths, encoded_info):
     # combines specified side images into composite images, creating exactly one front and one back card image
     # mostly useful for compositing multi-sided cards
 
@@ -968,7 +972,6 @@ def render_composite_card_faces(side_images, out_paths):
 
     # composite images together, according to the specified layout
     # include the png_info from the A side, since that contains nested info about the other sides
-    encoded_info = PngImagePlugin.PngInfo()
     for face, face_layout in layout.items():
         im_composite = Image.new(mode='RGBA', size=(1500, 2100), color=(0,0,0,0))
 
@@ -977,10 +980,6 @@ def render_composite_card_faces(side_images, out_paths):
                 im = standard_card_back
             else:
                 im = side_images[designation]
-
-            if designation == 'a':
-                encoded_info.add_text("parameters", im.info['parameters'])
-                encoded_info.add_text("card_text", im.info['card_text'])
 
             if p.rotate != 0:
                 im = im.rotate(p.rotate, expand=True)
