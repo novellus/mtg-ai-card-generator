@@ -218,18 +218,9 @@ def trim_unfinished_sentences(s):
         return s[:trim_index]
 
 
-def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosity):
+def sample_flavor(card, model, gpu_memory, cpu_memory, seed, verbosity):
     # handles file caching, prompting and sampling the llm based on card data, and processing the sampled data
     # tries to handle corner cases in the AI outputs where it behaves unexpectedly, but probs doesn't catch them all
-    
-    # remove cached file if it already exists
-    if os.path.exists(cache_path):
-        os.remove(cache_path)
-        if verbosity > 2:
-            print(f'Overwriting {cache_path}')
-    else:
-        if verbosity > 2:
-            print(f'Caching to {cache_path}')
 
     # sample 
     prompt = (f'### Instruction:\n'
@@ -249,11 +240,6 @@ def sample_flavor(card, model, gpu_memory, cpu_memory, cache_path, seed, verbosi
 
     generated_text = trim_unfinished_sentences(generated_text)
     generated_text = generated_text.strip()
-
-    # cache text
-    f = open(cache_path, 'w')
-    f.write(generated_text)
-    f.close()
 
     return generated_text
 
