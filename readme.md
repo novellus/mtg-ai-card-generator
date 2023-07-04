@@ -39,7 +39,7 @@
 | ```--no_flavor```                               | ~ 6.5 cards / minute        | ~ 2.5 MB / card         |
 | ```--no_flavor --no_art```                      | ~ 10 cards / minute         | ~ 250 KB / card         |
 | ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute         | ~ 1.5 KB / card         |
-| ```--to_pdf``` (ignoring other args + steps)    | ~ 6.0 cards / minute        | roughly doubles         |
+| ```--to_pdf``` (ignoring other args + steps)    | Adds ~ 10s per card         | roughly doubles         |
 
 
 # &#x1F534; TODOs
