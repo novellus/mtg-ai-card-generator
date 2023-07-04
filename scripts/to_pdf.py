@@ -99,6 +99,9 @@ def main(folder, verbosity=0):
                       w = im_background.width  / bg_dpi * ppi,
                       h = im_background.height / bg_dpi * ppi)
 
+        if verbosity > 1:
+            print(f'PDF - embedding image {i+1} / {len(images)}')
+
         # add card images
         x = x_margin + col * (twixt_margin + im_width)
         y = y_margin + row * (twixt_margin + im_height)
@@ -119,6 +122,9 @@ def main(folder, verbosity=0):
 
             for back_row, backs in back_images.items():
                 for back_col, back_path in enumerate(reversed(backs)):  # reverse order to flip along short-side of the paper
+                    if verbosity > 1:
+                        print(f'PDF - embedding back image {back_col + back_row * num_cols} / {sum([len(v) for k,v in back_images.items()])}')
+
                     x = x_margin + back_col * (twixt_margin + im_width)
                     y = y_margin + back_row * (twixt_margin + im_height)
                     pdf.image(back_path, x=x, y=y, w=im_width, h=im_height)
