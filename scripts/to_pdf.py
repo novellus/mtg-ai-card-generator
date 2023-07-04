@@ -123,7 +123,7 @@ def main(folder, verbosity=0):
             for back_row, backs in back_images.items():
                 for back_col, back_path in enumerate(reversed(backs)):  # reverse order to flip along short-side of the paper
                     if verbosity > 1:
-                        print(f'PDF - embedding back image {back_col + back_row * num_cols} / {sum([len(v) for k,v in back_images.items()])}')
+                        print(f'PDF - embedding back image {1 + back_col + back_row * num_cols} / {sum([len(v) for k,v in back_images.items()])}')
 
                     x = x_margin + back_col * (twixt_margin + im_width)
                     y = y_margin + back_row * (twixt_margin + im_height)
