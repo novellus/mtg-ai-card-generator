@@ -19,6 +19,8 @@ import interface_A1SD as a1sd
 
 
 # Constants. Sizes are in pixels
+STANDARD_CARD_BACK = '../image_templates/frames/back2.png'
+
 # fonts assignments are hard to remember
 FONT_TITLE = '../image_templates/fonts/beleren-b.ttf'
 FONT_MAIN_TEXT = '../image_templates/fonts/mplantin.ttf'
@@ -883,7 +885,7 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
 
 
 placement = namedtuple('placement', ['rotate', 'resize', 'dest'])  # these functions are performed in this order
-standard_card_back = Image.open('../image_templates/frames/back2.png')
+standard_card_back = Image.open(STANDARD_CARD_BACK)
 def render_composite_card_faces(side_images, out_paths, encoded_info):
     # combines specified side images into composite images, creating exactly one front and one back card image
     # mostly useful for compositing multi-sided cards
