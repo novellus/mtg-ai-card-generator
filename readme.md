@@ -43,7 +43,6 @@
 
 
 # &#x1F534; TODOs
-* create an entry point to ```generate_cards.py``` to consume a yaml and finish the entries with flavor, art, and rendering, without generating new cards, new seeds, etc
 * finish card back art, remove or organize extra images
 * generate additional basic lands with custom / unique art
 * finish yaml once colin down-selects
