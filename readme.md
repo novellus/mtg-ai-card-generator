@@ -26,10 +26,11 @@
     * AI samples are cached in subdirectories (```*_cache```) under the auto-generated output folder (eg ```../outputs/00003_481992436```), so the generator can be stopped and resumed without losing much via the ```--resume ...``` argument. Also useful if it crashes for some inconsistent reason.
     * Statistics about generated cards are output to ```stats.yaml``` in the output folder
     * Full card text for all cards is output to ```card_data.yaml``` in the output folder
-* Optionally create card sheets for deckbuilding in Tabletop Simulator via ```to_tts_asset.py```, or PDFs for printing via ```to_pdf.py```
+    * A printable pdf is generated (```printable_cards.pdf```) if you specify the ```--to_pdf``` arg
+<!-- * Optionally create card sheets for deckbuilding in Tabletop Simulator via ```to_tts_asset.py```, or PDFs for printing via ```to_pdf.py```
     * these will compile all images in the output folder, so if you don't want to include all of them, remove the undesired files first
 * Optionally, ```card_data.yaml``` can be manually edited (eg to fix AI-generated typos) by adding fields named ```*_override``` under card definition(s), and then ```scripts/render.py``` can be executed directly (see ```--help``` for more info) to re-render the cards with the manual modifications.
-    * Similarly, the cached art under ```outputs/*/art_cache``` can be modified to change the card art before re-rendering. If this is the only change to a card, then delete the rendered card image file so the renderer will detect that it should be rendered.
+    * Similarly, the cached art under ```outputs/*/art_cache``` can be modified to change the card art before re-rendering. If this is the only change to a card, then delete the rendered card image file so the renderer will detect that it should be rendered. -->
 * Overall timing
 
 | args                                            | timing on the dev's machine | amount of data produced |
