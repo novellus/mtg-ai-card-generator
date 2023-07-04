@@ -285,6 +285,8 @@ def main(args):
             num_names = args.num_cards
             if args.basic_lands == 'all':
                 num_names = args.num_cards * len(BASIC_LAND_TYPES)
+            elif type(args.basic_lands) == dict:
+                num_names = sum([v for k, v in args.basic_lands.items()])
 
             if num_names < len(cards):
                 cards = cards[:num_names]
@@ -303,10 +305,13 @@ def main(args):
             if args.verbosity > 2:
                 print(f'Sampling names')
 
-            # don't sample names AI if basic_lands are reuqested
+            # don't sample names AI if basic_lands are requested
             if args.basic_lands:
                 if args.basic_lands == 'all':
                     cards = [{'name': land_type} for land_type in BASIC_LAND_TYPES for _ in range(args.num_cards)]
+
+                elif type(args.basic_lands) == dict:
+                    cards = [{'name': type_str} for type_str, num_type in args.basic_lands.items() for _ in range(num_type)]
 
                 else:
                     cards = [{'name': args.basic_lands} for _ in range(args.num_cards)]
@@ -371,6 +376,7 @@ def main(args):
                     print(f'Sampling main_text {i_card + 1} / {len(cards)}')
 
                 if args.basic_lands:
+                    assert card['name'] in BASIC_LAND_TYPES, f'Specified a basic land type that is not defined in mtg_constants.py: "{card["name"]}", this is not allowed. Go define it?'
                     card.update({'cost'            : None,
                                  'type'            : BASIC_LAND_TYPES[card['name']].type,
                                  'loyalty'         : None,
@@ -544,6 +550,8 @@ def main(args):
 
 
 if __name__ == '__main__':
+    yaml_load = functools.partial(yaml.load, Loader=yaml.FullLoader)  # cache this partial func with args for the arg parser below
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--names_nn", type=str, help="path to names nn checkpoint, or path to folder with checkpoints (uses longest trained)")
     parser.add_argument("--main_text_nn", type=str, help="path to main_text nn checkpoint, or path to folder with checkpoints (uses longest trained)")
@@ -552,7 +560,7 @@ if __name__ == '__main__':
     parser.add_argument("--gpu-memory", type=int, help="passed to text-generation-webui for llm server memory limits. Does not apply to other nns. See text-generation-webui docs for more info.")
     parser.add_argument("--cpu-memory", type=int, help="passed to text-generation-webui for llm server memory limits. Does not apply to other nns. See text-generation-webui docs for more info.")
     parser.add_argument("--outdir", type=str, help="path to outdir. Files are saved in a subdirectory based on seed")
-    parser.add_argument("--num_cards", type=int, help="number of cards to generate, default 1", default=10)
+    parser.add_argument("--num_cards", type=int, help="number of cards to generate", default=10)
     parser.add_argument("--seed", type=int, help="if negative or not specified, a random seed is assigned", default=-1)
     parser.add_argument("--no_art", action='store_true', help="disable txt2img render, which occupies a large portion of the generation time. Useful for debugging/testing.")
     parser.add_argument("--no_flavor", action='store_true', help="disable flavor generation, which occupies most of the generation time. Useful for debugging/testing.")
@@ -562,7 +570,7 @@ if __name__ == '__main__':
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume_folder", type=str, help="Path to folder. resumes generating into specified output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
     parser.add_argument("--finish_yaml", type=str, help="Path to yaml. finishes generating cards from specified yaml. The yaml input file is usually hand constructed or modified. Will not sample new names or main_text. Will sample flavor AI, sample art AI, and render cards depending on other args.")
-    parser.add_argument("--basic_lands", type=str, nargs='?', const='all', default=None, help="Generate basic lands instead of normal cards. Overwrites names and main_text samplers with appropriate hard-coded fields, skips flavor sampling entirely, but still performs art sampling. Optional type string may be fed to this argument (eg '--basic_lands forest'), and if type is not specified, will generate all types of hard-coded lands num_cards times each. Not compatible with --finish_yaml, if you have a yaml you don't need this arg anyway.")
+    parser.add_argument("--basic_lands", type=yaml_load, nargs='?', const='all', default=None, help="Generate basic lands instead of normal cards. Overwrites names and main_text samplers with appropriate hard-coded fields, skips flavor sampling entirely, but still performs art sampling. Optional type string may be fed to this argument (eg '--basic_lands forest'), and if type is not specified, will generate all types of hard-coded lands num_cards times each. Can also specify a yaml-encoded dict of types to quantity instead, in which case --num_cards is ignored. Types specifed at CLI must exist in mtg_constants.py. Not compatible with --finish_yaml, if you have a yaml you don't need this arg anyway.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--to_pdf", action='store_true', help='automatically execute to_pdf.py on the output folder to create a printable file.')
     parser.add_argument("--verbosity", type=int, default=1)
