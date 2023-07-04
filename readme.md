@@ -20,7 +20,7 @@
 # Workflow / Getting Started
 * Run through the environment setup section below
 * The main entry point for the project is ```scripts/generate_cards.py``` 
-    * example command: ```python generate_cards.py --lstm_gpu 1 --names_nn ../nns/names_3 --main_text_nn ../nns/main_text_13 --flavor_nn timdettmers_guanaco-65b-merged --gpu-memory 23 --cpu-memory 250 --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --outdir ../outputs --num_cards 10 --hr_upscale 2 --verbosity=9```
+    * example command: ```python generate_cards.py --lstm_gpu 1 --names_nn ../nns/names_3 --main_text_nn ../nns/main_text_13 --flavor_nn timdettmers_guanaco-65b-merged --gpu-memory 23 --cpu-memory 250 --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --outdir ../outputs --num_cards 10 --hr_upscale 2 --verbosity=9 --to_pdf```
         * This command takes about 2 hours to execute on the dev's machine
         * see ```python generate_cards.py --help``` for more info on arguments
     * AI samples are cached in subdirectories (```*_cache```) under the auto-generated output folder (eg ```../outputs/00003_481992436```), so the generator can be stopped and resumed without losing much via the ```--resume ...``` argument. Also useful if it crashes for some inconsistent reason.
@@ -40,6 +40,14 @@
 | ```--no_flavor --no_art```                      | ~ 10 cards / minute         | ~ 250 KB / card         |
 | ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute         | ~ 1.5 KB / card         |
 | ```--to_pdf``` (ignoring other args + steps)    | Adds ~ 10s per card         | roughly doubles         |
+
+* other run modes
+    * generate basic lands with unique art: ```python generate_cards.py --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --verbosity=9 --outdir ../outputs --hr_upscale 2 --basic_lands "{'Plains':51, 'Island':51, 'Swamp':51, 'Mountain':51, 'Forest':51, 'Snow-Covered Plains':25, 'Snow-Covered Island':25, 'Snow-Covered Swamp':25, 'Snow-Covered Mountain':25, 'Snow-Covered Forest':25, 'Wastes':36}" --to_pdf```
+    * Quickly create card text, which can be hand-modified before rendering
+        * Run ```generate_cards.py``` like normal plus args ```--no_flavor --no_art --no_render```, so that only the text is generated
+        * Open the generated ```card_data.yaml```, and hand-modify the contents to your heart's desire. You can also delete cards entirely from the file.
+        * Run ```generate_cards.py``` like normal with ```--finish_yaml <yaml path>```
+    * resume an interupted generation with ```--resume_folder <folder path>``` (and specify the same args)
 
 
 # &#x1F534; TODOs
