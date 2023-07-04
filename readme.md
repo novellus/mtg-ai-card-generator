@@ -52,7 +52,6 @@
 
 
 # &#x1F534; TODOs
-* finish card back art, remove or organize extra images
 * generate additional basic lands with custom / unique art
 * finish yaml once colin down-selects
 * for the cube, colin wants
