@@ -11,7 +11,7 @@ from PIL import Image
 
 def main(folder, verbosity=0):
     if verbosity > 0:
-        print(f'Assembling a pdf from front/back images at {folder}, (slow)')
+        print(f'Assembling a printable pdf from front/back images at {folder}, (slow)')
 
     assert os.path.isdir(folder)
 
