@@ -51,26 +51,6 @@
     * resume an interupted generation with ```--resume_folder <folder path>``` (and specify the same args)
 
 
-# &#x1F534; TODOs
-* generate additional basic lands with custom / unique art
-* finish yaml once colin down-selects
-* low priorty (ie probably never)
-    * add bypass to lstm parser where if max resamples are exceeded, instead of raising the error, it raises a unique error which is caught by ```generate_cards.py``` who loudly removes that card from the processing and finishes the rest of the cards
-    * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
-        * limit file size to something appropriate for TTS assets (40MB??)
-    * ```render.py```
-        * decrease save file resolution to limit file size?
-        * render legendary frame?
-        * refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
-        * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
-    * ```encode.py```
-        * implement ```error_correct_AI``` if needed?
-        * add to ```validate``` if needed?
-        * implement ```limit_to_AI_training_cards```?
-        * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
-    * update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
-
-
 # Environment Setup
 Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require manual customization of subtrees, especially torch-rnn which is no longer developed.)
 
@@ -232,4 +212,24 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
     * [img2prompt](https://replicate.com/methexis-inc/img2prompt) and [BLIP](https://huggingface.co/spaces/Salesforce/BLIP) predict the prompts for uploaded images
     * etc: see [reddit tooling catalog](https://old.reddit.com/r/StableDiffusion/comments/xcq819/dreamers_guide_to_getting_started_w_stable/)
 <!-- * additional template images, fonts, etc at https://github.com/MrTeferi/cardconjurer and its forks-->
+
+
+# &#x1F534; TODOs
+* generate additional basic lands with custom / unique art
+* finish yaml once colin down-selects
+* low priorty (ie probably never)
+    * add bypass to lstm parser where if max resamples are exceeded, instead of raising the error, it raises a unique error which is caught by ```generate_cards.py``` who loudly removes that card from the processing and finishes the rest of the cards
+    * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
+        * limit file size to something appropriate for TTS assets (40MB??)
+    * ```render.py```
+        * decrease save file resolution to limit file size?
+        * render legendary frame?
+        * refine txt2img args to furthr dissuade creating art images resembling mtg cards ?
+        * set order of mana according to [this guide](https://cardboardkeeper.com/mtg-color-order/)? This order depends on which symbols are present in a way that's silly, hard to implement, and gains us very little.
+    * ```encode.py```
+        * implement ```error_correct_AI``` if needed?
+        * add to ```validate``` if needed?
+        * implement ```limit_to_AI_training_cards```?
+        * Split composite text lines (i.e. "flying, first strike" -> "flying\first strike") and put the lines into canonical order? This would require starting training over from scratch, so likely not worth it.
+    * update ```torch-rnn``` to handle ```rand_mtg_fields``` argument given new field sep, card sep, and mana formats from ```encode.py``` ?
 
