@@ -13,5 +13,6 @@ tmp
 log-*.txt
 SD_target.py
 outputs/*
-scripts/00014*
+scripts/000*
 scripts/test*
+scripts/tmp*
