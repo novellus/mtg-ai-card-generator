@@ -136,7 +136,7 @@ def sample_txt2img(card, model, cache_path, seed, verbosity, hr_upscale=None, us
     payload = {
         'prompt': (f"{card['name']}"
                    f"{(', ' + card['type']) if use_type else ''}"
-                   f", high fantasy"
+                   # f", high fantasy"
                    f"{', ' + card['flavor'] if card['flavor'] else ''}"
                   ),
 
