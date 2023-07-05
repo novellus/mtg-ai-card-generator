@@ -1,4 +1,5 @@
 import argparse
+import math
 import os
 import pprint
 import re
@@ -135,7 +136,11 @@ def main(folder, verbosity=0):
         col += 1
 
     if verbosity > 1:
-        print(f'Saving PDF{" (slow for dozens of cards, very slow for hundreds)" if len(images) > 50 else ""}')
+        print(f'Saving PDF (slow, scales quadratically for some reason; will be several hours for hundreds of cards)')
+    if verbosity > 3:
+        # 7.92619*N + 15.2565  # image embedding time
+        saving_time = 0.0730444*math.pow(len(images), 2) + 0.654639*len(images) - 4.75086
+        print(f'Estimated saving time on the dev\'s machine: {saving_time} seconds, starting at {time.time()}')
 
     pdf.output(name = os.path.join(folder, 'printable_cards.pdf'))
 
