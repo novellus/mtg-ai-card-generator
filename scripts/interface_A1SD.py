@@ -147,12 +147,13 @@ def sample_txt2img(card, model, cache_path, seed, verbosity, hr_upscale=None, us
         # 'negative_prompt': 'blurry, text, watermarks, logo, out of frame, extra fingers, mutated hands, monochrome, poorly drawn hands, poorly drawn face, mutation, deformed, ugly, bad anatomy, bad proportions, extra arms, extra limbs, cloned face, glitchy, bokeh',
         # With A/B testing, performance of the AI seems to be maximized when negative prompt is not used
 
-        'steps': 20,
+        'steps': 30,
         'batch_size': 1,
+        'cfg_scale': 7,
         'n_iter': 1,
         'width': 512,
         'height': 512,
-        'sampler_index': 'Euler a',  # also available: 'sampler_name'... ?
+        'sampler_index': 'DPM++ 2M Karras',  # also available: 'sampler_name'... ?
         'seed': seed,
         # 'restore_faces': True,
     }
