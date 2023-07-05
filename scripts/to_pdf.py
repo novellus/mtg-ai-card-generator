@@ -135,7 +135,7 @@ def main(folder, verbosity=0):
         col += 1
 
     if verbosity > 1:
-        print(f'Saving PDF{" (slow for dozens to hundreds of cards)" if len(images) > 50 else ""}')
+        print(f'Saving PDF{" (slow for dozens of cards, very slow for hundreds)" if len(images) > 50 else ""}')
 
     pdf.output(name = os.path.join(folder, 'printable_cards.pdf'))
 
