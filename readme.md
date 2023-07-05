@@ -218,6 +218,7 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
 * generate additional basic lands with custom / unique art
 * finish yaml once colin down-selects
 * low priorty (ie probably never)
+    * locally fine-tune an LLM to generate the main_text and names segments
     * add bypass to lstm parser where if max resamples are exceeded, instead of raising the error, it raises a unique error which is caught by ```generate_cards.py``` who loudly removes that card from the processing and finishes the rest of the cards
     * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
         * limit file size to something appropriate for TTS assets (40MB??)
