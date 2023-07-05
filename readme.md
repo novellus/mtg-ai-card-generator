@@ -54,13 +54,6 @@
 # &#x1F534; TODOs
 * generate additional basic lands with custom / unique art
 * finish yaml once colin down-selects
-* for the cube, colin wants
-    * 50 cards of each individual color
-    * 60 multicolor cards
-        * roughly even between color combinations
-        * mostly 2-color (not 3+ color)
-    * 25 colorless artifacts
-    * 25 lands
 * low priorty (ie probably never)
     * add bypass to lstm parser where if max resamples are exceeded, instead of raising the error, it raises a unique error which is caught by ```generate_cards.py``` who loudly removes that card from the processing and finishes the rest of the cards
     * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
