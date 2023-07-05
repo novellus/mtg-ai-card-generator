@@ -40,7 +40,7 @@
 | ```--no_flavor```                               | ~ 6.5 cards / minute        | ~ 2.5 MB / card         |
 | ```--no_flavor --no_art```                      | ~ 10 cards / minute         | ~ 250 KB / card         |
 | ```--no_flavor --no_art --no_render```          | ~ 20 cards / minute         | ~ 1.5 KB / card         |
-| ```--to_pdf``` (ignoring other args + steps)    | Adds ~ 10s per card         | roughly doubles         |
+| ```--to_pdf``` (ignoring other args + steps)    | Adds ~ 20s per card         | roughly doubles         |
 
 * other run modes
     * generate basic lands with unique art: ```python generate_cards.py --sd_nn "nov_mtg_art_v2_3.ckpt [76fcbf0ef5]" --verbosity=9 --outdir ../outputs --hr_upscale 2 --basic_lands "{'Plains':51, 'Island':51, 'Swamp':51, 'Mountain':51, 'Forest':51, 'Snow-Covered Plains':25, 'Snow-Covered Island':25, 'Snow-Covered Swamp':25, 'Snow-Covered Mountain':25, 'Snow-Covered Forest':25, 'Wastes':36}" --to_pdf```
