@@ -157,8 +157,10 @@ def sample(prompt, model, gpu_memory, cpu_memory, seed, verbosity, max_len=75):
         'seed': seed,
         'max_new_tokens': max_len,
         'do_sample': True,
-        'temperature': 0.7,
-        'top_p': 0.9,
+        'temperature': 1.5,
+        'top_p': 0.95,
+        'top_k': 150,
+        'stopping_strings': ['"'],  # stop after an end quote
     }
 
     # decode the response
