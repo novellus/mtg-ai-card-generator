@@ -447,7 +447,7 @@ def main(args):
             if 'e_side' in card: card['e_side']['a_side'] = card
 
     # sample flavor text
-    if args.no_flavor or args.basic_lands:
+    if args.no_flavor:
         if args.verbosity > 2:
             print(f'Skipping flavor')
 
@@ -570,7 +570,7 @@ if __name__ == '__main__':
     parser.add_argument("--no_stats", action='store_true', help="disables stats.yaml output file")
     parser.add_argument("--resume_folder", type=str, help="Path to folder. resumes generating into specified output folder, skips sampling AIs with cached outputs and skips rendering existing card files.")
     parser.add_argument("--finish_yaml", type=str, help="Path to yaml. finishes generating cards from specified yaml. The yaml input file is usually hand constructed or modified. Will not sample new names or main_text. Will sample flavor AI, sample art AI, and render cards depending on other args.")
-    parser.add_argument("--basic_lands", type=yaml_load, nargs='?', const='all', default=None, help="Generate basic lands instead of normal cards. Overwrites names and main_text samplers with appropriate hard-coded fields, skips flavor sampling entirely, but still performs art sampling. Optional type string may be fed to this argument (eg '--basic_lands forest'), and if type is not specified, will generate all types of hard-coded lands num_cards times each. Can also specify a yaml-encoded dict of types to quantity instead, in which case --num_cards is ignored. Types specifed at CLI must exist in mtg_constants.py. Not compatible with --finish_yaml, if you have a yaml you don't need this arg anyway.")
+    parser.add_argument("--basic_lands", type=yaml_load, nargs='?', const='all', default=None, help="Generate basic lands instead of normal cards. Overwrites names and main_text samplers with appropriate hard-coded fields, but still performs flavor and art sampling. Optional type string may be fed to this argument (eg '--basic_lands forest'), and if type is not specified, will generate all types of hard-coded lands num_cards times each. Can also specify a yaml-encoded dict of types to quantity instead, in which case --num_cards is ignored. Types specifed at CLI must exist in mtg_constants.py. Not compatible with --finish_yaml, if you have a yaml you don't need this arg anyway.")
     parser.add_argument("--lstm_gpu", type=int, default=0, help='select gpu device for sampling LSTMs')
     parser.add_argument("--to_pdf", action='store_true', help='automatically execute to_pdf.py on the output folder to create a printable file.')
     parser.add_argument("--verbosity", type=int, default=1)
