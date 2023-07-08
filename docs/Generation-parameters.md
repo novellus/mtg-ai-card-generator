@@ -10,9 +10,21 @@ llama.cpp only uses the following parameters:
 * top_p
 * top_k
 * repetition_penalty
+* tfs
 * mirostat_mode
 * mirostat_tau
 * mirostat_eta
+
+### ExLlama
+
+ExLlama only uses the following parameters:
+
+* temperature
+* top_p
+* top_k
+* repetition_penalty
+* repetition_penalty_range
+* typical_p
 
 ### RWKV
 
