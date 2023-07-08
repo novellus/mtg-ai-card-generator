@@ -5,6 +5,7 @@ from typing import Callable, Optional
 
 from modules import shared
 from modules.chat import load_character_memoized
+from modules.presets import load_preset_memoized
 
 
 def build_parameters(body, chat=False):
@@ -20,6 +21,7 @@ def build_parameters(body, chat=False):
         'tfs': float(body.get('tfs', 1)),
         'top_a': float(body.get('top_a', 0)),
         'repetition_penalty': float(body.get('repetition_penalty', body.get('rep_pen', 1.1))),
+        'repetition_penalty_range': int(body.get('repetition_penalty_range', 0)),
         'encoder_repetition_penalty': float(body.get('encoder_repetition_penalty', 1.0)),
         'top_k': int(body.get('top_k', 0)),
         'min_length': int(body.get('min_length', 0)),
@@ -40,6 +42,11 @@ def build_parameters(body, chat=False):
         'stopping_strings': body.get('stopping_strings', []),
     }
 
+    preset_name = body.get('preset', 'None')
+    if preset_name not in ['None', None, '']:
+        preset = load_preset_memoized(preset_name)
+        generate_params.update(preset)
+
     if chat:
         character = body.get('character')
         instruction_template = body.get('instruction_template')
@@ -47,7 +54,6 @@ def build_parameters(body, chat=False):
         name1_instruct, name2_instruct, _, _, context_instruct, turn_template = load_character_memoized(instruction_template, '', '', instruct=True)
         generate_params.update({
             'stop_at_newline': bool(body.get('stop_at_newline', shared.settings['stop_at_newline'])),
-            'chat_prompt_size': int(body.get('chat_prompt_size', shared.settings['chat_prompt_size'])),
             'chat_generation_attempts': int(body.get('chat_generation_attempts', shared.settings['chat_generation_attempts'])),
             'mode': str(body.get('mode', 'chat')),
             'name1': name1,
@@ -59,6 +65,7 @@ def build_parameters(body, chat=False):
             'context_instruct': context_instruct,
             'turn_template': turn_template,
             'chat-instruct_command': str(body.get('chat-instruct_command', shared.settings['chat-instruct_command'])),
+            'history': body.get('history', {'internal': [], 'visible': []})
         })
 
     return generate_params

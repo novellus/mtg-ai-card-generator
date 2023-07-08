@@ -9,13 +9,11 @@ from modules.logging_colors import logger
 generation_lock = None
 model = None
 tokenizer = None
+is_seq2seq = False
 model_name = "None"
-model_type = None
 lora_names = []
 
 # Chat variables
-history = {'internal': [], 'visible': []}
-character = 'None'
 stop_everything = False
 processing_message = '*Is typing...*'
 
@@ -51,21 +49,18 @@ settings = {
     'skip_special_tokens': True,
     'truncation_length': 2048,
     'truncation_length_min': 0,
-    'truncation_length_max': 8192,
+    'truncation_length_max': 16384,
     'mode': 'chat',
     'start_with': '',
     'chat_style': 'cai-chat',
     'instruction_template': 'None',
     'chat-instruct_command': 'Continue the chat dialogue below. Write a single reply for the character "<|character|>".\n\n<|prompt|>',
-    'chat_prompt_size': 2048,
-    'chat_prompt_size_min': 0,
-    'chat_prompt_size_max': 8192,
     'chat_generation_attempts': 1,
     'chat_generation_attempts_min': 1,
     'chat_generation_attempts_max': 10,
     'default_extensions': [],
     'chat_default_extensions': ['gallery'],
-    'preset': 'LLaMA-Precise',
+    'preset': 'simple-1',
     'prompt': 'QA',
 }
 
@@ -86,6 +81,7 @@ parser = argparse.ArgumentParser(formatter_class=lambda prog: argparse.HelpForma
 # Basic settings
 parser.add_argument('--notebook', action='store_true', help='Launch the web UI in notebook mode, where the output is written to the same text box as the input.')
 parser.add_argument('--chat', action='store_true', help='Launch the web UI in chat mode with a style similar to the Character.AI website.')
+parser.add_argument('--multi-user', action='store_true', help='Multi-user mode. Chat histories are not saved or automatically loaded. WARNING: this is highly experimental.')
 parser.add_argument('--character', type=str, help='The name of the character to load in chat mode by default.')
 parser.add_argument('--model', type=str, help='Name of the model to load by default.')
 parser.add_argument('--lora', type=str, nargs="+", help='The list of LoRAs to load. If you want to load more than one LoRA, write the names separated by spaces.')
@@ -96,6 +92,9 @@ parser.add_argument('--no-stream', action='store_true', help='Don\'t stream the 
 parser.add_argument('--settings', type=str, help='Load the default interface settings from this yaml file. See settings-template.yaml for an example. If you create a file called settings.yaml, this file will be loaded by default without the need to use the --settings flag.')
 parser.add_argument('--extensions', type=str, nargs="+", help='The list of extensions to load. If you want to load more than one extension, write the names separated by spaces.')
 parser.add_argument('--verbose', action='store_true', help='Print the prompts to the terminal.')
+
+# Model loader
+parser.add_argument('--loader', type=str, help='Choose the model loader manually, otherwise, it will get autodetected. Valid options: transformers, autogptq, gptq-for-llama, exllama, exllama_hf, llamacpp, rwkv, flexgen')
 
 # Accelerate/transformers
 parser.add_argument('--cpu', action='store_true', help='Use the CPU to generate text. Warning: Training on CPU is extremely slow.')
@@ -139,13 +138,22 @@ parser.add_argument('--warmup_autotune', action='store_true', help='(triton) Ena
 parser.add_argument('--fused_mlp', action='store_true', help='(triton) Enable fused mlp.')
 
 # AutoGPTQ
-parser.add_argument('--gptq-for-llama', action='store_true', help='Use GPTQ-for-LLaMa to load the GPTQ model instead of AutoGPTQ.')
+parser.add_argument('--gptq-for-llama', action='store_true', help='DEPRECATED')
 parser.add_argument('--autogptq', action='store_true', help='DEPRECATED')
 parser.add_argument('--triton', action='store_true', help='Use triton.')
+parser.add_argument('--no_inject_fused_attention', action='store_true', help='Do not use fused attention (lowers VRAM requirements).')
+parser.add_argument('--no_inject_fused_mlp', action='store_true', help='Triton mode only: Do not use fused MLP (lowers VRAM requirements).')
+parser.add_argument('--no_use_cuda_fp16', action='store_true', help='This can make models faster on some systems.')
 parser.add_argument('--desc_act', action='store_true', help='For models that don\'t have a quantize_config.json, this parameter is used to define whether to set desc_act or not in BaseQuantizeConfig.')
 
+# ExLlama
+parser.add_argument('--gpu-split', type=str, help="Comma-separated list of VRAM (in GB) to use per GPU device for model layers, e.g. 20,7,7")
+parser.add_argument('--max_seq_len', type=int, default=2048, help="Maximum sequence length.")
+parser.add_argument('--compress_pos_emb', type=int, default=1, help="Positional embeddings compression factor. Should typically be set to max_seq_len / 2048.")
+parser.add_argument('--alpha_value', type=int, default=1, help="Positional embeddings alpha factor for NTK RoPE scaling. Same as above. Use either this or compress_pos_emb, not both.")
+
 # FlexGen
-parser.add_argument('--flexgen', action='store_true', help='Enable the use of FlexGen offloading.')
+parser.add_argument('--flexgen', action='store_true', help='DEPRECATED')
 parser.add_argument('--percent', type=int, nargs="+", default=[0, 100, 100, 0, 100, 0], help='FlexGen: allocation percentages. Must be 6 numbers separated by spaces (default: 0, 100, 100, 0, 100, 0).')
 parser.add_argument("--compress-weight", action="store_true", help="FlexGen: activate weight compression.")
 parser.add_argument("--pin-weight", type=str2bool, nargs="?", const=True, default=True, help="FlexGen: whether to pin weights (setting this to False reduces CPU memory by 20%%).")
@@ -182,13 +190,42 @@ args_defaults = parser.parse_args([])
 
 # Deprecation warnings
 if args.autogptq:
-    logger.warning('--autogptq has been deprecated and will be removed soon. AutoGPTQ is now used by default for GPTQ models.')
+    logger.warning('--autogptq has been deprecated and will be removed soon. Use --loader autogptq instead.')
+    args.loader = 'autogptq'
+if args.gptq_for_llama:
+    logger.warning('--gptq-for-llama has been deprecated and will be removed soon. Use --loader gptq-for-llama instead.')
+    args.loader = 'gptq-for-llama'
+if args.flexgen:
+    logger.warning('--flexgen has been deprecated and will be removed soon. Use --loader flexgen instead.')
+    args.loader = 'FlexGen'
 
 # Security warnings
 if args.trust_remote_code:
     logger.warning("trust_remote_code is enabled. This is dangerous.")
 if args.share:
     logger.warning("The gradio \"share link\" feature uses a proprietary executable to create a reverse tunnel. Use it with care.")
+if args.multi_user:
+    logger.warning("The multi-user mode is highly experimental. DO NOT EXPOSE IT TO THE INTERNET.")
+
+
+def fix_loader_name(name):
+    name = name.lower()
+    if name in ['llamacpp', 'llama.cpp', 'llama-cpp', 'llama cpp']:
+        return 'llama.cpp'
+    elif name in ['transformers', 'huggingface', 'hf', 'hugging_face', 'hugging face']:
+        return 'Transformers'
+    elif name in ['autogptq', 'auto-gptq', 'auto_gptq', 'auto gptq']:
+        return 'AutoGPTQ'
+    elif name in ['gptq-for-llama', 'gptqforllama', 'gptqllama', 'gptq for llama', 'gptq_for_llama']:
+        return 'GPTQ-for-LLaMa'
+    elif name in ['exllama', 'ex-llama', 'ex_llama', 'exlama']:
+        return 'ExLlama'
+    elif name in ['exllama-hf', 'exllama_hf', 'exllama hf', 'ex-llama-hf', 'ex_llama_hf']:
+        return 'ExLlama_HF'
+
+
+if args.loader is not None:
+    args.loader = fix_loader_name(args.loader)
 
 
 def add_extension(name):
@@ -209,6 +246,15 @@ if args.multimodal_pipeline is not None:
 
 def is_chat():
     return args.chat
+
+
+def get_mode():
+    if args.chat:
+        return 'chat'
+    elif args.notebook:
+        return 'notebook'
+    else:
+        return 'default'
 
 
 # Loading model-specific settings
