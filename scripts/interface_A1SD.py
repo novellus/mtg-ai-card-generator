@@ -104,12 +104,13 @@ def terminate_server(verbosity):
     global PROCESS
 
     if PROCESS is not None:
-        if verbosity > 1:
-            print('Terminating A1SD server')
+        if PROCESS.poll() is None:
+            if verbosity > 1:
+                print('Terminating A1SD server')
 
-        # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
-        os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
-        PROCESS.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
+            # cannot use Popen.terminate() or kill() because they will not kill further spawned processes, especially the process responsible for consuming vram
+            os.killpg(os.getpgid(PROCESS.pid), signal.SIGTERM)
+            PROCESS.communicate(timeout=10)  # clears pipe buffers, and waits for process to close
 
         PROCESS = None
 
