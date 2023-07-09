@@ -31,7 +31,7 @@
     * these will compile all images in the output folder, so if you don't want to include all of them, remove the undesired files first
 * Optionally, ```card_data.yaml``` can be manually edited (eg to fix AI-generated typos) by adding fields named ```*_override``` under card definition(s), and then ```scripts/render.py``` can be executed directly (see ```--help``` for more info) to re-render the cards with the manual modifications.
     * Similarly, the cached art under ```outputs/*/art_cache``` can be modified to change the card art before re-rendering. If this is the only change to a card, then delete the rendered card image file so the renderer will detect that it should be rendered. -->
-* Overall timing
+* Overall timing (using the nns called out in setup; using other nns may change timing dramatically)
 
 | args                                            | timing on the dev's machine | amount of data produced |
 | ----------------------------------------------- | --------------------------- | ----------------------- |
