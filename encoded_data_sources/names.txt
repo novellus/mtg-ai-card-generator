@@ -200,6 +200,7 @@ Advice from the Fae
 Advocate
 Advocate of the Beast
 Aeacus
+Aeetes
 Aegar, the Freezing Flame
 Aegis
 Aegis Angel
@@ -299,7 +300,6 @@ Aetherwind Basker
 Aetherwing, Golden-Scale Flagship
 Aetherworks Marvel
 Aeve, Progenitor Ooze
-Aeëtes
 Affa Guard Hound
 Affa Protector
 Affectionate Indrik
