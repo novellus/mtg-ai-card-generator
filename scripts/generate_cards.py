@@ -18,6 +18,11 @@ import interface_llm as llm
 from mtg_constants import BASIC_LAND_TYPES
 
 
+FIELD_ORDER = ['name', 'type', 'cost', 'power_toughness', 'loyalty', 'defense', 'main_text', 'author', 'card_number', 'side',
+               'flavor', 'nns_names', 'rarity', 'repo_hash', 'repo_link', 'seed', 'seed_diff', 'set_number', 'timestamp', 'unparsed_name',
+               'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
+
+
 def resolve_folder_to_checkpoint_path(path, ext='t7'):
     # return immediately if its a file
     if os.path.isfile(path):
@@ -518,10 +523,7 @@ def main(args):
     #   and finally, its easy enough to add the backlink back in at reload time.
     # Also order fields for human readability
     yaml_data = [encode.limit_fields(card, blacklist=['a_side']) for card in cards]
-    field_order = ['name', 'type', 'cost', 'power_toughness', 'loyalty', 'defense', 'main_text', 'author', 'card_number', 'side',
-                   'flavor', 'nns_names', 'rarity', 'repo_hash', 'repo_link', 'seed', 'seed_diff', 'set_number', 'timestamp', 'unparsed_name',
-                   'a_side', 'b_side', 'c_side', 'd_side', 'e_side']
-    yaml_data = [encode.order_dict_fields(card, field_order) for card in yaml_data]
+    yaml_data = [encode.order_dict_fields(card, FIELD_ORDER) for card in yaml_data]
     f = open(os.path.join(args.outdir, 'card_data.yaml'), 'w')
     f.write(yaml.dump(yaml_data, sort_keys=False))
     f.close()
