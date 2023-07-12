@@ -215,6 +215,7 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
 
 
 # &#x1F534; TODOs
+* retrain ```names_3``` after removal of ```ë``` character from training data...
 * generate additional basic lands with custom / unique art
 * finish yaml once colin down-selects
 * low priorty (ie probably never)
