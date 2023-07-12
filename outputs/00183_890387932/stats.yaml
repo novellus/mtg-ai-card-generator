@@ -1,0 +1,3158 @@
+_avg_sides_per_card: 1.007
+_num_cards: 1000
+_num_colorless: 73
+_num_colorless_artifacts: 72
+_num_costless: 53
+_num_mana_value:
+  0: 20
+  1: 66
+  2: 189
+  3: 230
+  4: 200
+  5: 143
+  6: 80
+  7: 26
+  8: 7
+  9: 5
+  10: 1
+_num_mono_colored:
+  Black: 171
+  Blue: 168
+  Green: 125
+  Red: 148
+  White: 156
+_num_mono_main_types:
+  Artifact: 67
+  Contraption: 0
+  Creature: 444
+  Enchantment: 145
+  Instant: 110
+  Land: 33
+  Other: 12
+  Planeswalker: 17
+  Scheme: 3
+  Siege: 0
+  Sorcery: 136
+_num_multi_main_types:
+  Artifact, Contraption: 3
+  Artifact, Creature: 19
+  Artifact, Creature, Instant: 1
+  Creature, Enchantment: 7
+  Creature, Sorcery: 1
+  Enchantment, Land: 1
+  Instant, Land: 1
+_num_multicolored:
+  Black, Blue: 10
+  Black, Green: 14
+  Black, Red: 16
+  Black, White: 5
+  Blue, Green: 6
+  Blue, Red: 9
+  Blue, White: 7
+  Green, Red: 8
+  Green, White: 2
+  Red, White: 10
+  three_or_more: 19
+_num_multisided:
+  2: 7
+colorless:
+- 00006, Armored Hopil
+- 00023, Master of Illusion Gued
+- 00052, Caracal Jack
+- 00064, Berserker of Talisman
+- 00069, Dilicebroan
+- 00077, Pelelister's Botter
+- 00108, Battle Fall
+- 00118, Carsiver's Farchor
+- 00125, Inclessited Keyrine
+- 00133, Must Golem
+- 00141, Soaticy Liquines
+- 00154, Ikiral Doom
+- 00159, Ewrine Plan
+- 00164, Pugactite Aether Ecy
+- 00180, Aspisso Wonder
+- 00181, Experimental Mire
+- 00207, Grim Vab
+- 00220, Gemponch Tigers
+- 00225, Fleetbreaker
+- 00239, Plague Molk
+- 00248, Bloodstafor
+- 00281, Nepsawed Meralimun
+- 00286, Sorakas's Warlick
+- 00305, Merchant of Unifie
+- 00312, Spectral Gedeoner
+- 00320, Soul Brownit
+- 00341, Hell of Denial
+- 00363, Misthood Anjoy
+- 00364, Dreamworder Glee Pool
+- 00374, True Bastion
+- 00394, Feeter of the Dransition
+- 00401, Rack-Bat
+- 00445, Peliten Glass
+- 00447, Shred Blade
+- 00463, Torror Unnotoust
+- 00478, Sumvoll Taged
+- 00485, Butterfang
+- 00522, Boandiche's Sapphire
+- 00562, Myr Nongulam
+- 00567, Flowstone Byw
+- 00578, Impagida Shield
+- 00593, Ayek of Gate
+- 00601, Grorts of Eye of Saiy
+- 00604, Hemmil Uultol
+- 00608, Unkougan's Obliki
+- 00668, Hired Tomas
+- 00671, Mirror Baliek
+- 00676, Volotitizee
+- 00680, Pelath's Branch-Den
+- 00689, Nomida Tanks
+- 00698, Shoet Lolk
+- 00712, Salvager in Wood
+- 00720, Naogir's Kama
+- 00732, Grove of the Scunnaria
+- 00748, Ruthless Hammer
+- 00751, Athrorowal Monkey
+- 00762, Woodmand Flame
+- 00765, Wall of Sleip
+- 00809, Fateling Grave
+- 00811, Glintskirt
+- 00818, Jandar's Coag
+- 00819, Izzet Construct
+- 00843, Eye of Plangl
+- 00846, Legion Conchaging
+- 00851, Fangbraft Custody
+- 00866, Plosspull Camatatis
+- 00883, Frog-Temp
+- 00891, Necrogony Maline
+- 00901, Clarion Otche
+- 00928, Tamasm's Atoniscy
+- 00943, Thoughtherder War
+- 00949, Rite of Saithstorm
+- 00966, Giant Keytot
+colorless_artifacts:
+- 00006, Armored Hopil
+- 00023, Master of Illusion Gued
+- 00052, Caracal Jack
+- 00064, Berserker of Talisman
+- 00069, Dilicebroan
+- 00077, Pelelister's Botter
+- 00108, Battle Fall
+- 00118, Carsiver's Farchor
+- 00125, Inclessited Keyrine
+- 00133, Must Golem
+- 00141, Soaticy Liquines
+- 00154, Ikiral Doom
+- 00159, Ewrine Plan
+- 00164, Pugactite Aether Ecy
+- 00180, Aspisso Wonder
+- 00181, Experimental Mire
+- 00207, Grim Vab
+- 00220, Gemponch Tigers
+- 00225, Fleetbreaker
+- 00239, Plague Molk
+- 00248, Bloodstafor
+- 00281, Nepsawed Meralimun
+- 00286, Sorakas's Warlick
+- 00305, Merchant of Unifie
+- 00312, Spectral Gedeoner
+- 00320, Soul Brownit
+- 00341, Hell of Denial
+- 00363, Misthood Anjoy
+- 00364, Dreamworder Glee Pool
+- 00374, True Bastion
+- 00394, Feeter of the Dransition
+- 00401, Rack-Bat
+- 00445, Peliten Glass
+- 00447, Shred Blade
+- 00463, Torror Unnotoust
+- 00478, Sumvoll Taged
+- 00485, Butterfang
+- 00522, Boandiche's Sapphire
+- 00562, Myr Nongulam
+- 00567, Flowstone Byw
+- 00578, Impagida Shield
+- 00593, Ayek of Gate
+- 00601, Grorts of Eye of Saiy
+- 00604, Hemmil Uultol
+- 00608, Unkougan's Obliki
+- 00668, Hired Tomas
+- 00671, Mirror Baliek
+- 00680, Pelath's Branch-Den
+- 00689, Nomida Tanks
+- 00698, Shoet Lolk
+- 00712, Salvager in Wood
+- 00720, Naogir's Kama
+- 00732, Grove of the Scunnaria
+- 00748, Ruthless Hammer
+- 00751, Athrorowal Monkey
+- 00762, Woodmand Flame
+- 00765, Wall of Sleip
+- 00809, Fateling Grave
+- 00811, Glintskirt
+- 00818, Jandar's Coag
+- 00819, Izzet Construct
+- 00843, Eye of Plangl
+- 00846, Legion Conchaging
+- 00851, Fangbraft Custody
+- 00866, Plosspull Camatatis
+- 00883, Frog-Temp
+- 00891, Necrogony Maline
+- 00901, Clarion Otche
+- 00928, Tamasm's Atoniscy
+- 00943, Thoughtherder War
+- 00949, Rite of Saithstorm
+- 00966, Giant Keytot
+costless:
+- 00038, Dragon's Force
+- 00095, Zodiac Avatar
+- 00129, Myr Crifs
+- 00130, Vampire Batilicel
+- 00146, Restless Predeton
+- 00149, Efter of Gang
+- 00195, Elvish Inectagice
+- 00198, Syndicate Chasse
+- 00221, Hudelic Aclossid
+- 00257, Ace and Squadron
+- 00354, Moth the God Avatar
+- 00360, Will of Rista
+- 00387, Temple's Blood
+- 00400, Galacto
+- 00410, Secret Consug
+- 00411, Lireadion
+- 00426, Spot Throne Geude
+- 00429, Threads Sprite Avatar
+- 00454, Dox
+- 00470, Ruk of the Scorpion
+- 00472, Lakakut Adzoc
+- 00481, Shield of Oak
+- 00493, Floodloot Serene
+- 00499, Ghisupha
+- 00502, Reckless Carnicler
+- 00511, Stroke of Memory
+- 00514, Ozoli
+- 00539, Zebro
+- 00553, Bas
+- 00563, Dread Holliffe
+- 00564, Iistrod Woodslithe
+- 00591, Searne's Lotus
+- 00596, Erra, The Aether Pegamun
+- 00597, Binding Disamolea, Dark Peor Sutree
+- 00605, Golgari Towchon Audomacor
+- 00634, Naturol's Springs
+- 00656, Threak Gees
+- 00667, Suuvanding Commande
+- 00716, Morch Bully
+- 00735, Conepenator's Thum Simulacrum
+- 00746, Serra
+- 00750, Sparring Quarry
+- 00760, The Mindsaco-Bard Leefer
+- 00783, Dity Reinator
+- 00793, Tales
+- 00799, Silvergrif Wingbrade
+- 00825, Archangel of Auronence
+- 00840, Gavita
+- 00845, Welcome
+- 00849, Dog of Bambiging Elemental
+- 00878, Primbled Ridge
+- 00969, Liti's Turbliner
+- 00978, The Unnatural Bathliske
+mana_value:
+  0:
+  - 00095, Zodiac Avatar
+  - 00354, Moth the God Avatar
+  - 00400, Galacto
+  - 00426, Spot Throne Geude
+  - 00429, Threads Sprite Avatar
+  - 00470, Ruk of the Scorpion
+  - 00481, Shield of Oak
+  - 00499, Ghisupha
+  - 00502, Reckless Carnicler
+  - 00539, Zebro
+  - 00597, Binding Disamolea, Dark Peor Sutree
+  - 00656, Threak Gees
+  - 00735, Conepenator's Thum Simulacrum
+  - 00746, Serra
+  - 00760, The Mindsaco-Bard Leefer
+  - 00793, Tales
+  - 00840, Gavita
+  - 00849, Dog of Bambiging Elemental
+  - 00878, Primbled Ridge
+  - 00978, The Unnatural Bathliske
+  1:
+  - 00029, Fighter al-Danders
+  - 00041, Bugstal
+  - 00090, Ixesty
+  - 00117, Bennerous Portal
+  - 00147, Twuldwhiel Krisudly
+  - 00154, Ikiral Doom
+  - 00250, Nentaker
+  - 00256, Spirates of Blight
+  - 00262, Wral Orchor
+  - 00264, Appleeng Rager
+  - 00267, Mordy Growth
+  - 00276, Gorewouder's Engineer
+  - 00288, Exlicic Colessus
+  - 00305, Merchant of Unifie
+  - 00307, Fire of the Soled
+  - 00312, Spectral Gedeoner
+  - 00345, Invasion of Frag
+  - 00349, Shrine of Wak
+  - 00365, Warthot
+  - 00369, Goblin Godmind
+  - 00383, Apurisian Fire
+  - 00402, Limgot
+  - 00412, Deadshat
+  - 00441, Roaling Cry
+  - 00447, Shred Blade
+  - 00471, Helk Wurm
+  - 00485, Butterfang
+  - 00497, Spitness Brood Haze
+  - 00521, Cacull
+  - 00522, Boandiche's Sapphire
+  - 00528, Tomb Fast
+  - 00535, Colossus of Crusis
+  - 00571, Great Contalea Councers
+  - 00580, Unsentless Apprentice
+  - 00592, Conjel
+  - 00593, Ayek of Gate
+  - 00609, Showscorm Rombasi
+  - 00610, Gorflade Creeping
+  - 00614, Greenborn Ferous
+  - 00629, Mirorine Sliver
+  - 00666, Wall of Balamulchand
+  - 00683, Slaver
+  - 00698, Shoet Lolk
+  - 00701, Death World
+  - 00702, Azorius Dimir
+  - 00731, Loxid's Chant
+  - 00742, Scourge's Obelisk
+  - 00759, Thunderworldryal
+  - 00766, Mirror of Fent
+  - 00780, Infrench
+  - 00800, Sandspire Kosn
+  - 00811, Glintskirt
+  - 00814, Brick Brute
+  - 00826, Bramble Heregion
+  - 00876, Rogue Harvest
+  - 00885, Loor's Asp
+  - 00895, Dragonhoof Boss
+  - 00911, Claiker Yibinish
+  - 00930, Mother Finner
+  - 00935, Skirge Hattal
+  - 00938, Trivole of Troll
+  - 00943, Thoughtherder War
+  - 00950, The Convirt
+  - 00965, Sea Reel
+  - 00979, Goblin Xeandian
+  - 00996, Crishdals
+  2:
+  - 00002, Guardian Winds
+  - 00004, Boreed Curnein
+  - 00023, Master of Illusion Gued
+  - 00026, Mercol Artist
+  - 00030, Graking Suder
+  - 00036, Nest from Torder
+  - 00039, Herriert Row
+  - 00044, Perdanus, the Pack Pergeroper
+  - 00048, Idrurer
+  - 00049, Wildegoth Invoker
+  - 00063, Takefall
+  - 00064, Berserker of Talisman
+  - 00065, Scourde Arnort
+  - 00072, Ragga's Scourge
+  - 00074, Mizzium Goblin
+  - 00076, Druid of Elebrast
+  - 00077, Pelelister's Botter
+  - 00081, Scuttlegna
+  - 00089, Park Americad
+  - 00091, Chauspious Neinm-Sun
+  - 00092, Armored Guildmage
+  - 00098, Didlog Goblins
+  - 00101, Thunderhound Glider
+  - 00105, Guardians of Disceved
+  - 00106, Goblin Plofts
+  - 00110, Ferocite
+  - 00111, Dayworm Base
+  - 00116, Dliffmage
+  - 00119, Shelter Scream
+  - 00125, Inclessited Keyrine
+  - 00127, Living Spyst
+  - 00128, Deathbark Ringmas
+  - 00139, Willize
+  - 00148, Dreamline America
+  - 00150, Frightwald Wayle
+  - 00151, Aphosion Synthesis
+  - 00165, Sedva Harvest
+  - 00166, Mukescale Hark
+  - 00175, Notaminative
+  - 00180, Aspisso Wonder
+  - 00183, Circle if the Soul
+  - 00197, Siege Cul Devourer
+  - 00204, Penients of the Breath
+  - 00210, Down to Voice
+  - 00211, Hero of the Ball Battle
+  - 00212, Glorious Glisteay
+  - 00213, Angel of Villand
+  - 00215, Mirrorsoul Mastermind
+  - 00217, Volrath's Charge
+  - 00224, Skel-Retreis Corpso
+  - 00229, Albaan's Invoker
+  - 00242, Anorid Dreadnowge
+  - 00245, Fralling Hate
+  - 00249, Street Balitar
+  - 00263, River Show Matrix
+  - 00266, Smilewood Malous
+  - 00277, Fog Knight
+  - 00280, Sweee
+  - 00287, Stars
+  - 00294, Pease Outrider
+  - 00295, Dark Accursed
+  - 00299, Slanghoundon
+  - 00300, Dupines
+  - 00302, Chandra's Kindlebow
+  - 00308, Vivilubler
+  - 00309, Selemin Prince
+  - 00311, Grazing Lang
+  - 00320, Soul Brownit
+  - 00323, Siren Lizard
+  - 00329, Velit of Rawe
+  - 00340, Paspwy Lagmaging
+  - 00341, Hell of Denial
+  - 00344, Egona
+  - 00346, Mier Dream Wolf
+  - 00351, Spidery Volcanice
+  - 00353, Fatestead
+  - 00356, Agstrany
+  - 00358, Peyribo, Druid of Volcanic
+  - 00361, Defensive Reckoning
+  - 00362, Shredder Wound
+  - 00385, Crab Splindod
+  - 00388, The Thaured Last
+  - 00392, Concondition Wire
+  - 00399, Pollen Mastivore
+  - 00413, Treacherous Vibals
+  - 00425, Arsidinges
+  - 00427, Incein in the Savants
+  - 00431, Tool Feal Kanforler
+  - 00432, Ukanot Catapolk
+  - 00440, Mind-Ralfy
+  - 00442, Pyrocuna
+  - 00443, Incinerate
+  - 00444, Oncinivanm
+  - 00449, Rovamorce Druid
+  - 00451, Horror of Tactics
+  - 00452, Pereguimed Gayer
+  - 00456, Whirl Loli
+  - 00461, Torment of Biofompatt
+  - 00466, Flame Soul
+  - 00478, Sumvoll Taged
+  - 00489, Protuch Forbud
+  - 00503, Powerbloom Prisat
+  - 00515, Sastofuul
+  - 00523, Archnoghiffy
+  - 00531, Epish
+  - 00534, Frastfill
+  - 00541, Stonework Soul
+  - 00544, Defiant Basulis
+  - 00546, Sastle
+  - 00554, Bang Wavillnamord-Quile
+  - 00561, Dream Woaver
+  - 00567, Flowstone Byw
+  - 00574, Mr. Frightsceft
+  - 00577, Brystity Cries
+  - 00582, Thunderjork
+  - 00583, Hever of the Inscriptive
+  - 00586, Watchful Scele
+  - 00589, Ramura's Spirit
+  - 00594, Decice Dragonfeader
+  - 00598, Quagho
+  - 00608, Unkougan's Obliki
+  - 00619, Boad of the Sor
+  - 00625, Feller of Hydra
+  - 00630, Merkal Reseoration
+  - 00632, Busalkiam Volley
+  - 00635, Grac
+  - 00642, Rapea Paradite
+  - 00645, Demon's Pulfer
+  - 00658, Spirit Blessing
+  - 00670, Might of Smim
+  - 00672, Barasing Bockes
+  - 00677, Mesa Defenses
+  - 00679, X-Iar
+  - 00681, Ophisicy Groundlan
+  - 00684, Azathategist
+  - 00686, Archon of Lock
+  - 00692, Nagi Noulerty
+  - 00696, Faithwunger
+  - 00700, Weaderdary
+  - 00704, Suntise Mesa
+  - 00705, Weapboman, Idol Neh-Generar
+  - 00712, Salvager in Wood
+  - 00721, Tapping
+  - 00722, Dimer of Evolutive
+  - 00723, Aura Magistove
+  - 00724, Randed Talisman
+  - 00725, Phyrexian Spellsale
+  - 00740, Glory
+  - 00741, Warrior
+  - 00744, Intigilatis
+  - 00747, Rite of Warsaik
+  - 00751, Athrorowal Monkey
+  - 00753, Dark Bentermancer
+  - 00754, Flowstone Sky
+  - 00772, Ground Sentry
+  - 00778, Aggressive Stronghold
+  - 00782, Oam Uster
+  - 00797, Sphinx of the Humblers
+  - 00806, Guardian Theatight
+  - 00809, Fateling Grave
+  - 00810, Artillery's Will
+  - 00813, Ghastly Construction
+  - 00820, Equafoun
+  - 00823, Master Centurion
+  - 00824, Scourge of Dispersal
+  - 00830, Sharkahes Apparition
+  - 00834, Iron Fracture
+  - 00838, Oorus, Vololite Reborn
+  - 00839, Blind Undoria
+  - 00844, Hulkhileim
+  - 00854, Amby Ripsiar
+  - 00855, Courier Gain
+  - 00863, Devil Scurper
+  - 00882, Kor
+  - 00896, Alanga Knight
+  - 00900, Stagic Drone
+  - 00917, Balgaping Millsmater
+  - 00920, Ethereal End
+  - 00923, Flourished Gladiator
+  - 00925, Satyr Sandserperte
+  - 00928, Tamasm's Atoniscy
+  - 00929, Master of Clockstomasted
+  - 00934, Guardian Massite
+  - 00942, Volrath's Death
+  - 00949, Rite of Saithstorm
+  - 00951, Total's Stalker
+  - 00961, Unyial Vertition
+  - 00966, Giant Keytot
+  - 00982, Minisgien Thiam
+  3:
+  - 00001, Keldon Mursh of the Putanis
+  - 00005, Noss Tago, Dead Mirota
+  - 00006, Armored Hopil
+  - 00008, Arcrow
+  - 00010, Menater of the Titan Mox
+  - 00011, Cavalry Invoker
+  - 00013, Crovixiek Siren
+  - 00014, Teferi's One
+  - 00017, Abundant Clanchath
+  - 00018, Deathless Toblers
+  - 00021, Drogword Mans
+  - 00027, Rasuth Snare
+  - 00032, Primal Salmons
+  - 00035, Jansika Panther
+  - 00050, Armored Bog
+  - 00053, Stringmantle Griverity
+  - 00054, Demasis Embrace
+  - 00056, Windstarm Tolver
+  - 00067, Power Hordes
+  - 00073, Lryavacera
+  - 00075, Xoi
+  - 00079, Hexmonth Vineling
+  - 00082, Brakin Saddles
+  - 00088, Root Boar
+  - 00096, Spore Pec
+  - 00100, Bolddreak Covetarism
+  - 00102, Creeping Hike
+  - 00103, Fallakine Cavalier
+  - 00104, Fleetle the Unsoserous
+  - 00113, Automatic Favor
+  - 00123, Rushmane, Negaman
+  - 00126, Conspect Cunning
+  - 00134, Elspeth's Inquirity
+  - 00135, Prasp Veteran
+  - 00137, Prosperous Guildlagere
+  - 00138, Wordcrafter
+  - 00140, Drintrost Untriding
+  - 00144, Colossal Plunders
+  - 00153, Necropenes
+  - 00155, Jatkaba Instinct Relentles
+  - 00163, Black Rain
+  - 00172, Stomper Mortish
+  - 00173, Sea
+  - 00176, Eternal Outrider
+  - 00177, Hungry Unroteks
+  - 00178, Jamee Outrage
+  - 00187, Commune Lich
+  - 00189, Order of Word
+  - 00193, Phyrexian Transplant
+  - 00205, Arking Skullhreemen
+  - 00214, Odkih Gorgon
+  - 00219, Rotic-os Thallid
+  - 00225, Fleetbreaker
+  - 00226, Raquine, Orctabor Ghast
+  - 00231, Barraised Dunton
+  - 00232, Scapita
+  - 00238, Jece Froy Mentor
+  - 00239, Plague Molk
+  - 00247, Disturbing Captain
+  - 00248, Bloodstafor
+  - 00255, Nest Deprevizing
+  - 00258, Deads of Adophigot
+  - 00261, Carneflamed Torch
+  - 00268, Wingrind
+  - 00271, Palaciin
+  - 00272, Slaysmate
+  - 00273, Spose of Shuty
+  - 00274, Dromoka Hoarder
+  - 00278, Moonscate
+  - 00281, Nepsawed Meralimun
+  - 00282, Bond to Minic
+  - 00293, Breath of Gif Shaman
+  - 00297, Bold Squad
+  - 00298, Unzolatian Shreker
+  - 00301, Fury Prisat
+  - 00315, Hatter Peacecharce
+  - 00317, Havengul Patrol
+  - 00318, Aven Bridge of Nothura
+  - 00327, Reloz
+  - 00331, Sliefl Swan
+  - 00333, Magivity
+  - 00338, Lythasma, Viated Proil
+  - 00343, Trongo Downs
+  - 00350, Stalking Archer
+  - 00377, Dawnnlipmer
+  - 00379, Bathlet Dross
+  - 00384, Rebreath Doke
+  - 00390, Aposkly
+  - 00391, Guild Chaos
+  - 00395, Earth Sliver
+  - 00404, Bodariad Wood
+  - 00409, Jori, Serpent of the Path
+  - 00417, Scheming Ghoul
+  - 00419, Ezorful Kueling
+  - 00420, Labark Sentry
+  - 00424, Essence Banner
+  - 00433, Nimson's Slag-Teblang
+  - 00434, Mystic Welver
+  - 00435, Headhather Power
+  - 00437, Warminds' Seasuns
+  - 00445, Peliten Glass
+  - 00450, Sorcerer's Chill
+  - 00455, Morshstore Breath
+  - 00459, Strings of Headsmatet
+  - 00464, Ashem, Pig
+  - 00468, Arcon
+  - 00477, Reweef Grazer Mololeter
+  - 00483, Forwadigy Demise
+  - 00484, Ard Lotus
+  - 00487, Eadeemed Serpent
+  - 00492, Slide Sharp
+  - 00494, Mishra's Research
+  - 00498, Urza's Raider
+  - 00501, Cloudlin Spaniel
+  - 00504, Mirror Son Striker
+  - 00513, Huppia
+  - 00520, Gearyrenter
+  - 00524, Braddil Scout
+  - 00530, Harvestler's Hero
+  - 00537, Curt
+  - 00543, Rumbling Leyale
+  - 00545, Maect, Heart
+  - 00550, Feral Unzuat
+  - 00551, Lash of the Kolosted
+  - 00552, Galranna
+  - 00559, Bludes
+  - 00560, Zondicaor
+  - 00568, Aurora's Inlisonation
+  - 00569, Viriel Elemental
+  - 00572, Majiling Slaver
+  - 00576, Geatfin Spawn of Sleip
+  - 00578, Impagida Shield
+  - 00579, Horge to Enittal
+  - 00581, Artificer's Putrie
+  - 00584, Plogstom
+  - 00588, Dual Shinobi
+  - 00600, Syn Force
+  - 00602, Mezomancing Wolf
+  - 00603, Mister Dancer
+  - 00617, Right-Golda
+  - 00621, Vendor Quarry
+  - 00622, Hurkyl's Charmed
+  - 00636, Master of Hymn
+  - 00639, Wake the Wall
+  - 00646, Homeshield Infusion
+  - 00650, Energy Rain
+  - 00663, Elven Curse
+  - 00664, Paragon of Grasp
+  - 00671, Mirror Baliek
+  - 00674, Gural Blood
+  - 00675, Runewing Ritual
+  - 00685, Goblin Boarding
+  - 00691, Rainhorn Reprisald
+  - 00693, Selkrid Stalker
+  - 00694, Momin
+  - 00695, Unvailing Vampire
+  - 00707, Whimp of Kresh Tiger
+  - 00708, Captain Fleet Hands
+  - 00709, Ambuth Incridees
+  - 00710, Earths' Sliver
+  - 00715, Wolverine Glorifier
+  - 00717, Marsh Leya
+  - 00719, Pearl Doyings
+  - 00720, Naogir's Kama
+  - 00729, Explore of the Ravenous Sliver
+  - 00730, Siash to Thug
+  - 00734, Latchfidot Rube
+  - 00738, The Golden Syvert
+  - 00743, Matilob, Shaper of Oracle
+  - 00745, Skerpiner of the Bloodtyr
+  - 00748, Ruthless Hammer
+  - 00756, Dilincyeo
+  - 00762, Woodmand Flame
+  - 00763, Rune of the Light
+  - 00765, Wall of Sleip
+  - 00769, Custodi Ploot
+  - 00771, Whiik Ghoul Buyline
+  - 00777, Cognaki
+  - 00779, Kift, Waterfeve
+  - 00786, Ob-Feeing Sunsaneler
+  - 00790, Dicperit Tolamin
+  - 00791, One of Viar Connation
+  - 00804, Infendar's Protection
+  - 00807, Everburretine
+  - 00808, Rale
+  - 00816, Lart
+  - 00817, Agony the Pheecing
+  - 00818, Jandar's Coag
+  - 00819, Izzet Construct
+  - 00822, Bunlorid Seagruff
+  - 00841, Barrage of Horrors
+  - 00843, Eye of Plangl
+  - 00847, Taygrob's Echoine
+  - 00856, Herald of Ocsurion
+  - 00859, Hound of Black Constructive
+  - 00860, Karko
+  - 00862, Eolen Prosperitios
+  - 00864, Vaired Paaple
+  - 00867, Stack of Merrate
+  - 00873, Frog
+  - 00875, Fright-Daw
+  - 00886, Ripacuscet-Tann)
+  - 00891, Necrogony Maline
+  - 00892, Gipaycahi
+  - 00893, Rolali Cursed
+  - 00899, Running Ghoul
+  - 00909, Bullwright Rider
+  - 00912, Imperwalli Avenger
+  - 00913, Mireblade, Stone Shift
+  - 00914, Reality Ascending
+  - 00916, Sevinnety
+  - 00924, Hostile Captain
+  - 00936, Funnel of Hydra
+  - 00937, Spectral Rebarsed
+  - 00939, Otowall, Rand Dammer
+  - 00946, Vineek, Trabal Sentinel
+  - 00952, Submara
+  - 00953, Song-Mov
+  - 00954, Roland Offering
+  - 00958, Echo Informant
+  - 00963, Kazol
+  - 00964, Vaolke the Killin
+  - 00971, Nox Profizal
+  - 00975, My-Transmai Phiform
+  - 00981, Arabrade
+  - 00984, Vell Horicold
+  - 00986, Whirler Pilgrim's Ascensab
+  - 00987, Guardian of Bower
+  - 00993, Dragon Force
+  - 00995, Hart Skytumbeind
+  4:
+  - 00000, Debiret Griffin
+  - 00003, Inspiring Reckless
+  - 00009, Zevital Shabre
+  - 00012, Impraton Pagociach
+  - 00015, Gejer of Element Undergace
+  - 00016, Reckendine Midrason
+  - 00019, Snaw Centous
+  - 00020, Sojence Outbrake
+  - 00022, Spectrolifk
+  - 00024, Filigree Bloodcuster
+  - 00025, Warsoot Raffer
+  - 00031, Perterpeer
+  - 00037, Life Gremlin
+  - 00040, Premata Chancellor
+  - 00043, Ring of Phoenix
+  - 00052, Caracal Jack
+  - 00055, Bazo Call
+  - 00058, Gladeseeper
+  - 00059, Garguy, Zokian Stender-Rifs
+  - 00061, Man-Ric Wire
+  - 00066, Bellamfeller
+  - 00069, Dilicebroan
+  - 00070, Spirit Trui
+  - 00071, Lasovo, the Trap
+  - 00078, Hithok Falsh
+  - 00093, Rebuven Observer
+  - 00094, Gradeblood Recluse
+  - 00099, Vost's Beguard
+  - 00108, Battle Fall
+  - 00114, Seer of the Stone
+  - 00118, Carsiver's Farchor
+  - 00122, Dakworker
+  - 00124, Willic Defenses
+  - 00133, Must Golem
+  - 00136, Evoce Battle Shade
+  - 00156, Rock Aignsite
+  - 00158, Open Lay
+  - 00164, Pugactite Aether Ecy
+  - 00168, Stormmin Diver
+  - 00170, Emergent of Dread
+  - 00171, Envigelation
+  - 00174, Restillerine Meboul
+  - 00181, Experimental Mire
+  - 00182, Nuldwarla, Tendrid, Teferi, Vrisking Crash
+  - 00184, Artificer's Baloth
+  - 00188, Dreams of Silence
+  - 00192, Pledge of Vengeance
+  - 00199, Agona, Temple of Reet
+  - 00202, Audots of Rubbic
+  - 00203, Vetak, Extinguish Cleap
+  - 00206, Storm
+  - 00207, Grim Vab
+  - 00208, Pergevice Blood
+  - 00209, Repel, Tempt Berserker
+  - 00216, Mayiller Crackurien
+  - 00222, Artseval Dentaling
+  - 00223, Timpedaker
+  - 00228, Gindalist's Despair
+  - 00233, Broodblooms
+  - 00236, Ferar Evolution
+  - 00237, Pensa
+  - 00243, Challenger Putse
+  - 00246, Eced Abtarburthing
+  - 00259, Mothle Warlour
+  - 00269, Rospok of the Whisper Diasticore
+  - 00270, Clansifors
+  - 00275, Mael Frog Bargien
+  - 00279, Balwark, Dead-tod Lancer
+  - 00286, Sorakas's Warlick
+  - 00289, Archfee
+  - 00290, Dragon, Burnish Foul
+  - 00292, Molth Soldiers
+  - 00296, Uthmage Murol
+  - 00304, Holka Sadew
+  - 00310, Wiskback Bartarian
+  - 00322, Brugalcuthy
+  - 00326, Cangligate Messenger
+  - 00330, Iaomeration
+  - 00332, Justica, Dreams of Proticy
+  - 00342, Scroll of the Blessed Fere Revelation
+  - 00347, Cauth Squire
+  - 00348, Soulyh
+  - 00352, Atris, Collace
+  - 00355, Rebun
+  - 00363, Misthood Anjoy
+  - 00368, Echo Capharetuy
+  - 00371, Ungomall Shaman
+  - 00375, Way Call
+  - 00376, Cosmos
+  - 00380, New Aldisios
+  - 00381, Soul of Redish
+  - 00382, Wall of Souls
+  - 00396, Agalion, Reopman's Swirling
+  - 00397, The Eternal Revenant
+  - 00407, Kneshra Vengeant
+  - 00416, Tizeris, Dragon Dog
+  - 00458, Hand of Xar Deep
+  - 00465, Eternal Sentinel
+  - 00467, Climbor the Nystoner
+  - 00469, Gardan, Tyrant of Thinflex
+  - 00474, Embilich
+  - 00482, Rivenecious Rider Tharabs
+  - 00491, Ravage Free the Dreamlin
+  - 00495, Martyr of Devous
+  - 00496, Revel Hoarder
+  - 00507, Porcedier
+  - 00512, Green Elder Woods
+  - 00517, Prieals of the Primordial
+  - 00518, Dominated Memories
+  - 00527, Wild Bullgip
+  - 00536, Dininoce
+  - 00538, Skoopari, Bano Thallid
+  - 00549, Rage of Iminiles
+  - 00558, Shaerax, Stalon's Guile
+  - 00566, Langek, Losh Rampart
+  - 00570, Suditic Glare
+  - 00573, Pumpling Ghoul
+  - 00590, Bondful Shore
+  - 00595, Goblin Bloodwoods Nari
+  - 00604, Hemmil Uultol
+  - 00606, Trimon of the Kariurs
+  - 00607, Wall of Welperain
+  - 00612, Mystic Fiend
+  - 00613, Starlie Snare
+  - 00623, Clam Herod
+  - 00631, Electromination
+  - 00643, Familiar Kanma
+  - 00647, Phaliy, Sphere of Anty
+  - 00649, Arccot's Icinshope
+  - 00651, Coultist Seadrow
+  - 00657, Bane wathe
+  - 00668, Hired Tomas
+  - 00673, Priest of Destiny
+  - 00680, Pelath's Branch-Den
+  - 00682, Drowned Spell
+  - 00688, Primal Clead
+  - 00689, Nomida Tanks
+  - 00690, Te-Clis Agent
+  - 00699, Mokeler Footmane
+  - 00713, Bulphar Warden
+  - 00714, Unkotun
+  - 00718, Oncles Engine
+  - 00726, Castide's Virome
+  - 00733, Seming Churm
+  - 00737, Gavin
+  - 00755, Winned Spige
+  - 00761, Dragon-Cravot Ambush
+  - 00773, Smish Gun-Archifion
+  - 00774, Archangel of the Sauon
+  - 00781, Yawgmoth's Gima
+  - 00784, Kozau, Strength of Runa
+  - 00788, Desert Mutry
+  - 00794, Hellkite Flizzard
+  - 00795, Rogeen Geist
+  - 00798, Statucing Phyrophit
+  - 00801, Sage's Behemoth
+  - 00805, Discordant Champion
+  - 00815, Galathrite Spate
+  - 00828, Irigition Order
+  - 00829, Gory Meval
+  - 00832, Crifter Lail
+  - 00836, Murst of Orve
+  - 00842, Neirm the Ferale
+  - 00846, Legion Conchaging
+  - 00851, Fangbraft Custody
+  - 00852, Sovereign of Leeper
+  - 00853, Hidden Swave
+  - 00865, Pyromancer's Runevin
+  - 00868, Winged Pyramatic
+  - 00869, Gate of Dutian
+  - 00879, Fate the Mutanity
+  - 00880, Summon Efreet
+  - 00881, Howling Ate
+  - 00887, Thorn Hawk
+  - 00888, Berzidians Bloodpripteek
+  - 00894, Sooted Apparition
+  - 00897, Lavinos's Retirse
+  - 00902, Horror of Reckoning
+  - 00903, Stormswatcher's Moryy
+  - 00906, Fricking Sinch
+  - 00907, Blue Tormentor
+  - 00908, Cath, Hert of Goblin Rashidist
+  - 00910, Selotia
+  - 00919, Abja's Moon
+  - 00926, Lysus of the Idenmees
+  - 00927, Juft Wire
+  - 00932, Tevero Vampire
+  - 00933, Aol's Horde
+  - 00940, The Chark
+  - 00944, Mastichine Villager
+  - 00955, Downstight's Coast
+  - 00956, Kor Fly
+  - 00957, Oain Maeutho
+  - 00968, Vebalect, Water of Wilfs Regor
+  - 00980, Urza, World Cruwal
+  - 00985, Fell of Fury
+  - 00989, Deloach, the Tu Cranter
+  - 00991, Nemis Yamimans
+  - 00992, Vengeful Justice
+  - 00994, Stone Scavenger
+  5:
+  - 00007, Professor Lent
+  - 00028, Kokinda's Ingenalite
+  - 00033, Loultd of Traw
+  - 00045, Bloodmolligh
+  - 00046, Sorrector
+  - 00047, Dungeon Longrogenin
+  - 00057, Fageed Strike
+  - 00060, Disminner Phoenix
+  - 00083, Ontling Paladin
+  - 00097, Geistfaller Grid Graves
+  - 00107, Bombadist Thief
+  - 00115, Smobble Ocches
+  - 00121, Replication Fisslider
+  - 00132, Krick Refron
+  - 00141, Soaticy Liquines
+  - 00143, Giant Bload
+  - 00145, Purveine
+  - 00152, Thailand, Radiant Prexaki
+  - 00157, Slinder
+  - 00162, Dispracked Caller
+  - 00167, Sojourner's Shyifs
+  - 00169, Piratic
+  - 00179, Wing Straken
+  - 00185, Inlogetity
+  - 00186, Garguald, Flame of Manous
+  - 00194, Meader
+  - 00200, Karaproot
+  - 00201, Kheru Angel
+  - 00230, Nitheina, Malicious Smesser
+  - 00235, Valiant Pegesa
+  - 00240, Nicol Flame
+  - 00251, Hanicestial Owl
+  - 00253, Yale Lineding
+  - 00260, Stitch the Final Reclamation
+  - 00265, Shallude Sloulday
+  - 00283, Crus Infaster
+  - 00285, Reversal Traber
+  - 00291, Umbrad Barrok
+  - 00306, Teferi, Oneman Banserincer
+  - 00313, Immertraft
+  - 00314, Viridian Embrace
+  - 00316, Aquatac Predators
+  - 00321, Chill of Dammer
+  - 00324, Winned Commander
+  - 00325, Fust Hound
+  - 00334, Prematon (Mine Exarch
+  - 00336, Minewright Riffhard
+  - 00337, Heastshald Giant
+  - 00339, Kami of Big
+  - 00357, Shivan Diviner
+  - 00359, Sunflage Adept
+  - 00364, Dreamworder Glee Pool
+  - 00367, Whirling Conquistery
+  - 00372, Poterchorty of the Endguard
+  - 00374, True Bastion
+  - 00386, Jifhank
+  - 00389, Ml.b.E.D.S.
+  - 00403, Silk
+  - 00406, Angel, Garrak the Warrior
+  - 00408, Argomons, Hellkite
+  - 00414, Unscimitor Veteran
+  - 00418, Nostic Entity
+  - 00421, Serra Whill
+  - 00422, Sor Ent
+  - 00423, Genesit Folus
+  - 00428, Oronance
+  - 00430, Karnthic Tilf-tice
+  - 00438, Stinging Dragon
+  - 00457, Set's Spinning
+  - 00462, Yamima the Balonos
+  - 00473, Khink of Countergard
+  - 00486, Ghost Soul
+  - 00488, Stunder of Front of War
+  - 00500, Messenger Strangler
+  - 00505, Riot Windmaol
+  - 00506, Coan of Ealing Freeseap
+  - 00508, Brightwite Dancer
+  - 00509, Pathjoy Healing
+  - 00526, Emainda, Eable Pogeshiction
+  - 00532, Kreshe to the Cradler
+  - 00533, Embolla's Call
+  - 00540, Mesbing of the Fight
+  - 00547, Historian Escape
+  - 00548, Vibilu
+  - 00555, Crennal Enviy
+  - 00565, Nuctolia
+  - 00601, Grorts of Eye of Saiy
+  - 00616, Thrai Bond
+  - 00618, Wall of Granite
+  - 00627, Sphinx of the Red Spider
+  - 00633, Bridging Sharl
+  - 00637, Begra-Searoc
+  - 00640, Commander's Packbamines
+  - 00641, Spring Prophecy
+  - 00644, Rickdling Goblin
+  - 00648, Reneric Summons
+  - 00652, Nicil Ancient
+  - 00669, Iana, the Gift Strategs
+  - 00676, Volotitizee
+  - 00687, Veles of Palaciss
+  - 00703, Kjeldoran Aspeter
+  - 00706, Apocalypse
+  - 00732, Grove of the Scunnaria
+  - 00749, Fire-Mo-Skelelond
+  - 00752, Gethbrazer
+  - 00757, Dark Tytar
+  - 00758, Assemble the Hore
+  - 00764, Sigulay's Sengir
+  - 00775, Levible Zuppid
+  - 00776, Pegoming to the Write
+  - 00787, Giant Haunt of the Alshi
+  - 00802, Gliithacator
+  - 00812, Ebart of Richs
+  - 00827, Ghost Siver
+  - 00833, Duligut
+  - 00835, Tanap Drake
+  - 00848, Blood Sentinel
+  - 00857, Possessed Intervention
+  - 00861, Brood-Grivel Refinerer
+  - 00866, Plosspull Camatatis
+  - 00870, Eternal Balpa
+  - 00871, Vogal Laush
+  - 00872, Fatekang
+  - 00877, Callyion
+  - 00883, Frog-Temp
+  - 00884, Palracation
+  - 00889, Scourge of Cruelty
+  - 00890, Indudicis
+  - 00898, Volcanic Dragon
+  - 00901, Clarion Otche
+  - 00904, Esttal, the Haak
+  - 00905, Seeks of Barmor
+  - 00918, Man Protector
+  - 00921, Lich
+  - 00922, Laphoal's Hunt
+  - 00931, Leincal
+  - 00945, Sybrui, Axe of Fire
+  - 00960, Play the Breach
+  - 00962, Muzzomaster
+  - 00970, Ait the Gatekeeper
+  - 00977, Alexi, Lay Volerse
+  - 00983, Interloper Behemoth
+  - 00998, Seadaod Glee
+  6:
+  - 00034, Cavalier of Direos
+  - 00042, Clush of Darkness
+  - 00068, Madich Spirit
+  - 00080, Breathscourg
+  - 00084, Ferot Zealot
+  - 00085, Sudden Ambest
+  - 00086, Rib the Inquisitor
+  - 00087, Andicia
+  - 00120, Shackles to the Ruwers
+  - 00131, Statesmophen Speckrasted
+  - 00142, Flamewolf Speed
+  - 00159, Ewrine Plan
+  - 00160, Girrar's Hero
+  - 00190, Skolpan Viail
+  - 00191, Singein Insifial
+  - 00196, Heolted Blider
+  - 00218, Bragesi-Geing Fast
+  - 00220, Gemponch Tigers
+  - 00227, Dodex, Golden Aether Necropolis
+  - 00241, Rhystic Commander
+  - 00244, Divine Sharss of Spawn
+  - 00254, Dragon Corpse
+  - 00319, Black Malakuo
+  - 00335, Scemp Guardians
+  - 00366, Roo, Thrumi of Truth
+  - 00370, Mana Hellion
+  - 00373, Kjeldoran Elemental
+  - 00378, Soul Scrown
+  - 00393, Cobll Avatar
+  - 00394, Feeter of the Dransition
+  - 00398, Cavebrise
+  - 00401, Rack-Bat
+  - 00436, Blaster, Oet Roots
+  - 00439, Hintination
+  - 00446, Sword of the Ancient Thiofs
+  - 00448, Til-Fordermunge
+  - 00463, Torror Unnotoust
+  - 00475, Arrowteem
+  - 00476, Shambling Gordon
+  - 00479, Daggerwook Angel
+  - 00480, Pricplewing Kina
+  - 00525, Takex, Djinn of Neurar Justice
+  - 00529, Hauron
+  - 00542, Thoughtwater Witch
+  - 00556, Spiral Summoning
+  - 00557, Difolhart Dragon
+  - 00575, Qyak Damines
+  - 00585, Latterminging Tiger
+  - 00587, Angel-Ferile
+  - 00599, Topple the Defenses
+  - 00611, Might of the Biell
+  - 00624, Elf Raken
+  - 00626, Harondal, Silkdare Wave
+  - 00653, Maverion, Ambushed Manalier
+  - 00654, Curm Dragon
+  - 00655, Hamderhouler
+  - 00659, Ingenralker Giant
+  - 00660, Furnace Ent-Weaver
+  - 00665, Sanuty, Star Rouctic
+  - 00678, Acolyte of Varuac
+  - 00697, Sandstone Pillar-Bor
+  - 00727, Poons of Flourishing
+  - 00728, Cruther Copper Demol
+  - 00767, Vadeechant
+  - 00770, Awaken the Deep
+  - 00789, Sanguine Excontrad
+  - 00803, Frontline Panther
+  - 00831, Laisom Sphinx
+  - 00837, Dreamtooth, the Healker's Helm
+  - 00850, Sussitity One
+  - 00858, Dawn Wind
+  - 00915, Ascendant Crad
+  - 00948, Golgari Charm
+  - 00959, Jassing Collector
+  - 00967, Recomear
+  - 00973, Belivius
+  - 00974, Draconic Sentinel
+  - 00976, Scourge of the Erestee
+  - 00997, Skinscopter's One
+  - 00999, Blood Phoenix
+  7:
+  - 00062, Horror of the Bloodskeeler
+  - 00109, Vespilato
+  - 00161, Extami Blood-oith
+  - 00234, Panix Wurm
+  - 00284, Jaw-Kalr, Serra, Reverse the Covelous
+  - 00303, Urza, Rataking Centaur
+  - 00328, Savage Dragon
+  - 00405, Tenacious Lich Dracosion
+  - 00415, Cage to God
+  - 00490, Phyrexian Preesier
+  - 00510, Foundny Diapenfyens
+  - 00516, Sullage Devourer
+  - 00638, Araeam
+  - 00662, Feral Dragon
+  - 00711, Kenforked Recruits
+  - 00736, Graybrik
+  - 00739, Teaveria's Breaker
+  - 00792, Raptad Valor
+  - 00796, Borton Chores
+  - 00821, Hido Kaorus
+  - 00874, Encomastery
+  - 00941, Errant Cyclogs
+  - 00947, Quicksilver Charge
+  - 00972, Brothergool Archon
+  - 00988, Flameous Shake
+  - 00990, Fell The Bry 'Pas
+  8:
+  - 00051, Searon Wurm
+  - 00252, Trothy-Un the Colossus
+  - 00519, Amalacon
+  - 00615, Woodgraft
+  - 00620, Kratch Bothallord
+  - 00628, Lalimet's Primordial
+  - 00661, Dragon Giant
+  9:
+  - 00112, Incertilo Inspiration
+  - 00453, Tis Dragon
+  - 00460, Thirc, the Afregation
+  - 00562, Myr Nongulam
+  - 00785, Unituine
+  10:
+  - 00768, Talisman of Steim
+mono_colored:
+  Black:
+  - 00015, Gejer of Element Undergace
+  - 00024, Filigree Bloodcuster
+  - 00034, Cavalier of Direos
+  - 00037, Life Gremlin
+  - 00040, Premata Chancellor
+  - 00042, Clush of Darkness
+  - 00045, Bloodmolligh
+  - 00046, Sorrector
+  - 00047, Dungeon Longrogenin
+  - 00058, Gladeseeper
+  - 00061, Man-Ric Wire
+  - 00062, Horror of the Bloodskeeler
+  - 00067, Power Hordes
+  - 00068, Madich Spirit
+  - 00072, Ragga's Scourge
+  - 00075, Xoi
+  - 00076, Druid of Elebrast
+  - 00078, Hithok Falsh
+  - 00080, Breathscourg
+  - 00087, Andicia
+  - 00090, Ixesty
+  - 00093, Rebuven Observer
+  - 00097, Geistfaller Grid Graves
+  - 00114, Seer of the Stone
+  - 00115, Smobble Ocches
+  - 00117, Bennerous Portal
+  - 00121, Replication Fisslider
+  - 00126, Conspect Cunning
+  - 00127, Living Spyst
+  - 00128, Deathbark Ringmas
+  - 00136, Evoce Battle Shade
+  - 00153, Necropenes
+  - 00161, Extami Blood-oith
+  - 00175, Notaminative
+  - 00177, Hungry Unroteks
+  - 00182, Nuldwarla, Tendrid, Teferi, Vrisking Crash
+  - 00187, Commune Lich
+  - 00188, Dreams of Silence
+  - 00193, Phyrexian Transplant
+  - 00197, Siege Cul Devourer
+  - 00205, Arking Skullhreemen
+  - 00209, Repel, Tempt Berserker
+  - 00212, Glorious Glisteay
+  - 00214, Odkih Gorgon
+  - 00217, Volrath's Charge
+  - 00224, Skel-Retreis Corpso
+  - 00230, Nitheina, Malicious Smesser
+  - 00231, Barraised Dunton
+  - 00246, Eced Abtarburthing
+  - 00253, Yale Lineding
+  - 00254, Dragon Corpse
+  - 00255, Nest Deprevizing
+  - 00258, Deads of Adophigot
+  - 00262, Wral Orchor
+  - 00265, Shallude Sloulday
+  - 00272, Slaysmate
+  - 00273, Spose of Shuty
+  - 00275, Mael Frog Bargien
+  - 00282, Bond to Minic
+  - 00293, Breath of Gif Shaman
+  - 00295, Dark Accursed
+  - 00296, Uthmage Murol
+  - 00298, Unzolatian Shreker
+  - 00299, Slanghoundon
+  - 00313, Immertraft
+  - 00315, Hatter Peacecharce
+  - 00321, Chill of Dammer
+  - 00322, Brugalcuthy
+  - 00340, Paspwy Lagmaging
+  - 00342, Scroll of the Blessed Fere Revelation
+  - 00344, Egona
+  - 00347, Cauth Squire
+  - 00366, Roo, Thrumi of Truth
+  - 00368, Echo Capharetuy
+  - 00371, Ungomall Shaman
+  - 00378, Soul Scrown
+  - 00384, Rebreath Doke
+  - 00390, Aposkly
+  - 00398, Cavebrise
+  - 00402, Limgot
+  - 00413, Treacherous Vibals
+  - 00417, Scheming Ghoul
+  - 00419, Ezorful Kueling
+  - 00433, Nimson's Slag-Teblang
+  - 00434, Mystic Welver
+  - 00437, Warminds' Seasuns
+  - 00443, Incinerate
+  - 00448, Til-Fordermunge
+  - 00455, Morshstore Breath
+  - 00465, Eternal Sentinel
+  - 00474, Embilich
+  - 00476, Shambling Gordon
+  - 00482, Rivenecious Rider Tharabs
+  - 00491, Ravage Free the Dreamlin
+  - 00501, Cloudlin Spaniel
+  - 00505, Riot Windmaol
+  - 00507, Porcedier
+  - 00510, Foundny Diapenfyens
+  - 00516, Sullage Devourer
+  - 00527, Wild Bullgip
+  - 00528, Tomb Fast
+  - 00533, Embolla's Call
+  - 00536, Dininoce
+  - 00537, Curt
+  - 00550, Feral Unzuat
+  - 00551, Lash of the Kolosted
+  - 00554, Bang Wavillnamord-Quile
+  - 00555, Crennal Enviy
+  - 00573, Pumpling Ghoul
+  - 00576, Geatfin Spawn of Sleip
+  - 00577, Brystity Cries
+  - 00600, Syn Force
+  - 00607, Wall of Welperain
+  - 00611, Might of the Biell
+  - 00612, Mystic Fiend
+  - 00614, Greenborn Ferous
+  - 00616, Thrai Bond
+  - 00630, Merkal Reseoration
+  - 00631, Electromination
+  - 00635, Grac
+  - 00636, Master of Hymn
+  - 00637, Begra-Searoc
+  - 00646, Homeshield Infusion
+  - 00650, Energy Rain
+  - 00664, Paragon of Grasp
+  - 00673, Priest of Destiny
+  - 00682, Drowned Spell
+  - 00683, Slaver
+  - 00695, Unvailing Vampire
+  - 00701, Death World
+  - 00724, Randed Talisman
+  - 00734, Latchfidot Rube
+  - 00739, Teaveria's Breaker
+  - 00742, Scourge's Obelisk
+  - 00745, Skerpiner of the Bloodtyr
+  - 00757, Dark Tytar
+  - 00769, Custodi Ploot
+  - 00770, Awaken the Deep
+  - 00775, Levible Zuppid
+  - 00777, Cognaki
+  - 00781, Yawgmoth's Gima
+  - 00790, Dicperit Tolamin
+  - 00792, Raptad Valor
+  - 00798, Statucing Phyrophit
+  - 00805, Discordant Champion
+  - 00810, Artillery's Will
+  - 00812, Ebart of Richs
+  - 00813, Ghastly Construction
+  - 00821, Hido Kaorus
+  - 00822, Bunlorid Seagruff
+  - 00827, Ghost Siver
+  - 00848, Blood Sentinel
+  - 00852, Sovereign of Leeper
+  - 00855, Courier Gain
+  - 00859, Hound of Black Constructive
+  - 00865, Pyromancer's Runevin
+  - 00868, Winged Pyramatic
+  - 00869, Gate of Dutian
+  - 00899, Running Ghoul
+  - 00907, Blue Tormentor
+  - 00910, Selotia
+  - 00921, Lich
+  - 00923, Flourished Gladiator
+  - 00937, Spectral Rebarsed
+  - 00938, Trivole of Troll
+  - 00942, Volrath's Death
+  - 00951, Total's Stalker
+  - 00961, Unyial Vertition
+  - 00965, Sea Reel
+  - 00971, Nox Profizal
+  - 00994, Stone Scavenger
+  Blue:
+  - 00013, Crovixiek Siren
+  - 00014, Teferi's One
+  - 00016, Reckendine Midrason
+  - 00026, Mercol Artist
+  - 00028, Kokinda's Ingenalite
+  - 00029, Fighter al-Danders
+  - 00030, Graking Suder
+  - 00036, Nest from Torder
+  - 00048, Idrurer
+  - 00053, Stringmantle Griverity
+  - 00056, Windstarm Tolver
+  - 00070, Spirit Trui
+  - 00081, Scuttlegna
+  - 00086, Rib the Inquisitor
+  - 00099, Vost's Beguard
+  - 00102, Creeping Hike
+  - 00107, Bombadist Thief
+  - 00110, Ferocite
+  - 00111, Dayworm Base
+  - 00112, Incertilo Inspiration
+  - 00116, Dliffmage
+  - 00119, Shelter Scream
+  - 00122, Dakworker
+  - 00124, Willic Defenses
+  - 00132, Krick Refron
+  - 00140, Drintrost Untriding
+  - 00148, Dreamline America
+  - 00155, Jatkaba Instinct Relentles
+  - 00170, Emergent of Dread
+  - 00174, Restillerine Meboul
+  - 00176, Eternal Outrider
+  - 00179, Wing Straken
+  - 00192, Pledge of Vengeance
+  - 00194, Meader
+  - 00196, Heolted Blider
+  - 00200, Karaproot
+  - 00222, Artseval Dentaling
+  - 00226, Raquine, Orctabor Ghast
+  - 00227, Dodex, Golden Aether Necropolis
+  - 00228, Gindalist's Despair
+  - 00232, Scapita
+  - 00242, Anorid Dreadnowge
+  - 00247, Disturbing Captain
+  - 00256, Spirates of Blight
+  - 00283, Crus Infaster
+  - 00285, Reversal Traber
+  - 00287, Stars
+  - 00289, Archfee
+  - 00300, Dupines
+  - 00306, Teferi, Oneman Banserincer
+  - 00318, Aven Bridge of Nothura
+  - 00323, Siren Lizard
+  - 00327, Reloz
+  - 00328, Savage Dragon
+  - 00333, Magivity
+  - 00339, Kami of Big
+  - 00359, Sunflage Adept
+  - 00362, Shredder Wound
+  - 00369, Goblin Godmind
+  - 00377, Dawnnlipmer
+  - 00379, Bathlet Dross
+  - 00383, Apurisian Fire
+  - 00392, Concondition Wire
+  - 00393, Cobll Avatar
+  - 00399, Pollen Mastivore
+  - 00405, Tenacious Lich Dracosion
+  - 00414, Unscimitor Veteran
+  - 00421, Serra Whill
+  - 00424, Essence Banner
+  - 00430, Karnthic Tilf-tice
+  - 00439, Hintination
+  - 00441, Roaling Cry
+  - 00444, Oncinivanm
+  - 00446, Sword of the Ancient Thiofs
+  - 00456, Whirl Loli
+  - 00457, Set's Spinning
+  - 00458, Hand of Xar Deep
+  - 00459, Strings of Headsmatet
+  - 00473, Khink of Countergard
+  - 00480, Pricplewing Kina
+  - 00487, Eadeemed Serpent
+  - 00489, Protuch Forbud
+  - 00490, Phyrexian Preesier
+  - 00492, Slide Sharp
+  - 00494, Mishra's Research
+  - 00500, Messenger Strangler
+  - 00503, Powerbloom Prisat
+  - 00504, Mirror Son Striker
+  - 00506, Coan of Ealing Freeseap
+  - 00515, Sastofuul
+  - 00517, Prieals of the Primordial
+  - 00518, Dominated Memories
+  - 00521, Cacull
+  - 00535, Colossus of Crusis
+  - 00542, Thoughtwater Witch
+  - 00549, Rage of Iminiles
+  - 00570, Suditic Glare
+  - 00574, Mr. Frightsceft
+  - 00579, Horge to Enittal
+  - 00581, Artificer's Putrie
+  - 00585, Latterminging Tiger
+  - 00586, Watchful Scele
+  - 00590, Bondful Shore
+  - 00592, Conjel
+  - 00599, Topple the Defenses
+  - 00603, Mister Dancer
+  - 00621, Vendor Quarry
+  - 00623, Clam Herod
+  - 00628, Lalimet's Primordial
+  - 00638, Araeam
+  - 00645, Demon's Pulfer
+  - 00653, Maverion, Ambushed Manalier
+  - 00659, Ingenralker Giant
+  - 00672, Barasing Bockes
+  - 00684, Azathategist
+  - 00687, Veles of Palaciss
+  - 00690, Te-Clis Agent
+  - 00691, Rainhorn Reprisald
+  - 00700, Weaderdary
+  - 00702, Azorius Dimir
+  - 00719, Pearl Doyings
+  - 00721, Tapping
+  - 00725, Phyrexian Spellsale
+  - 00727, Poons of Flourishing
+  - 00730, Siash to Thug
+  - 00737, Gavin
+  - 00738, The Golden Syvert
+  - 00747, Rite of Warsaik
+  - 00753, Dark Bentermancer
+  - 00773, Smish Gun-Archifion
+  - 00787, Giant Haunt of the Alshi
+  - 00802, Gliithacator
+  - 00807, Everburretine
+  - 00820, Equafoun
+  - 00824, Scourge of Dispersal
+  - 00830, Sharkahes Apparition
+  - 00831, Laisom Sphinx
+  - 00832, Crifter Lail
+  - 00834, Iron Fracture
+  - 00835, Tanap Drake
+  - 00863, Devil Scurper
+  - 00870, Eternal Balpa
+  - 00872, Fatekang
+  - 00875, Fright-Daw
+  - 00879, Fate the Mutanity
+  - 00880, Summon Efreet
+  - 00886, Ripacuscet-Tann)
+  - 00887, Thorn Hawk
+  - 00888, Berzidians Bloodpripteek
+  - 00890, Indudicis
+  - 00897, Lavinos's Retirse
+  - 00900, Stagic Drone
+  - 00903, Stormswatcher's Moryy
+  - 00911, Claiker Yibinish
+  - 00915, Ascendant Crad
+  - 00920, Ethereal End
+  - 00927, Juft Wire
+  - 00930, Mother Finner
+  - 00947, Quicksilver Charge
+  - 00950, The Convirt
+  - 00955, Downstight's Coast
+  - 00956, Kor Fly
+  - 00958, Echo Informant
+  - 00967, Recomear
+  - 00976, Scourge of the Erestee
+  - 00983, Interloper Behemoth
+  - 00986, Whirler Pilgrim's Ascensab
+  - 00998, Seadaod Glee
+  Green:
+  - 00004, Boreed Curnein
+  - 00012, Impraton Pagociach
+  - 00018, Deathless Toblers
+  - 00021, Drogword Mans
+  - 00031, Perterpeer
+  - 00033, Loultd of Traw
+  - 00050, Armored Bog
+  - 00063, Takefall
+  - 00065, Scourde Arnort
+  - 00066, Bellamfeller
+  - 00073, Lryavacera
+  - 00084, Ferot Zealot
+  - 00088, Root Boar
+  - 00094, Gradeblood Recluse
+  - 00096, Spore Pec
+  - 00120, Shackles to the Ruwers
+  - 00137, Prosperous Guildlagere
+  - 00138, Wordcrafter
+  - 00144, Colossal Plunders
+  - 00147, Twuldwhiel Krisudly
+  - 00157, Slinder
+  - 00173, Sea
+  - 00184, Artificer's Baloth
+  - 00186, Garguald, Flame of Manous
+  - 00189, Order of Word
+  - 00191, Singein Insifial
+  - 00223, Timpedaker
+  - 00234, Panix Wurm
+  - 00236, Ferar Evolution
+  - 00240, Nicol Flame
+  - 00251, Hanicestial Owl
+  - 00252, Trothy-Un the Colossus
+  - 00271, Palaciin
+  - 00276, Gorewouder's Engineer
+  - 00302, Chandra's Kindlebow
+  - 00304, Holka Sadew
+  - 00308, Vivilubler
+  - 00311, Grazing Lang
+  - 00314, Viridian Embrace
+  - 00316, Aquatac Predators
+  - 00317, Havengul Patrol
+  - 00343, Trongo Downs
+  - 00353, Fatestead
+  - 00365, Warthot
+  - 00376, Cosmos
+  - 00388, The Thaured Last
+  - 00389, Ml.b.E.D.S.
+  - 00397, The Eternal Revenant
+  - 00407, Kneshra Vengeant
+  - 00420, Labark Sentry
+  - 00423, Genesit Folus
+  - 00427, Incein in the Savants
+  - 00428, Oronance
+  - 00435, Headhather Power
+  - 00440, Mind-Ralfy
+  - 00449, Rovamorce Druid
+  - 00450, Sorcerer's Chill
+  - 00452, Pereguimed Gayer
+  - 00453, Tis Dragon
+  - 00461, Torment of Biofompatt
+  - 00471, Helk Wurm
+  - 00475, Arrowteem
+  - 00479, Daggerwook Angel
+  - 00495, Martyr of Devous
+  - 00496, Revel Hoarder
+  - 00512, Green Elder Woods
+  - 00519, Amalacon
+  - 00520, Gearyrenter
+  - 00529, Hauron
+  - 00547, Historian Escape
+  - 00548, Vibilu
+  - 00569, Viriel Elemental
+  - 00575, Qyak Damines
+  - 00582, Thunderjork
+  - 00594, Decice Dragonfeader
+  - 00602, Mezomancing Wolf
+  - 00618, Wall of Granite
+  - 00620, Kratch Bothallord
+  - 00627, Sphinx of the Red Spider
+  - 00629, Mirorine Sliver
+  - 00632, Busalkiam Volley
+  - 00641, Spring Prophecy
+  - 00643, Familiar Kanma
+  - 00658, Spirit Blessing
+  - 00678, Acolyte of Varuac
+  - 00681, Ophisicy Groundlan
+  - 00686, Archon of Lock
+  - 00688, Primal Clead
+  - 00693, Selkrid Stalker
+  - 00696, Faithwunger
+  - 00699, Mokeler Footmane
+  - 00707, Whimp of Kresh Tiger
+  - 00714, Unkotun
+  - 00715, Wolverine Glorifier
+  - 00755, Winned Spige
+  - 00758, Assemble the Hore
+  - 00759, Thunderworldryal
+  - 00761, Dragon-Cravot Ambush
+  - 00764, Sigulay's Sengir
+  - 00767, Vadeechant
+  - 00768, Talisman of Steim
+  - 00782, Oam Uster
+  - 00788, Desert Mutry
+  - 00801, Sage's Behemoth
+  - 00803, Frontline Panther
+  - 00806, Guardian Theatight
+  - 00815, Galathrite Spate
+  - 00823, Master Centurion
+  - 00828, Irigition Order
+  - 00847, Taygrob's Echoine
+  - 00853, Hidden Swave
+  - 00857, Possessed Intervention
+  - 00861, Brood-Grivel Refinerer
+  - 00876, Rogue Harvest
+  - 00885, Loor's Asp
+  - 00892, Gipaycahi
+  - 00894, Sooted Apparition
+  - 00916, Sevinnety
+  - 00925, Satyr Sandserperte
+  - 00935, Skirge Hattal
+  - 00941, Errant Cyclogs
+  - 00972, Brothergool Archon
+  - 00981, Arabrade
+  - 00987, Guardian of Bower
+  - 00997, Skinscopter's One
+  Red:
+  - 00008, Arcrow
+  - 00009, Zevital Shabre
+  - 00010, Menater of the Titan Mox
+  - 00019, Snaw Centous
+  - 00025, Warsoot Raffer
+  - 00032, Primal Salmons
+  - 00039, Herriert Row
+  - 00041, Bugstal
+  - 00043, Ring of Phoenix
+  - 00044, Perdanus, the Pack Pergeroper
+  - 00049, Wildegoth Invoker
+  - 00055, Bazo Call
+  - 00074, Mizzium Goblin
+  - 00082, Brakin Saddles
+  - 00085, Sudden Ambest
+  - 00098, Didlog Goblins
+  - 00104, Fleetle the Unsoserous
+  - 00106, Goblin Plofts
+  - 00142, Flamewolf Speed
+  - 00143, Giant Bload
+  - 00156, Rock Aignsite
+  - 00162, Dispracked Caller
+  - 00168, Stormmin Diver
+  - 00185, Inlogetity
+  - 00206, Storm
+  - 00216, Mayiller Crackurien
+  - 00233, Broodblooms
+  - 00237, Pensa
+  - 00243, Challenger Putse
+  - 00244, Divine Sharss of Spawn
+  - 00249, Street Balitar
+  - 00259, Mothle Warlour
+  - 00260, Stitch the Final Reclamation
+  - 00261, Carneflamed Torch
+  - 00266, Smilewood Malous
+  - 00267, Mordy Growth
+  - 00277, Fog Knight
+  - 00278, Moonscate
+  - 00288, Exlicic Colessus
+  - 00290, Dragon, Burnish Foul
+  - 00307, Fire of the Soled
+  - 00310, Wiskback Bartarian
+  - 00319, Black Malakuo
+  - 00325, Fust Hound
+  - 00329, Velit of Rawe
+  - 00337, Heastshald Giant
+  - 00338, Lythasma, Viated Proil
+  - 00345, Invasion of Frag
+  - 00346, Mier Dream Wolf
+  - 00350, Stalking Archer
+  - 00351, Spidery Volcanice
+  - 00356, Agstrany
+  - 00357, Shivan Diviner
+  - 00358, Peyribo, Druid of Volcanic
+  - 00370, Mana Hellion
+  - 00372, Poterchorty of the Endguard
+  - 00373, Kjeldoran Elemental
+  - 00385, Crab Splindod
+  - 00391, Guild Chaos
+  - 00395, Earth Sliver
+  - 00403, Silk
+  - 00404, Bodariad Wood
+  - 00406, Angel, Garrak the Warrior
+  - 00408, Argomons, Hellkite
+  - 00415, Cage to God
+  - 00438, Stinging Dragon
+  - 00442, Pyrocuna
+  - 00460, Thirc, the Afregation
+  - 00466, Flame Soul
+  - 00477, Reweef Grazer Mololeter
+  - 00483, Forwadigy Demise
+  - 00524, Braddil Scout
+  - 00540, Mesbing of the Fight
+  - 00543, Rumbling Leyale
+  - 00546, Sastle
+  - 00568, Aurora's Inlisonation
+  - 00584, Plogstom
+  - 00595, Goblin Bloodwoods Nari
+  - 00609, Showscorm Rombasi
+  - 00610, Gorflade Creeping
+  - 00615, Woodgraft
+  - 00619, Boad of the Sor
+  - 00622, Hurkyl's Charmed
+  - 00624, Elf Raken
+  - 00625, Feller of Hydra
+  - 00644, Rickdling Goblin
+  - 00649, Arccot's Icinshope
+  - 00652, Nicil Ancient
+  - 00654, Curm Dragon
+  - 00655, Hamderhouler
+  - 00660, Furnace Ent-Weaver
+  - 00661, Dragon Giant
+  - 00662, Feral Dragon
+  - 00663, Elven Curse
+  - 00674, Gural Blood
+  - 00675, Runewing Ritual
+  - 00679, X-Iar
+  - 00685, Goblin Boarding
+  - 00692, Nagi Noulerty
+  - 00713, Bulphar Warden
+  - 00718, Oncles Engine
+  - 00722, Dimer of Evolutive
+  - 00726, Castide's Virome
+  - 00736, Graybrik
+  - 00740, Glory
+  - 00744, Intigilatis
+  - 00749, Fire-Mo-Skelelond
+  - 00754, Flowstone Sky
+  - 00766, Mirror of Fent
+  - 00771, Whiik Ghoul Buyline
+  - 00774, Archangel of the Sauon
+  - 00778, Aggressive Stronghold
+  - 00785, Unituine
+  - 00794, Hellkite Flizzard
+  - 00796, Borton Chores
+  - 00808, Rale
+  - 00814, Brick Brute
+  - 00826, Bramble Heregion
+  - 00839, Blind Undoria
+  - 00841, Barrage of Horrors
+  - 00842, Neirm the Ferale
+  - 00844, Hulkhileim
+  - 00850, Sussitity One
+  - 00860, Karko
+  - 00873, Frog
+  - 00881, Howling Ate
+  - 00882, Kor
+  - 00889, Scourge of Cruelty
+  - 00893, Rolali Cursed
+  - 00895, Dragonhoof Boss
+  - 00898, Volcanic Dragon
+  - 00905, Seeks of Barmor
+  - 00908, Cath, Hert of Goblin Rashidist
+  - 00917, Balgaping Millsmater
+  - 00919, Abja's Moon
+  - 00933, Aol's Horde
+  - 00936, Funnel of Hydra
+  - 00939, Otowall, Rand Dammer
+  - 00944, Mastichine Villager
+  - 00945, Sybrui, Axe of Fire
+  - 00953, Song-Mov
+  - 00973, Belivius
+  - 00979, Goblin Xeandian
+  - 00985, Fell of Fury
+  - 00988, Flameous Shake
+  - 00990, Fell The Bry 'Pas
+  - 00993, Dragon Force
+  - 00999, Blood Phoenix
+  White:
+  - 00000, Debiret Griffin
+  - 00002, Guardian Winds
+  - 00003, Inspiring Reckless
+  - 00011, Cavalry Invoker
+  - 00017, Abundant Clanchath
+  - 00022, Spectrolifk
+  - 00027, Rasuth Snare
+  - 00035, Jansika Panther
+  - 00051, Searon Wurm
+  - 00057, Fageed Strike
+  - 00083, Ontling Paladin
+  - 00091, Chauspious Neinm-Sun
+  - 00100, Bolddreak Covetarism
+  - 00101, Thunderhound Glider
+  - 00103, Fallakine Cavalier
+  - 00105, Guardians of Disceved
+  - 00109, Vespilato
+  - 00113, Automatic Favor
+  - 00134, Elspeth's Inquirity
+  - 00135, Prasp Veteran
+  - 00139, Willize
+  - 00145, Purveine
+  - 00150, Frightwald Wayle
+  - 00152, Thailand, Radiant Prexaki
+  - 00158, Open Lay
+  - 00160, Girrar's Hero
+  - 00163, Black Rain
+  - 00166, Mukescale Hark
+  - 00167, Sojourner's Shyifs
+  - 00169, Piratic
+  - 00171, Envigelation
+  - 00172, Stomper Mortish
+  - 00178, Jamee Outrage
+  - 00183, Circle if the Soul
+  - 00201, Kheru Angel
+  - 00210, Down to Voice
+  - 00211, Hero of the Ball Battle
+  - 00213, Angel of Villand
+  - 00218, Bragesi-Geing Fast
+  - 00229, Albaan's Invoker
+  - 00235, Valiant Pegesa
+  - 00238, Jece Froy Mentor
+  - 00241, Rhystic Commander
+  - 00245, Fralling Hate
+  - 00250, Nentaker
+  - 00263, River Show Matrix
+  - 00264, Appleeng Rager
+  - 00268, Wingrind
+  - 00274, Dromoka Hoarder
+  - 00280, Sweee
+  - 00284, Jaw-Kalr, Serra, Reverse the Covelous
+  - 00292, Molth Soldiers
+  - 00297, Bold Squad
+  - 00309, Selemin Prince
+  - 00324, Winned Commander
+  - 00326, Cangligate Messenger
+  - 00331, Sliefl Swan
+  - 00334, Prematon (Mine Exarch
+  - 00335, Scemp Guardians
+  - 00336, Minewright Riffhard
+  - 00348, Soulyh
+  - 00349, Shrine of Wak
+  - 00355, Rebun
+  - 00361, Defensive Reckoning
+  - 00367, Whirling Conquistery
+  - 00375, Way Call
+  - 00382, Wall of Souls
+  - 00386, Jifhank
+  - 00409, Jori, Serpent of the Path
+  - 00412, Deadshat
+  - 00418, Nostic Entity
+  - 00422, Sor Ent
+  - 00425, Arsidinges
+  - 00431, Tool Feal Kanforler
+  - 00451, Horror of Tactics
+  - 00468, Arcon
+  - 00488, Stunder of Front of War
+  - 00497, Spitness Brood Haze
+  - 00508, Brightwite Dancer
+  - 00523, Archnoghiffy
+  - 00530, Harvestler's Hero
+  - 00534, Frastfill
+  - 00538, Skoopari, Bano Thallid
+  - 00541, Stonework Soul
+  - 00544, Defiant Basulis
+  - 00545, Maect, Heart
+  - 00556, Spiral Summoning
+  - 00559, Bludes
+  - 00561, Dream Woaver
+  - 00571, Great Contalea Councers
+  - 00572, Majiling Slaver
+  - 00580, Unsentless Apprentice
+  - 00583, Hever of the Inscriptive
+  - 00587, Angel-Ferile
+  - 00588, Dual Shinobi
+  - 00589, Ramura's Spirit
+  - 00598, Quagho
+  - 00633, Bridging Sharl
+  - 00639, Wake the Wall
+  - 00640, Commander's Packbamines
+  - 00642, Rapea Paradite
+  - 00647, Phaliy, Sphere of Anty
+  - 00651, Coultist Seadrow
+  - 00657, Bane wathe
+  - 00666, Wall of Balamulchand
+  - 00670, Might of Smim
+  - 00677, Mesa Defenses
+  - 00697, Sandstone Pillar-Bor
+  - 00703, Kjeldoran Aspeter
+  - 00704, Suntise Mesa
+  - 00708, Captain Fleet Hands
+  - 00723, Aura Magistove
+  - 00729, Explore of the Ravenous Sliver
+  - 00731, Loxid's Chant
+  - 00733, Seming Churm
+  - 00741, Warrior
+  - 00752, Gethbrazer
+  - 00756, Dilincyeo
+  - 00763, Rune of the Light
+  - 00772, Ground Sentry
+  - 00779, Kift, Waterfeve
+  - 00780, Infrench
+  - 00786, Ob-Feeing Sunsaneler
+  - 00795, Rogeen Geist
+  - 00797, Sphinx of the Humblers
+  - 00800, Sandspire Kosn
+  - 00804, Infendar's Protection
+  - 00816, Lart
+  - 00838, Oorus, Vololite Reborn
+  - 00854, Amby Ripsiar
+  - 00856, Herald of Ocsurion
+  - 00862, Eolen Prosperitios
+  - 00864, Vaired Paaple
+  - 00877, Callyion
+  - 00896, Alanga Knight
+  - 00902, Horror of Reckoning
+  - 00909, Bullwright Rider
+  - 00912, Imperwalli Avenger
+  - 00914, Reality Ascending
+  - 00918, Man Protector
+  - 00924, Hostile Captain
+  - 00926, Lysus of the Idenmees
+  - 00929, Master of Clockstomasted
+  - 00931, Leincal
+  - 00934, Guardian Massite
+  - 00946, Vineek, Trabal Sentinel
+  - 00952, Submara
+  - 00959, Jassing Collector
+  - 00960, Play the Breach
+  - 00963, Kazol
+  - 00970, Ait the Gatekeeper
+  - 00982, Minisgien Thiam
+  - 00984, Vell Horicold
+  - 00992, Vengeful Justice
+  - 00995, Hart Skytumbeind
+  - 00996, Crishdals
+mono_main_types:
+  Artifact:
+  - 00023, Master of Illusion Gued
+  - 00052, Caracal Jack
+  - 00064, Berserker of Talisman
+  - 00069, Dilicebroan
+  - 00077, Pelelister's Botter
+  - 00108, Battle Fall
+  - 00118, Carsiver's Farchor
+  - 00125, Inclessited Keyrine
+  - 00128, Deathbark Ringmas
+  - 00141, Soaticy Liquines
+  - 00154, Ikiral Doom
+  - 00159, Ewrine Plan
+  - 00164, Pugactite Aether Ecy
+  - 00166, Mukescale Hark
+  - 00180, Aspisso Wonder
+  - 00181, Experimental Mire
+  - 00207, Grim Vab
+  - 00213, Angel of Villand
+  - 00239, Plague Molk
+  - 00286, Sorakas's Warlick
+  - 00305, Merchant of Unifie
+  - 00341, Hell of Denial
+  - 00343, Trongo Downs
+  - 00363, Misthood Anjoy
+  - 00364, Dreamworder Glee Pool
+  - 00372, Poterchorty of the Endguard
+  - 00374, True Bastion
+  - 00394, Feeter of the Dransition
+  - 00401, Rack-Bat
+  - 00426, Spot Throne Geude
+  - 00445, Peliten Glass
+  - 00447, Shred Blade
+  - 00478, Sumvoll Taged
+  - 00485, Butterfang
+  - 00499, Ghisupha
+  - 00501, Cloudlin Spaniel
+  - 00522, Boandiche's Sapphire
+  - 00567, Flowstone Byw
+  - 00578, Impagida Shield
+  - 00593, Ayek of Gate
+  - 00601, Grorts of Eye of Saiy
+  - 00604, Hemmil Uultol
+  - 00608, Unkougan's Obliki
+  - 00668, Hired Tomas
+  - 00671, Mirror Baliek
+  - 00680, Pelath's Branch-Den
+  - 00689, Nomida Tanks
+  - 00698, Shoet Lolk
+  - 00712, Salvager in Wood
+  - 00720, Naogir's Kama
+  - 00748, Ruthless Hammer
+  - 00762, Woodmand Flame
+  - 00765, Wall of Sleip
+  - 00800, Sandspire Kosn
+  - 00809, Fateling Grave
+  - 00811, Glintskirt
+  - 00818, Jandar's Coag
+  - 00843, Eye of Plangl
+  - 00846, Legion Conchaging
+  - 00851, Fangbraft Custody
+  - 00866, Plosspull Camatatis
+  - 00883, Frog-Temp
+  - 00891, Necrogony Maline
+  - 00901, Clarion Otche
+  - 00928, Tamasm's Atoniscy
+  - 00943, Thoughtherder War
+  - 00949, Rite of Saithstorm
+  Contraption: []
+  Creature:
+  - 00000, Debiret Griffin
+  - 00003, Inspiring Reckless
+  - 00005, Noss Tago, Dead Mirota
+  - 00007, Professor Lent
+  - 00009, Zevital Shabre
+  - 00010, Menater of the Titan Mox
+  - 00011, Cavalry Invoker
+  - 00012, Impraton Pagociach
+  - 00013, Crovixiek Siren
+  - 00016, Reckendine Midrason
+  - 00019, Snaw Centous
+  - 00020, Sojence Outbrake
+  - 00021, Drogword Mans
+  - 00022, Spectrolifk
+  - 00024, Filigree Bloodcuster
+  - 00026, Mercol Artist
+  - 00028, Kokinda's Ingenalite
+  - 00029, Fighter al-Danders
+  - 00030, Graking Suder
+  - 00031, Perterpeer
+  - 00034, Cavalier of Direos
+  - 00035, Jansika Panther
+  - 00037, Life Gremlin
+  - 00040, Premata Chancellor
+  - 00044, Perdanus, the Pack Pergeroper
+  - 00045, Bloodmolligh
+  - 00046, Sorrector
+  - 00047, Dungeon Longrogenin
+  - 00049, Wildegoth Invoker
+  - 00050, Armored Bog
+  - 00051, Searon Wurm
+  - 00055, Bazo Call
+  - 00056, Windstarm Tolver
+  - 00058, Gladeseeper
+  - 00059, Garguy, Zokian Stender-Rifs
+  - 00060, Disminner Phoenix
+  - 00062, Horror of the Bloodskeeler
+  - 00066, Bellamfeller
+  - 00067, Power Hordes
+  - 00068, Madich Spirit
+  - 00072, Ragga's Scourge
+  - 00073, Lryavacera
+  - 00074, Mizzium Goblin
+  - 00076, Druid of Elebrast
+  - 00079, Hexmonth Vineling
+  - 00083, Ontling Paladin
+  - 00084, Ferot Zealot
+  - 00088, Root Boar
+  - 00091, Chauspious Neinm-Sun
+  - 00092, Armored Guildmage
+  - 00093, Rebuven Observer
+  - 00094, Gradeblood Recluse
+  - 00096, Spore Pec
+  - 00098, Didlog Goblins
+  - 00099, Vost's Beguard
+  - 00101, Thunderhound Glider
+  - 00103, Fallakine Cavalier
+  - 00107, Bombadist Thief
+  - 00109, Vespilato
+  - 00111, Dayworm Base
+  - 00114, Seer of the Stone
+  - 00115, Smobble Ocches
+  - 00116, Dliffmage
+  - 00121, Replication Fisslider
+  - 00122, Dakworker
+  - 00123, Rushmane, Negaman
+  - 00127, Living Spyst
+  - 00131, Statesmophen Speckrasted
+  - 00132, Krick Refron
+  - 00135, Prasp Veteran
+  - 00136, Evoce Battle Shade
+  - 00137, Prosperous Guildlagere
+  - 00138, Wordcrafter
+  - 00147, Twuldwhiel Krisudly
+  - 00150, Frightwald Wayle
+  - 00152, Thailand, Radiant Prexaki
+  - 00156, Rock Aignsite
+  - 00157, Slinder
+  - 00158, Open Lay
+  - 00160, Girrar's Hero
+  - 00162, Dispracked Caller
+  - 00168, Stormmin Diver
+  - 00174, Restillerine Meboul
+  - 00176, Eternal Outrider
+  - 00179, Wing Straken
+  - 00182, Nuldwarla, Tendrid, Teferi, Vrisking Crash
+  - 00184, Artificer's Baloth
+  - 00186, Garguald, Flame of Manous
+  - 00190, Skolpan Viail
+  - 00193, Phyrexian Transplant
+  - 00194, Meader
+  - 00196, Heolted Blider
+  - 00197, Siege Cul Devourer
+  - 00199, Agona, Temple of Reet
+  - 00201, Kheru Angel
+  - 00202, Audots of Rubbic
+  - 00204, Penients of the Breath
+  - 00205, Arking Skullhreemen
+  - 00209, Repel, Tempt Berserker
+  - 00211, Hero of the Ball Battle
+  - 00214, Odkih Gorgon
+  - 00215, Mirrorsoul Mastermind
+  - 00216, Mayiller Crackurien
+  - 00219, Rotic-os Thallid
+  - 00223, Timpedaker
+  - 00224, Skel-Retreis Corpso
+  - 00226, Raquine, Orctabor Ghast
+  - 00229, Albaan's Invoker
+  - 00230, Nitheina, Malicious Smesser
+  - 00231, Barraised Dunton
+  - 00234, Panix Wurm
+  - 00238, Jece Froy Mentor
+  - 00241, Rhystic Commander
+  - 00242, Anorid Dreadnowge
+  - 00244, Divine Sharss of Spawn
+  - 00246, Eced Abtarburthing
+  - 00247, Disturbing Captain
+  - 00250, Nentaker
+  - 00252, Trothy-Un the Colossus
+  - 00254, Dragon Corpse
+  - 00258, Deads of Adophigot
+  - 00259, Mothle Warlour
+  - 00262, Wral Orchor
+  - 00264, Appleeng Rager
+  - 00266, Smilewood Malous
+  - 00269, Rospok of the Whisper Diasticore
+  - 00274, Dromoka Hoarder
+  - 00275, Mael Frog Bargien
+  - 00276, Gorewouder's Engineer
+  - 00277, Fog Knight
+  - 00279, Balwark, Dead-tod Lancer
+  - 00283, Crus Infaster
+  - 00285, Reversal Traber
+  - 00289, Archfee
+  - 00290, Dragon, Burnish Foul
+  - 00291, Umbrad Barrok
+  - 00292, Molth Soldiers
+  - 00293, Breath of Gif Shaman
+  - 00294, Pease Outrider
+  - 00295, Dark Accursed
+  - 00296, Uthmage Murol
+  - 00297, Bold Squad
+  - 00302, Chandra's Kindlebow
+  - 00304, Holka Sadew
+  - 00308, Vivilubler
+  - 00309, Selemin Prince
+  - 00316, Aquatac Predators
+  - 00317, Havengul Patrol
+  - 00318, Aven Bridge of Nothura
+  - 00319, Black Malakuo
+  - 00323, Siren Lizard
+  - 00324, Winned Commander
+  - 00325, Fust Hound
+  - 00326, Cangligate Messenger
+  - 00328, Savage Dragon
+  - 00332, Justica, Dreams of Proticy
+  - 00334, Prematon (Mine Exarch
+  - 00335, Scemp Guardians
+  - 00336, Minewright Riffhard
+  - 00337, Heastshald Giant
+  - 00338, Lythasma, Viated Proil
+  - 00339, Kami of Big
+  - 00346, Mier Dream Wolf
+  - 00347, Cauth Squire
+  - 00350, Stalking Archer
+  - 00352, Atris, Collace
+  - 00357, Shivan Diviner
+  - 00358, Peyribo, Druid of Volcanic
+  - 00359, Sunflage Adept
+  - 00366, Roo, Thrumi of Truth
+  - 00369, Goblin Godmind
+  - 00370, Mana Hellion
+  - 00371, Ungomall Shaman
+  - 00373, Kjeldoran Elemental
+  - 00377, Dawnnlipmer
+  - 00382, Wall of Souls
+  - 00389, Ml.b.E.D.S.
+  - 00391, Guild Chaos
+  - 00393, Cobll Avatar
+  - 00395, Earth Sliver
+  - 00397, The Eternal Revenant
+  - 00399, Pollen Mastivore
+  - 00406, Angel, Garrak the Warrior
+  - 00407, Kneshra Vengeant
+  - 00408, Argomons, Hellkite
+  - 00409, Jori, Serpent of the Path
+  - 00414, Unscimitor Veteran
+  - 00416, Tizeris, Dragon Dog
+  - 00417, Scheming Ghoul
+  - 00418, Nostic Entity
+  - 00420, Labark Sentry
+  - 00423, Genesit Folus
+  - 00424, Essence Banner
+  - 00425, Arsidinges
+  - 00432, Ukanot Catapolk
+  - 00433, Nimson's Slag-Teblang
+  - 00434, Mystic Welver
+  - 00436, Blaster, Oet Roots
+  - 00438, Stinging Dragon
+  - 00448, Til-Fordermunge
+  - 00449, Rovamorce Druid
+  - 00451, Horror of Tactics
+  - 00452, Pereguimed Gayer
+  - 00453, Tis Dragon
+  - 00458, Hand of Xar Deep
+  - 00460, Thirc, the Afregation
+  - 00462, Yamima the Balonos
+  - 00464, Ashem, Pig
+  - 00465, Eternal Sentinel
+  - 00467, Climbor the Nystoner
+  - 00469, Gardan, Tyrant of Thinflex
+  - 00471, Helk Wurm
+  - 00473, Khink of Countergard
+  - 00475, Arrowteem
+  - 00476, Shambling Gordon
+  - 00477, Reweef Grazer Mololeter
+  - 00479, Daggerwook Angel
+  - 00480, Pricplewing Kina
+  - 00487, Eadeemed Serpent
+  - 00490, Phyrexian Preesier
+  - 00492, Slide Sharp
+  - 00495, Martyr of Devous
+  - 00496, Revel Hoarder
+  - 00498, Urza's Raider
+  - 00500, Messenger Strangler
+  - 00503, Powerbloom Prisat
+  - 00504, Mirror Son Striker
+  - 00505, Riot Windmaol
+  - 00507, Porcedier
+  - 00508, Brightwite Dancer
+  - 00512, Green Elder Woods
+  - 00516, Sullage Devourer
+  - 00517, Prieals of the Primordial
+  - 00519, Amalacon
+  - 00520, Gearyrenter
+  - 00524, Braddil Scout
+  - 00526, Emainda, Eable Pogeshiction
+  - 00527, Wild Bullgip
+  - 00529, Hauron
+  - 00530, Harvestler's Hero
+  - 00532, Kreshe to the Cradler
+  - 00538, Skoopari, Bano Thallid
+  - 00540, Mesbing of the Fight
+  - 00541, Stonework Soul
+  - 00542, Thoughtwater Witch
+  - 00543, Rumbling Leyale
+  - 00550, Feral Unzuat
+  - 00552, Galranna
+  - 00554, Bang Wavillnamord-Quile
+  - 00555, Crennal Enviy
+  - 00557, Difolhart Dragon
+  - 00558, Shaerax, Stalon's Guile
+  - 00560, Zondicaor
+  - 00561, Dream Woaver
+  - 00565, Nuctolia
+  - 00566, Langek, Losh Rampart
+  - 00569, Viriel Elemental
+  - 00571, Great Contalea Councers
+  - 00572, Majiling Slaver
+  - 00573, Pumpling Ghoul
+  - 00575, Qyak Damines
+  - 00576, Geatfin Spawn of Sleip
+  - 00580, Unsentless Apprentice
+  - 00585, Latterminging Tiger
+  - 00586, Watchful Scele
+  - 00588, Dual Shinobi
+  - 00589, Ramura's Spirit
+  - 00594, Decice Dragonfeader
+  - 00595, Goblin Bloodwoods Nari
+  - 00602, Mezomancing Wolf
+  - 00603, Mister Dancer
+  - 00606, Trimon of the Kariurs
+  - 00607, Wall of Welperain
+  - 00609, Showscorm Rombasi
+  - 00612, Mystic Fiend
+  - 00614, Greenborn Ferous
+  - 00617, Right-Golda
+  - 00618, Wall of Granite
+  - 00620, Kratch Bothallord
+  - 00622, Hurkyl's Charmed
+  - 00623, Clam Herod
+  - 00624, Elf Raken
+  - 00625, Feller of Hydra
+  - 00626, Harondal, Silkdare Wave
+  - 00627, Sphinx of the Red Spider
+  - 00628, Lalimet's Primordial
+  - 00629, Mirorine Sliver
+  - 00633, Bridging Sharl
+  - 00636, Master of Hymn
+  - 00640, Commander's Packbamines
+  - 00642, Rapea Paradite
+  - 00643, Familiar Kanma
+  - 00644, Rickdling Goblin
+  - 00651, Coultist Seadrow
+  - 00652, Nicil Ancient
+  - 00654, Curm Dragon
+  - 00655, Hamderhouler
+  - 00659, Ingenralker Giant
+  - 00660, Furnace Ent-Weaver
+  - 00661, Dragon Giant
+  - 00662, Feral Dragon
+  - 00664, Paragon of Grasp
+  - 00666, Wall of Balamulchand
+  - 00669, Iana, the Gift Strategs
+  - 00673, Priest of Destiny
+  - 00676, Volotitizee
+  - 00678, Acolyte of Varuac
+  - 00684, Azathategist
+  - 00686, Archon of Lock
+  - 00690, Te-Clis Agent
+  - 00692, Nagi Noulerty
+  - 00693, Selkrid Stalker
+  - 00695, Unvailing Vampire
+  - 00696, Faithwunger
+  - 00699, Mokeler Footmane
+  - 00702, Azorius Dimir
+  - 00703, Kjeldoran Aspeter
+  - 00709, Ambuth Incridees
+  - 00710, Earths' Sliver
+  - 00711, Kenforked Recruits
+  - 00713, Bulphar Warden
+  - 00715, Wolverine Glorifier
+  - 00722, Dimer of Evolutive
+  - 00723, Aura Magistove
+  - 00724, Randed Talisman
+  - 00728, Cruther Copper Demol
+  - 00729, Explore of the Ravenous Sliver
+  - 00734, Latchfidot Rube
+  - 00736, Graybrik
+  - 00739, Teaveria's Breaker
+  - 00743, Matilob, Shaper of Oracle
+  - 00752, Gethbrazer
+  - 00753, Dark Bentermancer
+  - 00757, Dark Tytar
+  - 00759, Thunderworldryal
+  - 00764, Sigulay's Sengir
+  - 00767, Vadeechant
+  - 00768, Talisman of Steim
+  - 00772, Ground Sentry
+  - 00773, Smish Gun-Archifion
+  - 00774, Archangel of the Sauon
+  - 00775, Levible Zuppid
+  - 00777, Cognaki
+  - 00779, Kift, Waterfeve
+  - 00781, Yawgmoth's Gima
+  - 00782, Oam Uster
+  - 00784, Kozau, Strength of Runa
+  - 00786, Ob-Feeing Sunsaneler
+  - 00787, Giant Haunt of the Alshi
+  - 00790, Dicperit Tolamin
+  - 00792, Raptad Valor
+  - 00794, Hellkite Flizzard
+  - 00795, Rogeen Geist
+  - 00796, Borton Chores
+  - 00797, Sphinx of the Humblers
+  - 00798, Statucing Phyrophit
+  - 00801, Sage's Behemoth
+  - 00802, Gliithacator
+  - 00803, Frontline Panther
+  - 00805, Discordant Champion
+  - 00812, Ebart of Richs
+  - 00815, Galathrite Spate
+  - 00821, Hido Kaorus
+  - 00822, Bunlorid Seagruff
+  - 00823, Master Centurion
+  - 00824, Scourge of Dispersal
+  - 00826, Bramble Heregion
+  - 00827, Ghost Siver
+  - 00828, Irigition Order
+  - 00830, Sharkahes Apparition
+  - 00831, Laisom Sphinx
+  - 00835, Tanap Drake
+  - 00838, Oorus, Vololite Reborn
+  - 00848, Blood Sentinel
+  - 00850, Sussitity One
+  - 00852, Sovereign of Leeper
+  - 00854, Amby Ripsiar
+  - 00855, Courier Gain
+  - 00856, Herald of Ocsurion
+  - 00859, Hound of Black Constructive
+  - 00861, Brood-Grivel Refinerer
+  - 00864, Vaired Paaple
+  - 00865, Pyromancer's Runevin
+  - 00870, Eternal Balpa
+  - 00871, Vogal Laush
+  - 00872, Fatekang
+  - 00875, Fright-Daw
+  - 00878, Primbled Ridge
+  - 00885, Loor's Asp
+  - 00887, Thorn Hawk
+  - 00888, Berzidians Bloodpripteek
+  - 00894, Sooted Apparition
+  - 00895, Dragonhoof Boss
+  - 00896, Alanga Knight
+  - 00898, Volcanic Dragon
+  - 00899, Running Ghoul
+  - 00900, Stagic Drone
+  - 00904, Esttal, the Haak
+  - 00908, Cath, Hert of Goblin Rashidist
+  - 00912, Imperwalli Avenger
+  - 00913, Mireblade, Stone Shift
+  - 00915, Ascendant Crad
+  - 00917, Balgaping Millsmater
+  - 00918, Man Protector
+  - 00919, Abja's Moon
+  - 00921, Lich
+  - 00923, Flourished Gladiator
+  - 00924, Hostile Captain
+  - 00926, Lysus of the Idenmees
+  - 00929, Master of Clockstomasted
+  - 00930, Mother Finner
+  - 00932, Tevero Vampire
+  - 00933, Aol's Horde
+  - 00934, Guardian Massite
+  - 00936, Funnel of Hydra
+  - 00938, Trivole of Troll
+  - 00939, Otowall, Rand Dammer
+  - 00941, Errant Cyclogs
+  - 00944, Mastichine Villager
+  - 00945, Sybrui, Axe of Fire
+  - 00946, Vineek, Trabal Sentinel
+  - 00951, Total's Stalker
+  - 00952, Submara
+  - 00953, Song-Mov
+  - 00955, Downstight's Coast
+  - 00956, Kor Fly
+  - 00958, Echo Informant
+  - 00959, Jassing Collector
+  - 00962, Muzzomaster
+  - 00964, Vaolke the Killin
+  - 00968, Vebalect, Water of Wilfs Regor
+  - 00972, Brothergool Archon
+  - 00974, Draconic Sentinel
+  - 00975, My-Transmai Phiform
+  - 00976, Scourge of the Erestee
+  - 00977, Alexi, Lay Volerse
+  - 00979, Goblin Xeandian
+  - 00982, Minisgien Thiam
+  - 00983, Interloper Behemoth
+  - 00987, Guardian of Bower
+  - 00988, Flameous Shake
+  - 00994, Stone Scavenger
+  - 00997, Skinscopter's One
+  - 00999, Blood Phoenix
+  Enchantment:
+  - 00014, Teferi's One
+  - 00017, Abundant Clanchath
+  - 00018, Deathless Toblers
+  - 00027, Rasuth Snare
+  - 00033, Loultd of Traw
+  - 00039, Herriert Row
+  - 00041, Bugstal
+  - 00043, Ring of Phoenix
+  - 00053, Stringmantle Griverity
+  - 00061, Man-Ric Wire
+  - 00081, Scuttlegna
+  - 00087, Andicia
+  - 00090, Ixesty
+  - 00097, Geistfaller Grid Graves
+  - 00100, Bolddreak Covetarism
+  - 00104, Fleetle the Unsoserous
+  - 00106, Goblin Plofts
+  - 00110, Ferocite
+  - 00117, Bennerous Portal
+  - 00119, Shelter Scream
+  - 00140, Drintrost Untriding
+  - 00143, Giant Bload
+  - 00144, Colossal Plunders
+  - 00145, Purveine
+  - 00148, Dreamline America
+  - 00163, Black Rain
+  - 00167, Sojourner's Shyifs
+  - 00170, Emergent of Dread
+  - 00171, Envigelation
+  - 00173, Sea
+  - 00175, Notaminative
+  - 00177, Hungry Unroteks
+  - 00183, Circle if the Soul
+  - 00208, Pergevice Blood
+  - 00212, Glorious Glisteay
+  - 00222, Artseval Dentaling
+  - 00235, Valiant Pegesa
+  - 00236, Ferar Evolution
+  - 00251, Hanicestial Owl
+  - 00253, Yale Lineding
+  - 00256, Spirates of Blight
+  - 00263, River Show Matrix
+  - 00265, Shallude Sloulday
+  - 00267, Mordy Growth
+  - 00268, Wingrind
+  - 00272, Slaysmate
+  - 00298, Unzolatian Shreker
+  - 00301, Fury Prisat
+  - 00307, Fire of the Soled
+  - 00310, Wiskback Bartarian
+  - 00311, Grazing Lang
+  - 00314, Viridian Embrace
+  - 00315, Hatter Peacecharce
+  - 00331, Sliefl Swan
+  - 00340, Paspwy Lagmaging
+  - 00342, Scroll of the Blessed Fere Revelation
+  - 00344, Egona
+  - 00345, Invasion of Frag
+  - 00351, Spidery Volcanice
+  - 00353, Fatestead
+  - 00361, Defensive Reckoning
+  - 00362, Shredder Wound
+  - 00367, Whirling Conquistery
+  - 00368, Echo Capharetuy
+  - 00375, Way Call
+  - 00376, Cosmos
+  - 00379, Bathlet Dross
+  - 00383, Apurisian Fire
+  - 00388, The Thaured Last
+  - 00398, Cavebrise
+  - 00404, Bodariad Wood
+  - 00413, Treacherous Vibals
+  - 00427, Incein in the Savants
+  - 00428, Oronance
+  - 00430, Karnthic Tilf-tice
+  - 00441, Roaling Cry
+  - 00444, Oncinivanm
+  - 00455, Morshstore Breath
+  - 00456, Whirl Loli
+  - 00468, Arcon
+  - 00482, Rivenecious Rider Tharabs
+  - 00484, Ard Lotus
+  - 00488, Stunder of Front of War
+  - 00509, Pathjoy Healing
+  - 00535, Colossus of Crusis
+  - 00536, Dininoce
+  - 00547, Historian Escape
+  - 00559, Bludes
+  - 00577, Brystity Cries
+  - 00581, Artificer's Putrie
+  - 00582, Thunderjork
+  - 00583, Hever of the Inscriptive
+  - 00590, Bondful Shore
+  - 00621, Vendor Quarry
+  - 00630, Merkal Reseoration
+  - 00637, Begra-Searoc
+  - 00646, Homeshield Infusion
+  - 00648, Reneric Summons
+  - 00658, Spirit Blessing
+  - 00672, Barasing Bockes
+  - 00677, Mesa Defenses
+  - 00681, Ophisicy Groundlan
+  - 00682, Drowned Spell
+  - 00685, Goblin Boarding
+  - 00688, Primal Clead
+  - 00691, Rainhorn Reprisald
+  - 00704, Suntise Mesa
+  - 00708, Captain Fleet Hands
+  - 00725, Phyrexian Spellsale
+  - 00738, The Golden Syvert
+  - 00742, Scourge's Obelisk
+  - 00747, Rite of Warsaik
+  - 00749, Fire-Mo-Skelelond
+  - 00754, Flowstone Sky
+  - 00756, Dilincyeo
+  - 00766, Mirror of Fent
+  - 00769, Custodi Ploot
+  - 00776, Pegoming to the Write
+  - 00788, Desert Mutry
+  - 00807, Everburretine
+  - 00808, Rale
+  - 00814, Brick Brute
+  - 00829, Gory Meval
+  - 00841, Barrage of Horrors
+  - 00844, Hulkhileim
+  - 00869, Gate of Dutian
+  - 00873, Frog
+  - 00886, Ripacuscet-Tann)
+  - 00893, Rolali Cursed
+  - 00909, Bullwright Rider
+  - 00914, Reality Ascending
+  - 00922, Laphoal's Hunt
+  - 00925, Satyr Sandserperte
+  - 00927, Juft Wire
+  - 00931, Leincal
+  - 00937, Spectral Rebarsed
+  - 00961, Unyial Vertition
+  - 00963, Kazol
+  - 00967, Recomear
+  - 00970, Ait the Gatekeeper
+  - 00984, Vell Horicold
+  - 00986, Whirler Pilgrim's Ascensab
+  - 00992, Vengeful Justice
+  - 00993, Dragon Force
+  - 00998, Seadaod Glee
+  Instant:
+  - 00004, Boreed Curnein
+  - 00015, Gejer of Element Undergace
+  - 00025, Warsoot Raffer
+  - 00036, Nest from Torder
+  - 00057, Fageed Strike
+  - 00070, Spirit Trui
+  - 00078, Hithok Falsh
+  - 00089, Park Americad
+  - 00102, Creeping Hike
+  - 00105, Guardians of Disceved
+  - 00113, Automatic Favor
+  - 00124, Willic Defenses
+  - 00134, Elspeth's Inquirity
+  - 00139, Willize
+  - 00151, Aphosion Synthesis
+  - 00169, Piratic
+  - 00178, Jamee Outrage
+  - 00185, Inlogetity
+  - 00187, Commune Lich
+  - 00191, Singein Insifial
+  - 00192, Pledge of Vengeance
+  - 00217, Volrath's Charge
+  - 00228, Gindalist's Despair
+  - 00237, Pensa
+  - 00249, Street Balitar
+  - 00261, Carneflamed Torch
+  - 00271, Palaciin
+  - 00280, Sweee
+  - 00287, Stars
+  - 00288, Exlicic Colessus
+  - 00300, Dupines
+  - 00327, Reloz
+  - 00333, Magivity
+  - 00348, Soulyh
+  - 00355, Rebun
+  - 00365, Warthot
+  - 00384, Rebreath Doke
+  - 00402, Limgot
+  - 00412, Deadshat
+  - 00421, Serra Whill
+  - 00435, Headhather Power
+  - 00440, Mind-Ralfy
+  - 00450, Sorcerer's Chill
+  - 00459, Strings of Headsmatet
+  - 00461, Torment of Biofompatt
+  - 00466, Flame Soul
+  - 00474, Embilich
+  - 00489, Protuch Forbud
+  - 00491, Ravage Free the Dreamlin
+  - 00494, Mishra's Research
+  - 00531, Epish
+  - 00533, Embolla's Call
+  - 00534, Frastfill
+  - 00537, Curt
+  - 00544, Defiant Basulis
+  - 00548, Vibilu
+  - 00549, Rage of Iminiles
+  - 00570, Suditic Glare
+  - 00574, Mr. Frightsceft
+  - 00579, Horge to Enittal
+  - 00592, Conjel
+  - 00610, Gorflade Creeping
+  - 00619, Boad of the Sor
+  - 00631, Electromination
+  - 00632, Busalkiam Volley
+  - 00635, Grac
+  - 00639, Wake the Wall
+  - 00670, Might of Smim
+  - 00674, Gural Blood
+  - 00675, Runewing Ritual
+  - 00683, Slaver
+  - 00687, Veles of Palaciss
+  - 00700, Weaderdary
+  - 00719, Pearl Doyings
+  - 00721, Tapping
+  - 00726, Castide's Virome
+  - 00727, Poons of Flourishing
+  - 00731, Loxid's Chant
+  - 00737, Gavin
+  - 00740, Glory
+  - 00741, Warrior
+  - 00744, Intigilatis
+  - 00758, Assemble the Hore
+  - 00761, Dragon-Cravot Ambush
+  - 00763, Rune of the Light
+  - 00771, Whiik Ghoul Buyline
+  - 00778, Aggressive Stronghold
+  - 00780, Infrench
+  - 00789, Sanguine Excontrad
+  - 00804, Infendar's Protection
+  - 00806, Guardian Theatight
+  - 00816, Lart
+  - 00820, Equafoun
+  - 00832, Crifter Lail
+  - 00834, Iron Fracture
+  - 00836, Murst of Orve
+  - 00839, Blind Undoria
+  - 00853, Hidden Swave
+  - 00876, Rogue Harvest
+  - 00889, Scourge of Cruelty
+  - 00890, Indudicis
+  - 00892, Gipaycahi
+  - 00905, Seeks of Barmor
+  - 00911, Claiker Yibinish
+  - 00920, Ethereal End
+  - 00940, The Chark
+  - 00942, Volrath's Death
+  - 00947, Quicksilver Charge
+  - 00965, Sea Reel
+  - 00996, Crishdals
+  Land:
+  - 00038, Dragon's Force
+  - 00129, Myr Crifs
+  - 00130, Vampire Batilicel
+  - 00146, Restless Predeton
+  - 00149, Efter of Gang
+  - 00195, Elvish Inectagice
+  - 00198, Syndicate Chasse
+  - 00221, Hudelic Aclossid
+  - 00257, Ace and Squadron
+  - 00360, Will of Rista
+  - 00387, Temple's Blood
+  - 00410, Secret Consug
+  - 00411, Lireadion
+  - 00454, Dox
+  - 00472, Lakakut Adzoc
+  - 00493, Floodloot Serene
+  - 00511, Stroke of Memory
+  - 00514, Ozoli
+  - 00553, Bas
+  - 00563, Dread Holliffe
+  - 00564, Iistrod Woodslithe
+  - 00591, Searne's Lotus
+  - 00596, Erra, The Aether Pegamun
+  - 00605, Golgari Towchon Audomacor
+  - 00634, Naturol's Springs
+  - 00667, Suuvanding Commande
+  - 00716, Morch Bully
+  - 00750, Sparring Quarry
+  - 00783, Dity Reinator
+  - 00799, Silvergrif Wingbrade
+  - 00825, Archangel of Auronence
+  - 00845, Welcome
+  - 00969, Liti's Turbliner
+  Other:
+  - 00095, Zodiac Avatar
+  - 00243, Challenger Putse
+  - 00354, Moth the God Avatar
+  - 00400, Galacto
+  - 00429, Threads Sprite Avatar
+  - 00539, Zebro
+  - 00656, Threak Gees
+  - 00735, Conepenator's Thum Simulacrum
+  - 00746, Serra
+  - 00793, Tales
+  - 00840, Gavita
+  - 00990, Fell The Bry 'Pas
+  Planeswalker:
+  - 00071, Lasovo, the Trap
+  - 00155, Jatkaba Instinct Relentles
+  - 00203, Vetak, Extinguish Cleap
+  - 00227, Dodex, Golden Aether Necropolis
+  - 00284, Jaw-Kalr, Serra, Reverse the Covelous
+  - 00303, Urza, Rataking Centaur
+  - 00306, Teferi, Oneman Banserincer
+  - 00396, Agalion, Reopman's Swirling
+  - 00525, Takex, Djinn of Neurar Justice
+  - 00647, Phaliy, Sphere of Anty
+  - 00653, Maverion, Ambushed Manalier
+  - 00665, Sanuty, Star Rouctic
+  - 00705, Weapboman, Idol Neh-Generar
+  - 00833, Duligut
+  - 00837, Dreamtooth, the Healker's Helm
+  - 00957, Oain Maeutho
+  - 00989, Deloach, the Tu Cranter
+  Scheme:
+  - 00597, Binding Disamolea, Dark Peor Sutree
+  - 00760, The Mindsaco-Bard Leefer
+  - 00978, The Unnatural Bathliske
+  Siege: []
+  Sorcery:
+  - 00002, Guardian Winds
+  - 00008, Arcrow
+  - 00042, Clush of Darkness
+  - 00048, Idrurer
+  - 00054, Demasis Embrace
+  - 00063, Takefall
+  - 00065, Scourde Arnort
+  - 00075, Xoi
+  - 00080, Breathscourg
+  - 00082, Brakin Saddles
+  - 00085, Sudden Ambest
+  - 00086, Rib the Inquisitor
+  - 00112, Incertilo Inspiration
+  - 00120, Shackles to the Ruwers
+  - 00126, Conspect Cunning
+  - 00142, Flamewolf Speed
+  - 00153, Necropenes
+  - 00161, Extami Blood-oith
+  - 00165, Sedva Harvest
+  - 00172, Stomper Mortish
+  - 00188, Dreams of Silence
+  - 00189, Order of Word
+  - 00200, Karaproot
+  - 00206, Storm
+  - 00218, Bragesi-Geing Fast
+  - 00232, Scapita
+  - 00233, Broodblooms
+  - 00240, Nicol Flame
+  - 00245, Fralling Hate
+  - 00255, Nest Deprevizing
+  - 00260, Stitch the Final Reclamation
+  - 00270, Clansifors
+  - 00273, Spose of Shuty
+  - 00278, Moonscate
+  - 00282, Bond to Minic
+  - 00299, Slanghoundon
+  - 00313, Immertraft
+  - 00321, Chill of Dammer
+  - 00322, Brugalcuthy
+  - 00329, Velit of Rawe
+  - 00330, Iaomeration
+  - 00356, Agstrany
+  - 00378, Soul Scrown
+  - 00380, New Aldisios
+  - 00381, Soul of Redish
+  - 00385, Crab Splindod
+  - 00386, Jifhank
+  - 00390, Aposkly
+  - 00392, Concondition Wire
+  - 00403, Silk
+  - 00405, Tenacious Lich Dracosion
+  - 00415, Cage to God
+  - 00422, Sor Ent
+  - 00437, Warminds' Seasuns
+  - 00439, Hintination
+  - 00442, Pyrocuna
+  - 00443, Incinerate
+  - 00446, Sword of the Ancient Thiofs
+  - 00457, Set's Spinning
+  - 00483, Forwadigy Demise
+  - 00486, Ghost Soul
+  - 00497, Spitness Brood Haze
+  - 00506, Coan of Ealing Freeseap
+  - 00510, Foundny Diapenfyens
+  - 00513, Huppia
+  - 00515, Sastofuul
+  - 00518, Dominated Memories
+  - 00521, Cacull
+  - 00523, Archnoghiffy
+  - 00528, Tomb Fast
+  - 00545, Maect, Heart
+  - 00546, Sastle
+  - 00551, Lash of the Kolosted
+  - 00556, Spiral Summoning
+  - 00568, Aurora's Inlisonation
+  - 00584, Plogstom
+  - 00587, Angel-Ferile
+  - 00598, Quagho
+  - 00599, Topple the Defenses
+  - 00600, Syn Force
+  - 00611, Might of the Biell
+  - 00613, Starlie Snare
+  - 00615, Woodgraft
+  - 00616, Thrai Bond
+  - 00638, Araeam
+  - 00641, Spring Prophecy
+  - 00645, Demon's Pulfer
+  - 00649, Arccot's Icinshope
+  - 00650, Energy Rain
+  - 00657, Bane wathe
+  - 00663, Elven Curse
+  - 00679, X-Iar
+  - 00694, Momin
+  - 00697, Sandstone Pillar-Bor
+  - 00701, Death World
+  - 00714, Unkotun
+  - 00717, Marsh Leya
+  - 00718, Oncles Engine
+  - 00730, Siash to Thug
+  - 00733, Seming Churm
+  - 00755, Winned Spige
+  - 00770, Awaken the Deep
+  - 00785, Unituine
+  - 00791, One of Viar Connation
+  - 00810, Artillery's Will
+  - 00813, Ghastly Construction
+  - 00817, Agony the Pheecing
+  - 00842, Neirm the Ferale
+  - 00847, Taygrob's Echoine
+  - 00857, Possessed Intervention
+  - 00858, Dawn Wind
+  - 00860, Karko
+  - 00862, Eolen Prosperitios
+  - 00867, Stack of Merrate
+  - 00874, Encomastery
+  - 00877, Callyion
+  - 00879, Fate the Mutanity
+  - 00881, Howling Ate
+  - 00882, Kor
+  - 00897, Lavinos's Retirse
+  - 00902, Horror of Reckoning
+  - 00903, Stormswatcher's Moryy
+  - 00906, Fricking Sinch
+  - 00910, Selotia
+  - 00916, Sevinnety
+  - 00935, Skirge Hattal
+  - 00948, Golgari Charm
+  - 00950, The Convirt
+  - 00954, Roland Offering
+  - 00960, Play the Breach
+  - 00971, Nox Profizal
+  - 00973, Belivius
+  - 00981, Arabrade
+  - 00985, Fell of Fury
+  - 00991, Nemis Yamimans
+  - 00995, Hart Skytumbeind
+multi_main_types:
+  Artifact, Contraption:
+  - 00470, Ruk of the Scorpion
+  - 00481, Shield of Oak
+  - 00502, Reckless Carnicler
+  Artifact, Creature:
+  - 00001, Keldon Mursh of the Putanis
+  - 00006, Armored Hopil
+  - 00133, Must Golem
+  - 00220, Gemponch Tigers
+  - 00225, Fleetbreaker
+  - 00248, Bloodstafor
+  - 00281, Nepsawed Meralimun
+  - 00312, Spectral Gedeoner
+  - 00320, Soul Brownit
+  - 00431, Tool Feal Kanforler
+  - 00463, Torror Unnotoust
+  - 00562, Myr Nongulam
+  - 00732, Grove of the Scunnaria
+  - 00751, Athrorowal Monkey
+  - 00819, Izzet Construct
+  - 00863, Devil Scurper
+  - 00868, Winged Pyramatic
+  - 00907, Blue Tormentor
+  - 00966, Giant Keytot
+  Artifact, Creature, Instant:
+  - 00349, Shrine of Wak
+  Creature, Enchantment:
+  - 00032, Primal Salmons
+  - 00419, Ezorful Kueling
+  - 00707, Whimp of Kresh Tiger
+  - 00745, Skerpiner of the Bloodtyr
+  - 00849, Dog of Bambiging Elemental
+  - 00880, Summon Efreet
+  - 00980, Urza, World Cruwal
+  Creature, Sorcery:
+  - 00884, Palracation
+  Enchantment, Land:
+  - 00210, Down to Voice
+  Instant, Land:
+  - 00706, Apocalypse
+multicolored:
+  Black, Blue:
+  - 00007, Professor Lent
+  - 00151, Aphosion Synthesis
+  - 00279, Balwark, Dead-tod Lancer
+  - 00436, Blaster, Oet Roots
+  - 00513, Huppia
+  - 00560, Zondicaor
+  - 00669, Iana, the Gift Strategs
+  - 00829, Gory Meval
+  - 00837, Dreamtooth, the Healker's Helm
+  - 00964, Vaolke the Killin
+  Black, Green:
+  - 00092, Armored Guildmage
+  - 00208, Pergevice Blood
+  - 00219, Rotic-os Thallid
+  - 00381, Soul of Redish
+  - 00396, Agalion, Reopman's Swirling
+  - 00416, Tizeris, Dragon Dog
+  - 00526, Emainda, Eable Pogeshiction
+  - 00532, Kreshe to the Cradler
+  - 00694, Momin
+  - 00705, Weapboman, Idol Neh-Generar
+  - 00710, Earths' Sliver
+  - 00791, One of Viar Connation
+  - 00884, Palracation
+  - 00922, Laphoal's Hunt
+  Black, Red:
+  - 00005, Noss Tago, Dead Mirota
+  - 00054, Demasis Embrace
+  - 00059, Garguy, Zokian Stender-Rifs
+  - 00202, Audots of Rubbic
+  - 00301, Fury Prisat
+  - 00380, New Aldisios
+  - 00467, Climbor the Nystoner
+  - 00498, Urza's Raider
+  - 00525, Takex, Djinn of Neurar Justice
+  - 00557, Difolhart Dragon
+  - 00606, Trimon of the Kariurs
+  - 00717, Marsh Leya
+  - 00728, Cruther Copper Demol
+  - 00784, Kozau, Strength of Runa
+  - 00906, Fricking Sinch
+  - 00932, Tevero Vampire
+  Black, White:
+  - 00165, Sedva Harvest
+  - 00215, Mirrorsoul Mastermind
+  - 00294, Pease Outrider
+  - 00558, Shaerax, Stalon's Guile
+  - 00871, Vogal Laush
+  Blue, Green:
+  - 00291, Umbrad Barrok
+  - 00613, Starlie Snare
+  - 00836, Murst of Orve
+  - 00874, Encomastery
+  - 00954, Roland Offering
+  - 00962, Muzzomaster
+  Blue, Red:
+  - 00001, Keldon Mursh of the Putanis
+  - 00089, Park Americad
+  - 00203, Vetak, Extinguish Cleap
+  - 00706, Apocalypse
+  - 00789, Sanguine Excontrad
+  - 00817, Agony the Pheecing
+  - 00867, Stack of Merrate
+  - 00975, My-Transmai Phiform
+  - 00991, Nemis Yamimans
+  Blue, White:
+  - 00079, Hexmonth Vineling
+  - 00270, Clansifors
+  - 00484, Ard Lotus
+  - 00531, Epish
+  - 00743, Matilob, Shaper of Oracle
+  - 00968, Vebalect, Water of Wilfs Regor
+  - 00977, Alexi, Lay Volerse
+  Green, Red:
+  - 00123, Rushmane, Negaman
+  - 00204, Penients of the Breath
+  - 00303, Urza, Rataking Centaur
+  - 00552, Galranna
+  - 00565, Nuctolia
+  - 00626, Harondal, Silkdare Wave
+  - 00948, Golgari Charm
+  - 00974, Draconic Sentinel
+  Green, White:
+  - 00071, Lasovo, the Trap
+  - 00711, Kenforked Recruits
+  Red, White:
+  - 00060, Disminner Phoenix
+  - 00432, Ukanot Catapolk
+  - 00464, Ashem, Pig
+  - 00486, Ghost Soul
+  - 00509, Pathjoy Healing
+  - 00709, Ambuth Incridees
+  - 00940, The Chark
+  - 00957, Oain Maeutho
+  - 00980, Urza, World Cruwal
+  - 00989, Deloach, the Tu Cranter
+  three_or_more:
+  - 00020, Sojence Outbrake
+  - 00131, Statesmophen Speckrasted
+  - 00190, Skolpan Viail
+  - 00199, Agona, Temple of Reet
+  - 00269, Rospok of the Whisper Diasticore
+  - 00330, Iaomeration
+  - 00332, Justica, Dreams of Proticy
+  - 00352, Atris, Collace
+  - 00462, Yamima the Balonos
+  - 00469, Gardan, Tyrant of Thinflex
+  - 00566, Langek, Losh Rampart
+  - 00617, Right-Golda
+  - 00648, Reneric Summons
+  - 00665, Sanuty, Star Rouctic
+  - 00776, Pegoming to the Write
+  - 00833, Duligut
+  - 00858, Dawn Wind
+  - 00904, Esttal, the Haak
+  - 00913, Mireblade, Stone Shift
+multisided:
+  2:
+  - 00060, Disminner Phoenix
+  - 00210, Down to Voice
+  - 00349, Shrine of Wak
+  - 00462, Yamima the Balonos
+  - 00706, Apocalypse
+  - 00880, Summon Efreet
+  - 00884, Palracation
