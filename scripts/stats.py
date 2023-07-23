@@ -20,6 +20,7 @@ def compute_stats(cards, outpath):
     multicolored = defaultdict(list)  # {'colorA, colorB': []}, including 'three_or_more' as a key
     multisided = defaultdict(list)  # {num_sides: []}
     mana_value = defaultdict(list)  # {value: []}  # AKA converted mana cost
+    authors = defaultdict(list)  # {value: []}
     num_cards = len(cards)
     num_sides = 0
 
@@ -115,6 +116,10 @@ def compute_stats(cards, outpath):
         if len(sides) > 1:
             multisided[len(sides)].append(card)
 
+        # tabulate authors
+        for side in sides:
+            authors[side['author']].append(card)
+
     avg_sides = num_sides / num_cards
 
     # ID function, which is enough info to efficiently lookup the rendered file by hand, or lookup the card in the yaml
@@ -132,6 +137,7 @@ def compute_stats(cards, outpath):
         '_num_mono_colored'        : {k:len(v) for k,v in mono_colored.items()},
         '_num_multicolored'        : {k:len(v) for k,v in multicolored.items()},
         '_num_multisided'          : {k:len(v) for k,v in multisided.items()},
+        '_num_authors'             : {k:len(v) for k,v in authors.items()},
         'colorless'                : sorted([card_id(card) for card in colorless]),
         'colorless_artifacts'      : sorted([card_id(card) for card in colorless_artifacts]),
         'costless'                 : sorted([card_id(card) for card in costless]),
@@ -141,6 +147,7 @@ def compute_stats(cards, outpath):
         'mono_colored'             : {k: [card_id(card) for card in v] for k,v in mono_colored.items()},
         'multicolored'             : {k: [card_id(card) for card in v] for k,v in multicolored.items()},
         'multisided'               : {k: [card_id(card) for card in v] for k,v in multisided.items()},
+        'authors'                  : {k: [card_id(card) for card in v] for k,v in authors.items()},
     }
 
     f = open(outpath, 'w')
