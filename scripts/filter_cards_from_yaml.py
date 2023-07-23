@@ -20,7 +20,9 @@ def is_color_combination(card, color_combo):
         return False
     else:
         colors_used = render.colors_used(card['cost'])
-        return all([c in colors_used for c in color_combo])
+        uses_all_required_colors = all([c in colors_used for c in color_combo])
+        uses_other_colors = any([c not in color_combo for c in colors_used])
+        return uses_all_required_colors and not uses_other_colors
 
 
 def main(args):
@@ -44,7 +46,7 @@ def main(args):
 
     extract = []
     for card in cards:
-        if is_color_combination(card, ['Blue', 'Black', 'Green']):
+        if is_color_combination(card, ['White', 'Black', 'Green']):
             extract.append(card)
 
     print(f'Found {len(extract)} matching cards')
