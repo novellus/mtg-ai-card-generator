@@ -5,6 +5,7 @@ import re
 import yaml
 
 import encode
+import render
 from generate_cards import FIELD_ORDER
 
 
@@ -14,20 +15,34 @@ def is_threat_removal(card):
     else:
         return re.search('damage to target creature|destroy target creature|exile target creature', card['main_text']) is not None
 
+def is_color_combination(card, color_combo):
+    if 'cost' not in card or card['cost'] is None:
+        return False
+    else:
+        colors_used = render.colors_used(card['cost'])
+        return all([c in colors_used for c in color_combo])
+
 
 def main(args):
-    assert os.path.exists(args.yaml_path)
-    assert args.out_path != args.yaml_path
     if os.path.exists(args.out_path):
         print(f'Overwriting target path! {args.out_path}')
 
-    f = open(args.yaml_path)
-    cards = yaml.load(f.read(), Loader=yaml.FullLoader)
-    f.close()
+    args.yaml_paths = re.split(r'\s*,\s*', args.yaml_paths)
+
+    cards = []
+    for yaml_path in args.yaml_paths:
+        assert os.path.exists(yaml_path), yaml_path
+        assert args.out_path != yaml_path
+
+        f = open(yaml_path)
+        cards.extend(yaml.load(f.read(), Loader=yaml.FullLoader))
+        f.close()
+
+    print(f'Searching {len(cards)} cards')
 
     extract = []
     for card in cards:
-        if is_threat_removal(card):
+        if is_color_combination(card, ['Blue', 'Black', 'Green']):
             extract.append(card)
 
     print(f'Found {len(extract)} matching cards')
@@ -40,7 +55,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--yaml_path", type=str, help="path to card_data.yaml file")
+    parser.add_argument("--yaml_paths", type=str, help="path to card_data.yaml file, or comma separated list of paths to multiple yamls")
     parser.add_argument("--out_path", type=str, help="path to output file")
     args = parser.parse_args()
 
