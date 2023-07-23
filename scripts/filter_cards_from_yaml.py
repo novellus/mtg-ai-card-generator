@@ -29,6 +29,8 @@ def main(args):
 
     args.yaml_paths = re.split(r'\s*,\s*', args.yaml_paths)
 
+    print(f'Loading {len(args.yaml_paths)} yaml files')
+
     cards = []
     for yaml_path in args.yaml_paths:
         assert os.path.exists(yaml_path), yaml_path
