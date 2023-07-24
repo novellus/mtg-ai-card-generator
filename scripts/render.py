@@ -673,8 +673,8 @@ def render_card(card, sd_nn, outdir, no_art, verbosity, trash_art_cache=False, a
     sanitized_name = re.sub('/', '', card['name'])
     card_file_name = f"{card['card_number']:05}{side_id} {sanitized_name}.png"
     out_path = os.path.join(outdir, card_file_name)
-    out_path_composite_front = os.path.join(outdir, f"{card['card_number']:05}-front.png")
-    out_path_composite_back  = os.path.join(outdir, f"{card['card_number']:05}-back.png")
+    out_path_composite_front = os.path.join(outdir, f"{card['card_number']:05}-front  {sanitized_name}.png")
+    out_path_composite_back  = os.path.join(outdir, f"{card['card_number']:05}-back  {sanitized_name}.png")
 
     # determine if card is already rendered
     if os.path.exists(out_path) and not overwrite:

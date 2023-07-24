@@ -20,7 +20,7 @@ def main(folder, verbosity=0):
     # collect image files from dest folder
     images = defaultdict(dict)  # {base_num: {'front': image, 'back': image}}
     for f_name in next(os.walk(folder))[2]:
-        s = re.search(r'^(\d+)-(front|back)\.png$', f_name)
+        s = re.search(r'^(\d+)-(front|back)\ .*\.png$', f_name)
         if s is not None:
             base_num, side = s.groups()
             path = os.path.join(folder, f_name)
