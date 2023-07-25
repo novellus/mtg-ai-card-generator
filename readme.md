@@ -215,7 +215,6 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
 
 
 # &#x1F534; TODOs
-* finish yaml once colin down-selects
 * low priorty (ie probably never)
     * retrain ```names_3``` after removal of ```ë``` character from training data...
     * locally fine-tune an LLM to generate the main_text and names segments
