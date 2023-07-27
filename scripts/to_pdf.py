@@ -172,6 +172,7 @@ if __name__ == '__main__':
                                                  ' and creates a printable pdf of them.'
                                                  ' Card backs are included on collated pages for double sided printing: flip over short edge.')
     parser.add_argument("--folder", type=str, help="path to folder containing card images in png format. Output pdf is also written to this folder.")
+    parser.add_argument("--verbosity", type=int, default=1)
     args = parser.parse_args()
 
-    main(args.folder)
+    main(args.folder, args.verbosity)
