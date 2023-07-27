@@ -38,6 +38,10 @@ def main(folder, verbosity=0):
     pdf.set_margins(0, 0)  # disable library margins, I'll compute my own
     pdf.set_compression(False)
 
+    font_size = 16  # for page numbers, in pts
+    pdf.set_font(family='arial', size=font_size)
+    # pdf.set_font_size(font_size)
+
     num_cols = 4
     num_rows = 2
     page_every = num_cols * num_rows
@@ -81,6 +85,7 @@ def main(folder, verbosity=0):
     # finally, add the images to the pdf
     row = 0
     col = 0
+    page_num = 0
     back_images = defaultdict(list)  # [row: [image, image, ...]]
     for i, (base_num, sides) in enumerate(sorted(images.items())):
         # track row
@@ -91,6 +96,7 @@ def main(folder, verbosity=0):
         # add pages
         if not (i % page_every):
             pdf.add_page()
+            page_num += 1
             row = 0
             col = 0
 
@@ -100,6 +106,11 @@ def main(folder, verbosity=0):
                       y = y_margin - twixt_margin,
                       w = im_background.width  / bg_dpi * ppi,
                       h = im_background.height / bg_dpi * ppi)
+
+            # add page number
+            pdf.text(x = x_margin - twixt_margin,
+                     y = y_margin - twixt_margin + im_background.height / bg_dpi * ppi + font_size,
+                     txt = f'{page_num}/{math.ceil(len(images) / page_every) * 2}')
 
         if verbosity > 1:
             print(f'PDF - embedding image {i+1} / {len(images)}')
@@ -115,12 +126,19 @@ def main(folder, verbosity=0):
         # add collated background images after every page, or after the last image
         if (not ((i + 1) % page_every)) or (i == (len(images) - 1)):
             pdf.add_page()
+            page_num += 1
 
+            # add background
             pdf.image(path_background, 
                       x = x_margin - twixt_margin,
                       y = y_margin - twixt_margin,
                       w = im_background.width  / bg_dpi * ppi,
                       h = im_background.height / bg_dpi * ppi)
+
+            # add page number
+            pdf.text(x = x_margin - twixt_margin,
+                     y = y_margin - twixt_margin + im_background.height / bg_dpi * ppi + font_size,
+                     txt = f'{page_num}/{math.ceil(len(images) / page_every) * 2}')
 
             for back_row, backs in back_images.items():
                 for back_col, back_path in enumerate(reversed(backs)):  # reverse order to flip along short-side of the paper
