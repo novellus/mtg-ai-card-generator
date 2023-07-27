@@ -83,6 +83,15 @@ def main(folder, verbosity=0):
     path_background = os.path.join(folder, 'pdf_background.png')
     im_background.save(path_background)
 
+    # construct black alignment elements for placement over the white background
+    im_alignment = Image.new(mode='RGBA', size=(trim_here_len, trim_here_len), color=(255, 255, 255, 255))
+    cross_vertical   = Image.new(mode='RGBA', size=(trim_here_line_thickness, trim_here_len),            color=(0, 0, 0, 255))
+    cross_horizontal = Image.new(mode='RGBA', size=(trim_here_len,            trim_here_line_thickness), color=(0, 0, 0, 255))
+    im_alignment.alpha_composite(cross_vertical  , dest=(int(trim_here_len / 2 - trim_here_line_thickness / 2), 0))
+    im_alignment.alpha_composite(cross_horizontal, dest=(0, int(trim_here_len / 2 - trim_here_line_thickness / 2)))
+    path_alignment = os.path.join(folder, 'pdf_alignment.png')
+    im_alignment.save(path_alignment)
+
     # finally, add the images to the pdf
     row = 0
     col = 0
@@ -108,10 +117,22 @@ def main(folder, verbosity=0):
                       w = im_background.width  / bg_dpi * ppi,
                       h = im_background.height / bg_dpi * ppi)
 
+            # add alignment markers
+            for x in [x_margin - twixt_margin,
+                      pdf_width / 2 - im_alignment.width / bg_dpi * ppi / 2,
+                      x_margin - twixt_margin + (im_background.width - im_alignment.width) / bg_dpi * ppi,
+                     ]:
+                for y in [y_margin - twixt_margin * 2 - im_alignment.height / bg_dpi * ppi,
+                          y_margin - twixt_margin + im_background.height / bg_dpi * ppi + twixt_margin,
+                         ]:
+                    pdf.image(path_alignment, x=x, y=y,
+                              w = im_alignment.width  / bg_dpi * ppi,
+                              h = im_alignment.height / bg_dpi * ppi)
+
             # add page number
-            pdf.text(x = x_margin - twixt_margin,
+            pdf.text(x = x_margin + im_alignment.width  / bg_dpi * ppi,
                      y = y_margin - twixt_margin + im_background.height / bg_dpi * ppi + font_size,
-                     txt = f'{page_num}/{math.ceil(len(images) / page_every) * 2}')
+                     txt = f'Page {page_num}/{math.ceil(len(images) / page_every) * 2}')
 
         if verbosity > 1:
             print(f'PDF - embedding image {i+1} / {len(images)}')
@@ -136,10 +157,22 @@ def main(folder, verbosity=0):
                       w = im_background.width  / bg_dpi * ppi,
                       h = im_background.height / bg_dpi * ppi)
 
+            # add alignment markers
+            for x in [x_margin - twixt_margin,
+                      pdf_width / 2 - im_alignment.width / bg_dpi * ppi / 2,
+                      x_margin - twixt_margin + (im_background.width - im_alignment.width) / bg_dpi * ppi,
+                     ]:
+                for y in [y_margin - twixt_margin * 2 - im_alignment.height / bg_dpi * ppi,
+                          y_margin - twixt_margin + im_background.height / bg_dpi * ppi + twixt_margin,
+                         ]:
+                    pdf.image(path_alignment, x=x, y=y,
+                              w = im_alignment.width  / bg_dpi * ppi,
+                              h = im_alignment.height / bg_dpi * ppi)
+
             # add page number
-            pdf.text(x = x_margin - twixt_margin,
+            pdf.text(x = x_margin + im_alignment.width  / bg_dpi * ppi,
                      y = y_margin - twixt_margin + im_background.height / bg_dpi * ppi + font_size,
-                     txt = f'{page_num}/{math.ceil(len(images) / page_every) * 2}')
+                     txt = f'Page {page_num}/{math.ceil(len(images) / page_every) * 2}')
 
             for back_row, backs in back_images.items():
                 for back_col, back_path in enumerate(reversed(backs)):  # reverse order to flip along short-side of the paper
@@ -166,6 +199,7 @@ def main(folder, verbosity=0):
 
     # cleanup temp files
     os.remove(path_background)
+    os.remove(path_alignment)
 
 
 if __name__ == '__main__':
