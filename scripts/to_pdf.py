@@ -18,13 +18,14 @@ def main(folder, verbosity=0):
     assert os.path.isdir(folder)
 
     # collect image files from dest folder
-    images = defaultdict(dict)  # {base_num: {'front': image, 'back': image}}
+    images = defaultdict(dict)  # {uid: {'front': image, 'back': image}}
     for f_name in next(os.walk(folder))[2]:
-        s = re.search(r'^(\d+)-(front|back)\ .*\.png$', f_name)
+        s = re.search(r'^(\d+)-(front|back)\ (.*)\.png$', f_name)
         if s is not None:
-            base_num, side = s.groups()
+            base_num, side, name = s.groups()
             path = os.path.join(folder, f_name)
-            images[base_num][side] = path
+            uid = base_num + name
+            images[uid][side] = path
 
     # composite images onto pdf pages
     # in 4x2 grids, rotated 90 degrees to landscape format
@@ -87,7 +88,7 @@ def main(folder, verbosity=0):
     col = 0
     page_num = 0
     back_images = defaultdict(list)  # [row: [image, image, ...]]
-    for i, (base_num, sides) in enumerate(sorted(images.items())):
+    for i, (uid, sides) in enumerate(sorted(images.items())):
         # track row
         if not (col % num_cols):
             row += 1
