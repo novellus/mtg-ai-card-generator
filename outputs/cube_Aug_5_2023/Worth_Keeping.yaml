@@ -1716,6 +1716,7 @@
   loyalty: null
   defense: null
   main_text: 'Morph {3}{U}{R}{W}
+
     Prowess, Prowess
 
     When Agona, Temple of Reet is turned face up, put a +1/+1 counter on each of up
@@ -5820,10 +5821,10 @@
   power_toughness: 3/4
   loyalty: null
   defense: null
-  main_text: '{T}, Sacrifice a token: Choose 1 -\n\u2022 Until end of turn, tokens\
-    \ you control have "{T}: Add 1 mana of any color".\n\
+  main_text: "{T}, Sacrifice a token: Choose 1 -\n\u2022 Until end of turn, tokens\
+    \ you control have \u0022{T}: Add 1 mana of any color\u0022.\n\
     \u2022 Create 2 1/1 blue Frog creature tokens. They gain haste. Creatures\
-    \ you control get +1/+0 until end of turn.'
+    \ you control get +1/+0 until end of turn."
   author: Novellus Cato, Colin Finnegan
   card_number: 558
   side: a
@@ -5998,8 +5999,9 @@
   power_toughness: 1/4
   loyalty: null
   defense: null
-  main_text: When Watchful Scele enters the battlefield, untap target creature.
-    Add {C}{C}.
+  main_text: "When Watchful Scele enters the battlefield, untap target creature.
+
+    Add {C}{C}."
   author: Novellus Cato, Colin Finnegan
   card_number: 586
   side: a
@@ -6196,15 +6198,15 @@
   power_toughness: 6/6
   loyalty: null
   defense: null
-  main_text: Reach, trample
+  main_text: "Reach, trample
 
-    "When Grorts of Eye of Saiy enters the battlefield, choose\
+    When Grorts of Eye of Saiy enters the battlefield, choose\
     \ up to 2 -\n\u2022 Creatures you control gain menace until end of turn.\
     \ Creatures you control gain first strike until end of turn.\n\u2022\
     \ Creatures you control gain deathtouch until end of turn.\n\u2022 Creatures\
-    \ you control gain trample until end of turn."
+    \ you control gain trample until end of turn.
 
-    Crew 5
+    Crew 5"
   author: Novellus Cato, Colin Finnegan
   card_number: 601
   side: a
@@ -6823,8 +6825,8 @@
   power_toughness: null
   loyalty: null
   defense: null
-  main_text: 'Choose 1 -\n\u2022 Exile target artifact.
-    \n\u2022 Exile target player''s graveyard'
+  main_text: "Choose 1 -\n\u2022 Exile target artifact.
+    \n\u2022 Exile target player's graveyard"
   author: Novellus Cato, Colin Finnegan
   card_number: 675
   side: a
@@ -7079,9 +7081,9 @@
   power_toughness: null
   loyalty: null
   defense: null
-  main_text: Creatures you control get prowess until end of turn. If this spell was
+  main_text: 'Creatures you control get prowess until end of turn. If this spell was
     cast from your hand, exile it. You may cast Apocalypse from exile without paying 
-    it''s mana cost until the end of this turn.
+    it''s mana cost until the end of this turn.'
   author: Novellus Cato, Colin Finnegan
   card_number: 706
   side: a
@@ -8520,8 +8522,8 @@
   power_toughness: null
   loyalty: null
   defense: null
-  main_text: Starting with you, players take turns choosing permanents to destroy. When a permanent is destroyed this way, 
-    it''s owner creates a 2/2 black Zombie creature token. This continues until a player declines to choose a permanent.
+  main_text: "Starting with you, players take turns choosing permanents to destroy. When a permanent is destroyed this way, 
+    it's owner creates a 2/2 black Zombie creature token. This continues until a player declines to choose a permanent."
   author: Novellus Cato, Colin Finnegan
   card_number: 940
   side: a
@@ -8544,9 +8546,9 @@
   power_toughness: 2/2
   loyalty: null
   defense: null
-  main_text: Whenever Discordant Champion attacks, create a tapped and attacking token that''s a copy of it. 
+  main_text: "Whenever Discordant Champion attacks, create a tapped and attacking token that's a copy of it. 
     Put a +1/+1 counter on that token for each +1/+1 counter on Discordant Champion. Sacrifice that token 
-    at the beginning of the next end step.
+    at the beginning of the next end step."
   author: Novellus Cato, Colin Finnegan
   card_number: 805
   side: a
