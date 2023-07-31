@@ -1,3 +1,11 @@
+# recommended print settings
+#   100 weight cardstock
+#   Letter size
+#   Color
+#   Double sided
+#   Flip over short side
+
+
 import argparse
 import math
 import os
