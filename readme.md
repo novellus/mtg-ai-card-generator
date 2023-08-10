@@ -228,6 +228,7 @@ Install NVidia CUDA toolkit version 11.8. (Trying newer versions may require man
     * keep that in the cache files similar to how the sd nn name is embeded in the SD image cache file
     * can dynamically add it back to the ```card_data.yaml``` when its defined at time of file writing, and omit when its not
     * then update the renderer to make flavor text optional if its defined
+    * remove ```nns_names``` attribute from the yaml, and repalce it with individual network name attributes (eg ```nn_names```)
 * create ```to_tts_asset.py``` to format cards into sheets for upload to TTS
     * limit file size to something appropriate for TTS assets (40MB??)
     * Try card naming script here: https://steamcommunity.com/app/286160/discussions/0/364040166684390460/
